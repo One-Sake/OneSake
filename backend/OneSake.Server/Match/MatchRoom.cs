@@ -1,6 +1,9 @@
 using OneSake.Domain;
 using OneSake.Game.Actions;
 using OneSake.Game.State;
+using System.ComponentModel;
+using System.Numerics;
+using System.Runtime.CompilerServices;
 
 namespace OneSake.Server.Match;
 
@@ -180,6 +183,92 @@ public sealed class MatchRoom
 
     #region CHOICE HANDLING
 
+    private void HandleMulliganDecision(string action, PlayerState player, ChoiceSubmissionDto submission)
+    {
+        switch (action)
+        {
+            case "KEEP":
+                CreateLogEvent("MULLIGAN_KEEP", $"{player.DisplayName} kept their opening hand.");
+                break;
+            case "MULLIGAN":
+                ResolveMulligan(player);
+                CreateLogEvent("MULLIGAN_TAKEN", $"{player.DisplayName} took a mulligan.");
+                break;
+            default: throw new InvalidOperationException("Unsupported option for MULLIGAN_DECISION.");
+        }
+
+        _mulliganPlayerDecisions.Add(submission.PlayerId);
+
+        if (_mulliganPlayerDecisions.Count == _players.Count)
+        {
+            CreateLogEvent("MULLIGAN_RESOLVED", "Both players finalized mulligan.");
+            BeginTurn(GetPlayerSlot(_activePlayerId));
+        }
+    }
+
+    private void HandleMainAction(string action, PlayerState player, ChoiceSubmissionDto submission, PlayerState opponent)
+    {
+        switch (action)
+        {
+            case "PLAY_CARD":
+                _playCardAction.Execute(
+                player,
+                _phase,
+                _activePlayerId,
+                submission.SelectedCardInstanceId);
+
+                CreateLogEvent(
+                    "PLAY_CARD",
+                    $"{player.DisplayName} played a card.");
+                CreateMainActionPrompt(player);
+                break;
+            case "ATTACK":
+                var gameOver = _attackAction.Execute(player, opponent, _phase, _activePlayerId, submission.SelectedCardInstanceId);
+
+                CreateLogEvent(
+                        "ATTACK",
+                        $"{player.DisplayName} attacked {opponent.DisplayName}");
+                CreateLogEvent(
+                    "LIFE_LOST",
+                    $"{opponent.DisplayName} lost 1 life");
+                if (gameOver)
+                {
+                    _phase = MatchPhase.GameOver;
+
+                    CreateLogEvent(
+                    "GAME_OVER",
+                    $"{player.DisplayName} wins!");
+                    break;
+                }
+                else
+                {
+                    CreateMainActionPrompt(player);
+                    break;
+                }
+            case "END_TURN":
+
+                var previousActivePlayerId = player.PlayerId;
+
+                _endTurnAction.Execute(player, _phase, _activePlayerId);
+
+                EnterEndPhase(player);
+
+                CreateLogEvent("TURN_END", $"Player {previousActivePlayerId} ended turn {_turnNumber}.");
+
+                _turnNumber += 1;
+
+                opponent = GetPlayerSlot(GetOtherPlayerId(previousActivePlayerId));
+
+                _activePlayerId = opponent.PlayerId;
+
+
+                BeginTurn(opponent);
+                break;
+            default: throw new InvalidOperationException("Unsupported option for MAIN_ACTION.");
+        }
+
+    }
+
     public MatchUpdate SubmitChoice(ChoiceSubmissionDto submission)
     {
         lock (_sync)
@@ -209,88 +298,11 @@ public sealed class MatchRoom
             {
                 
                 case "MULLIGAN_DECISION":
-
-                    switch (normalizedOption)
-                    {
-                        case "KEEP":
-                            CreateLogEvent("MULLIGAN_KEEP", $"{player.DisplayName} kept their opening hand.");
-                            break;
-                        case "MULLIGAN":
-                            ResolveMulligan(player);
-                            CreateLogEvent("MULLIGAN_TAKEN", $"{player.DisplayName} took a mulligan.");
-                            break;
-                        default: throw new InvalidOperationException("Unsupported option for MULLIGAN_DECISION.");
-                    }
-
-                    _mulliganPlayerDecisions.Add(submission.PlayerId);
-
-                    if (_mulliganPlayerDecisions.Count == _players.Count)
-                    {
-                        CreateLogEvent("MULLIGAN_RESOLVED", "Both players finalized mulligan.");
-                        BeginTurn(GetPlayerSlot(_activePlayerId));
-                    }
+                    HandleMulliganDecision(normalizedOption, player, submission);
                     break;
 
                 case "MAIN_ACTION":
-                    
-                    switch (normalizedOption)
-                    {
-                        case "PLAY_CARD":
-                            _playCardAction.Execute(
-                            player,
-                            _phase,
-                            _activePlayerId,
-                            submission.SelectedCardInstanceId);
-
-                            CreateLogEvent(
-                                "PLAY_CARD",
-                                $"{player.DisplayName} played a card.");
-                            CreateMainActionPrompt(player);
-                            break;
-                        case "ATTACK":
-                             var gameOver = _attackAction.Execute(player, opponent, _phase, _activePlayerId, submission.SelectedCardInstanceId);
-
-                            CreateLogEvent(
-                                    "ATTACK",
-                                    $"{player.DisplayName} attacked {opponent.DisplayName}");
-                            CreateLogEvent(
-                                "LIFE_LOST",
-                                $"{opponent.DisplayName} lost 1 life");
-                            if (gameOver)
-                            {
-                                _phase = MatchPhase.GameOver;
-
-                                CreateLogEvent(
-                                "GAME_OVER",
-                                $"{player.DisplayName} wins!");
-                                break;
-                            }
-                            else
-                            {
-                                CreateMainActionPrompt(player);
-                                break;
-                            }
-                        case "END_TURN":
-
-                            var previousActivePlayerId = player.PlayerId;
-
-                            _endTurnAction.Execute(player, _phase, _activePlayerId);
-
-                            EnterEndPhase(player);
-
-                            CreateLogEvent("TURN_END", $"Player {previousActivePlayerId} ended turn {_turnNumber}.");
-
-                            _turnNumber += 1;
-
-                            opponent = GetPlayerSlot(GetOtherPlayerId(previousActivePlayerId));
-
-                            _activePlayerId = opponent.PlayerId;
-
-
-                            BeginTurn(opponent);
-                            break;
-                        default: throw new InvalidOperationException("Unsupported option for MAIN_ACTION.");
-                    }
+                    HandleMainAction(normalizedOption, player, submission, opponent);
                     break;
                 default: throw new InvalidOperationException($"Unsupported choice kind '{prompt.Kind}'.");
             }
@@ -531,8 +543,6 @@ public sealed class MatchRoom
         player.DeckCount = player.DrawDeck.Count;
         player.HandCount = player.Hand.Count;
     }
-
- 
 }
 
 #endregion
@@ -545,3 +555,4 @@ public sealed record MatchUpdate
     public IReadOnlyList<LogEventDto> LogEvents { get; init; } = [];
     public IReadOnlyList<ChoicePromptDto> ChoicePrompts { get; init; } = [];
 }
+
