@@ -25,10 +25,85 @@ public sealed class MatchRoom
     private MatchPhase _phase = MatchPhase.Lobby;
     private readonly PlayCardAction _playCardAction = new();
 
+    public const int MaxPlayers = 2;
+
+    private readonly DateTimeOffset _createdAtUtc;
+    private DateTimeOffset _lastActivityUtc;
+
     public MatchRoom(string roomCode)
     {
         _roomCode = roomCode;
+        _createdAtUtc = DateTimeOffset.UtcNow;
+        _lastActivityUtc = _createdAtUtc;
     }
+
+    public string RoomCode => _roomCode;
+
+    #region ROOM MEMBERSHIP
+
+    public bool HasPlayer(string connectionId)
+    {
+        lock (_sync)
+        {
+            return _players.Any(player => player.PlayerId == connectionId);
+        }
+    }
+
+    // Removes a player from the room. Returns null when the player was not in this room.
+    // If a match was running, it is aborted and the room goes back to the lobby.
+    public MatchUpdate? RemovePlayer(string connectionId)
+    {
+        lock (_sync)
+        {
+            var player = _players.FirstOrDefault(entry => entry.PlayerId == connectionId);
+            if (player is null)
+            {
+                return null;
+            }
+
+            _players.Remove(player);
+            CreateLogEvent("LEAVE", $"{player.DisplayName} left room {_roomCode}.");
+
+            if (_phase != MatchPhase.Lobby)
+            {
+                _phase = MatchPhase.Lobby;
+                _turnNumber = 0;
+                _activePlayerId = string.Empty;
+                _openChoicePrompts.Clear();
+                _mulliganPlayerDecisions.Clear();
+                CreateLogEvent("MATCH_ABORTED", "Match ended because a player left.");
+            }
+
+            return CreateUpdate();
+        }
+    }
+
+    // A room is inactive when nobody is in it and nothing happened for the given time.
+    public bool IsInactive(DateTimeOffset now, TimeSpan timeout)
+    {
+        lock (_sync)
+        {
+            return _players.Count == 0 && now - _lastActivityUtc >= timeout;
+        }
+    }
+
+    public RoomSummaryDto CreateSummary()
+    {
+        lock (_sync)
+        {
+            return new RoomSummaryDto
+            {
+                RoomCode = _roomCode,
+                PlayerCount = _players.Count,
+                MaxPlayers = MaxPlayers,
+                Phase = _phase,
+                PlayerNames = _players.Select(player => player.DisplayName).ToArray(),
+                CreatedAtUnixMs = _createdAtUtc.ToUnixTimeMilliseconds()
+            };
+        }
+    }
+
+    #endregion
 
     #region PUBLIC API
     public MatchUpdate JoinPlayer(string connectionId, string displayName)
@@ -42,7 +117,7 @@ public sealed class MatchRoom
             var existingPlayer = _players.FirstOrDefault(player => player.PlayerId == connectionId);
             if (existingPlayer is null)
             {
-                if (_players.Count >= 2)
+                if (_players.Count >= MaxPlayers)
                 {
                     throw new InvalidOperationException("Room is full.");
                 }
@@ -403,6 +478,8 @@ public sealed class MatchRoom
     #region SNAPSHOTS
     private MatchUpdate CreateUpdate()
     {
+        _lastActivityUtc = DateTimeOffset.UtcNow;
+
         var update = new MatchUpdate
         {
             StateSnapshot = CreateStateSnapshot(),

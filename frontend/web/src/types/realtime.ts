@@ -85,3 +85,12 @@ export interface LogEventDto {
   phase: MatchPhase;
   tsUnixMs: number;
 }
+
+export interface RoomSummaryDto {
+  roomCode: string;
+  playerCount: number;
+  maxPlayers: number;
+  phase: MatchPhase;
+  playerNames: string[];
+  createdAtUnixMs: number;
+}

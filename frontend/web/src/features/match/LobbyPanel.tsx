@@ -13,6 +13,7 @@ interface ReadinessItem {
 interface LobbyPanelProps {
   roomCodeInput: string;
   displayNameInput: string;
+  canCreate: boolean;
   canJoin: boolean;
   canStart: boolean;
   connectionStatus: ConnectionStatus;
@@ -23,11 +24,14 @@ interface LobbyPanelProps {
   pending: boolean;
   readinessItems: ReadinessItem[];
   deckSlot?: ReactNode;
+  serverSlot?: ReactNode;
   onRoomCodeChange: (value: string) => void;
   onDisplayNameChange: (value: string) => void;
   onGenerateRoomCode: () => void;
   onRandomizeDisplayName: () => void;
+  onCreateRoom: () => void;
   onJoinRoom: () => void;
+  onLeaveRoom: () => void;
   onCopyRoomCode: () => void;
   onOpenBoard: () => void;
   onOpenDeckbuilder?: () => void;
@@ -35,6 +39,7 @@ interface LobbyPanelProps {
 }
 
 export function LobbyPanel({
+  canCreate,
   canJoin,
   canStart,
   connectionStatus,
@@ -45,9 +50,11 @@ export function LobbyPanel({
   displayNameInput,
   joinedRoomCode,
   onCopyRoomCode,
+  onCreateRoom,
   onDisplayNameChange,
   onGenerateRoomCode,
   onJoinRoom,
+  onLeaveRoom,
   onOpenBoard,
   onOpenDeckbuilder,
   onRandomizeDisplayName,
@@ -56,6 +63,7 @@ export function LobbyPanel({
   pending,
   readinessItems,
   roomCodeInput,
+  serverSlot,
 }: LobbyPanelProps) {
   return (
     <section className="match-setup-panel" aria-label="Match setup">
@@ -167,19 +175,32 @@ export function LobbyPanel({
             {joinedRoomCode && <strong className="match-room-code-chip">{joinedRoomCode}</strong>}
           </div>
           <div className="match-join-card__actions">
-            <Button disabled={!canJoin || pending || Boolean(joinedRoomCode)} fullWidth onClick={onJoinRoom}>
-              {pending ? 'Joining...' : joinedRoomCode ? 'Joined' : 'Join Room'}
-            </Button>
-            {joinedRoomCode && (
-              <Button fullWidth onClick={onOpenBoard} variant="secondary">
-                Open Board
-              </Button>
+            {joinedRoomCode ? (
+              <>
+                <Button fullWidth onClick={onOpenBoard} variant="secondary">
+                  Open Board
+                </Button>
+                <Button disabled={pending} fullWidth onClick={onLeaveRoom} variant="danger">
+                  Leave Room
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button disabled={!canCreate || pending} fullWidth onClick={onCreateRoom}>
+                  {pending ? 'Please wait...' : 'Create Room'}
+                </Button>
+                <Button disabled={!canJoin || pending} fullWidth onClick={onJoinRoom} variant="secondary">
+                  Join Room
+                </Button>
+              </>
             )}
             <Button disabled={!canStart || pending} fullWidth onClick={onStartMatch} variant="ghost">
               Start Match
             </Button>
           </div>
         </div>
+
+        {serverSlot}
       </aside>
     </section>
   );

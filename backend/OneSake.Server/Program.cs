@@ -44,6 +44,8 @@ builder.Services
     });
 // Singleton service um game rooms zu managen
 builder.Services.AddSingleton<MatchRoomManager>();
+// Loescht leere Rooms automatisch nach 5 Minuten
+builder.Services.AddHostedService<RoomCleanupService>();
 // Erlaubt frontend (localhost:5173) zu backend zu reden
 builder.Services.AddCors(options =>
 {

@@ -10,12 +10,14 @@ import {
   GameStateDto,
   LogEventDto,
   PlayerDeckSubmissionDto,
+  RoomSummaryDto,
 } from '../types/realtime';
 
 type StateSnapshotHandler = (snapshot: GameStateDto) => void;
 type ChoicePromptHandler = (prompt: ChoicePromptDto) => void;
 type ChatMessageHandler = (message: ChatMessageDto) => void;
 type LogEventHandler = (event: LogEventDto) => void;
+type RoomListHandler = (rooms: RoomSummaryDto[]) => void;
 export type ConnectionStatus =
   | 'disconnected'
   | 'connecting'
@@ -36,6 +38,7 @@ export class SignalRClient {
   private choicePromptHandler: ChoicePromptHandler | null = null;
   private chatMessageHandler: ChatMessageHandler | null = null;
   private logEventHandler: LogEventHandler | null = null;
+  private roomListHandler: RoomListHandler | null = null;
 
   constructor(hubUrl: string) {
     this.hubUrl = hubUrl;
@@ -96,6 +99,10 @@ export class SignalRClient {
         this.logEventHandler?.(event);
       });
 
+      this.connection.on('RoomList', (rooms: RoomSummaryDto[]) => {
+        this.roomListHandler?.(rooms);
+      });
+
       this.connection.onreconnecting(() => {
         this.notifyConnectionStatus('reconnecting');
       });
@@ -142,6 +149,21 @@ export class SignalRClient {
     }
   }
 
+  async getRooms(): Promise<RoomSummaryDto[]> {
+    await this.connect();
+    return this.connection!.invoke<RoomSummaryDto[]>('GetRooms');
+  }
+
+  async createRoom(roomCode: string, displayName: string): Promise<void> {
+    await this.connect();
+    await this.connection!.invoke('CreateRoom', roomCode, displayName);
+  }
+
+  async leaveRoom(roomCode: string): Promise<void> {
+    await this.connect();
+    await this.connection!.invoke('LeaveRoom', roomCode);
+  }
+
   async joinRoom(roomCode: string, displayName: string): Promise<void> {
     await this.connect();
     await this.connection!.invoke('JoinRoom', roomCode, displayName);
@@ -181,6 +203,10 @@ export class SignalRClient {
 
   onLogEvent(handler: LogEventHandler): void {
     this.logEventHandler = handler;
+  }
+
+  onRoomList(handler: RoomListHandler): void {
+    this.roomListHandler = handler;
   }
 
   onConnectionStatus(handler: ConnectionStatusHandler): void {

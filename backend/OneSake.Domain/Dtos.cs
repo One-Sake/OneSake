@@ -97,3 +97,13 @@ public record LogEventDto
     public MatchPhase Phase { get; init; } = MatchPhase.Lobby;
     public long TsUnixMs { get; init; }
 }
+
+public record RoomSummaryDto
+{
+    public string RoomCode { get; init; } = string.Empty;
+    public int PlayerCount { get; init; }
+    public int MaxPlayers { get; init; }
+    public MatchPhase Phase { get; init; } = MatchPhase.Lobby;
+    public IReadOnlyList<string> PlayerNames { get; init; } = [];
+    public long CreatedAtUnixMs { get; init; }
+}

@@ -8,6 +8,7 @@ import {
   ChoiceSubmissionDto,
   GameStateDto,
   LogEventDto,
+  RoomSummaryDto,
 } from '../../types/realtime';
 import { Button } from '../../components/ui/Button';
 import { Modal } from '../../components/ui/Modal';
@@ -23,6 +24,7 @@ import { toPlayerDeckSubmission } from './matchDeckMapper';
 import { MatchDeckSelect } from './MatchDeckSelect';
 import { MatchStatePanel } from './MatchStatePanel';
 import { generatePirateName } from './pirateNameGenerator';
+import { ServerBrowser } from './ServerBrowser';
 
 interface MatchPageProps {
   onImmersiveModeChange?: (isImmersiveMode: boolean) => void;
@@ -36,6 +38,17 @@ function createRoomCode(): string {
   return Array.from({ length: 6 }, () => alphabet[Math.floor(Math.random() * alphabet.length)]).join(
     '',
   );
+}
+
+// SignalR wraps server errors like "An unexpected error occurred invoking 'JoinRoom' on the
+// server. HubException: Room ABC does not exist." - only the last part is useful for players.
+function toHubErrorMessage(error: unknown, fallback: string): string {
+  if (!(error instanceof Error)) {
+    return fallback;
+  }
+
+  const hubMessage = error.message.split('HubException:')[1];
+  return hubMessage ? hubMessage.trim() : error.message;
 }
 
 function isMobileViewport(): boolean {
@@ -125,6 +138,7 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
   const [isDeckLibraryOpen, setIsDeckLibraryOpen] = useState(false);
   const [copyStatus, setCopyStatus] = useState<CopyStatus>('');
   const [displayNamePlaceholder] = useState(() => generatePirateName());
+  const [rooms, setRooms] = useState<RoomSummaryDto[]>([]);
 
   useEffect(() => {
     if (!signalRClient) {
@@ -132,6 +146,9 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
     }
 
     const client = signalRClient;
+    client.onRoomList((roomList) => {
+      setRooms(roomList);
+    });
     client.onStateSnapshot((snapshot) => {
       setGameState(snapshot);
     });
@@ -152,6 +169,39 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
       setConnectionStatus(status);
     });
   }, [signalRClient]);
+
+  // Connect right away so the server list is visible before joining a room.
+  useEffect(() => {
+    if (!signalRClient || connectionStatus !== 'connected') {
+      return;
+    }
+
+    signalRClient
+      .getRooms()
+      .then(setRooms)
+      .catch((roomsError) => console.error('[OneSake] Loading rooms failed', roomsError));
+  }, [connectionStatus, signalRClient]);
+
+  useEffect(() => {
+    signalRClient?.connect().catch(() => {
+      // The connection badge and notice already show the error.
+    });
+  }, [signalRClient]);
+
+  // The server removes us from the room when the connection drops,
+  // so the local room state has to be cleared as well.
+  useEffect(() => {
+    const lostConnection =
+      connectionStatus === 'reconnecting' ||
+      connectionStatus === 'disconnected' ||
+      connectionStatus === 'error';
+
+    if (lostConnection && joinedRoomCode) {
+      resetRoomState();
+      setError('Connection lost. You left the room - join it again from the server list.');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [connectionStatus]);
 
   useEffect(() => {
     if (!selectedDeckId) {
@@ -204,12 +254,13 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
   const hasValidSelectedDeck = Boolean(selectedDeckValidation?.isValid);
   const hasPlayerName = displayNameInput.trim().length > 0;
   const hasRoomCode = roomCodeInput.trim().length > 0;
-  const canJoin =
-    hasRoomCode &&
+  // Creating a room works without a code - one is generated automatically.
+  const canCreate =
     hasPlayerName &&
     hasValidSelectedDeck &&
     connectionStatus !== 'connecting' &&
     !signalRConfigError;
+  const canJoin = canCreate && hasRoomCode;
   const canStart =
     joinedRoomCode.length > 0 &&
     connectionStatus === 'connected' &&
@@ -240,7 +291,7 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
     }
 
     if (connectionStatus === 'disconnected') {
-      return 'Not connected yet. Join a room to connect to the match server.';
+      return 'Not connected to the match server.';
     }
 
     if (connectionStatus === 'error') {
@@ -278,7 +329,7 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
           ? `Room ${joinedRoomCode}`
           : connectionStatus === 'connected'
             ? 'Connected to match server.'
-            : 'Join a room to connect.',
+            : 'Waiting for the match server.',
       },
     ],
     [
@@ -310,13 +361,25 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
     return `${activePlayer.displayName} (${activePlayer.playerId})`;
   }, [gameState]);
 
-  const joinRoom = async (): Promise<void> => {
+  const resetRoomState = (): void => {
+    setJoinedRoomCode('');
+    setGameState(null);
+    setCurrentPrompt(null);
+    setChatMessages([]);
+    setLogEvents([]);
+    setChatInput('');
+    setIsBoardMode(false);
+    void exitBoardPresentation();
+  };
+
+  // mode 'create' opens a new room on the server, 'join' enters an existing one.
+  const enterRoom = async (mode: 'create' | 'join', roomCode: string): Promise<void> => {
     if (!signalRClient) {
       setError(signalRConfigError || 'Match server is not configured.');
       return;
     }
 
-    const normalizedRoomCode = roomCodeInput.trim().toUpperCase();
+    const normalizedRoomCode = roomCode.trim().toUpperCase();
     const normalizedDisplayName = displayNameInput.trim();
     if (!normalizedRoomCode || !normalizedDisplayName) {
       setError('RoomCode und DisplayName sind erforderlich.');
@@ -326,7 +389,11 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
     setPending(true);
     setError('');
     try {
-      await signalRClient.joinRoom(normalizedRoomCode, normalizedDisplayName);
+      if (mode === 'create') {
+        await signalRClient.createRoom(normalizedRoomCode, normalizedDisplayName);
+      } else {
+        await signalRClient.joinRoom(normalizedRoomCode, normalizedDisplayName);
+      }
       setJoinedRoomCode(normalizedRoomCode);
       setRoomCodeInput(normalizedRoomCode);
 
@@ -343,11 +410,45 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
         void requestBoardPresentation();
       }
     } catch (joinError) {
-      const message = joinError instanceof Error ? joinError.message : 'Join fehlgeschlagen.';
-      setError(message);
+      setError(toHubErrorMessage(joinError, 'Join fehlgeschlagen.'));
     } finally {
       setPending(false);
     }
+  };
+
+  const createRoom = (): void => {
+    const roomCode = roomCodeInput.trim() || createRoomCode();
+    void enterRoom('create', roomCode);
+  };
+
+  const joinRoom = (roomCode: string = roomCodeInput): void => {
+    setRoomCodeInput(roomCode.toUpperCase());
+    void enterRoom('join', roomCode);
+  };
+
+  const leaveRoom = async (): Promise<void> => {
+    if (!signalRClient || !joinedRoomCode) {
+      return;
+    }
+
+    setPending(true);
+    setError('');
+    try {
+      await signalRClient.leaveRoom(joinedRoomCode);
+    } catch (leaveError) {
+      // The room may already be gone on the server. We leave locally either way.
+      console.warn('[OneSake] LeaveRoom failed', leaveError);
+    } finally {
+      resetRoomState();
+      setPending(false);
+    }
+  };
+
+  const refreshRooms = (): void => {
+    signalRClient
+      ?.getRooms()
+      .then(setRooms)
+      .catch((roomsError) => setError(toHubErrorMessage(roomsError, 'Loading servers failed.')));
   };
 
   const generateRoomCode = (): void => {
@@ -479,6 +580,7 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
         logEvents={logEvents}
         onChatInputChange={setChatInput}
         onExitBoard={exitBoardMode}
+        onLeaveRoom={() => void leaveRoom()}
         onSendChat={sendChat}
         onStartMatch={() => void startMatch()}
         onSubmitChoice={(option, selectedCardInstanceId) =>
@@ -516,6 +618,7 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
         </div>
 
         <LobbyPanel
+          canCreate={canCreate}
           canJoin={canJoin}
           canStart={canStart}
           connectionStatus={connectionStatus}
@@ -540,9 +643,11 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
           displayNameInput={displayNameInput}
           joinedRoomCode={joinedRoomCode}
           onCopyRoomCode={() => void copyRoomCode()}
+          onCreateRoom={createRoom}
           onDisplayNameChange={setDisplayNameInput}
           onGenerateRoomCode={generateRoomCode}
-          onJoinRoom={() => void joinRoom()}
+          onJoinRoom={() => joinRoom()}
+          onLeaveRoom={() => void leaveRoom()}
           onOpenBoard={openBoardMode}
           onOpenDeckbuilder={onOpenDeckbuilder}
           onRandomizeDisplayName={randomizeDisplayName}
@@ -551,6 +656,16 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
           pending={pending}
           readinessItems={readinessItems}
           roomCodeInput={roomCodeInput}
+          serverSlot={(
+            <ServerBrowser
+              canJoin={canCreate}
+              joinedRoomCode={joinedRoomCode}
+              onJoinRoom={joinRoom}
+              onRefresh={refreshRooms}
+              pending={pending}
+              rooms={rooms}
+            />
+          )}
         />
 
         {joinedRoomCode && (
@@ -567,6 +682,9 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
               <Button onClick={openBoardMode}>Open Board</Button>
               <Button disabled={!canStart || pending} onClick={() => void startMatch()} variant="secondary">
                 Start Match
+              </Button>
+              <Button disabled={pending} onClick={() => void leaveRoom()} variant="danger">
+                Leave Room
               </Button>
             </div>
           </section>

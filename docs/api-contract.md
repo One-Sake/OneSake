@@ -3,12 +3,19 @@
 ## SignalR Hub: `MatchHub` (`/matchHub`)
 
 ### Hub Methods
-- `JoinRoom(string roomCode, string displayName)`
+- `GetRooms()` -> `RoomSummaryDto[]`
+- `CreateRoom(string roomCode, string displayName)` (fails if the room already exists)
+- `JoinRoom(string roomCode, string displayName)` (fails if the room does not exist or is full)
+- `LeaveRoom(string roomCode)` (aborts a running match back to the lobby)
 - `StartMatch(string roomCode)`
 - `SubmitChoice(string roomCode, ChoiceSubmissionDto submission)`
 - `SendChat(string roomCode, string text)`
 
+Room codes are 1-12 letters/digits. A connection can only be in one room; disconnecting removes the player.
+Rooms that have been empty for 5 minutes are deleted automatically (`RoomCleanupService`).
+
 ### Client Events
+- `RoomList(RoomSummaryDto[])` (sent to all clients when rooms change)
 - `StateSnapshot(GameStateDto)`
 - `ChoicePrompt(ChoicePromptDto)`
 - `ChatMessage(ChatMessageDto)`
@@ -91,3 +98,15 @@
 - `roomCode` is used as the SignalR group key.
 - MVP room size is max 2 players.
 - `StartMatch` requires exactly 2 joined players.
+
+### `RoomSummaryDto`
+```json
+{
+  "roomCode": "SAKE42",
+  "playerCount": 1,
+  "maxPlayers": 2,
+  "phase": "Lobby",
+  "playerNames": ["Alice"],
+  "createdAtUnixMs": 1776735200000
+}
+```

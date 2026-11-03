@@ -28,6 +28,7 @@ interface FullscreenMatchViewProps {
   logEvents: LogEventDto[];
   onChatInputChange: (value: string) => void;
   onExitBoard: () => void;
+  onLeaveRoom: () => void;
   onSendChat: (event: FormEvent) => void;
   onStartMatch: () => void;
   onSubmitChoice: (option: string, selectedCardInstanceId?: string) => void;
@@ -48,6 +49,7 @@ export function FullscreenMatchView({
   logEvents,
   onChatInputChange,
   onExitBoard,
+  onLeaveRoom,
   onSendChat,
   onStartMatch,
   onSubmitChoice,
@@ -133,6 +135,9 @@ export function FullscreenMatchView({
         </button>
         <button className="match-fullscreen__exit" onClick={onExitBoard} type="button">
           Exit Board
+        </button>
+        <button className="match-fullscreen__exit" disabled={pending} onClick={onLeaveRoom} type="button">
+          Leave Room
         </button>
       </header>
 

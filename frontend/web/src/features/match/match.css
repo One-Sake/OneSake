@@ -333,6 +333,43 @@
   overflow-wrap: anywhere;
 }
 
+.match-server-list {
+  display: grid;
+  gap: 8px;
+  max-height: 260px;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.match-server-list li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid rgb(148 187 194 / 18%);
+  border-radius: 10px;
+  padding: 7px 7px 7px 10px;
+  background: rgb(255 255 255 / 4%);
+}
+
+.match-server-list li.is-joined {
+  border-color: rgb(31 196 159 / 34%);
+  background: rgb(31 196 159 / 8%);
+}
+
+.match-server-list__info strong,
+.match-server-list__info small {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.match-server-list__info small,
+.match-server-browser__hint {
+  color: #9db5bd;
+}
+
 .match-readiness-list strong {
   color: #ffffff;
 }
