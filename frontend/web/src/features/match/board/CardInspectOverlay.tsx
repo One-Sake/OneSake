@@ -28,6 +28,16 @@ export function CardInspectOverlay({ card, onClose }: CardInspectOverlayProps) {
     return null;
   }
 
+  const stats: Array<[string, string | number | undefined]> = [
+    ['Card ID', card.cardId],
+    ['Category', card.category],
+    ['Cost', card.category === 'Leader' ? undefined : card.cost],
+    ['Power', card.power ?? card.basePower],
+    ['Counter', card.counter ? `+${card.counter}` : undefined],
+    ['DON!! given', card.attachedDon || undefined],
+    ['State', card.isRested ? 'Rested' : undefined],
+  ];
+
   return (
     <div className="card-inspect-overlay" role="presentation" onMouseDown={onClose}>
       <section
@@ -46,17 +56,18 @@ export function CardInspectOverlay({ card, onClose }: CardInspectOverlayProps) {
             Close
           </button>
         </header>
-        <MatchCardView card={card} size="inspect" />
+        <MatchCardView card={{ ...card, isRested: false }} showStats={false} size="inspect" />
         <dl className="card-inspect-overlay__meta">
-          <div>
-            <dt>Card ID</dt>
-            <dd>{card.cardId}</dd>
-          </div>
-          <div>
-            <dt>Instance</dt>
-            <dd>{card.instanceId}</dd>
-          </div>
+          {stats
+            .filter(([, value]) => value !== undefined && value !== '')
+            .map(([label, value]) => (
+              <div key={label}>
+                <dt>{label}</dt>
+                <dd>{value}</dd>
+              </div>
+            ))}
         </dl>
+        {card.text && <p className="card-inspect-overlay__text">{card.text}</p>}
       </section>
     </div>
   );

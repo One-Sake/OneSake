@@ -1,61 +1,79 @@
 using OneSake.Domain;
 using OneSake.Game.State;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks; 
 
-namespace OneSake.Game.Actions
+namespace OneSake.Game.Actions;
+
+// Rule 7-1-1 Attack Step: rest an active Leader/Character and choose the opponent's Leader
+// or one of their rested Characters as target.
+public sealed class AttackAction
 {
-    public sealed class AttackAction
+    public BattleState Execute(
+        PlayerState attacker,
+        PlayerState opponent,
+        MatchPhase phase,
+        string activePlayerId,
+        string? attackerInstanceId,
+        string? targetInstanceId,
+        int turnNumber)
     {
+        ActionGuard.EnsureMainPhase(phase);
+        ActionGuard.EnsureActivePlayer(attacker, activePlayerId);
 
-        public bool Execute(PlayerState attacker, PlayerState opponent, MatchPhase phase, string activePlayerId, string? selectedCardInstanceId)
+        if (!CanBattleThisTurn(attacker))
         {
-            ValidatePhase(phase);
-
-            ValidateActivePlayer(attacker, activePlayerId);
-
-            
-            opponent.LifeCount = Math.Max(0, opponent.LifeCount - 1);
-
-            return opponent.LifeCount <= 0;
-
+            throw new InvalidOperationException("Neither player can battle on their first turn.");
         }
 
+        var attackerId = ActionGuard.RequireId(attackerInstanceId, "Choose your attacking Leader or Character.");
+        var targetId = ActionGuard.RequireId(targetInstanceId, "Choose the target of your attack.");
 
-        private static void ValidateActivePlayer(
-        PlayerState player,
-        string activePlayerId)
+        var attackingCard = attacker.FindFieldCard(attackerId)
+            ?? throw new InvalidOperationException("The attacker must be your Leader or one of your Characters.");
+
+        if (!CanAttack(attackingCard, attacker, turnNumber))
         {
-            if (!string.Equals(
-                    player.PlayerId,
-                    activePlayerId,
-                    StringComparison.Ordinal))
-            {
-                throw new InvalidOperationException(
-                    "Only the active player can play a card.");
-            }
+            throw new InvalidOperationException($"{attackingCard.Name} cannot attack right now.");
         }
 
-        private static void ValidatePhase(MatchPhase phase)
+        var targetCard = opponent.FindFieldCard(targetId)
+            ?? throw new InvalidOperationException("The target must be the opponent's Leader or one of their Characters.");
+
+        if (targetCard.IsCharacter && !targetCard.IsRested)
         {
-            switch (phase)
-            {
-                case MatchPhase.Main:
-                    return;
-
-                case MatchPhase.GameOver:
-                    throw new InvalidOperationException(
-                        "The game is already over.");
-
-                default:
-                    throw new InvalidOperationException(
-                        "Cards can only be played during the main phase.");
-            }
+            throw new InvalidOperationException("You can only attack rested Characters.");
         }
+
+        attackingCard.IsRested = true;
+
+        return new BattleState
+        {
+            AttackerPlayerId = attacker.PlayerId,
+            DefenderPlayerId = opponent.PlayerId,
+            Attacker = attackingCard,
+            Target = targetCard,
+            Step = BattleStep.Block
+        };
+    }
+
+    // Rule 6-5-6-1: no battles on your own first turn.
+    public static bool CanBattleThisTurn(PlayerState player)
+    {
+        return player.TurnsStarted > 1;
+    }
+
+    // Active Leader, or active Character that was not played this turn (unless it has [Rush]).
+    public static bool CanAttack(CardInstance card, PlayerState owner, int turnNumber)
+    {
+        if (card.IsRested || !CanBattleThisTurn(owner))
+        {
+            return false;
+        }
+
+        if (card.IsLeader)
+        {
+            return true;
+        }
+
+        return card.IsCharacter && (card.PlayedOnTurn != turnNumber || card.HasRush);
     }
 }
-
-

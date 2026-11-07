@@ -88,7 +88,10 @@ public class MatchHub : Hub
             SelectedOption = submission.SelectedOption.Trim(),
             SelectedCardInstanceId = string.IsNullOrWhiteSpace(submission.SelectedCardInstanceId)
                 ? null
-                : submission.SelectedCardInstanceId.Trim()
+                : submission.SelectedCardInstanceId.Trim(),
+            TargetCardInstanceId = string.IsNullOrWhiteSpace(submission.TargetCardInstanceId)
+                ? null
+                : submission.TargetCardInstanceId.Trim()
         };
 
         var update = RunRoomAction(() => room.SubmitChoice(normalizedSubmission));

@@ -6,19 +6,24 @@ interface ChoiceSheetProps {
   currentPrompt: ChoicePromptDto | null;
   pending: boolean;
   canSubmitChoice: boolean;
+  // Prompt kinds that are handled somewhere else (e.g. on the match board) and are hidden here.
+  boardHandledKinds?: string[];
   onSubmitChoice: (option: string, selectedCardInstanceId?: string) => void;
 }
 
 export function ChoiceSheet({
+  boardHandledKinds = [],
   canSubmitChoice,
   currentPrompt,
   onSubmitChoice,
   pending,
 }: ChoiceSheetProps) {
-  const visibleOptions =
-    currentPrompt?.kind === 'MAIN_ACTION'
-      ? currentPrompt.options.filter((option) => option !== 'PLAY_CARD')
-      : currentPrompt?.options ?? [];
+  // These options need a card selection and can only be used on the board.
+  const cardOptions = ['PLAY_CARD', 'ATTACH_DON', 'ATTACK', 'BLOCK', 'COUNTER'];
+  const isHandledElsewhere = Boolean(currentPrompt && boardHandledKinds.includes(currentPrompt.kind));
+  const visibleOptions = isHandledElsewhere
+    ? []
+    : (currentPrompt?.options ?? []).filter((option) => !cardOptions.includes(option));
 
   return (
     <BottomSheet

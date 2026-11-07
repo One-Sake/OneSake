@@ -151,6 +151,10 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
     });
     client.onStateSnapshot((snapshot) => {
       setGameState(snapshot);
+      // Open prompts are cleared on the server when the game ends.
+      if (snapshot.phase === 'GameOver' || snapshot.phase === 'Lobby') {
+        setCurrentPrompt(null);
+      }
     });
 
     client.onChoicePrompt((prompt) => {
@@ -400,7 +404,7 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
       if (selectedDeck && selectedDeckValidation?.isValid) {
         await signalRClient.setPlayerDeck(
           normalizedRoomCode,
-          toPlayerDeckSubmission(selectedDeck),
+          await toPlayerDeckSubmission(selectedDeck),
         );
         setRecentDeckIds(saveRecentDeckId(selectedDeck.id));
       }
@@ -517,7 +521,11 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
     setIsDeckLibraryOpen(false);
   };
 
-  const submitChoice = async (option: string, selectedCardInstanceId?: string): Promise<void> => {
+  const submitChoice = async (
+    option: string,
+    selectedCardInstanceId?: string,
+    targetCardInstanceId?: string,
+  ): Promise<void> => {
     if (!currentPrompt || !joinedRoomCode || !isConnected || !signalRClient) {
       return;
     }
@@ -527,16 +535,20 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
       playerId: currentPrompt.playerId,
       selectedOption: option,
       selectedCardInstanceId,
+      targetCardInstanceId,
     };
 
     setPending(true);
     setError('');
     try {
       await signalRClient.submitChoice(joinedRoomCode, submission);
-      setCurrentPrompt(null);
+      // The server may already have sent the NEXT prompt before this call returns.
+      // Only clear the prompt we just answered, never a newer one.
+      setCurrentPrompt((previous) =>
+        previous?.choiceId === submission.choiceId ? null : previous,
+      );
     } catch (submitError) {
-      const message =
-        submitError instanceof Error ? submitError.message : 'SubmitChoice fehlgeschlagen.';
+      const message = toHubErrorMessage(submitError, 'SubmitChoice fehlgeschlagen.');
       setError(message);
     } finally {
       setPending(false);
@@ -583,8 +595,8 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
         onLeaveRoom={() => void leaveRoom()}
         onSendChat={sendChat}
         onStartMatch={() => void startMatch()}
-        onSubmitChoice={(option, selectedCardInstanceId) =>
-          void submitChoice(option, selectedCardInstanceId)
+        onSubmitChoice={(option, selectedCardInstanceId, targetCardInstanceId) =>
+          void submitChoice(option, selectedCardInstanceId, targetCardInstanceId)
         }
         pending={pending}
       />

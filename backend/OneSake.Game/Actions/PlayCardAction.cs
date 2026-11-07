@@ -3,90 +3,83 @@ using OneSake.Game.State;
 
 namespace OneSake.Game.Actions;
 
+// Rule 6-5-3: pay the cost (rest DON!!) and play a Character, Stage or Event card from the hand.
 public sealed class PlayCardAction
 {
-    public void Execute(
+    public CardInstance Execute(
         PlayerState player,
         MatchPhase phase,
         string activePlayerId,
-        string? selectedCardInstanceId)
+        string? selectedCardInstanceId,
+        string? replaceCharacterInstanceId,
+        int turnNumber)
     {
-        ValidatePhase(phase);
+        ActionGuard.EnsureMainPhase(phase);
+        ActionGuard.EnsureActivePlayer(player, activePlayerId);
 
-        ValidateActivePlayer(player, activePlayerId);
-
-        ValidateHand(player);
-
-        ValidateCardSelection(selectedCardInstanceId);
-
-        var handIndex = player.Hand.FindIndex(card =>
-            string.Equals(
-                card.InstanceId,
-                selectedCardInstanceId,
-                StringComparison.Ordinal));
-
-        if (handIndex < 0)
-        {
-            throw new InvalidOperationException(
-                "Selected card is not in the player's hand.");
-        }
-
-        var playedCard = player.Hand[handIndex];
-
-        player.Hand.RemoveAt(handIndex);
-
-        player.PlayedCards.Add(playedCard);
-
-        player.HandCount = player.Hand.Count;
-    }
-
-    private static void ValidatePhase(MatchPhase phase)
-    {
-        switch (phase)
-        {
-            case MatchPhase.Main:
-                return;
-
-            case MatchPhase.GameOver:
-                throw new InvalidOperationException(
-                    "The game is already over.");
-
-            default:
-                throw new InvalidOperationException(
-                    "Cards can only be played during the main phase.");
-        }
-    }
-
-    private static void ValidateActivePlayer(
-        PlayerState player,
-        string activePlayerId)
-    {
-        if (!string.Equals(
-                player.PlayerId,
-                activePlayerId,
-                StringComparison.Ordinal))
-        {
-            throw new InvalidOperationException(
-                "Only the active player can play a card.");
-        }
-    }
-
-    private static void ValidateHand(PlayerState player)
-    {
         if (player.Hand.Count == 0)
         {
-            throw new InvalidOperationException(
-                "Player has no cards in hand.");
+            throw new InvalidOperationException("Player has no cards in hand.");
         }
-    }
 
-    private static void ValidateCardSelection(
-        string? selectedCardInstanceId)
-    {
-        if (string.IsNullOrWhiteSpace(selectedCardInstanceId))
+        var cardId = ActionGuard.RequireId(
+            selectedCardInstanceId,
+            "Playing a card requires selectedCardInstanceId.");
+
+        var card = player.FindHandCard(cardId)
+            ?? throw new InvalidOperationException("Selected card is not in the player's hand.");
+
+        if (card.Cost > player.ActiveDon)
         {
             throw new InvalidOperationException(
-                "Playing a card requires selectedCardInstanceId.");
+                $"Not enough DON!!: {card.Name} costs {card.Cost}, you have {player.ActiveDon} active DON!!.");
         }
+
+        // Rule 3-7-6-1: with 5 Characters you have to trash one of them to play a new one.
+        CardInstance? characterToReplace = null;
+        if (card.IsCharacter && player.Characters.Count >= PlayerState.MaxCharacters)
+        {
+            characterToReplace = player.Characters.FirstOrDefault(
+                character => character.InstanceId == replaceCharacterInstanceId)
+                ?? throw new InvalidOperationException(
+                    "Your Character area is full. Choose one of your Characters to trash.");
+        }
+
+        // Pay the cost.
+        player.ActiveDon -= card.Cost;
+        player.RestedDon += card.Cost;
+        player.Hand.Remove(card);
+
+        if (card.IsCharacter)
+        {
+            if (characterToReplace is not null)
+            {
+                player.TrashCharacter(characterToReplace);
+            }
+
+            card.ResetFieldState();
+            card.PlayedOnTurn = turnNumber;
+            player.Characters.Add(card);
+        }
+        else if (card.IsStage)
+        {
+            // Only one Stage is allowed - the old one goes to the trash.
+            if (player.Stage is not null)
+            {
+                player.Stage.ResetFieldState();
+                player.TrashCards.Add(player.Stage);
+            }
+
+            card.ResetFieldState();
+            card.PlayedOnTurn = turnNumber;
+            player.Stage = card;
+        }
+        else
+        {
+            // Events are activated and then trashed. Card effects are not automated yet.
+            player.TrashCards.Add(card);
+        }
+
+        return card;
     }
 }

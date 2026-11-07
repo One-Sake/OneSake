@@ -5,9 +5,10 @@ const PHASE_LABELS: Record<number, string> = {
   1: 'Mulligan',
   2: 'Refresh',
   3: 'Draw',
-  4: 'Main',
-  5: 'End',
-  6: 'GameOver',
+  4: 'Don',
+  5: 'Main',
+  6: 'End',
+  7: 'GameOver',
 };
 
 export function formatPhase(phase: MatchPhase): string {

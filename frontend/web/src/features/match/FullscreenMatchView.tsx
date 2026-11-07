@@ -14,6 +14,9 @@ import { LogPanel } from './LogPanel';
 import { MatchBoard } from './board/MatchBoard';
 import { formatPhase } from './matchFormatters';
 
+// These prompts are answered directly on the board (click cards / action bar).
+const BOARD_HANDLED_PROMPT_KINDS = ['MAIN_ACTION', 'BLOCK_STEP', 'COUNTER_STEP'];
+
 interface FullscreenMatchViewProps {
   activePlayerDisplay: string;
   canStart: boolean;
@@ -31,7 +34,7 @@ interface FullscreenMatchViewProps {
   onLeaveRoom: () => void;
   onSendChat: (event: FormEvent) => void;
   onStartMatch: () => void;
-  onSubmitChoice: (option: string, selectedCardInstanceId?: string) => void;
+  onSubmitChoice: (option: string, selectedCardInstanceId?: string, targetCardInstanceId?: string) => void;
   pending: boolean;
 }
 
@@ -222,6 +225,7 @@ export function FullscreenMatchView({
       </main>
 
       <ChoiceSheet
+        boardHandledKinds={BOARD_HANDLED_PROMPT_KINDS}
         canSubmitChoice={canSubmitChoice}
         currentPrompt={currentPrompt}
         onSubmitChoice={onSubmitChoice}
