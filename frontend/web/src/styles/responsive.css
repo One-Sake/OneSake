@@ -187,28 +187,6 @@
 
 }
 
-@media (min-width: 980px) {
-  .match-fullscreen__stage--side-open {
-    align-items: stretch;
-  }
-}
-
-@media (min-width: 1100px) {
-  .board-zone-grid {
-    grid-template-columns: 180px minmax(0, 1fr) 170px;
-    align-items: stretch;
-  }
-
-  .resource-zones {
-    grid-template-columns: 1fr;
-  }
-
-  .character-row {
-    overflow-x: visible;
-  }
-
-}
-
 @media (min-width: 1600px) {
   .deckbuilder-main-layout {
     grid-template-columns: minmax(0, 1fr) clamp(440px, 25vw, 620px);
@@ -288,89 +266,10 @@
   }
 }
 
-@media (orientation: portrait) {
-  .match-fullscreen__orientation-notice {
-    display: block;
-  }
-}
-
 @media (max-width: 760px), (max-height: 560px) {
-  .match-fullscreen {
-    padding: 6px;
-  }
-
   .match-open-board-panel,
   .match-joined-panel__actions {
     grid-template-columns: 1fr;
-  }
-
-  .match-fullscreen__topbar {
-    gap: 5px;
-    overflow-x: auto;
-    padding: 6px;
-  }
-
-  .match-fullscreen__meta {
-    min-width: 72px;
-    padding: 5px 7px;
-  }
-
-  .match-fullscreen__meta--wide {
-    min-width: 160px;
-  }
-
-  .match-fullscreen__toggle,
-  .match-fullscreen__exit {
-    min-height: 38px;
-    padding: 7px 9px;
-  }
-
-  .match-fullscreen__stage {
-    gap: 6px;
-    padding-top: 6px;
-  }
-
-  .match-fullscreen__status-stack {
-    top: 10px;
-    width: min(94%, 420px);
-    padding: 7px 9px;
-    font-size: 0.82rem;
-  }
-
-  .match-fullscreen__side-panel.is-open {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 12;
-    max-height: min(62dvh, 360px);
-    overflow-y: auto;
-    border: 1px solid rgb(229 176 73 / 24%);
-    border-radius: 12px;
-    padding: 6px;
-    background: rgb(4 11 18 / 96%);
-    box-shadow: 0 -12px 30px rgb(0 0 0 / 38%);
-  }
-
-  .match-fullscreen__drawer-header {
-    grid-template-columns: 1fr;
-  }
-
-  .match-fullscreen .match-board-frame {
-    gap: 6px;
-    padding: 5px;
-  }
-
-  .match-fullscreen .match-hand-card-shell {
-    flex-basis: 112px;
-  }
-
-  .match-fullscreen .match-card-view--hand {
-    min-height: 124px;
-  }
-
-  .match-fullscreen .ui-bottom-sheet {
-    max-height: min(48dvh, 300px);
   }
 
   .deck-library__list li {
@@ -520,31 +419,6 @@
 
   .mulligan-actions {
     grid-template-columns: 1fr;
-  }
-}
-
-@media (orientation: landscape) and (max-height: 560px) {
-  .match-fullscreen .match-board {
-    width: auto;
-    height: 100%;
-    min-height: 0;
-  }
-
-  .match-fullscreen .match-hand-zone {
-    padding: 6px;
-  }
-
-  .match-fullscreen .match-hand-zone__header {
-    display: none;
-  }
-
-  .match-fullscreen .match-hand-card-row {
-    gap: 6px;
-  }
-
-  .match-fullscreen .match-card-inspect-button {
-    min-height: 32px;
-    font-size: 0.68rem;
   }
 }
 

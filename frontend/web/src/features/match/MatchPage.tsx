@@ -362,7 +362,7 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
       return gameState.activePlayerId || '-';
     }
 
-    return `${activePlayer.displayName} (${activePlayer.playerId})`;
+    return activePlayer.displayName || activePlayer.playerId;
   }, [gameState]);
 
   const resetRoomState = (): void => {

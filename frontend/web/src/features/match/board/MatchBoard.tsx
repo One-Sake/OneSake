@@ -1,19 +1,23 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import type { CSSProperties } from 'react';
 
-import onesakeBoardUrl from '../../../assets/boards/onesake-board.png';
 import type {
   CardInstanceDto,
   ChoicePromptDto,
   GameStateDto,
   PlayerStateDto,
 } from '../../../types/realtime';
-import { boardSlots } from './boardLayout';
-import { BoardSlot } from './BoardSlot';
-import type { BoardSide, BoardSlotDefinition } from './boardTypes';
+import { boardZones, CHARACTER_SLOT_COUNT } from './boardLayout';
+import { BoardSlot, CardStack } from './BoardSlot';
+import type { BoardSide, BoardZoneDefinition } from './boardTypes';
 import { CardInspectOverlay } from './CardInspectOverlay';
+import type { CardPile } from './CardInspectOverlay';
 import { MatchCardView } from './MatchCardView';
+import { MatchHand } from './MatchHand';
 
-const MAX_CHARACTERS = 5;
+const MAX_CHARACTERS = CHARACTER_SLOT_COUNT;
+const PREVIEW_DELAY_MS = 350;
+const MAX_OPPONENT_HAND_BACKS = 12;
 
 // What the player is doing right now on the board.
 type BoardMode =
@@ -44,51 +48,6 @@ function getVisiblePlayers(gameState: GameStateDto | null): Record<BoardSide, Pl
   };
 }
 
-function getCharacterIndex(slot: BoardSlotDefinition): number {
-  const match = slot.id.match(/character-(\d+)$/);
-  return match ? Number(match[1]) : 0;
-}
-
-function getSlotCard(slot: BoardSlotDefinition, player: PlayerStateDto | null): CardInstanceDto | null {
-  if (!player) {
-    return null;
-  }
-
-  switch (slot.kind) {
-    case 'leader':
-      return player.leader ?? null;
-    case 'stage':
-      return player.stage ?? null;
-    case 'character':
-      return player.boardCards?.[getCharacterIndex(slot) - 1] ?? null;
-    case 'trash':
-      return player.trashCards?.[player.trashCards.length - 1] ?? null;
-    default:
-      return null;
-  }
-}
-
-function getSlotCount(slot: BoardSlotDefinition, player: PlayerStateDto | null): number | undefined {
-  if (!player) {
-    return undefined;
-  }
-
-  switch (slot.kind) {
-    case 'deck':
-      return player.deckCount;
-    case 'hand':
-      return player.handCount;
-    case 'life':
-      return player.lifeCount;
-    case 'trash':
-      return player.trashCount;
-    case 'donDeck':
-      return player.donDeckCount;
-    default:
-      return undefined;
-  }
-}
-
 function hasOption(prompt: ChoicePromptDto | null, option: string): boolean {
   return Boolean(prompt?.options.includes(option));
 }
@@ -97,25 +56,23 @@ function hasKeyword(card: CardInstanceDto, keyword: string): boolean {
   return Boolean(card.keywords?.includes(keyword));
 }
 
-function DonArea({ player }: { player: PlayerStateDto | null }) {
-  const active = player?.activeDonCount ?? 0;
-  const rested = player?.restedDonCount ?? 0;
-
-  return (
-    <div className="match-don-area" aria-label={`${active} active and ${rested} rested DON`}>
-      <div className="match-don-area__cards">
-        {Array.from({ length: active }, (_, index) => (
-          <span key={`active-${index}`} className="match-don-card" />
-        ))}
-        {Array.from({ length: rested }, (_, index) => (
-          <span key={`rested-${index}`} className="match-don-card is-rested" />
-        ))}
-      </div>
-      <small>
-        DON!! {active} active / {rested} rested
-      </small>
-    </div>
-  );
+function isZoneFilled(zone: BoardZoneDefinition, player: PlayerStateDto | null): boolean {
+  switch (zone.kind) {
+    case 'leader':
+      return Boolean(player?.leader);
+    case 'stage':
+      return Boolean(player?.stage);
+    case 'life':
+      return (player?.lifeCount ?? 0) > 0;
+    case 'deck':
+      return (player?.deckCount ?? 0) > 0;
+    case 'trash':
+      return (player?.trashCount ?? 0) > 0;
+    case 'donDeck':
+      return (player?.donDeckCount ?? 0) > 0;
+    default:
+      return false;
+  }
 }
 
 export function MatchBoard({
@@ -123,21 +80,20 @@ export function MatchBoard({
   canSubmitChoice,
   currentPrompt,
   gameState,
-  joinedRoomCode,
   onSubmitChoice,
   pending,
 }: MatchBoardProps) {
   const [inspectedCard, setInspectedCard] = useState<CardInstanceDto | null>(null);
+  const [inspectedPile, setInspectedPile] = useState<CardPile | null>(null);
+  const [previewCard, setPreviewCard] = useState<CardInstanceDto | null>(null);
   const [selectedCardId, setSelectedCardId] = useState('');
   const [mode, setMode] = useState<BoardMode>({ kind: 'idle' });
+  const previewTimer = useRef<number>();
 
-  const debugBoardLayout =
-    typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('debugBoard');
   const visiblePlayers = getVisiblePlayers(gameState);
   const localPlayer = visiblePlayers.player;
   const opponent = visiblePlayers.opponent;
   const localHandCards = localPlayer?.handCards ?? [];
-  const roomCode = gameState?.roomCode || joinedRoomCode || '-';
   const battle = gameState?.battle ?? null;
   const isGameOver = gameState?.phase === 'GameOver';
   const didWin = isGameOver && gameState?.winnerPlayerId === localPlayer?.playerId;
@@ -161,10 +117,34 @@ export function MatchBoard({
     setMode({ kind: 'idle' });
   }, [currentPrompt?.choiceId]);
 
+  useEffect(() => () => window.clearTimeout(previewTimer.current), []);
+
   function submit(option: string, selectedId?: string, targetId?: string): void {
     setSelectedCardId('');
     setMode({ kind: 'idle' });
     onSubmitChoice(option, selectedId, targetId);
+  }
+
+  // Shows a large preview of a board card after a short hover delay.
+  function handlePreview(card: CardInstanceDto | null): void {
+    window.clearTimeout(previewTimer.current);
+
+    if (!card) {
+      setPreviewCard(null);
+      return;
+    }
+
+    previewTimer.current = window.setTimeout(() => setPreviewCard(card), PREVIEW_DELAY_MS);
+  }
+
+  function closeInspect(): void {
+    // A card opened from the trash list goes back to the list first.
+    if (inspectedCard) {
+      setInspectedCard(null);
+      return;
+    }
+
+    setInspectedPile(null);
   }
 
   // ---------- Rules helpers for the UI (the server checks everything again) ----------
@@ -262,6 +242,8 @@ export function MatchBoard({
     if (side === 'player') {
       if (card.instanceId === selectedCardId) {
         classes.push('is-selected');
+      } else if (isMainAction && hasOption(myPrompt, 'ATTACK') && card.canAttack) {
+        classes.push('can-attack');
       }
 
       if (canBlockWith(card) || (mode.kind === 'replace' && card.category === 'Character')) {
@@ -272,6 +254,26 @@ export function MatchBoard({
     }
 
     return classes.join(' ');
+  }
+
+  function getHandCardStateClassName(card: CardInstanceDto): string {
+    if (canPlayFromHand(card) || canCounterWith(card)) {
+      return 'is-usable';
+    }
+
+    return isMainAction || isCounterStep ? 'is-unplayable' : '';
+  }
+
+  function getHandCardAriaLabel(card: CardInstanceDto): string {
+    if (canCounterWith(card)) {
+      return `Counter with ${card.name} (+${card.counter})`;
+    }
+
+    if (canPlayFromHand(card)) {
+      return `Play ${card.name} (cost ${card.cost ?? 0})`;
+    }
+
+    return `Inspect ${card.name}`;
   }
 
   // ---------- Action bar ----------
@@ -320,190 +322,269 @@ export function MatchBoard({
   const canStartAttack =
     isMainAction && hasOption(myPrompt, 'ATTACK') && Boolean(selectedCard?.canAttack);
 
-  return (
-    <div className="match-board-frame">
-      <div className="match-board-scroll">
-        <div
-          className={debugBoardLayout ? 'match-board match-board--debug' : 'match-board'}
-          aria-label="OneSake match board"
-        >
-          <img alt="OneSake pirate wooden game board" className="match-board-image" src={onesakeBoardUrl} />
+  function giveDon(): void {
+    if (canGiveDon && selectedCard) {
+      submit('ATTACH_DON', selectedCard.instanceId);
+    }
+  }
 
-          <div className="match-board-overlay">
-            {boardSlots.map((slot) => {
-              const slotPlayer = visiblePlayers[slot.side];
-              const slotCard = getSlotCard(slot, slotPlayer);
-              const isFieldCard =
-                slot.kind === 'leader' || slot.kind === 'character' || slot.kind === 'stage';
+  // ---------- Rendering helpers ----------
 
-              let onCardClick: ((card: CardInstanceDto) => void) | undefined = setInspectedCard;
-              if (isFieldCard) {
-                onCardClick = slot.side === 'player' ? handleOwnCardClick : handleOpponentCardClick;
-              }
+  function renderFieldCard(card: CardInstanceDto, side: BoardSide) {
+    return (
+      <MatchCardView
+        card={card}
+        clickable
+        onClick={() => (side === 'player' ? handleOwnCardClick(card) : handleOpponentCardClick(card))}
+        onInspect={() => setInspectedCard(card)}
+        onPreview={handlePreview}
+        size="slot"
+        stateClassName={getCardStateClassName(card, side)}
+      />
+    );
+  }
 
-              return (
-                <BoardSlot
-                  key={slot.id}
-                  active={slotPlayer?.playerId === activePlayerId}
-                  card={slotCard}
-                  cardStateClassName={slotCard ? getCardStateClassName(slotCard, slot.side) : undefined}
-                  count={getSlotCount(slot, slotPlayer)}
-                  onCardClick={onCardClick}
-                  slot={slot}
-                >
-                  {slot.kind === 'donArea' ? <DonArea player={slotPlayer} /> : undefined}
-                </BoardSlot>
-              );
-            })}
+  function renderDonArea(player: PlayerStateDto | null, side: BoardSide) {
+    const active = player?.activeDonCount ?? 0;
+    const rested = player?.restedDonCount ?? 0;
+    const canClickDon = side === 'player' && canGiveDon;
 
-            <div
-              className={`match-board-player-tag match-board-player-tag--opponent ${
-                opponent?.playerId === activePlayerId ? 'is-active' : ''
-              }`}
-            >
-              <span>Opponent</span>
-              <strong>{opponent?.displayName || 'Opponent'}</strong>
-            </div>
+    return (
+      <div className="match-don-area" aria-label={`${active} active and ${rested} rested DON!!`}>
+        <div className="match-don-area__cards">
+          {Array.from({ length: active + rested }, (_, index) => {
+            const isRested = index >= active;
+            const className = `match-don-card${isRested ? ' is-rested' : ''}`;
 
-            <div
-              className={`match-board-player-tag match-board-player-tag--player ${
-                localPlayer?.playerId === activePlayerId ? 'is-active' : ''
-              }`}
-            >
-              <span>You</span>
-              <strong>{localPlayer?.displayName || 'Player'}</strong>
-            </div>
-
-            <div className="match-board-room-tag">
-              <span>Room</span>
-              <strong>{roomCode}</strong>
-            </div>
-
-            {battle && (
-              <div className="match-battle-banner" role="status">
-                <span>Battle</span>
-                <strong>
-                  {battle.attackerPower} vs {battle.targetPower}
-                </strong>
-                {battle.counterBonus > 0 && <small>Counter +{battle.counterBonus}</small>}
-              </div>
-            )}
-
-            {isGameOver && (
-              <div className="match-board-game-over" role="status">
-                {gameState?.winnerPlayerId ? (didWin ? 'Victory!' : 'Defeat') : 'Game Over'}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      <div className="match-action-panel" aria-label="Match actions">
-        <p className="match-action-panel__hint">{getHint()}</p>
-        <div className="match-action-panel__buttons">
-          {isMainAction && (
-            <>
-              <button
-                disabled={!canGiveDon}
-                onClick={() => selectedCard && submit('ATTACH_DON', selectedCard.instanceId)}
-                type="button"
-              >
-                Give DON!! (+1000)
-              </button>
-              <button
-                className={mode.kind === 'attack' ? 'is-active' : ''}
-                disabled={!canStartAttack}
-                onClick={() =>
-                  selectedCard &&
-                  setMode(
-                    mode.kind === 'attack'
-                      ? { kind: 'idle' }
-                      : { kind: 'attack', attackerId: selectedCard.instanceId },
-                  )
-                }
-                type="button"
-              >
-                {mode.kind === 'attack' ? 'Cancel Attack' : 'Attack'}
-              </button>
-            </>
-          )}
-          {selectedCard && (
-            <button onClick={() => setInspectedCard(selectedCard)} type="button">
-              Inspect
-            </button>
-          )}
-          {mode.kind === 'replace' && (
-            <button onClick={() => setMode({ kind: 'idle' })} type="button">
-              Cancel
-            </button>
-          )}
-          {isBlockStep && (
-            <button onClick={() => submit('NO_BLOCK')} type="button">
-              No Block
-            </button>
-          )}
-          {isCounterStep && (
-            <button className="is-primary" onClick={() => submit('PASS')} type="button">
-              Pass (no more counters)
-            </button>
-          )}
-          {isMainAction && (
-            <button className="is-primary" onClick={() => submit('END_TURN')} type="button">
-              End Turn
-            </button>
-          )}
-        </div>
-      </div>
-
-      <div className="match-hand-zone" aria-label="Your hand cards">
-        <div className="match-hand-zone__header">
-          <span>Your Hand</span>
-          <strong>
-            {localPlayer?.handCount ?? 0} cards · DON!! {localPlayer?.activeDonCount ?? 0} active
-          </strong>
-        </div>
-
-        <div className="match-hand-card-row">
-          {localHandCards.length ? (
-            localHandCards.map((card) => {
-              const usable = canPlayFromHand(card) || canCounterWith(card);
-              return (
-                <div
-                  key={card.instanceId}
-                  className={usable ? 'match-hand-card-shell is-playable' : 'match-hand-card-shell'}
-                >
-                  <MatchCardView
-                    ariaLabel={
-                      canCounterWith(card)
-                        ? `Counter with ${card.name} (+${card.counter})`
-                        : usable
-                          ? `Play ${card.name} (cost ${card.cost ?? 0})`
-                          : `Inspect ${card.name}`
-                    }
-                    card={card}
-                    clickable
-                    onClick={() => handleHandCardClick(card)}
-                    size="hand"
-                    stateClassName={usable ? 'is-usable' : ''}
-                  />
+            return (
+              <span key={index} className="match-don-area__slot">
+                {canClickDon && !isRested ? (
                   <button
-                    aria-label={`Inspect ${card.name} (${card.cardId})`}
-                    className="match-card-inspect-button"
-                    onClick={() => setInspectedCard(card)}
+                    aria-label={`Give DON!! to ${selectedCard?.name ?? 'selected card'}`}
+                    className={`${className} is-targetable`}
+                    onClick={giveDon}
                     type="button"
-                  >
-                    Inspect
-                  </button>
+                  />
+                ) : (
+                  <span aria-hidden="true" className={className} />
+                )}
+              </span>
+            );
+          })}
+        </div>
+        {active + rested > 0 && (
+          <span className="card-stack__badge match-don-area__badge" aria-hidden="true">
+            <small>DON!!</small>
+            {active}/{active + rested}
+          </span>
+        )}
+      </div>
+    );
+  }
+
+  function renderZoneContent(zone: BoardZoneDefinition, side: BoardSide) {
+    const player = visiblePlayers[side];
+
+    switch (zone.kind) {
+      case 'character':
+        return (
+          <div className="board-zone__slots">
+            {Array.from({ length: CHARACTER_SLOT_COUNT }, (_, index) => {
+              const card = player?.boardCards?.[index];
+              return (
+                <div key={card?.instanceId ?? `empty-${index}`} className="board-card-slot">
+                  {card && renderFieldCard(card, side)}
                 </div>
               );
-            })
-          ) : (
-            <div className="match-hand-empty">No visible hand cards.</div>
+            })}
+          </div>
+        );
+      case 'leader':
+        return player?.leader ? renderFieldCard(player.leader, side) : null;
+      case 'stage':
+        return player?.stage ? renderFieldCard(player.stage, side) : null;
+      case 'life':
+        return <CardStack count={player?.lifeCount ?? 0} label="Life" variant="life" />;
+      case 'deck':
+        return <CardStack count={player?.deckCount ?? 0} label="Deck" variant="card" />;
+      case 'donDeck':
+        return <CardStack count={player?.donDeckCount ?? 0} label="DON!!" variant="don" />;
+      case 'trash': {
+        const trashCards = player?.trashCards ?? [];
+        const title = side === 'player' ? 'Your Trash' : 'Opponent Trash';
+        return (
+          <CardStack
+            count={player?.trashCount ?? 0}
+            label="Trash"
+            onClick={() => setInspectedPile({ title, cards: [...trashCards].reverse() })}
+            topCard={trashCards[trashCards.length - 1] ?? null}
+            variant="card"
+          />
+        );
+      }
+      case 'donArea':
+        return renderDonArea(player, side);
+      default:
+        return null;
+    }
+  }
+
+  function renderSide(side: BoardSide) {
+    const player = visiblePlayers[side];
+
+    return (
+      <div
+        className={`match-board__side match-board__side--${side}${
+          player && player.playerId === activePlayerId ? ' is-active' : ''
+        }`}
+      >
+        {boardZones.map((zone) => (
+          <BoardSlot key={zone.kind} filled={isZoneFilled(zone, player)} side={side} zone={zone}>
+            {renderZoneContent(zone, side)}
+          </BoardSlot>
+        ))}
+      </div>
+    );
+  }
+
+  const opponentHandCount = opponent?.handCount ?? 0;
+  const hint = getHint();
+  const showActions = isMainAction || isBlockStep || isCounterStep || mode.kind === 'replace';
+
+  return (
+    <div className="match-board-frame">
+      <div className="match-board" aria-label="OneSake match board">
+        <div
+          className={`match-board__opponent-bar${opponent?.playerId === activePlayerId ? ' is-active' : ''}`}
+        >
+          <div className="match-player-plate">
+            <span>Opponent</span>
+            <strong>{opponent?.displayName || 'Waiting...'}</strong>
+          </div>
+          <div className="match-opponent-hand" aria-label={`Opponent hand: ${opponentHandCount} cards`} role="img">
+            {Array.from({ length: Math.min(opponentHandCount, MAX_OPPONENT_HAND_BACKS) }, (_, index) => (
+              <span
+                key={index}
+                className="card-back card-back--hand"
+                style={{ '--i': index } as CSSProperties}
+              />
+            ))}
+            {opponentHandCount > 0 && <span className="card-stack__badge">{opponentHandCount}</span>}
+          </div>
+        </div>
+
+        {renderSide('opponent')}
+
+        <div className="match-board__midline">
+          {battle && (
+            <div className="match-battle-banner" role="status">
+              <span>Battle</span>
+              <strong>
+                {battle.attackerPower} vs {battle.targetPower}
+              </strong>
+              {battle.counterBonus > 0 && <small>Counter +{battle.counterBonus}</small>}
+            </div>
+          )}
+
+          {showActions && (
+            <div className="match-actions" aria-label="Match actions" role="group">
+              {isMainAction && (
+                <>
+                  <button disabled={!canGiveDon} onClick={giveDon} type="button">
+                    Give DON!!
+                    <small>+1000</small>
+                  </button>
+                  <button
+                    className={mode.kind === 'attack' ? 'is-active' : ''}
+                    disabled={!canStartAttack}
+                    onClick={() =>
+                      selectedCard &&
+                      setMode(
+                        mode.kind === 'attack'
+                          ? { kind: 'idle' }
+                          : { kind: 'attack', attackerId: selectedCard.instanceId },
+                      )
+                    }
+                    type="button"
+                  >
+                    {mode.kind === 'attack' ? 'Cancel Attack' : 'Attack'}
+                  </button>
+                </>
+              )}
+              {mode.kind === 'replace' && (
+                <button onClick={() => setMode({ kind: 'idle' })} type="button">
+                  Cancel
+                </button>
+              )}
+              {isBlockStep && (
+                <button onClick={() => submit('NO_BLOCK')} type="button">
+                  No Block
+                </button>
+              )}
+              {isCounterStep && (
+                <button className="is-primary" onClick={() => submit('PASS')} type="button">
+                  Pass
+                </button>
+              )}
+              {isMainAction && (
+                <button className="match-actions__end-turn" onClick={() => submit('END_TURN')} type="button">
+                  End Turn
+                </button>
+              )}
+            </div>
           )}
         </div>
+
+        {renderSide('player')}
       </div>
 
-      <CardInspectOverlay card={inspectedCard} onClose={() => setInspectedCard(null)} />
+      <div
+        className={`match-player-plate match-player-plate--self${
+          localPlayer?.playerId === activePlayerId ? ' is-active' : ''
+        }`}
+      >
+        <span>You</span>
+        <strong>{localPlayer?.displayName || 'Player'}</strong>
+      </div>
+
+      {hint && (
+        <p className="match-board__hint" role="status">
+          {hint}
+        </p>
+      )}
+
+      <MatchHand
+        cards={localHandCards}
+        getAriaLabel={getHandCardAriaLabel}
+        getStateClassName={getHandCardStateClassName}
+        onCardClick={handleHandCardClick}
+        onInspect={setInspectedCard}
+      />
+
+      {previewCard && (
+        <aside className="match-card-preview" aria-hidden="true">
+          <MatchCardView card={{ ...previewCard, isRested: false }} showStats={false} size="inspect" />
+          <strong>{previewCard.name}</strong>
+          {(previewCard.power ?? previewCard.basePower) !== undefined && (
+            <small>
+              {previewCard.category} · {previewCard.power ?? previewCard.basePower} power
+            </small>
+          )}
+        </aside>
+      )}
+
+      {isGameOver && (
+        <div className="match-board-game-over" role="status">
+          {gameState?.winnerPlayerId ? (didWin ? 'Victory!' : 'Defeat') : 'Game Over'}
+        </div>
+      )}
+
+      <CardInspectOverlay
+        card={inspectedCard}
+        onClose={closeInspect}
+        onSelectCard={setInspectedCard}
+        pile={inspectedPile}
+      />
     </div>
   );
 }

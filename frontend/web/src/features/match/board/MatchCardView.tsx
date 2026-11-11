@@ -1,4 +1,9 @@
+import { useEffect, useRef } from 'react';
+import type { MouseEvent, PointerEvent } from 'react';
+
 import type { CardInstanceDto } from '../../../types/realtime';
+
+const LONG_PRESS_MS = 500;
 
 interface MatchCardViewProps {
   card: CardInstanceDto;
@@ -10,6 +15,10 @@ interface MatchCardViewProps {
   stateClassName?: string;
   showStats?: boolean;
   onClick?: () => void;
+  // Right click or long press opens the card inspect overlay.
+  onInspect?: () => void;
+  // Called with the card when the mouse enters it, and with null when it leaves.
+  onPreview?: (card: CardInstanceDto | null) => void;
 }
 
 function hasPower(card: CardInstanceDto): boolean {
@@ -22,10 +31,17 @@ export function MatchCardView({
   clickable = false,
   disabled = false,
   onClick,
+  onInspect,
+  onPreview,
   showStats = true,
   size,
   stateClassName = '',
 }: MatchCardViewProps) {
+  const pressTimer = useRef<number>();
+  const longPressed = useRef(false);
+
+  useEffect(() => () => window.clearTimeout(pressTimer.current), []);
+
   const className = [
     'match-card-view',
     `match-card-view--${size}`,
@@ -40,6 +56,60 @@ export function MatchCardView({
 
   const power = card.power ?? card.basePower ?? 0;
   const powerBoosted = power > (card.basePower ?? power);
+
+  // ---------- Inspect (right click / long press) and hover preview ----------
+
+  function handleContextMenu(event: MouseEvent): void {
+    if (!onInspect) {
+      return;
+    }
+
+    event.preventDefault();
+    onInspect();
+  }
+
+  function handlePointerDown(event: PointerEvent): void {
+    if (!onInspect || event.pointerType === 'mouse') {
+      return;
+    }
+
+    longPressed.current = false;
+    window.clearTimeout(pressTimer.current);
+    pressTimer.current = window.setTimeout(() => {
+      longPressed.current = true;
+      onInspect();
+    }, LONG_PRESS_MS);
+  }
+
+  function cancelLongPress(): void {
+    window.clearTimeout(pressTimer.current);
+  }
+
+  function handleClick(): void {
+    // A long press already opened the inspect overlay, so skip the normal click.
+    if (longPressed.current) {
+      longPressed.current = false;
+      return;
+    }
+
+    onClick?.();
+  }
+
+  const interactionProps = {
+    onContextMenu: handleContextMenu,
+    onPointerDown: handlePointerDown,
+    onPointerUp: cancelLongPress,
+    onPointerCancel: cancelLongPress,
+    onPointerEnter: (event: PointerEvent) => {
+      if (event.pointerType === 'mouse') {
+        onPreview?.(card);
+      }
+    },
+    onPointerLeave: () => {
+      cancelLongPress();
+      onPreview?.(null);
+    },
+  };
 
   const content = (
     <>
@@ -93,9 +163,9 @@ export function MatchCardView({
         aria-label={label}
         className={className}
         disabled={disabled}
-        onClick={onClick}
-        title={label}
+        onClick={handleClick}
         type="button"
+        {...interactionProps}
       >
         {content}
       </button>
@@ -103,7 +173,7 @@ export function MatchCardView({
   }
 
   return (
-    <span className={className} title={label}>
+    <span aria-label={label} className={className} role="img" {...interactionProps}>
       {content}
     </span>
   );

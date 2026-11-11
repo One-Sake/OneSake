@@ -1,23 +1,16 @@
 export type BoardSide = 'player' | 'opponent';
 
-export type BoardSlotKind =
-  | 'deck'
+export type BoardZoneKind =
+  | 'character'
   | 'life'
   | 'leader'
   | 'stage'
-  | 'character'
   | 'donDeck'
   | 'donArea'
-  | 'trash'
-  | 'hand';
+  | 'deck'
+  | 'trash';
 
-export interface BoardSlotDefinition {
-  id: string;
-  side: BoardSide;
-  kind: BoardSlotKind;
+export interface BoardZoneDefinition {
+  kind: BoardZoneKind;
   label: string;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
 }

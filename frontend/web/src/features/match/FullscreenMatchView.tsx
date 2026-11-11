@@ -106,7 +106,7 @@ export function FullscreenMatchView({
           <strong>{gameState?.turnNumber ?? 0}</strong>
         </div>
         <div className="match-fullscreen__meta match-fullscreen__meta--wide">
-          <span>Active Player</span>
+          <span>Active</span>
           <strong>{activePlayerDisplay}</strong>
         </div>
         <ConnectionStatusBadge status={connectionStatus} />
@@ -150,13 +150,7 @@ export function FullscreenMatchView({
 
       {error && <p className="match-fullscreen__error" role="alert">{error}</p>}
 
-      <main
-        className={
-          sidePanelOpen
-            ? 'match-fullscreen__stage match-fullscreen__stage--side-open'
-            : 'match-fullscreen__stage'
-        }
-      >
+      <main className="match-fullscreen__stage">
         <div className="match-fullscreen__board">
           {statusMessages.length > 0 && (
             <div className="match-fullscreen__status-stack" role="status">

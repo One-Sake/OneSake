@@ -1,78 +1,97 @@
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
 import type { CardInstanceDto } from '../../../types/realtime';
-import type { BoardSlotDefinition } from './boardTypes';
-import { MatchCardView } from './MatchCardView';
+import type { BoardSide, BoardZoneDefinition } from './boardTypes';
 
 interface BoardSlotProps {
-  slot: BoardSlotDefinition;
-  count?: number;
-  active?: boolean;
-  card?: CardInstanceDto | null;
+  side: BoardSide;
+  zone: BoardZoneDefinition;
+  // Hides the zone label when a card or stack covers the zone.
   filled?: boolean;
-  // Extra classes for the card, e.g. "is-selected", "is-targetable", "is-attacker".
-  cardStateClassName?: string;
-  onCardClick?: (card: CardInstanceDto) => void;
-  // Custom content (used for the DON!! area).
   children?: ReactNode;
 }
 
-function toSlotClassName(kind: BoardSlotDefinition['kind']): string {
+function toClassName(kind: string): string {
   return kind.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`);
 }
 
-export function BoardSlot({
-  active = false,
-  card,
-  cardStateClassName,
-  children,
-  count,
-  filled = false,
-  onCardClick,
-  slot,
-}: BoardSlotProps) {
-  const hasCount = typeof count === 'number';
-
+// One zone of a player half (Character, Leader, Life, ...), placed by the CSS grid.
+export function BoardSlot({ children, filled = false, side, zone }: BoardSlotProps) {
   return (
     <div
-      aria-label={`${slot.side} ${slot.label}`}
-      className={[
-        'board-slot',
-        `board-slot--${toSlotClassName(slot.kind)}`,
-        `board-slot--${slot.side}`,
-        filled || card ? 'board-slot--filled' : '',
-        card ? 'board-slot--has-card' : '',
-        active ? 'board-slot--active' : '',
-      ]
-        .filter(Boolean)
-        .join(' ')}
-      style={{
-        left: `${slot.x}%`,
-        top: `${slot.y}%`,
-        width: `${slot.width}%`,
-        height: `${slot.height}%`,
-      }}
+      aria-label={`${side === 'player' ? 'Your' : 'Opponent'} ${zone.label}`}
+      className={`board-zone board-zone--${toClassName(zone.kind)}${filled ? ' is-filled' : ''}`}
+      role="group"
     >
-      <span className="board-slot__label">{slot.label}</span>
-      {card ? (
-        <MatchCardView
-          card={card}
-          clickable={Boolean(onCardClick)}
-          onClick={() => onCardClick?.(card)}
-          size="slot"
-          stateClassName={cardStateClassName}
+      <span className="board-zone__label" aria-hidden="true">
+        {zone.label}
+      </span>
+      {children}
+    </div>
+  );
+}
+
+interface CardStackProps {
+  count: number;
+  label: string;
+  variant: 'card' | 'life' | 'don';
+  // Face-up card shown on top (used for the trash).
+  topCard?: CardInstanceDto | null;
+  onClick?: () => void;
+}
+
+// A pile of cards (Deck, Life, Trash, DON!! deck) with a count badge.
+export function CardStack({ count, label, onClick, topCard, variant }: CardStackProps) {
+  if (count <= 0) {
+    return null;
+  }
+
+  const layers = Math.min(count, variant === 'life' ? 10 : 4);
+  const ariaLabel = `${label}: ${count} ${count === 1 ? 'card' : 'cards'}`;
+
+  const content = (
+    <>
+      {Array.from({ length: layers }, (_, index) => (
+        <span
+          key={index}
+          aria-hidden="true"
+          className={`card-back card-back--${variant}`}
+          style={{ '--layer': index } as CSSProperties}
         />
-      ) : (
-        children ??
-        (hasCount && (
-          <span className={`board-slot-stack board-slot-stack--${toSlotClassName(slot.kind)}`}>
-            <span className="board-slot-stack__cards" aria-hidden="true" />
-            <strong className="board-slot__count">{count}</strong>
-            <small>{slot.label}</small>
-          </span>
-        ))
+      ))}
+      {topCard && (
+        <span
+          aria-hidden="true"
+          className="card-stack__top"
+          style={{ '--layer': layers - 1 } as CSSProperties}
+        >
+          {topCard.imageUrl ? (
+            <img alt="" draggable={false} loading="lazy" src={topCard.imageUrl} />
+          ) : (
+            <span>{topCard.name}</span>
+          )}
+        </span>
       )}
-      <span className="board-slot__debug">{slot.id}</span>
+      <span className="card-stack__badge" aria-hidden="true">
+        <small>{label}</small>
+        {count}
+      </span>
+    </>
+  );
+
+  const className = `card-stack card-stack--${variant}`;
+
+  if (onClick) {
+    return (
+      <button aria-label={`${ariaLabel}, show list`} className={className} onClick={onClick} type="button">
+        {content}
+      </button>
+    );
+  }
+
+  return (
+    <div aria-label={ariaLabel} className={className} role="img" tabIndex={0} title={ariaLabel}>
+      {content}
     </div>
   );
 }
