@@ -2,16 +2,17 @@ import { FormEvent, useState } from 'react';
 
 import type { ConnectionStatus } from '../../api/signalrClient';
 import type {
+  CardInstanceDto,
   ChatMessageDto,
   ChoicePromptDto,
   GameStateDto,
   LogEventDto,
 } from '../../types/realtime';
-import { ChatPanel } from './ChatPanel';
-import { ChoiceSheet } from './ChoiceSheet';
+import { ChoiceBar } from './ChoiceBar';
 import { ConnectionStatusBadge } from './ConnectionStatusBadge';
-import { LogPanel } from './LogPanel';
+import { MatchFeed } from './MatchFeed';
 import { MatchBoard } from './board/MatchBoard';
+import { MatchCardPreview } from './board/MatchCardPreview';
 import { formatPhase } from './matchFormatters';
 
 // These prompts are answered directly on the board (click cards / action bar).
@@ -58,8 +59,9 @@ export function FullscreenMatchView({
   onSubmitChoice,
   pending,
 }: FullscreenMatchViewProps) {
-  const [sidePanelOpen, setSidePanelOpen] = useState(false);
-  const [sidePanelTab, setSidePanelTab] = useState<'log' | 'chat'>('log');
+  // Only used below 1200px; on desktop the log/chat feed is always visible.
+  const [feedOpen, setFeedOpen] = useState(false);
+  const [previewCard, setPreviewCard] = useState<CardInstanceDto | null>(null);
   const phaseLabel = gameState ? formatPhase(gameState.phase) : 'Lobby';
   const isLobbyPhase = phaseLabel === 'Lobby';
   const canShowStartMatch = canStart && isLobbyPhase;
@@ -83,11 +85,6 @@ export function FullscreenMatchView({
 
   if (gameState && isLobbyPhase) {
     statusMessages.push('Match is in lobby. Start when players are ready.');
-  }
-
-  function openSidePanel(tab: 'log' | 'chat'): void {
-    setSidePanelTab(tab);
-    setSidePanelOpen(true);
   }
 
   return (
@@ -121,20 +118,13 @@ export function FullscreenMatchView({
           </button>
         )}
         <button
-          className="match-fullscreen__toggle"
-          aria-expanded={sidePanelOpen}
-          aria-label="Toggle match log and chat drawer"
-          onClick={() => {
-            if (sidePanelOpen) {
-              setSidePanelOpen(false);
-              return;
-            }
-
-            openSidePanel(sidePanelTab);
-          }}
+          className="match-fullscreen__toggle match-fullscreen__feed-toggle"
+          aria-expanded={feedOpen}
+          aria-label="Toggle match log and chat"
+          onClick={() => setFeedOpen((open) => !open)}
           type="button"
         >
-          {sidePanelOpen ? 'Hide' : 'Log / Chat'}
+          {feedOpen ? 'Hide' : 'Log / Chat'}
         </button>
         <button className="match-fullscreen__exit" onClick={onExitBoard} type="button">
           Exit Board
@@ -151,6 +141,20 @@ export function FullscreenMatchView({
       {error && <p className="match-fullscreen__error" role="alert">{error}</p>}
 
       <main className="match-fullscreen__stage">
+        <aside className={feedOpen ? 'match-fullscreen__feed is-open' : 'match-fullscreen__feed'}>
+          <MatchFeed
+            canSendChat={canSubmitChoice}
+            chatInput={chatInput}
+            chatMessages={chatMessages}
+            joinedRoomCode={joinedRoomCode}
+            logEvents={logEvents}
+            onChatInputChange={onChatInputChange}
+            onSendChat={onSendChat}
+            pending={pending}
+            players={players}
+          />
+        </aside>
+
         <div className="match-fullscreen__board">
           {statusMessages.length > 0 && (
             <div className="match-fullscreen__status-stack" role="status">
@@ -165,66 +169,23 @@ export function FullscreenMatchView({
             currentPrompt={currentPrompt}
             gameState={gameState}
             joinedRoomCode={joinedRoomCode}
+            midlineContent={
+              <ChoiceBar
+                boardHandledKinds={BOARD_HANDLED_PROMPT_KINDS}
+                canSubmitChoice={canSubmitChoice}
+                currentPrompt={currentPrompt}
+                onSubmitChoice={onSubmitChoice}
+                pending={pending}
+              />
+            }
+            onPreviewCard={setPreviewCard}
             onSubmitChoice={onSubmitChoice}
             pending={pending}
           />
         </div>
 
-        <aside
-          className={
-            sidePanelOpen
-              ? 'match-fullscreen__side-panel is-open'
-              : 'match-fullscreen__side-panel'
-          }
-          aria-hidden={!sidePanelOpen}
-        >
-          <div className="match-fullscreen__drawer-header">
-            <div>
-              <span>Match Tools</span>
-              <strong>{sidePanelTab === 'log' ? 'Match Log' : 'Table Chat'}</strong>
-            </div>
-            <div className="match-fullscreen__drawer-tabs" role="tablist" aria-label="Match drawer">
-              <button
-                aria-selected={sidePanelTab === 'log'}
-                onClick={() => openSidePanel('log')}
-                role="tab"
-                type="button"
-              >
-                Log <span>{logEvents.length}</span>
-              </button>
-              <button
-                aria-selected={sidePanelTab === 'chat'}
-                onClick={() => openSidePanel('chat')}
-                role="tab"
-                type="button"
-              >
-                Chat <span>{chatMessages.length}</span>
-              </button>
-            </div>
-          </div>
-          {sidePanelTab === 'log' ? (
-            <LogPanel logEvents={logEvents} />
-          ) : (
-            <ChatPanel
-              canSendChat={canSubmitChoice}
-              chatInput={chatInput}
-              chatMessages={chatMessages}
-              joinedRoomCode={joinedRoomCode}
-              onChatInputChange={onChatInputChange}
-              onSendChat={onSendChat}
-              pending={pending}
-            />
-          )}
-        </aside>
+        <MatchCardPreview card={previewCard} />
       </main>
-
-      <ChoiceSheet
-        boardHandledKinds={BOARD_HANDLED_PROMPT_KINDS}
-        canSubmitChoice={canSubmitChoice}
-        currentPrompt={currentPrompt}
-        onSubmitChoice={onSubmitChoice}
-        pending={pending}
-      />
     </section>
   );
 }

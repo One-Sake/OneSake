@@ -1,6 +1,7 @@
 import type { ChoicePromptDto } from '../../types/realtime';
 import { Button } from '../../components/ui/Button';
 import { BottomSheet } from '../../components/ui/BottomSheet';
+import { getVisibleChoiceOptions } from './choiceOptions';
 
 interface ChoiceSheetProps {
   currentPrompt: ChoicePromptDto | null;
@@ -18,12 +19,7 @@ export function ChoiceSheet({
   onSubmitChoice,
   pending,
 }: ChoiceSheetProps) {
-  // These options need a card selection and can only be used on the board.
-  const cardOptions = ['PLAY_CARD', 'ATTACH_DON', 'ATTACK', 'BLOCK', 'COUNTER'];
-  const isHandledElsewhere = Boolean(currentPrompt && boardHandledKinds.includes(currentPrompt.kind));
-  const visibleOptions = isHandledElsewhere
-    ? []
-    : (currentPrompt?.options ?? []).filter((option) => !cardOptions.includes(option));
+  const visibleOptions = getVisibleChoiceOptions(currentPrompt, boardHandledKinds);
 
   return (
     <BottomSheet
@@ -32,9 +28,6 @@ export function ChoiceSheet({
     >
       {currentPrompt && (
         <div className="choice-content">
-          <div className="choice-sheet-subtitle">
-            {currentPrompt.kind} for {currentPrompt.playerId}
-          </div>
           <div className="button-row">
             {visibleOptions.map((option) => (
               <Button

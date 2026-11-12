@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import type { CSSProperties } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
 import type {
   CardInstanceDto,
@@ -33,6 +33,10 @@ interface MatchBoardProps {
   joinedRoomCode?: string;
   onSubmitChoice: (option: string, selectedCardInstanceId?: string, targetCardInstanceId?: string) => void;
   pending: boolean;
+  // Shown in the middle of the board, between both Character rows (e.g. the Keep/Mulligan prompt).
+  midlineContent?: ReactNode;
+  // Called after a short hover delay with the hovered face-up card, and with null when the mouse leaves.
+  onPreviewCard?: (card: CardInstanceDto | null) => void;
 }
 
 function getVisiblePlayers(gameState: GameStateDto | null): Record<BoardSide, PlayerStateDto | null> {
@@ -80,12 +84,13 @@ export function MatchBoard({
   canSubmitChoice,
   currentPrompt,
   gameState,
+  midlineContent,
+  onPreviewCard,
   onSubmitChoice,
   pending,
 }: MatchBoardProps) {
   const [inspectedCard, setInspectedCard] = useState<CardInstanceDto | null>(null);
   const [inspectedPile, setInspectedPile] = useState<CardPile | null>(null);
-  const [previewCard, setPreviewCard] = useState<CardInstanceDto | null>(null);
   const [selectedCardId, setSelectedCardId] = useState('');
   const [mode, setMode] = useState<BoardMode>({ kind: 'idle' });
   const previewTimer = useRef<number>();
@@ -125,16 +130,16 @@ export function MatchBoard({
     onSubmitChoice(option, selectedId, targetId);
   }
 
-  // Shows a large preview of a board card after a short hover delay.
+  // Shows a large preview of a card after a short hover delay.
   function handlePreview(card: CardInstanceDto | null): void {
     window.clearTimeout(previewTimer.current);
 
     if (!card) {
-      setPreviewCard(null);
+      onPreviewCard?.(null);
       return;
     }
 
-    previewTimer.current = window.setTimeout(() => setPreviewCard(card), PREVIEW_DELAY_MS);
+    previewTimer.current = window.setTimeout(() => onPreviewCard?.(card), PREVIEW_DELAY_MS);
   }
 
   function closeInspect(): void {
@@ -476,6 +481,8 @@ export function MatchBoard({
         {renderSide('opponent')}
 
         <div className="match-board__midline">
+          {midlineContent}
+
           {battle && (
             <div className="match-battle-banner" role="status">
               <span>Battle</span>
@@ -559,19 +566,8 @@ export function MatchBoard({
         getStateClassName={getHandCardStateClassName}
         onCardClick={handleHandCardClick}
         onInspect={setInspectedCard}
+        onPreview={handlePreview}
       />
-
-      {previewCard && (
-        <aside className="match-card-preview" aria-hidden="true">
-          <MatchCardView card={{ ...previewCard, isRested: false }} showStats={false} size="inspect" />
-          <strong>{previewCard.name}</strong>
-          {(previewCard.power ?? previewCard.basePower) !== undefined && (
-            <small>
-              {previewCard.category} · {previewCard.power ?? previewCard.basePower} power
-            </small>
-          )}
-        </aside>
-      )}
 
       {isGameOver && (
         <div className="match-board-game-over" role="status">

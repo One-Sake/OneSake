@@ -10,6 +10,7 @@ interface MatchHandProps {
   getStateClassName: (card: CardInstanceDto) => string;
   onCardClick: (card: CardInstanceDto) => void;
   onInspect: (card: CardInstanceDto) => void;
+  onPreview?: (card: CardInstanceDto | null) => void;
 }
 
 function isTouchDevice(): boolean {
@@ -18,7 +19,14 @@ function isTouchDevice(): boolean {
 
 // The local hand as a fanned row of cards at the bottom edge of the board.
 // Mouse: hover raises the hand, click plays. Touch: first tap selects, second tap plays.
-export function MatchHand({ cards, getAriaLabel, getStateClassName, onCardClick, onInspect }: MatchHandProps) {
+export function MatchHand({
+  cards,
+  getAriaLabel,
+  getStateClassName,
+  onCardClick,
+  onInspect,
+  onPreview,
+}: MatchHandProps) {
   const [focusedCardId, setFocusedCardId] = useState('');
   const handRef = useRef<HTMLDivElement>(null);
 
@@ -82,6 +90,7 @@ export function MatchHand({ cards, getAriaLabel, getStateClassName, onCardClick,
               clickable
               onClick={() => handleClick(card)}
               onInspect={() => onInspect(card)}
+              onPreview={onPreview}
               size="hand"
               stateClassName={getStateClassName(card)}
             />
