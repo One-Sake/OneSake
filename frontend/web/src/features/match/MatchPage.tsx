@@ -10,21 +10,21 @@ import {
   LogEventDto,
   RoomSummaryDto,
 } from '../../types/realtime';
-import { Button } from '../../components/ui/Button';
 import { Modal } from '../../components/ui/Modal';
 import { loadRecentDeckIds, loadStoredDecks, saveRecentDeckId } from '../deckbuilder/utils/deckStorage';
 import { validateDeck } from '../deckbuilder/utils/deckValidation';
 import { ChatPanel } from './ChatPanel';
 import { ChoiceSheet } from './ChoiceSheet';
-import { ConnectionStatusBadge } from './ConnectionStatusBadge';
 import { FullscreenMatchView } from './FullscreenMatchView';
 import { LobbyPanel } from './LobbyPanel';
 import { LogPanel } from './LogPanel';
 import { toPlayerDeckSubmission } from './matchDeckMapper';
 import { MatchDeckSelect } from './MatchDeckSelect';
 import { MatchStatePanel } from './MatchStatePanel';
+import { formatPhase } from './matchFormatters';
 import { generatePirateName } from './pirateNameGenerator';
 import { ServerBrowser } from './ServerBrowser';
+import { useLeaderCards } from './useLeaderCards';
 
 interface MatchPageProps {
   onImmersiveModeChange?: (isImmersiveMode: boolean) => void;
@@ -309,45 +309,14 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
     return '';
   }, [connectionStatus, signalRConfigError]);
 
-  const readinessItems = useMemo(
-    () => [
-      {
-        label: 'Player name',
-        ready: hasPlayerName,
-        text: hasPlayerName ? displayNameInput.trim() : 'Enter a display name.',
-      },
-      {
-        label: 'Room code',
-        ready: hasRoomCode,
-        text: hasRoomCode ? roomCodeInput.trim().toUpperCase() : 'Create or enter a room code.',
-      },
-      {
-        label: 'Valid deck',
-        ready: hasValidSelectedDeck,
-        text: hasValidSelectedDeck ? selectedDeck?.name ?? 'Ready' : deckNotice,
-      },
-      {
-        label: joinedRoomCode ? 'Joined' : 'Connection',
-        ready: joinedRoomCode.length > 0 || connectionStatus === 'connected',
-        text: joinedRoomCode
-          ? `Room ${joinedRoomCode}`
-          : connectionStatus === 'connected'
-            ? 'Connected to match server.'
-            : 'Waiting for the match server.',
-      },
-    ],
-    [
-      connectionStatus,
-      deckNotice,
-      displayNameInput,
-      hasPlayerName,
-      hasRoomCode,
-      hasValidSelectedDeck,
-      joinedRoomCode,
-      roomCodeInput,
-      selectedDeck,
-    ],
+  const leaderCardsById = useLeaderCards(savedDecks);
+  // Players in our room: from the live game state, or from the server list as a fallback.
+  const joinedRoomSummary = rooms.find((room) => room.roomCode === joinedRoomCode);
+  const playersInRoom = Math.max(
+    gameState?.players.length ?? 0,
+    joinedRoomSummary?.playerCount ?? 0,
   );
+  const isMatchRunning = Boolean(gameState) && formatPhase(gameState?.phase ?? 'Lobby') !== 'Lobby';
 
   const activePlayerDisplay = useMemo(() => {
     if (!gameState) {
@@ -444,6 +413,8 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
       console.warn('[OneSake] LeaveRoom failed', leaveError);
     } finally {
       resetRoomState();
+      // The code input is hidden in the lobby, so a stale code must not be reused by "Create Room".
+      setRoomCodeInput('');
       setPending(false);
     }
   };
@@ -605,113 +576,59 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
 
   return (
     <section className="match-page">
-      <section className="panel match-flow-panel" aria-labelledby="match-flow-title">
-        <div className="match-flow-panel__header">
-          <div>
-            <h2 id="match-flow-title">GAME LOBBY</h2>
-          </div>
-          <ConnectionStatusBadge status={connectionStatus} />
-        </div>
-        {(connectionNotice || error) && (
-          <div className="match-lobby-alerts">
-            {connectionNotice && (
-              <p className={`connection-notice connection-notice--${connectionStatus}`} role="status">
-                {connectionNotice}
-              </p>
-            )}
-            {error && <p className="error-banner" role="alert">{error}</p>}
-          </div>
+      <LobbyPanel
+        canCreate={canCreate}
+        canJoin={canJoin}
+        canStart={canStart}
+        connectionNotice={connectionNotice}
+        connectionStatus={connectionStatus}
+        copyStatus={copyStatus}
+        deckNotice={deckNotice}
+        decks={lobbyDecks}
+        displayNameInput={displayNameInput}
+        displayNamePlaceholder={displayNamePlaceholder}
+        error={error}
+        isMatchRunning={isMatchRunning}
+        joinedRoomCode={joinedRoomCode}
+        leaderCardsById={leaderCardsById}
+        onCopyRoomCode={() => void copyRoomCode()}
+        onCreateRoom={createRoom}
+        onDisplayNameChange={setDisplayNameInput}
+        onGenerateRoomCode={generateRoomCode}
+        onJoinRoom={() => joinRoom()}
+        onLeaveRoom={() => void leaveRoom()}
+        onOpenBoard={openBoardMode}
+        onOpenDeckbuilder={onOpenDeckbuilder}
+        onOpenDeckLibrary={() => setIsDeckLibraryOpen(true)}
+        onRandomizeDisplayName={randomizeDisplayName}
+        onRoomCodeChange={updateRoomCodeInput}
+        onSelectDeck={setSelectedDeckId}
+        onStartMatch={() => void startMatch()}
+        pending={pending}
+        playersInRoom={playersInRoom}
+        roomCodeInput={roomCodeInput}
+        selectedDeck={selectedDeck}
+        selectedDeckId={selectedDeckId}
+        serverSlot={(
+          <ServerBrowser
+            canCreate={canCreate}
+            canJoin={canCreate}
+            joinedRoomCode={joinedRoomCode}
+            onCreateRoom={createRoom}
+            onJoinRoom={joinRoom}
+            onRefresh={refreshRooms}
+            pending={pending}
+            rooms={rooms}
+          />
         )}
-        <div className="match-flow-steps" aria-label="Match setup steps">
-          <span className={hasPlayerName ? 'is-complete' : ''}>1 Player</span>
-          <span className={hasRoomCode ? 'is-complete' : ''}>2 Room</span>
-          <span className={hasValidSelectedDeck ? 'is-complete' : ''}>3 Deck</span>
-          <span className={joinedRoomCode ? 'is-complete' : ''}>4 Board</span>
-        </div>
+      />
 
-        <LobbyPanel
-          canCreate={canCreate}
-          canJoin={canJoin}
-          canStart={canStart}
-          connectionStatus={connectionStatus}
-          copyStatus={copyStatus}
-          deckSlot={(
-            <MatchDeckSelect
-              decks={lobbyDecks}
-              embedded
-              headerAction={(
-                <Button onClick={() => setIsDeckLibraryOpen(true)} variant="secondary">
-                  DECK LIBRARY
-                </Button>
-              )}
-              onOpenDeckbuilder={onOpenDeckbuilder}
-              onSelectDeck={setSelectedDeckId}
-              selectedDeckId={selectedDeckId}
-              title="MOST RECENT DECKS"
-            />
-          )}
-          deckNotice={deckNotice}
-          displayNamePlaceholder={displayNamePlaceholder}
-          displayNameInput={displayNameInput}
-          joinedRoomCode={joinedRoomCode}
-          onCopyRoomCode={() => void copyRoomCode()}
-          onCreateRoom={createRoom}
-          onDisplayNameChange={setDisplayNameInput}
-          onGenerateRoomCode={generateRoomCode}
-          onJoinRoom={() => joinRoom()}
-          onLeaveRoom={() => void leaveRoom()}
-          onOpenBoard={openBoardMode}
-          onOpenDeckbuilder={onOpenDeckbuilder}
-          onRandomizeDisplayName={randomizeDisplayName}
-          onRoomCodeChange={updateRoomCodeInput}
-          onStartMatch={() => void startMatch()}
-          pending={pending}
-          readinessItems={readinessItems}
-          roomCodeInput={roomCodeInput}
-          serverSlot={(
-            <ServerBrowser
-              canJoin={canCreate}
-              joinedRoomCode={joinedRoomCode}
-              onJoinRoom={joinRoom}
-              onRefresh={refreshRooms}
-              pending={pending}
-              rooms={rooms}
-            />
-          )}
-        />
-
-        {joinedRoomCode && (
-          <section className="match-open-board-panel match-joined-panel">
-            <div>
-              <span className="match-setup-kicker">Joined Room</span>
-              <h2>{joinedRoomCode}</h2>
-              <p>You are still in this room. Open the board again without reconnecting.</p>
-            </div>
-            <div className="match-joined-panel__actions">
-              <Button onClick={() => void copyRoomCode()} variant="secondary">
-                {copyStatus === 'copied' ? 'Copied' : 'Copy Room Code'}
-              </Button>
-              <Button onClick={openBoardMode}>Open Board</Button>
-              <Button disabled={!canStart || pending} onClick={() => void startMatch()} variant="secondary">
-                Start Match
-              </Button>
-              <Button disabled={pending} onClick={() => void leaveRoom()} variant="danger">
-                Leave Room
-              </Button>
-            </div>
-          </section>
-        )}
-      </section>
-
-      <section className="panel match-preview-panel" aria-labelledby="match-preview-title">
-        <div className="match-preview-panel__header">
-          <div>
-            <span className="match-setup-kicker">Compact Preview</span>
+      {joinedRoomCode && (
+        <section className="panel match-preview-panel" aria-labelledby="match-preview-title">
+          <div className="match-preview-panel__header">
             <h2 id="match-preview-title">Room Status</h2>
+            <span>{joinedRoomCode}</span>
           </div>
-          <span>{joinedRoomCode || 'Not joined'}</span>
-        </div>
-        {joinedRoomCode ? (
           <main className="content-grid">
             <MatchStatePanel
               activePlayerDisplay={activePlayerDisplay}
@@ -739,16 +656,8 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
               />
             </div>
           </main>
-        ) : (
-          <div className="match-prejoin-preview">
-            <div>
-              <span className="match-setup-kicker">Next Step</span>
-              <strong>Join a room to load match status, chat and activity.</strong>
-            </div>
-            <p>Until then, the setup stays focused on name, room code and deck readiness.</p>
-          </div>
-        )}
-      </section>
+        </section>
+      )}
 
       <ChoiceSheet
         canSubmitChoice={isConnected}
