@@ -9,6 +9,13 @@ public sealed class MatchRoomManager
 
     private readonly object _sync = new();
     private readonly Dictionary<string, MatchRoom> _rooms = new(StringComparer.OrdinalIgnoreCase);
+    // Creates the dice for each new room (fixed values only in Development, see Program.cs).
+    private readonly Func<IDiceRoller> _diceRollerFactory;
+
+    public MatchRoomManager(Func<IDiceRoller>? diceRollerFactory = null)
+    {
+        _diceRollerFactory = diceRollerFactory ?? (() => CryptoDiceRoller.Instance);
+    }
 
     public MatchRoom Create(string roomCode)
     {
@@ -19,7 +26,7 @@ public sealed class MatchRoomManager
                 throw new InvalidOperationException($"Room {roomCode} already exists.");
             }
 
-            var createdRoom = new MatchRoom(roomCode);
+            var createdRoom = new MatchRoom(roomCode, diceRoller: _diceRollerFactory());
             _rooms[roomCode] = createdRoom;
             return createdRoom;
         }
@@ -38,7 +45,7 @@ public sealed class MatchRoomManager
             }
             while (_rooms.ContainsKey(roomCode));
 
-            room = new MatchRoom(roomCode, isQuickMatch: true);
+            room = new MatchRoom(roomCode, isQuickMatch: true, diceRoller: _diceRollerFactory());
             _rooms[roomCode] = room;
         }
 

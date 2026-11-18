@@ -43,7 +43,13 @@ builder.Services
         options.PayloadSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
 // Singleton service um game rooms zu managen
-builder.Services.AddSingleton<MatchRoomManager>();
+// Test hook for Development only: "Match:FixedDiceRolls" (e.g. [3, 3, 5, 2] forces a tie first).
+var fixedDiceRolls = builder.Environment.IsDevelopment()
+    ? builder.Configuration.GetSection("Match:FixedDiceRolls").Get<int[]>()
+    : null;
+builder.Services.AddSingleton(_ => fixedDiceRolls is { Length: > 0 }
+    ? new MatchRoomManager(() => new FixedDiceRoller(fixedDiceRolls))
+    : new MatchRoomManager());
 // Speichert beendete Matches (Fehler werden nur geloggt, das Spiel laeuft weiter)
 builder.Services.AddSingleton<MatchResultService>();
 // Warteschlange fuer Quick Match

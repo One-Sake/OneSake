@@ -16,6 +16,9 @@ public static class ActionGuard
             case MatchPhase.GameOver:
                 throw new InvalidOperationException("The game is already over.");
 
+            case MatchPhase.TurnOrder:
+                throw new InvalidOperationException("The first player is not decided yet.");
+
             default:
                 throw new InvalidOperationException("This action is only possible during the main phase.");
         }

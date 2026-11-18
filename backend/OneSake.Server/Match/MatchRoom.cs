@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using OneSake.Domain;
 using OneSake.Game.Actions;
 using OneSake.Game.State;
@@ -7,6 +8,9 @@ namespace OneSake.Server.Match;
 public sealed class MatchRoom
 {
     // Choice kinds sent to the clients.
+    public const string TurnOrderDecisionKind = "TURN_ORDER_DECISION";
+    public const string GoFirstOption = "GO_FIRST";
+    public const string GoSecondOption = "GO_SECOND";
     public const string MulliganDecisionKind = "MULLIGAN_DECISION";
     public const string MainActionKind = "MAIN_ACTION";
     public const string BlockStepKind = "BLOCK_STEP";
@@ -15,6 +19,8 @@ public sealed class MatchRoom
     private const int OpeningHandSize = 5;
     private const int DefaultLeaderLife = 5;
     private const int DefaultLeaderPower = 5000;
+    // Safety limit for tie rounds (a real tie streak this long practically never happens).
+    private const int MaxTurnOrderRounds = 20;
 
     private readonly object _sync = new();
     private readonly string _roomCode;
@@ -39,6 +45,12 @@ public sealed class MatchRoom
     private MatchPhase _phase = MatchPhase.Lobby;
     private BattleState? _battle;
 
+    private readonly IDiceRoller _diceRoller;
+    private readonly List<TurnOrderRoundDto> _turnOrderRounds = [];
+    private string _turnOrderWinnerId = string.Empty;
+    private string? _turnOrderDecision;
+    private string? _firstPlayerId;
+
     // Result of the match that just ended. Reported once with the next update.
     private DateTimeOffset _matchStartedAtUtc;
     private bool _resultReported;
@@ -49,10 +61,11 @@ public sealed class MatchRoom
     private readonly DateTimeOffset _createdAtUtc;
     private DateTimeOffset _lastActivityUtc;
 
-    public MatchRoom(string roomCode, bool isQuickMatch = false)
+    public MatchRoom(string roomCode, bool isQuickMatch = false, IDiceRoller? diceRoller = null)
     {
         _roomCode = roomCode;
         IsQuickMatch = isQuickMatch;
+        _diceRoller = diceRoller ?? CryptoDiceRoller.Instance;
         _createdAtUtc = DateTimeOffset.UtcNow;
         _lastActivityUtc = _createdAtUtc;
     }
@@ -104,6 +117,7 @@ public sealed class MatchRoom
                 _battle = null;
                 _openChoicePrompts.Clear();
                 _mulliganPlayerDecisions.Clear();
+                ResetTurnOrder();
                 CreateLogEvent("MATCH_ABORTED", "Match ended because a player left.");
             }
 
@@ -175,7 +189,8 @@ public sealed class MatchRoom
         }
     }
 
-    // Rule 5-2: game preparation. Life cards are placed after the mulligan (5-2-1-7).
+    // Rule 5-2: game preparation. First the dice decide who chooses the turn order,
+    // the opening hands are drawn after that decision. Life cards follow after the mulligan (5-2-1-7).
     public MatchUpdate StartMatch()
     {
         lock (_sync)
@@ -196,11 +211,11 @@ public sealed class MatchRoom
             }
 
             _turnNumber = 1;
-            _phase = MatchPhase.Mulligan;
+            _phase = MatchPhase.TurnOrder;
             _matchStartedAtUtc = DateTimeOffset.UtcNow;
             _resultReported = false;
             _pendingResult = null;
-            _activePlayerId = _players[0].PlayerId;
+            _activePlayerId = string.Empty;
             _winnerPlayerId = string.Empty;
             _battle = null;
             _logSeq = 0;
@@ -221,23 +236,12 @@ public sealed class MatchRoom
                 player.ActiveDon = 0;
                 player.RestedDon = 0;
                 player.TurnsStarted = 0;
-                player.DrawCards(OpeningHandSize);
                 player.Connected = true;
             }
 
             CreateLogEvent("START_MATCH", "Match started.");
             CreateLogEvent("SHUFFLE_DECKS", "Both players shuffled their decks.");
-            CreateLogEvent("DRAW_OPENING_HAND", "Both players drew their opening hand.");
-            CreateLogEvent("FIRST_PLAYER", $"{_players[0].DisplayName} goes first.");
-
-            foreach (var player in _players)
-            {
-                CreateChoicePrompt(
-                    player.PlayerId,
-                    MulliganDecisionKind,
-                    "Do you want to keep your opening hand?",
-                    ["KEEP", "MULLIGAN"]);
-            }
+            RollForTurnOrder();
 
             return CreateUpdate();
         }
@@ -310,6 +314,11 @@ public sealed class MatchRoom
             // Actions throw when they are not allowed. The prompt then stays open so the player can retry.
             switch (prompt.Kind)
             {
+                case TurnOrderDecisionKind:
+                    HandleTurnOrderDecision(normalizedOption, player, opponent);
+                    _openChoicePrompts.Remove(prompt.ChoiceId);
+                    break;
+
                 case MulliganDecisionKind:
                     _openChoicePrompts.Remove(prompt.ChoiceId);
                     HandleMulliganDecision(normalizedOption, player);
@@ -358,6 +367,118 @@ public sealed class MatchRoom
             _pendingLogEvents.Add(logEvent);
             return logEvent;
         }
+    }
+
+    #endregion
+
+    #region TURN ORDER
+
+    // Both players roll until the values differ. Every round is kept for the animation.
+    private void RollForTurnOrder()
+    {
+        ResetTurnOrder();
+        var first = _players[0];
+        var second = _players[1];
+
+        while (true)
+        {
+            var firstValue = _diceRoller.Roll();
+            var secondValue = _diceRoller.Roll();
+
+            _turnOrderRounds.Add(new TurnOrderRoundDto
+            {
+                Rolls =
+                [
+                    new DiceRollDto { PlayerId = first.PlayerId, Value = firstValue },
+                    new DiceRollDto { PlayerId = second.PlayerId, Value = secondValue }
+                ],
+                AnimationSeed = BitConverter.ToUInt32(RandomNumberGenerator.GetBytes(4))
+            });
+            CreateLogEvent(
+                "DICE_ROLL",
+                $"{first.DisplayName} würfelt {firstValue}, {second.DisplayName} würfelt {secondValue}.");
+
+            if (firstValue != secondValue)
+            {
+                _turnOrderWinnerId = firstValue > secondValue ? first.PlayerId : second.PlayerId;
+                break;
+            }
+
+            CreateLogEvent("DICE_TIE", "Gleichstand – es wird nochmal gewürfelt.");
+
+            if (_turnOrderRounds.Count >= MaxTurnOrderRounds)
+            {
+                _turnOrderWinnerId = first.PlayerId;
+                break;
+            }
+        }
+
+        CreateChoicePrompt(
+            _turnOrderWinnerId,
+            TurnOrderDecisionKind,
+            "Du hast gewonnen! Willst du als Erster oder Zweiter spielen?",
+            [GoFirstOption, GoSecondOption]);
+    }
+
+    private void HandleTurnOrderDecision(string option, PlayerState player, PlayerState opponent)
+    {
+        if (_phase != MatchPhase.TurnOrder || player.PlayerId != _turnOrderWinnerId)
+        {
+            throw new InvalidOperationException("Only the winner of the dice roll can decide.");
+        }
+
+        var firstPlayer = option == GoFirstOption ? player : opponent;
+        _turnOrderDecision = option;
+        _firstPlayerId = firstPlayer.PlayerId;
+        _activePlayerId = firstPlayer.PlayerId;
+
+        CreateLogEvent(
+            "FIRST_PLAYER",
+            option == GoFirstOption
+                ? $"{player.DisplayName} entscheidet sich, als Erster zu spielen."
+                : $"{player.DisplayName} lässt {opponent.DisplayName} beginnen.");
+
+        // Opening hands and mulligan as before - only moved behind the turn order decision.
+        foreach (var entry in _players)
+        {
+            entry.DrawCards(OpeningHandSize);
+        }
+
+        _phase = MatchPhase.Mulligan;
+        CreateLogEvent("DRAW_OPENING_HAND", "Both players drew their opening hand.");
+
+        foreach (var entry in _players)
+        {
+            CreateChoicePrompt(
+                entry.PlayerId,
+                MulliganDecisionKind,
+                "Do you want to keep your opening hand?",
+                ["KEEP", "MULLIGAN"]);
+        }
+    }
+
+    private void ResetTurnOrder()
+    {
+        _turnOrderRounds.Clear();
+        _turnOrderWinnerId = string.Empty;
+        _turnOrderDecision = null;
+        _firstPlayerId = null;
+    }
+
+    private TurnOrderRollDto? CreateTurnOrderSnapshot()
+    {
+        if (_turnOrderRounds.Count == 0)
+        {
+            return null;
+        }
+
+        return new TurnOrderRollDto
+        {
+            Rounds = _turnOrderRounds.ToArray(),
+            WinnerPlayerId = _turnOrderWinnerId,
+            Decision = _turnOrderDecision,
+            FirstPlayerId = _firstPlayerId
+        };
     }
 
     #endregion
@@ -853,7 +974,8 @@ public sealed class MatchRoom
                 Battle = CreateBattleSnapshot(),
                 Players = _players
                     .Select(player => CreatePlayerStateSnapshot(player, viewerPlayerId))
-                    .ToArray()
+                    .ToArray(),
+                TurnOrderRoll = CreateTurnOrderSnapshot()
             };
         }
     }

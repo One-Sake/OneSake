@@ -71,7 +71,7 @@ public class MatchResultTests
         Submit(room, GetPrompt(startUpdate, "p1"), "KEEP");
         Assert.NotNull(Submit(room, GetPrompt(startUpdate, "p2"), "KEEP").MatchResult);
 
-        var rematchUpdate = room.StartMatch();
+        var rematchUpdate = StartToMulligan(room);
         Submit(room, GetPrompt(rematchUpdate, "p1"), "KEEP");
         var secondEnd = Submit(room, GetPrompt(rematchUpdate, "p2"), "KEEP");
 
@@ -195,8 +195,15 @@ public class MatchResultTests
         room.JoinPlayer("p2", "Bob", BobGuestId);
         room.SetPlayerDeck("p1", CreateDeck("OP01-001", aliceDeckSize));
         room.SetPlayerDeck("p2", CreateDeck("OP01-060", 50));
-        startUpdate = room.StartMatch();
+        startUpdate = StartToMulligan(room);
         return room;
+    }
+
+    // Lets the dice winner choose so that p1 always goes first, returns the mulligan update.
+    private static MatchUpdate StartToMulligan(MatchRoom room)
+    {
+        var prompt = Assert.Single(room.StartMatch().ChoicePrompts);
+        return Submit(room, prompt, prompt.PlayerId == "p1" ? "GO_FIRST" : "GO_SECOND");
     }
 
     private static MatchUpdate Submit(MatchRoom room, ChoicePromptDto prompt, string option)

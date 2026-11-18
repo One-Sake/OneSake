@@ -12,7 +12,7 @@ public class MatchRoomTests
     {
         var room = CreateRoomWithDecks();
 
-        var update = room.StartMatch();
+        var update = StartToMulligan(room);
 
         Assert.Equal("ABCD", update.StateSnapshot.RoomCode);
         Assert.Equal(MatchPhase.Mulligan, update.StateSnapshot.Phase);
@@ -47,9 +47,154 @@ public class MatchRoomTests
 
         Assert.Equal(2, update.ChoicePrompts.Count);
         Assert.All(update.ChoicePrompts, prompt => Assert.Equal("MULLIGAN_DECISION", prompt.Kind));
+        Assert.Contains(update.LogEvents, logEvent => logEvent.Type == "DRAW_OPENING_HAND");
+    }
+
+    // Turn order: dice roll before the opening hands.
+
+    [Fact]
+    public void StartMatch_EntersTurnOrderWithoutOpeningHands()
+    {
+        var room = CreateRoomWithDecks(dice: [5, 3]);
+
+        var update = room.StartMatch();
+
+        Assert.Equal(MatchPhase.TurnOrder, update.StateSnapshot.Phase);
+        Assert.Equal(string.Empty, update.StateSnapshot.ActivePlayerId);
+        Assert.All(update.StateSnapshot.Players, player =>
+        {
+            Assert.Equal(0, player.HandCount);
+            Assert.Equal(50, player.DeckCount);
+        });
+        Assert.Empty(GetPlayer(update, "p1", "p1").HandCards);
         Assert.Contains(update.LogEvents, logEvent => logEvent.Type == "START_MATCH");
         Assert.Contains(update.LogEvents, logEvent => logEvent.Type == "SHUFFLE_DECKS");
+        Assert.Contains(update.LogEvents, logEvent => logEvent.Type == "DICE_ROLL");
+        Assert.DoesNotContain(update.LogEvents, logEvent => logEvent.Type == "DRAW_OPENING_HAND");
+
+        // Only the winner gets a prompt, no mulligan yet.
+        var prompt = Assert.Single(update.ChoicePrompts);
+        Assert.Equal("TURN_ORDER_DECISION", prompt.Kind);
+        Assert.Equal("p1", prompt.PlayerId);
+        Assert.Equal(["GO_FIRST", "GO_SECOND"], prompt.Options);
+    }
+
+    [Fact]
+    public void TurnOrder_WinnerHasTheHigherValue_AndBothPlayersSeeTheRoll()
+    {
+        var room = CreateRoomWithDecks(dice: [2, 6]);
+
+        var update = room.StartMatch();
+
+        foreach (var viewer in new[] { "p1", "p2" })
+        {
+            var roll = Assert.IsType<TurnOrderRollDto>(update.StateSnapshots[viewer].TurnOrderRoll);
+            var round = Assert.Single(roll.Rounds);
+            Assert.Equal(2, round.Rolls.Single(entry => entry.PlayerId == "p1").Value);
+            Assert.Equal(6, round.Rolls.Single(entry => entry.PlayerId == "p2").Value);
+            Assert.Equal("p2", roll.WinnerPlayerId);
+            Assert.Null(roll.Decision);
+            Assert.Null(roll.FirstPlayerId);
+        }
+
+        Assert.Equal("p2", Assert.Single(update.ChoicePrompts).PlayerId);
+    }
+
+    [Fact]
+    public void TurnOrder_TieRollsAgainAndKeepsAllRounds()
+    {
+        var room = CreateRoomWithDecks(dice: [3, 3, 4, 4, 1, 5]);
+
+        var update = room.StartMatch();
+
+        var roll = update.StateSnapshot.TurnOrderRoll!;
+        Assert.Equal(3, roll.Rounds.Count);
+        Assert.Equal("p2", roll.WinnerPlayerId);
+        Assert.Equal(3, roll.Rounds.Select(round => round.AnimationSeed).Distinct().Count());
+        Assert.Equal(2, update.LogEvents.Count(logEvent => logEvent.Type == "DICE_TIE"));
+        Assert.Equal(3, update.LogEvents.Count(logEvent => logEvent.Type == "DICE_ROLL"));
+    }
+
+    [Fact]
+    public void TurnOrder_RealDiceAlwaysPickTheHigherRoll()
+    {
+        for (var run = 0; run < 50; run += 1)
+        {
+            var room = CreateRoomWithDecks(realDice: true);
+            var roll = room.StartMatch().StateSnapshot.TurnOrderRoll!;
+
+            Assert.All(roll.Rounds.SkipLast(1), round => Assert.Equal(round.Rolls[0].Value, round.Rolls[1].Value));
+            var last = roll.Rounds[^1];
+            Assert.All(last.Rolls, entry => Assert.InRange(entry.Value, 1, 6));
+            var winner = last.Rolls.MaxBy(entry => entry.Value)!;
+            Assert.NotEqual(last.Rolls[0].Value, last.Rolls[1].Value);
+            Assert.Equal(winner.PlayerId, roll.WinnerPlayerId);
+        }
+    }
+
+    [Fact]
+    public void TurnOrder_LoserCannotDecide()
+    {
+        var room = CreateRoomWithDecks(dice: [6, 1]);
+        var prompt = Assert.Single(room.StartMatch().ChoicePrompts);
+
+        var exception = Assert.Throws<InvalidOperationException>(() => room.SubmitChoice(new ChoiceSubmissionDto
+        {
+            ChoiceId = prompt.ChoiceId,
+            PlayerId = "p2",
+            SelectedOption = "GO_FIRST"
+        }));
+
+        Assert.Equal("Choice prompt does not belong to this player.", exception.Message);
+        Assert.Equal(MatchPhase.TurnOrder, room.CreateStateSnapshot().Phase);
+
+        // The prompt stays open for the winner.
+        var update = Submit(room, prompt, "GO_FIRST");
+        Assert.Equal(MatchPhase.Mulligan, update.StateSnapshot.Phase);
+    }
+
+    [Theory]
+    [InlineData("GO_FIRST", "p1")]
+    [InlineData("GO_SECOND", "p2")]
+    public void TurnOrder_DecisionSetsFirstPlayer_ThenMulliganWithFiveCards(string option, string expectedFirst)
+    {
+        var room = CreateRoomWithDecks(dice: [6, 1]);
+        var prompt = Assert.Single(room.StartMatch().ChoicePrompts);
+
+        var update = Submit(room, prompt, option);
+
+        Assert.Equal(MatchPhase.Mulligan, update.StateSnapshot.Phase);
+        Assert.Equal(expectedFirst, update.StateSnapshot.ActivePlayerId);
+        var roll = update.StateSnapshot.TurnOrderRoll!;
+        Assert.Equal(option, roll.Decision);
+        Assert.Equal(expectedFirst, roll.FirstPlayerId);
+        Assert.All(update.StateSnapshot.Players, player =>
+        {
+            Assert.Equal(5, player.HandCount);
+            Assert.Equal(45, player.DeckCount);
+        });
+        Assert.Equal(5, GetPlayer(update, "p2", "p2").HandCards.Count);
+        Assert.Equal(2, update.ChoicePrompts.Count);
+        Assert.All(update.ChoicePrompts, entry => Assert.Equal("MULLIGAN_DECISION", entry.Kind));
+        Assert.Contains(update.LogEvents, logEvent => logEvent.Type == "FIRST_PLAYER");
         Assert.Contains(update.LogEvents, logEvent => logEvent.Type == "DRAW_OPENING_HAND");
+
+        // After both keep, the chosen player starts turn 1.
+        Submit(room, GetPrompt(update, "p1"), "KEEP");
+        var mainUpdate = Submit(room, GetPrompt(update, "p2"), "KEEP");
+        Assert.Equal(MatchPhase.Main, mainUpdate.StateSnapshot.Phase);
+        Assert.Equal(expectedFirst, mainUpdate.StateSnapshot.ActivePlayerId);
+        Assert.Equal(expectedFirst, Assert.Single(mainUpdate.ChoicePrompts).PlayerId);
+    }
+
+    [Fact]
+    public void TurnOrder_MainActionsAreNotAllowedBeforeTheDecision()
+    {
+        var room = CreateRoomWithDecks(dice: [6, 1]);
+        var prompt = Assert.Single(room.StartMatch().ChoicePrompts);
+
+        Assert.Throws<InvalidOperationException>(() => Submit(room, prompt, "END_TURN"));
+        Assert.Equal(MatchPhase.TurnOrder, room.CreateStateSnapshot().Phase);
     }
 
     [Fact]
@@ -83,7 +228,7 @@ public class MatchRoomTests
     public void MulliganTaken_RedrawsOpeningHandAndKeepsCountsCorrect()
     {
         var room = CreateRoomWithDecks();
-        var startUpdate = room.StartMatch();
+        var startUpdate = StartToMulligan(room);
 
         var update = Submit(room, GetPrompt(startUpdate, "p1"), "MULLIGAN");
         var player = GetPlayer(update, "p1", "p1");
@@ -98,7 +243,7 @@ public class MatchRoomTests
     public void Mulligan_ResolvesOnlyAfterBothPlayersDecide_ThenPlacesLifeAndStartsFirstTurn()
     {
         var room = CreateRoomWithDecks();
-        var startUpdate = room.StartMatch();
+        var startUpdate = StartToMulligan(room);
 
         var firstDecision = Submit(room, GetPrompt(startUpdate, "p1"), "KEEP");
         Assert.Equal(MatchPhase.Mulligan, firstDecision.StateSnapshot.Phase);
@@ -138,7 +283,7 @@ public class MatchRoomTests
         room.JoinPlayer("p2", "Bob");
         room.SetPlayerDeck("p1", CreateDeck(quantity: 8));
         room.SetPlayerDeck("p2", CreateDeck());
-        var startUpdate = room.StartMatch();
+        var startUpdate = StartToMulligan(room);
 
         Submit(room, GetPrompt(startUpdate, "p1"), "KEEP");
         var update = Submit(room, GetPrompt(startUpdate, "p2"), "KEEP");
@@ -357,9 +502,11 @@ public class MatchRoomTests
 
     #region HELPERS
 
-    private static MatchRoom CreateRoomWithDecks(int cost = 1, int? leaderLife = 5)
+    // Default dice: p1 rolls 6, p2 rolls 1, so p1 wins the turn order roll.
+    private static MatchRoom CreateRoomWithDecks(int cost = 1, int? leaderLife = 5, int[]? dice = null, bool realDice = false)
     {
-        var room = new MatchRoom("ABCD");
+        IDiceRoller roller = realDice ? CryptoDiceRoller.Instance : new FixedDiceRoller(dice ?? [6, 1]);
+        var room = new MatchRoom("ABCD", diceRoller: roller);
         room.JoinPlayer("p1", "Alice");
         room.JoinPlayer("p2", "Bob");
         room.SetPlayerDeck("p1", CreateDeck(cost: cost, leaderLife: leaderLife));
@@ -372,7 +519,7 @@ public class MatchRoomTests
         int? leaderLife = 5)
     {
         var room = CreateRoomWithDecks(cost, leaderLife);
-        var startUpdate = room.StartMatch();
+        var startUpdate = StartToMulligan(room);
         Submit(room, GetPrompt(startUpdate, "p1"), "KEEP");
         var mainUpdate = Submit(room, GetPrompt(startUpdate, "p2"), "KEEP");
         return (room, GetPrompt(mainUpdate, "p1"));
@@ -395,6 +542,14 @@ public class MatchRoomTests
 
         var counterPrompt = update.ChoicePrompts.FirstOrDefault(prompt => prompt.Kind == "COUNTER_STEP");
         return counterPrompt is null ? update : Submit(room, counterPrompt, "PASS");
+    }
+
+    // Starts the match and lets the dice winner choose so that p1 always goes first.
+    // Returns the update with both mulligan prompts (like StartMatch did before the turn order roll).
+    private static MatchUpdate StartToMulligan(MatchRoom room)
+    {
+        var prompt = Assert.Single(room.StartMatch().ChoicePrompts);
+        return Submit(room, prompt, prompt.PlayerId == "p1" ? "GO_FIRST" : "GO_SECOND");
     }
 
     private static MatchUpdate Submit(

@@ -3,6 +3,8 @@ namespace OneSake.Domain;
 public enum MatchPhase
 {
     Lobby,
+    // Both players roll a die; the winner chooses to go first or second (before the opening hands).
+    TurnOrder,
     Mulligan,
     Refresh,
     Draw,
@@ -109,6 +111,33 @@ public record GameStateDto
     public MatchPhase Phase { get; init; } = MatchPhase.Lobby;
     public BattleDto? Battle { get; init; }
     public IReadOnlyList<PlayerStateDto> Players { get; init; } = [];
+
+    // Dice roll for the first player. Stays in the state after the decision, so a reconnecting
+    // client can show the result without rolling again. Null before the first match.
+    public TurnOrderRollDto? TurnOrderRoll { get; init; }
+}
+
+public record DiceRollDto
+{
+    public string PlayerId { get; init; } = string.Empty;
+    public int Value { get; init; }
+}
+
+public record TurnOrderRoundDto
+{
+    public IReadOnlyList<DiceRollDto> Rolls { get; init; } = [];
+    // Random 32-bit seed, only for the dice animation (both clients compute the same path).
+    public uint AnimationSeed { get; init; }
+}
+
+public record TurnOrderRollDto
+{
+    // Every round; all but the last one are ties.
+    public IReadOnlyList<TurnOrderRoundDto> Rounds { get; init; } = [];
+    public string WinnerPlayerId { get; init; } = string.Empty;
+    // "GO_FIRST", "GO_SECOND" or null while the winner is still deciding.
+    public string? Decision { get; init; }
+    public string? FirstPlayerId { get; init; }
 }
 
 public record ChoicePromptDto
