@@ -38,7 +38,7 @@ export function RecentMatchList({ imagesById, matches }: RecentMatchListProps) {
   return (
     <ul className="profile-recent-list">
       {matches.map((match) => (
-        <li key={`${match.playedAtUtc}-${match.opponentName}`}>
+        <li key={`${match.playedAtUtc}-${match.opponentName}`} className="ui-tile">
           <span className={`profile-result-badge ${match.won ? 'is-win' : 'is-loss'}`}>
             {match.won ? 'Sieg' : 'Niederlage'}
           </span>
@@ -74,7 +74,7 @@ export function LeaderStatsList({ imagesById, leaders }: LeaderStatsListProps) {
         const winRate = Math.round((100 * leader.wins) / Math.max(1, leader.matches));
 
         return (
-          <li key={leader.leaderCardId}>
+          <li key={leader.leaderCardId} className="ui-tile">
             <LeaderThumb cardId={leader.leaderCardId} imageUrl={imagesById[leader.leaderCardId]} />
             <span className="profile-leader-stats__body">
               <span className="profile-leader-stats__label">

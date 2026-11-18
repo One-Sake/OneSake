@@ -5,19 +5,6 @@
     grid-template-columns: 1fr auto;
   }
 
-  .profile-hero {
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-  }
-
-  .profile-hero__badge {
-    justify-self: end;
-  }
-
-  .profile-actions {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .connection-status {
     justify-self: end;
   }
@@ -71,15 +58,6 @@
   .content-grid {
     grid-template-columns: 1.15fr 1fr 1fr;
     align-items: start;
-  }
-
-  .profile-layout {
-    grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.75fr);
-    align-items: start;
-  }
-
-  .profile-login-card {
-    grid-row: span 2;
   }
 
   .match-page .content-grid {
@@ -291,8 +269,7 @@
     font-size: 0.74rem;
   }
 
-  .mulligan-stats,
-  .profile-stat-grid {
+  .mulligan-stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
