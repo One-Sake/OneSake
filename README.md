@@ -65,7 +65,7 @@ dotnet test OneSake.Tests\OneSake.Tests.csproj -c Release
 git checkout dev
 git pull origin dev
 
-##Änderungen committen und auf dev pushen
+## Änderungen committen und auf dev pushen
 
 git push origin dev
 
