@@ -132,6 +132,13 @@ namespace OneSake.Persistence.Migrations
                     b.Property<DateTime>("EndedAtUtc")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("FirstPlayerGuestId")
+                        .HasMaxLength(36)
+                        .HasColumnType("character varying(36)");
+
+                    b.Property<bool>("IsRanked")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("LoserDisplayName")
                         .IsRequired()
                         .HasMaxLength(64)
@@ -145,6 +152,12 @@ namespace OneSake.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
+
+                    b.Property<int?>("LoserRatingAfter")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("LoserRatingBefore")
+                        .HasColumnType("integer");
 
                     b.Property<string>("RoomCode")
                         .IsRequired()
@@ -171,13 +184,61 @@ namespace OneSake.Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
+                    b.Property<int?>("WinnerRatingAfter")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("WinnerRatingBefore")
+                        .HasColumnType("integer");
+
+                    b.Property<bool?>("WinnerWentFirst")
+                        .HasColumnType("boolean");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("EndedAtUtc");
 
                     b.HasIndex("LoserGuestId");
 
                     b.HasIndex("WinnerGuestId");
 
                     b.ToTable("MatchResults");
+                });
+
+            modelBuilder.Entity("OneSake.Persistence.Entities.PlayerRating", b =>
+                {
+                    b.Property<string>("GuestId")
+                        .HasMaxLength(36)
+                        .HasColumnType("character varying(36)");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<string>("FavoriteLeaderCardId")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<DateTime>("LastPlayedUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Losses")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Peak")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Wins")
+                        .HasColumnType("integer");
+
+                    b.HasKey("GuestId");
+
+                    b.HasIndex("Rating");
+
+                    b.ToTable("PlayerRatings");
                 });
 #pragma warning restore 612, 618
         }

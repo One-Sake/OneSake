@@ -59,6 +59,7 @@ dotnet ef database update --project OneSake.Persistence --startup-project OneSak
 | --- | --- |
 | `InitialCardDatabase` | Tabelle `Cards` |
 | `AddMatchResults` | Tabelle `MatchResults` (Ergebnisse für die Profil-Statistik), Indizes auf `WinnerGuestId` und `LoserGuestId` |
+| `AddRankingAndTurnOrder` | Neue Spalten in `MatchResults` (`IsRanked`, `FirstPlayerGuestId`, `WinnerWentFirst`, Rating vorher/nachher für Gewinner und Verlierer), Index auf `EndedAtUtc`, neue Tabelle `PlayerRatings` (ELO/Kopfgeld pro Gast-ID) |
 
 ## Hinweis zur Gast-ID
 
