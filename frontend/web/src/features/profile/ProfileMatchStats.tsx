@@ -1,3 +1,4 @@
+import { formatBountyChange } from '../../api/leaderboardApi';
 import type { LeaderStatsDto, RecentMatchDto } from '../../api/statsApi';
 
 const END_REASON_LABELS: Record<string, string> = {
@@ -52,7 +53,16 @@ export function RecentMatchList({ imagesById, matches }: RecentMatchListProps) {
             <small>
               {formatDate(match.playedAtUtc)} · {match.turnCount} Züge ·{' '}
               {END_REASON_LABELS[match.endReason] ?? match.endReason}
+              {match.isRanked ? ' · Ranked' : ' · Casual'}
             </small>
+            {typeof match.bountyChange === 'number' && (
+              <span
+                className={`profile-bounty-change ${match.bountyChange >= 0 ? 'is-up' : 'is-down'}`}
+                title="Kopfgeld-Änderung"
+              >
+                {formatBountyChange(match.bountyChange)}
+              </span>
+            )}
           </span>
         </li>
       ))}

@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { getGuestId } from '../../api/guestId';
+import { getPlayerBounty, type PlayerBountyDto } from '../../api/leaderboardApi';
 import { getPlayerStats, type PlayerStatsDto } from '../../api/statsApi';
 import { loadStoredDecks } from '../deckbuilder/utils/deckStorage';
+import { BountyPoster } from './BountyPoster';
 import { LeaderStatsList, LeaderThumb, RecentMatchList } from './ProfileMatchStats';
 import { useCardImages } from './useCardImages';
 
@@ -64,15 +66,44 @@ export function ProfilePage({ onOpenMatch }: ProfilePageProps) {
 
   useEffect(() => loadStats(), [loadStats]);
 
+  const [bountyState, setBountyState] = useState<
+    { status: 'loading' } | { status: 'error' } | { status: 'ready'; bounty: PlayerBountyDto }
+  >({ status: 'loading' });
+
+  const loadBounty = useCallback(() => {
+    let isCancelled = false;
+    setBountyState({ status: 'loading' });
+
+    getPlayerBounty(getGuestId())
+      .then((bounty) => {
+        if (!isCancelled) {
+          setBountyState({ status: 'ready', bounty });
+        }
+      })
+      .catch(() => {
+        if (!isCancelled) {
+          setBountyState({ status: 'error' });
+        }
+      });
+
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
+
+  useEffect(() => loadBounty(), [loadBounty]);
+  const bounty = bountyState.status === 'ready' ? bountyState.bounty : null;
+
   const stats = statsState.status === 'ready' ? statsState.stats : null;
-  const leaderImagesById = useCardImages(
-    stats
+  const leaderImagesById = useCardImages([
+    ...(bounty?.favoriteLeaderCardId ? [bounty.favoriteLeaderCardId] : []),
+    ...(stats
       ? [
           ...stats.leaders.map((leader) => leader.leaderCardId),
           ...stats.recent.flatMap((match) => [match.ownLeaderCardId, match.opponentLeaderCardId]),
         ]
-      : [],
-  );
+      : []),
+  ]);
   const statValue = (value: string): string => (stats ? value : statsState.status === 'loading' ? '…' : '–');
   const profileStats = [
     { label: 'Decks', value: String(deckCount) },
@@ -186,6 +217,15 @@ export function ProfilePage({ onOpenMatch }: ProfilePageProps) {
           </div>
         </div>
       </section>
+
+      <BountyPoster
+        bounty={bounty}
+        displayName={displayName}
+        leaderImageUrl={bounty?.favoriteLeaderCardId ? leaderImagesById[bounty.favoriteLeaderCardId] : undefined}
+        onOpenMatch={onOpenMatch}
+        onRetry={loadBounty}
+        status={bountyState.status}
+      />
 
       <div className="profile-layout">
         <section className="ui-glass profile-stats-card" aria-labelledby="profile-stats-title">

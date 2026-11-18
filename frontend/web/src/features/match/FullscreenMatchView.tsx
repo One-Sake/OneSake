@@ -8,6 +8,7 @@ import type {
   GameStateDto,
   LogEventDto,
 } from '../../types/realtime';
+import { BountyChangeBanner } from './BountyChangeBanner';
 import { ChoiceBar } from './ChoiceBar';
 import { ConnectionStatusBadge } from './ConnectionStatusBadge';
 import { MatchFeed } from './MatchFeed';
@@ -107,6 +108,11 @@ export function FullscreenMatchView({
           <span>Active</span>
           <strong>{activePlayerDisplay}</strong>
         </div>
+        {gameState && (
+          <div className={`match-fullscreen__meta match-mode-tag ${gameState.isRanked ? 'is-ranked' : 'is-casual'}`}>
+            <strong>{gameState.isRanked ? 'Ranked' : 'Casual'}</strong>
+          </div>
+        )}
         <ConnectionStatusBadge status={connectionStatus} />
         {canShowStartMatch && (
           <button
@@ -183,6 +189,7 @@ export function FullscreenMatchView({
             onSubmitChoice={onSubmitChoice}
             pending={pending}
           />
+          <BountyChangeBanner gameState={gameState} />
           <DiceRoll
             canSubmitChoice={canSubmitChoice}
             currentPrompt={currentPrompt}

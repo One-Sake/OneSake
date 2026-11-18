@@ -98,6 +98,8 @@ export interface GameStateDto {
   players: PlayerStateDto[];
   // Dice roll for the first player (stays after the decision). Missing on older servers.
   turnOrderRoll?: TurnOrderRollDto | null;
+  // Quick Match rooms are ranked (they change the bounty), private tables are casual.
+  isRanked?: boolean;
 }
 
 export interface DiceRollDto {

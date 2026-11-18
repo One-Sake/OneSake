@@ -201,6 +201,28 @@ public class RatingTests
         Assert.Null(result.WinnerWentFirst);
     }
 
+    [Fact]
+    public void PlayerStats_ShowTheRatingChangeOfRankedMatches()
+    {
+        var rated = CreateResult();
+        rated.WinnerRatingBefore = 1000;
+        rated.WinnerRatingAfter = 1024;
+        rated.LoserRatingBefore = 1000;
+        rated.LoserRatingAfter = 976;
+        var casual = CreateResult(isRanked: false);
+        casual.EndedAtUtc = rated.EndedAtUtc.AddMinutes(-30);
+
+        var alice = PlayerStatsCalculator.Calculate(AliceGuestId, [rated, casual]);
+        var bob = PlayerStatsCalculator.Calculate(BobGuestId, [rated, casual]);
+
+        Assert.Equal(24, alice.Recent[0].RatingChange);
+        Assert.Equal(24_000, alice.Recent[0].BountyChange);
+        Assert.True(alice.Recent[0].IsRanked);
+        Assert.Null(alice.Recent[1].RatingChange);
+        Assert.False(alice.Recent[1].IsRanked);
+        Assert.Equal(-24, bob.Recent[0].RatingChange);
+    }
+
     #endregion
 
     private static MatchResult CreateResult(

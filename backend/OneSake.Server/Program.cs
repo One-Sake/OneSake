@@ -27,6 +27,7 @@ builder.Services.AddDbContext<OneSakeDbContext>(options =>
 builder.Services.AddControllers(); // Support Adden fuer Controllers
 
 builder.Services.AddHttpClient<CardService>();
+builder.Services.AddMemoryCache();
 builder.Services.AddScoped<CardImportService>();
 builder.Services.AddScoped<CardQueryService>();
 

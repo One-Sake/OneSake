@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using OneSake.Persistence;
 using OneSake.Persistence.Entities;
 using OneSake.Server.Match;
@@ -17,11 +18,16 @@ public sealed class MatchResultService
     private readonly ILogger<MatchResultService> _logger;
     // One save at a time, so two matches of the same player cannot overwrite each other's rating.
     private readonly SemaphoreSlim _saveLock = new(1, 1);
+    private readonly IMemoryCache? _cache;
 
-    public MatchResultService(IServiceScopeFactory scopeFactory, ILogger<MatchResultService> logger)
+    public MatchResultService(
+        IServiceScopeFactory scopeFactory,
+        ILogger<MatchResultService> logger,
+        IMemoryCache? cache = null)
     {
         _scopeFactory = scopeFactory;
         _logger = logger;
+        _cache = cache;
     }
 
     // Runs in the background, so a slow or missing database does not delay the game.
@@ -45,6 +51,12 @@ public sealed class MatchResultService
             dbContext.MatchResults.Add(entity);
             await dbContext.SaveChangesAsync();
             await transaction.CommitAsync();
+
+            if (ratingChanged)
+            {
+                // The cached leaderboard is outdated now.
+                _cache?.Remove(Controllers.LeaderboardController.CacheKey);
+            }
 
             _logger.LogInformation(
                 "Saved match result for room {RoomCode}: {Winner} beat {Loser} ({EndReason}, rating changed: {RatingChanged}).",

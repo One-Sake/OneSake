@@ -980,7 +980,8 @@ public sealed class MatchRoom
                 Players = _players
                     .Select(player => CreatePlayerStateSnapshot(player, viewerPlayerId))
                     .ToArray(),
-                TurnOrderRoll = CreateTurnOrderSnapshot()
+                TurnOrderRoll = CreateTurnOrderSnapshot(),
+                IsRanked = IsQuickMatch
             };
         }
     }

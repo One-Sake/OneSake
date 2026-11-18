@@ -49,6 +49,17 @@ export function SparkIcon() {
   );
 }
 
+// Compass rose (Meta tab)
+export function MetaIcon() {
+  return (
+    <svg aria-hidden="true" fill="none" height="22" viewBox="0 0 24 24" width="22">
+      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" />
+      <path d="m15.5 8.5-2 5-5 2 2-5z" stroke="currentColor" strokeLinejoin="round" strokeWidth="1.8" />
+      <path d="M12 3v2M12 19v2M3 12h2M19 12h2" stroke="currentColor" strokeLinecap="round" strokeWidth="1.8" />
+    </svg>
+  );
+}
+
 export function SearchIcon() {
   return (
     <svg aria-hidden="true" fill="none" height="18" viewBox="0 0 24 24" width="18">

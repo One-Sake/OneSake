@@ -8,5 +8,6 @@
 @import './features/deckbuilder/deckbuilder.css';
 @import './features/profile/profile.css';
 @import './features/tools/tools.css';
+@import './features/meta/meta.css';
 @import './styles/responsive.css';
 

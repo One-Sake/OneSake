@@ -115,6 +115,9 @@ public record GameStateDto
     // Dice roll for the first player. Stays in the state after the decision, so a reconnecting
     // client can show the result without rolling again. Null before the first match.
     public TurnOrderRollDto? TurnOrderRoll { get; init; }
+
+    // Quick Match rooms are ranked (they change the bounty), private tables are casual.
+    public bool IsRanked { get; init; }
 }
 
 public record DiceRollDto

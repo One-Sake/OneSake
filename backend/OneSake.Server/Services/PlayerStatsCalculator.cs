@@ -11,7 +11,11 @@ public sealed record RecentMatchDto(
     string OpponentLeaderCardId,
     bool Won,
     string EndReason,
-    int TurnCount);
+    int TurnCount,
+    bool IsRanked = false,
+    // Rating points won (+) or lost (-); null when the match did not change the rating.
+    int? RatingChange = null,
+    long? BountyChange = null);
 
 public sealed record PlayerStatsDto(
     int Matches,
@@ -75,6 +79,10 @@ public static class PlayerStatsCalculator
             return null;
         }
 
+        var ratingChange = won
+            ? result.WinnerRatingAfter - result.WinnerRatingBefore
+            : result.LoserRatingAfter - result.LoserRatingBefore;
+
         return new RecentMatchDto(
             PlayedAtUtc: result.EndedAtUtc,
             OpponentName: won ? result.LoserDisplayName : result.WinnerDisplayName,
@@ -82,6 +90,9 @@ public static class PlayerStatsCalculator
             OpponentLeaderCardId: won ? result.LoserLeaderCardId : result.WinnerLeaderCardId,
             Won: won,
             EndReason: result.EndReason,
-            TurnCount: result.TurnCount);
+            TurnCount: result.TurnCount,
+            IsRanked: result.IsRanked,
+            RatingChange: ratingChange,
+            BountyChange: ratingChange is null ? null : RatingCalculator.ToBounty(ratingChange.Value));
     }
 }
