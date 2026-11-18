@@ -1,20 +1,9 @@
-import { useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 
-import { getCardsById } from '../../api/cardsApi';
 import type { Deck } from '../../types/decks';
 import { Button } from '../../components/ui/Button';
 import { validateDeck } from '../deckbuilder/utils/deckValidation';
-
-type DeckWithLeaderImage = Deck & {
-  leaderCard?: {
-    card_image?: string;
-    cardImage?: string;
-    image?: string;
-  };
-  leaderCardImage?: string;
-  leaderImage?: string;
-};
+import { getLeaderImage, useLeaderCards } from './useLeaderCards';
 
 interface MatchDeckSelectProps {
   decks: Deck[];
@@ -26,19 +15,6 @@ interface MatchDeckSelectProps {
   onOpenDeckbuilder?: () => void;
 }
 
-function getLeaderImage(deck: Deck): string {
-  const enrichedDeck = deck as DeckWithLeaderImage;
-
-  return (
-    enrichedDeck.leaderImage ||
-    enrichedDeck.leaderCardImage ||
-    enrichedDeck.leaderCard?.card_image ||
-    enrichedDeck.leaderCard?.cardImage ||
-    enrichedDeck.leaderCard?.image ||
-    ''
-  );
-}
-
 export function MatchDeckSelect({
   decks,
   embedded = false,
@@ -48,43 +24,7 @@ export function MatchDeckSelect({
   selectedDeckId,
   title = 'Deck',
 }: MatchDeckSelectProps) {
-  const [leaderImagesById, setLeaderImagesById] = useState<Record<string, string>>({});
-  const leaderCardIds = useMemo(
-    () => [...new Set(decks.map((deck) => deck.leaderCardId).filter(Boolean))],
-    [decks],
-  );
-
-  useEffect(() => {
-    let isCancelled = false;
-
-    async function loadLeaderImages(): Promise<void> {
-      const imageEntries = await Promise.all(
-        leaderCardIds.map(async (leaderCardId) => {
-          try {
-            const cards = await getCardsById(leaderCardId);
-            const leaderCard =
-              cards.find((card) => card.card_set_id === leaderCardId) ?? cards[0] ?? null;
-
-            return [leaderCardId, leaderCard?.card_image ?? ''] as const;
-          } catch {
-            return [leaderCardId, ''] as const;
-          }
-        }),
-      );
-
-      if (isCancelled) {
-        return;
-      }
-
-      setLeaderImagesById(Object.fromEntries(imageEntries));
-    }
-
-    void loadLeaderImages();
-
-    return () => {
-      isCancelled = true;
-    };
-  }, [leaderCardIds]);
+  const leaderCardsById = useLeaderCards(decks);
 
   return (
     <section className={embedded ? 'match-deck-select match-deck-select--embedded' : 'panel match-deck-select'}>
@@ -109,7 +49,7 @@ export function MatchDeckSelect({
           {decks.map((deck) => {
             const validation = validateDeck(deck);
             const isSelected = deck.id === selectedDeckId;
-            const leaderImage = leaderImagesById[deck.leaderCardId] || getLeaderImage(deck);
+            const leaderImage = getLeaderImage(deck, leaderCardsById[deck.leaderCardId]);
 
             return (
               <button

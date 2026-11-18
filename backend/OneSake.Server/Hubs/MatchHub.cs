@@ -1,16 +1,24 @@
 using Microsoft.AspNetCore.SignalR;
 using OneSake.Domain;
 using OneSake.Server.Match;
+using OneSake.Server.Services;
 
 namespace OneSake.Server.Hubs;
 
 public class MatchHub : Hub
 {
     private readonly MatchRoomManager _roomManager;
+    private readonly MatchResultService _matchResultService;
+    private readonly MatchmakingQueue _matchmakingQueue;
 
-    public MatchHub(MatchRoomManager roomManager)
+    public MatchHub(
+        MatchRoomManager roomManager,
+        MatchResultService matchResultService,
+        MatchmakingQueue matchmakingQueue)
     {
         _roomManager = roomManager;
+        _matchResultService = matchResultService;
+        _matchmakingQueue = matchmakingQueue;
     }
 
     private const int MaxRoomCodeLength = 12;
@@ -25,26 +33,79 @@ public class MatchHub : Hub
     {
         var normalizedRoomCode = NormalizeRoomCode(roomCode);
         var room = RunRoomAction(() => _roomManager.Create(normalizedRoomCode));
-        await JoinExistingRoom(room, normalizedRoomCode, displayName);
+        await JoinExistingRoom(room, normalizedRoomCode, displayName, GetConnectionGuestId());
     }
 
     public async Task JoinRoom(string roomCode, string displayName)
     {
         var normalizedRoomCode = NormalizeRoomCode(roomCode);
         var room = GetExistingRoom(normalizedRoomCode);
-        await JoinExistingRoom(room, normalizedRoomCode, displayName);
+        await JoinExistingRoom(room, normalizedRoomCode, displayName, GetConnectionGuestId());
+    }
+
+    // The client sends its guest ID in the hub URL (/matchHub?guestId=...).
+    // SignalR does not support optional hub method parameters, so a third argument on
+    // CreateRoom/JoinRoom would break older clients. Without the query value the ID is null.
+    // NOT secure authentication - see GuestIdValidator.
+    private string? GetConnectionGuestId()
+    {
+        var guestId = Context.GetHttpContext()?.Request.Query["guestId"].ToString();
+        return GuestIdValidator.Normalize(guestId);
+    }
+
+    // Quick Match: waits in the queue or, if somebody is already waiting, creates a private
+    // room for both players and sends them "MatchFound". Each client then sets its deck as usual.
+    public async Task JoinQueue(string displayName, string? guestId)
+    {
+        // Searching for a match means leaving the current room.
+        var currentRooms = _roomManager.GetRoomsForConnection(Context.ConnectionId);
+        foreach (var room in currentRooms)
+        {
+            await RemoveFromRoom(room);
+        }
+
+        var entry = new QueueEntry(
+            Context.ConnectionId,
+            displayName ?? string.Empty,
+            GuestIdValidator.Normalize(guestId) ?? GetConnectionGuestId());
+        var pair = _matchmakingQueue.Enqueue(entry);
+
+        if (pair is not null)
+        {
+            var (matchRoom, update) = _roomManager.CreateQuickMatchRoom(pair);
+            await Groups.AddToGroupAsync(pair.First.ConnectionId, matchRoom.RoomCode);
+            await Groups.AddToGroupAsync(pair.Second.ConnectionId, matchRoom.RoomCode);
+            await PublishMatchUpdate(matchRoom.RoomCode, update);
+
+            var matchFound = new MatchFoundDto { RoomCode = matchRoom.RoomCode };
+            await Clients.Clients(pair.First.ConnectionId, pair.Second.ConnectionId).SendAsync("MatchFound", matchFound);
+        }
+
+        if (currentRooms.Count > 0)
+        {
+            await BroadcastRoomList();
+        }
+    }
+
+    public Task LeaveQueue()
+    {
+        _matchmakingQueue.Remove(Context.ConnectionId);
+        return Task.CompletedTask;
     }
 
     public async Task LeaveRoom(string roomCode)
     {
         var normalizedRoomCode = NormalizeRoomCode(roomCode);
         var room = GetExistingRoom(normalizedRoomCode);
-        await RemoveFromRoom(room);
+        // Leaving on purpose during a running match counts as giving up.
+        await RemoveFromRoom(room, MatchEndReasons.Concede);
         await BroadcastRoomList();
     }
 
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
+        _matchmakingQueue.Remove(Context.ConnectionId);
+
         foreach (var room in _roomManager.GetRoomsForConnection(Context.ConnectionId))
         {
             await RemoveFromRoom(room);
@@ -124,8 +185,11 @@ public class MatchHub : Hub
         await Clients.Group(normalizedRoomCode).SendAsync("LogEvent", logEvent);
     }
 
-    private async Task JoinExistingRoom(MatchRoom room, string roomCode, string displayName)
+    private async Task JoinExistingRoom(MatchRoom room, string roomCode, string displayName, string? guestId)
     {
+        // Entering a room ends a running Quick Match search.
+        _matchmakingQueue.Remove(Context.ConnectionId);
+
         // A connection can only be in one room at a time.
         foreach (var otherRoom in _roomManager.GetRoomsForConnection(Context.ConnectionId))
         {
@@ -135,15 +199,15 @@ public class MatchHub : Hub
             }
         }
 
-        var update = RunRoomAction(() => room.JoinPlayer(Context.ConnectionId, displayName));
+        var update = RunRoomAction(() => room.JoinPlayer(Context.ConnectionId, displayName, guestId));
         await Groups.AddToGroupAsync(Context.ConnectionId, roomCode);
         await PublishMatchUpdate(roomCode, update);
         await BroadcastRoomList();
     }
 
-    private async Task RemoveFromRoom(MatchRoom room)
+    private async Task RemoveFromRoom(MatchRoom room, string endReason = MatchEndReasons.Disconnect)
     {
-        var update = room.RemovePlayer(Context.ConnectionId);
+        var update = room.RemovePlayer(Context.ConnectionId, endReason);
         await Groups.RemoveFromGroupAsync(Context.ConnectionId, room.RoomCode);
 
         if (update is not null)
@@ -193,6 +257,12 @@ public class MatchHub : Hub
 
     private async Task PublishMatchUpdate(string roomCode, MatchUpdate update)
     {
+        // Every update passes through here, so a finished match is saved exactly once.
+        if (update.MatchResult is not null)
+        {
+            _matchResultService.SaveInBackground(update.MatchResult);
+        }
+
         if (update.StateSnapshots.Count > 0)
         {
             foreach (var playerSnapshot in update.StateSnapshots)

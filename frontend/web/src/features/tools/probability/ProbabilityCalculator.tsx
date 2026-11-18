@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { Button } from '../../../components/ui/Button';
+import { ChartIcon, SearchIcon } from '../../../components/ui/Icons';
 import type { Deck } from '../../../types/decks';
 import { getTotalCards } from '../../deckbuilder/utils/deckValidation';
 import { maxSimulations, runProbabilitySimulation } from './probabilityLogic';
@@ -96,6 +96,20 @@ function getInputError(
   }
 
   return '';
+}
+
+function ToolHeader({ description }: { description: string }) {
+  return (
+    <div className="tool-card__header">
+      <span className="tool-card__icon" aria-hidden="true">
+        <ChartIcon />
+      </span>
+      <div>
+        <h2 className="ui-heading">Probability Calculator</h2>
+        <p className="tools-muted">{description}</p>
+      </div>
+    </div>
+  );
 }
 
 export function ProbabilityCalculator({ deck }: ProbabilityCalculatorProps) {
@@ -286,38 +300,37 @@ export function ProbabilityCalculator({ deck }: ProbabilityCalculatorProps) {
 
   if (!deck) {
     return (
-      <section className="panel tools-panel tool-card probability-calculator">
-        <span className="tools-kicker">Odds</span>
-        <h2>Probability Calculator</h2>
+      <section className="ui-glass tool-card probability-calculator">
+        <ToolHeader description="Simulate how likely you draw your key cards." />
       </section>
     );
   }
 
   return (
-    <section className="panel tools-panel tool-card probability-calculator">
-      <div className="tool-card__header">
-        <span className="tools-kicker">Odds</span>
-        <h2>Probability Calculator</h2>
-        <p>
-          Chance to draw at least {minimumHits} card from selected targets in {handSize} cards.
-        </p>
-      </div>
+    <section className="ui-glass tool-card probability-calculator">
+      <ToolHeader
+        description={`Chance to draw at least ${minimumHits} card from selected targets in ${handSize} cards.`}
+      />
 
       <div className="probability-sections">
         <section className="probability-section">
           <div className="probability-section__title">
             <h3>Target Selection</h3>
-            <span>{selectedTargetIds.length} selected</span>
+            <span className="ui-badge">{selectedTargetIds.length} selected</span>
           </div>
 
-          <label className="field" htmlFor="targetSearch">
-            Target search
-            <input
-              id="targetSearch"
-              onChange={(event) => setTargetSearch(event.target.value)}
-              placeholder="Search name or card ID"
-              value={targetSearch}
-            />
+          <label className="ui-field" htmlFor="targetSearch">
+            <span>Target search</span>
+            <span className="ui-search">
+              <SearchIcon />
+              <input
+                className="ui-input"
+                id="targetSearch"
+                onChange={(event) => setTargetSearch(event.target.value)}
+                placeholder="Search name or card ID"
+                value={targetSearch}
+              />
+            </span>
           </label>
 
           <div className="probability-target-summary">
@@ -329,6 +342,7 @@ export function ProbabilityCalculator({ deck }: ProbabilityCalculatorProps) {
               {quickTargetGroups.map((group) => (
                 <button
                   key={group.label}
+                  className="ui-chip"
                   onClick={() => applyQuickTargetGroup(group.cardIds)}
                   type="button"
                 >
@@ -343,7 +357,12 @@ export function ProbabilityCalculator({ deck }: ProbabilityCalculatorProps) {
               const cardTags = formatCardTags(card);
 
               return (
-                <label key={card.cardId} className="probability-target">
+                <label
+                  key={card.cardId}
+                  className={`ui-tile probability-target ${
+                    selectedTargetIds.includes(card.cardId) ? 'is-selected' : ''
+                  }`}
+                >
                   <input
                     checked={selectedTargetIds.includes(card.cardId)}
                     onChange={() => toggleTarget(card.cardId)}
@@ -365,13 +384,14 @@ export function ProbabilityCalculator({ deck }: ProbabilityCalculatorProps) {
         <section className="probability-section">
           <div className="probability-section__title">
             <h3>Simulation Settings</h3>
-            <span>{presetName}</span>
+            <span className="ui-badge">{presetName}</span>
           </div>
 
           <div className="probability-form">
-            <label className="field" htmlFor="probabilityPreset">
-              Preset
+            <label className="ui-field" htmlFor="probabilityPreset">
+              <span>Preset</span>
               <select
+                className="ui-input"
                 id="probabilityPreset"
                 onChange={(event) => applyPreset(event.target.value)}
                 value={presetName}
@@ -384,9 +404,10 @@ export function ProbabilityCalculator({ deck }: ProbabilityCalculatorProps) {
               </select>
             </label>
 
-            <label className="field" htmlFor="minimumHits">
-              Minimum Hits
+            <label className="ui-field" htmlFor="minimumHits">
+              <span>Minimum Hits</span>
               <input
+                className="ui-input"
                 id="minimumHits"
                 min={1}
                 onChange={(event) => {
@@ -398,9 +419,10 @@ export function ProbabilityCalculator({ deck }: ProbabilityCalculatorProps) {
               />
             </label>
 
-            <label className="field" htmlFor="handSize">
-              Hand Size
+            <label className="ui-field" htmlFor="handSize">
+              <span>Hand Size</span>
               <input
+                className="ui-input"
                 id="handSize"
                 min={1}
                 onChange={(event) => {
@@ -412,9 +434,10 @@ export function ProbabilityCalculator({ deck }: ProbabilityCalculatorProps) {
               />
             </label>
 
-            <label className="field" htmlFor="simulations">
-              Simulations
+            <label className="ui-field" htmlFor="simulations">
+              <span>Simulations</span>
               <input
+                className="ui-input"
                 id="simulations"
                 max={maxSimulations}
                 min={1}
@@ -439,30 +462,38 @@ export function ProbabilityCalculator({ deck }: ProbabilityCalculatorProps) {
       )}
 
       <div className="probability-actions">
-        <Button disabled={!canCalculate} onClick={calculate}>
-          {calculating ? 'Calculating...' : 'Calculate'}
-        </Button>
+        <button
+          className="ui-btn-primary ui-btn-primary--compact"
+          disabled={!canCalculate}
+          onClick={calculate}
+          type="button"
+        >
+          <span>{calculating ? 'Calculating...' : 'Calculate'}</span>
+        </button>
         {calculating && (
-          <Button onClick={cancelCalculation} variant="danger">
+          <button className="ui-link ui-link--danger" onClick={cancelCalculation} type="button">
             Cancel
-          </Button>
+          </button>
         )}
       </div>
 
       {result && (
         <div className="probability-result">
-          <span>{result.presetName ?? 'Custom'}</span>
-          <strong>{result.probabilityPercent.toFixed(1)}%</strong>
+          <span className="ui-kicker">{result.presetName ?? 'Custom'}</span>
+          <strong className="probability-result__value">{result.probabilityPercent.toFixed(1)}%</strong>
+          <span className="ui-meter probability-result__meter" aria-hidden="true">
+            <span style={{ width: `${Math.min(100, result.probabilityPercent)}%` }} />
+          </span>
           <div className="probability-result__stats">
-            <div>
+            <div className="ui-stat">
               <span>Hits</span>
               <strong>{result.hits}</strong>
             </div>
-            <div>
+            <div className="ui-stat">
               <span>Trials</span>
               <strong>{result.simulations}</strong>
             </div>
-            <div>
+            <div className="ui-stat">
               <span>Deck Cards</span>
               <strong>{totalCards}</strong>
             </div>

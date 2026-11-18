@@ -13,6 +13,13 @@
   --radius-panel: 8px;
   --card-corner-radius: 5px;
   --shadow-panel: 0 18px 42px rgb(3 11 20 / 16%);
+  --color-gold-glow: rgb(240 191 56 / 45%);
+  --shadow-glow: 0 0 24px var(--color-gold-glow);
+  --radius-card: 14px;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --font-display: "Cinzel", Georgia, "Times New Roman", serif;
 
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.4;
@@ -79,6 +86,15 @@ textarea:focus,
 button:focus-visible {
   outline: 3px solid #f2c94c;
   outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
 img,

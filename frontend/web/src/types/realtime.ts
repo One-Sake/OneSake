@@ -138,3 +138,8 @@ export interface RoomSummaryDto {
   playerNames: string[];
   createdAtUnixMs: number;
 }
+
+// Sent by the server when Quick Match paired two players.
+export interface MatchFoundDto {
+  roomCode: string;
+}

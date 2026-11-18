@@ -31,7 +31,7 @@ export function AppShell({ initialPage = 'match' }: AppShellProps) {
         {activeSection === 'tools' && (
           <ToolsPage onOpenDeckbuilder={() => setActiveSection('deckbuilder')} />
         )}
-        {activeSection === 'profile' && <ProfilePage />}
+        {activeSection === 'profile' && <ProfilePage onOpenMatch={() => setActiveSection('match')} />}
       </main>
       {!isImmersiveMode && <BottomNav activeSection={activeSection} onChange={setActiveSection} />}
     </div>

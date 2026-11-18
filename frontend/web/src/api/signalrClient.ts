@@ -9,15 +9,18 @@ import {
   ChoicePromptDto,
   GameStateDto,
   LogEventDto,
+  MatchFoundDto,
   PlayerDeckSubmissionDto,
   RoomSummaryDto,
 } from '../types/realtime';
+import { getGuestId } from './guestId';
 
 type StateSnapshotHandler = (snapshot: GameStateDto) => void;
 type ChoicePromptHandler = (prompt: ChoicePromptDto) => void;
 type ChatMessageHandler = (message: ChatMessageDto) => void;
 type LogEventHandler = (event: LogEventDto) => void;
 type RoomListHandler = (rooms: RoomSummaryDto[]) => void;
+type MatchFoundHandler = (matchFound: MatchFoundDto) => void;
 export type ConnectionStatus =
   | 'disconnected'
   | 'connecting'
@@ -39,9 +42,21 @@ export class SignalRClient {
   private chatMessageHandler: ChatMessageHandler | null = null;
   private logEventHandler: LogEventHandler | null = null;
   private roomListHandler: RoomListHandler | null = null;
+  private matchFoundHandler: MatchFoundHandler | null = null;
 
   constructor(hubUrl: string) {
     this.hubUrl = hubUrl;
+  }
+
+  // The guest ID travels in the hub URL, so CreateRoom/JoinRoom keep their signature.
+  private getHubUrlWithGuestId(): string {
+    try {
+      const url = new URL(this.hubUrl, window.location.href);
+      url.searchParams.set('guestId', getGuestId());
+      return url.toString();
+    } catch {
+      return this.hubUrl;
+    }
   }
 
   private toConnectionError(error: unknown): Error {
@@ -79,7 +94,7 @@ export class SignalRClient {
 
     if (!this.connection) {
       this.connection = new HubConnectionBuilder()
-        .withUrl(this.hubUrl)
+        .withUrl(this.getHubUrlWithGuestId())
         .withAutomaticReconnect()
         .build();
 
@@ -101,6 +116,10 @@ export class SignalRClient {
 
       this.connection.on('RoomList', (rooms: RoomSummaryDto[]) => {
         this.roomListHandler?.(rooms);
+      });
+
+      this.connection.on('MatchFound', (matchFound: MatchFoundDto) => {
+        this.matchFoundHandler?.(matchFound);
       });
 
       this.connection.onreconnecting(() => {
@@ -169,6 +188,17 @@ export class SignalRClient {
     await this.connection!.invoke('JoinRoom', roomCode, displayName);
   }
 
+  // Quick Match: wait for an opponent. The server answers with a "MatchFound" event.
+  async joinQueue(displayName: string): Promise<void> {
+    await this.connect();
+    await this.connection!.invoke('JoinQueue', displayName, getGuestId());
+  }
+
+  async leaveQueue(): Promise<void> {
+    await this.connect();
+    await this.connection!.invoke('LeaveQueue');
+  }
+
   async startMatch(roomCode: string): Promise<void> {
     await this.connect();
     await this.connection!.invoke('StartMatch', roomCode);
@@ -207,6 +237,10 @@ export class SignalRClient {
 
   onRoomList(handler: RoomListHandler): void {
     this.roomListHandler = handler;
+  }
+
+  onMatchFound(handler: MatchFoundHandler): void {
+    this.matchFoundHandler = handler;
   }
 
   onConnectionStatus(handler: ConnectionStatusHandler): void {

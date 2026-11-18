@@ -1,5 +1,6 @@
 @import './styles/base.css';
 @import './styles/layout.css';
+@import './styles/ui.css';
 @import './features/start/start-screen.css';
 @import './features/match/match.css';
 @import './features/match/board/match-board.css';

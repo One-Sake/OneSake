@@ -9,7 +9,11 @@
   padding: clamp(8px, 2vw, 24px);
   overflow-x: hidden;
   overflow-y: auto;
-  background: #000000;
+  /* Same wave pattern and gold glow as the rest of the app, kept dark around the artwork. */
+  background:
+    radial-gradient(ellipse 60% 55% at 50% 52%, rgb(240 191 56 / 9%), transparent 70%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='80' viewBox='0 0 160 80'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.045'%3E%3Cpath d='M0 20 Q20 10 40 20 T80 20 T120 20 T160 20'/%3E%3Cpath d='M0 60 Q20 50 40 60 T80 60 T120 60 T160 60'/%3E%3C/g%3E%3C/svg%3E"),
+    #000000;
 }
 
 .start-screen__frame {
@@ -19,8 +23,12 @@
   max-height: calc(100svh - 16px);
   aspect-ratio: 1672 / 941;
   overflow: hidden;
+  border-radius: 22px;
   background: #000000;
-  box-shadow: 0 0 46px rgb(0 0 0 / 78%);
+  box-shadow:
+    0 0 46px rgb(0 0 0 / 78%),
+    0 0 90px rgb(240 191 56 / 8%);
+  animation: start-fade-in 600ms var(--ease-out) both;
 }
 
 .start-screen__art {
@@ -33,31 +41,76 @@
 
 .start-hotspot {
   position: absolute;
+  overflow: hidden;
   border: 1px solid transparent;
-  border-radius: 10px;
+  border-radius: 14px;
   padding: 0;
   color: transparent;
   background: transparent;
   cursor: pointer;
   transition:
-    border-color 150ms ease,
-    box-shadow 150ms ease,
-    background 150ms ease;
+    border-color var(--duration-fast) ease,
+    box-shadow var(--duration-base) var(--ease-out),
+    background var(--duration-fast) ease,
+    transform var(--duration-fast) var(--ease-out);
+}
+
+/* Light sweep over the painted button, like the gold primary buttons in the app */
+.start-hotspot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(110deg, transparent 30%, rgb(255 236 180 / 32%) 50%, transparent 70%);
+  transform: translateX(-120%);
 }
 
 .start-hotspot:hover {
-  border-color: rgb(255 225 154 / 44%);
-  box-shadow: 0 0 28px rgb(255 207 102 / 22%);
+  border-color: rgb(255 225 154 / 40%);
+  background: rgb(240 191 56 / 6%);
+  box-shadow: 0 0 32px var(--color-gold-glow);
+}
+
+.start-hotspot:hover::after {
+  transform: translateX(120%);
+  transition: transform 750ms var(--ease-out);
 }
 
 .start-hotspot:active {
-  box-shadow: 0 0 16px rgb(255 207 102 / 18%);
+  transform: scale(0.985);
+  box-shadow: 0 0 16px var(--color-gold-glow);
 }
 
 .start-hotspot:focus-visible {
-  outline: 3px solid #ffe19a;
+  outline: 2px solid var(--color-gold);
   outline-offset: 3px;
-  background: rgb(255 225 154 / 5%);
+  background: rgb(240 191 56 / 6%);
+}
+
+@keyframes start-fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .start-screen__frame {
+    animation: none;
+  }
+
+  .start-hotspot::after {
+    display: none;
+  }
+
+  .start-hotspot:active {
+    transform: none;
+  }
 }
 
 .start-hotspot--play {

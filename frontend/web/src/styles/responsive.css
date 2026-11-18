@@ -5,53 +5,6 @@
     grid-template-columns: 1fr auto;
   }
 
-  .profile-hero {
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-  }
-
-  .profile-hero__badge {
-    justify-self: end;
-  }
-
-  .profile-actions {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .match-room-code-row {
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: end;
-  }
-
-  .match-room-code-row .ui-button {
-    width: auto;
-    min-width: 166px;
-  }
-
-  .match-display-name-row {
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: end;
-  }
-
-  .match-display-name-randomizer {
-    width: auto;
-    min-width: 132px;
-  }
-
-  .match-join-card__actions {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .match-flow-panel__header {
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: start;
-  }
-
-  .match-header-row {
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: start;
-  }
-
   .connection-status {
     justify-self: end;
   }
@@ -107,30 +60,8 @@
     align-items: start;
   }
 
-  .profile-layout {
-    grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.75fr);
-    align-items: start;
-  }
-
-  .profile-login-card {
-    grid-row: span 2;
-  }
-
   .match-page .content-grid {
     grid-template-columns: minmax(0, 1fr) minmax(260px, 0.55fr);
-  }
-
-  .match-setup-panel {
-    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.45fr);
-    align-items: start;
-  }
-
-  .match-setup-main {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .match-setup-section--deck {
-    grid-column: 1 / -1;
   }
 
   .match-board-shell {
@@ -164,24 +95,12 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .tools-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .mulligan-header {
     grid-template-columns: 1fr auto;
     align-items: start;
   }
 
-  .mulligan-hand {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .probability-form {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .probability-actions {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -267,11 +186,6 @@
 }
 
 @media (max-width: 760px), (max-height: 560px) {
-  .match-open-board-panel,
-  .match-joined-panel__actions {
-    grid-template-columns: 1fr;
-  }
-
   .deck-library__list li {
     grid-template-columns: 1fr;
   }
@@ -345,34 +259,26 @@
 
   .bottom-nav {
     gap: 3px;
-    padding: 6px;
-    padding-bottom: calc(6px + env(safe-area-inset-bottom));
+    padding: 0 6px;
+    padding-bottom: calc(2px + env(safe-area-inset-bottom));
   }
 
   .bottom-nav__item {
-    min-height: 46px;
-    padding: 7px 4px;
-    font-size: 0.82rem;
+    min-height: 56px;
+    padding: 7px 2px 5px;
+    font-size: 0.74rem;
   }
 
-  .tools-deck-context__stats,
-  .probability-result__stats,
-  .mulligan-metrics,
-  .mulligan-stats,
-  .profile-stat-grid {
+  .mulligan-stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .probability-section__title,
-  .profile-card__header,
-  .saved-deck-select__header,
-  .match-setup-card__header {
+  .profile-card__header {
     align-items: stretch;
     flex-wrap: wrap;
   }
 
-  .saved-deck-select__toolbar,
-  .saved-deck-select__stats,
   .card-search__controls {
     grid-template-columns: 1fr;
   }
@@ -411,12 +317,6 @@
 }
 
 @media (max-width: 420px) {
-  .tools-deck-context__stats,
-  .probability-result__stats,
-  .mulligan-metrics {
-    grid-template-columns: 1fr;
-  }
-
   .mulligan-actions {
     grid-template-columns: 1fr;
   }
@@ -432,3 +332,89 @@
   }
 }
 
+
+/* Game lobby */
+
+@media (min-width: 1200px) {
+  .lobby__grid {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .leader-hero {
+    --leader-width: 240px;
+  }
+}
+
+@media (max-width: 767px) {
+  .lobby {
+    gap: 16px;
+    margin: 0 -12px;
+    border: 0;
+    border-radius: 0;
+    padding: 16px 16px 150px;
+  }
+
+  .lobby-glass {
+    gap: 18px;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+
+  .lobby__tables {
+    border-top: 1px solid rgb(240 191 56 / 12%);
+    padding-top: 18px;
+  }
+
+  .lobby-deck-hero {
+    gap: 18px;
+  }
+
+  .leader-hero {
+    --leader-width: 160px;
+  }
+
+  .lobby-deck-info__name {
+    font-size: 1.3rem;
+  }
+
+  /* The main button stays reachable right above the bottom navigation. */
+  .lobby-action {
+    position: fixed;
+    right: 0;
+    bottom: calc(65px + env(safe-area-inset-bottom));
+    left: 0;
+    z-index: 19;
+    padding: 18px 16px 10px;
+    background: linear-gradient(to top, rgb(8 16 24 / 97%) 72%, transparent);
+  }
+
+  .lobby-primary-button {
+    min-height: 54px;
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+
+  .room-tile {
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .lobby-action__secondary {
+    min-height: 54px;
+    padding: 8px 12px;
+  }
+}
+
+@media (max-width: 560px) {
+  .lobby-action {
+    bottom: calc(59px + env(safe-area-inset-bottom));
+  }
+}

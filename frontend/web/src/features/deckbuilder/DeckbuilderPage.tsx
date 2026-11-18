@@ -4,14 +4,17 @@ import type { CSSProperties } from 'react';
 import { getCardsBySetId } from '../../api/cardsApi';
 import { Drawer } from '../../components/ui/Drawer';
 import { Button } from '../../components/ui/Button';
+import { Toast } from '../../components/ui/Toast';
 import type { CardDto } from '../../types/cards';
 import type { Deck, DeckCard } from '../../types/decks';
+import { getLeaderColors } from '../match/leaderColors';
 import { CardFilterSheet, type CardFilters } from './CardFilterSheet';
 import { CardGrid } from './CardGrid';
 import { CardHoverPreview } from './CardHoverPreview';
 import { CardSearch } from './CardSearch';
 import { CardSizeSlider } from './CardSizeSlider';
 import { ColorPaletteFilter } from './ColorPaletteFilter';
+import { DeckImportModal } from './DeckImportModal';
 import { DeckLibrary } from './DeckLibrary';
 import { DeckStackCard } from './DeckStackCard';
 import {
@@ -31,6 +34,9 @@ import {
   getTotalCards,
   isLeaderCard,
 } from './utils/deckValidation';
+import { copyTextToClipboard } from './utils/clipboard';
+import { createDeckCard } from './utils/deckCards';
+import { deckToText } from './utils/deckText';
 
 
 const availableSets = [
@@ -104,10 +110,6 @@ function uniqueValues(cards: CardDto[], readValue: (card: CardDto) => string): s
   );
 }
 
-function optionalCardText(value: unknown): string | undefined {
-  return typeof value === 'string' && value.trim() ? value : undefined;
-}
-
 function loadCardsPerRow(): number {
   try {
     const storedValue = window.localStorage.getItem(cardsPerRowStorageKey);
@@ -127,22 +129,6 @@ function saveCardsPerRow(cardsPerRow: number): void {
 
 function getPlayableCardMinWidth(cardsPerRow: number): number {
   return Math.min(210, Math.max(116, Math.round(1180 / clampCardsPerRow(cardsPerRow))));
-}
-
-function createDeckCard(card: CardDto, quantity: number): DeckCard {
-  return {
-    cardId: card.card_set_id,
-    name: card.card_name,
-    quantity,
-    color: optionalCardText(card.card_color),
-    type: optionalCardText(card.card_type),
-    cost: card.card_cost,
-    power: card.card_power,
-    counter: card.counter_amount,
-    attribute: optionalCardText(card.attribute),
-    subTypes: optionalCardText(card.sub_types),
-    rarity: optionalCardText(card.rarity),
-  };
 }
 
 function createPreviewCardFromDeckCard(deckCard: DeckCard, cardImage = ''): CardDto {
@@ -274,6 +260,8 @@ export function DeckbuilderPage() {
   const [deckNotice, setDeckNotice] = useState('');
   const [deckOpen, setDeckOpen] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [importOpen, setImportOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
   const [cardsPerRow, setCardsPerRow] = useState(loadCardsPerRow);
   const playableCardMinWidth = getPlayableCardMinWidth(cardsPerRow);
   const cardGridAreaStyle = {
@@ -449,6 +437,30 @@ export function DeckbuilderPage() {
     setDeckNotice(message);
   };
 
+  useEffect(() => {
+    if (!toastMessage) {
+      return undefined;
+    }
+
+    const timeoutId = window.setTimeout(() => setToastMessage(''), 2200);
+    return () => window.clearTimeout(timeoutId);
+  }, [toastMessage]);
+
+  const exportDeck = async (deckToExport: Deck): Promise<void> => {
+    const copied = await copyTextToClipboard(deckToText(deckToExport));
+    setToastMessage(copied ? 'Deckliste kopiert' : 'Kopieren nicht möglich');
+  };
+
+  // Imported decks are saved like a normal "Save Deck" and opened right away.
+  const importDeck = (importedDeck: Deck): void => {
+    const nextDecks = upsertStoredDeck(importedDeck);
+    const savedDeck = nextDecks.find((storedDeck) => storedDeck.id === importedDeck.id) ?? importedDeck;
+    setSavedDecks(nextDecks);
+    setDeck(savedDeck);
+    setDeckOpen(false);
+    showDeckNotice(`${savedDeck.name} importiert.`);
+  };
+
   const previewCardForDeckbuilder = (card: CardDto | null): void => {
     setPreviewCard(card);
     setPreviewedCardId(card?.card_set_id ?? '');
@@ -599,7 +611,15 @@ export function DeckbuilderPage() {
     showDeckNotice('Deck deleted.');
   };
 
+  // Visual only: the leader colors of the deck being edited tint the page background.
+  const leaderAccent = getLeaderColors(deck.leaderColors);
+  const pageAccentStyle = {
+    '--page-accent': leaderAccent.primary,
+    '--page-accent-2': leaderAccent.secondary,
+  } as CSSProperties;
+
   return (
+    <div className="ui-page-bg deckbuilder-backdrop" style={pageAccentStyle}>
     <section className="deckbuilder-page">
       <div className="deckbuilder-layout">
         <main className="deckbuilder-main">
@@ -719,6 +739,15 @@ export function DeckbuilderPage() {
                 >
                   Clear deck
                 </Button>
+                <Button
+                  className="deckbuilder-toolbar-action"
+                  disabled={!deck.leaderCardId && deck.cards.length === 0}
+                  onClick={() => void exportDeck(deck)}
+                  title="Deckliste als Text kopieren"
+                  variant="ghost"
+                >
+                  Export
+                </Button>
                 <Button className="deckbuilder-toolbar-action deckbuilder-save-button" onClick={saveDeck}>
                   Save Deck
                 </Button>
@@ -771,9 +800,14 @@ export function DeckbuilderPage() {
           onCreateDeck={createDeck}
           onDeleteDeck={deleteDeck}
           onDuplicateDeck={duplicateDeck}
+          onExportDeck={(deckToExport) => void exportDeck(deckToExport)}
+          onImportDeck={() => setImportOpen(true)}
           onLoadDeck={loadDeck}
         />
       </Drawer>
+
+      <DeckImportModal onClose={() => setImportOpen(false)} onImport={importDeck} open={importOpen} />
+      <Toast message={toastMessage} />
 
       <CardFilterSheet
         filters={filters}
@@ -786,5 +820,6 @@ export function DeckbuilderPage() {
       />
 
     </section>
+    </div>
   );
 }

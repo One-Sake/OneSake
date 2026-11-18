@@ -10,6 +10,8 @@ interface DeckLibraryProps {
   onCreateDeck: () => void;
   onDeleteDeck: (deckId: string) => void;
   onDuplicateDeck: (deckId: string) => void;
+  onExportDeck: (deck: Deck) => void;
+  onImportDeck: () => void;
   onLoadDeck: (deck: Deck) => void;
 }
 
@@ -57,6 +59,8 @@ export function DeckLibrary({
   onCreateDeck,
   onDeleteDeck,
   onDuplicateDeck,
+  onExportDeck,
+  onImportDeck,
   onLoadDeck,
 }: DeckLibraryProps) {
   return (
@@ -64,6 +68,9 @@ export function DeckLibrary({
       <div className="deck-library__header">
         <h2>Deck Library</h2>
         <div className="deck-library__actions">
+          <Button onClick={onImportDeck} variant="ghost">
+            Deck importieren
+          </Button>
           <Button onClick={onCreateDeck} variant="ghost">
             New Deck
           </Button>
@@ -151,6 +158,14 @@ export function DeckLibrary({
                   </span>
                 </button>
                 <div className="deck-library__deck-actions">
+                  <Button
+                    aria-label={`Export ${deck.name}`}
+                    onClick={() => onExportDeck(deck)}
+                    title="Deckliste als Text kopieren"
+                    variant="ghost"
+                  >
+                    Export
+                  </Button>
                   <Button onClick={() => onDuplicateDeck(deck.id)} variant="ghost">
                     Duplicate
                   </Button>

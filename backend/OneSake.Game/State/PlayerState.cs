@@ -11,6 +11,10 @@ public sealed class PlayerState
     public string DisplayName { get; set; } = string.Empty;
     public bool Connected { get; set; }
 
+    // Stable guest ID from the browser (localStorage). Null for old clients.
+    // NOT secure authentication - anyone can send any ID. A real login follows later (stage 2).
+    public string? GuestId { get; set; }
+
     // Deck registration (lobby)
     public string DeckId { get; set; } = string.Empty;
     public string DeckName { get; set; } = string.Empty;
