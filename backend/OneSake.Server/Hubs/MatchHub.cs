@@ -1,16 +1,19 @@
 using Microsoft.AspNetCore.SignalR;
 using OneSake.Domain;
 using OneSake.Server.Match;
+using OneSake.Server.Services;
 
 namespace OneSake.Server.Hubs;
 
 public class MatchHub : Hub
 {
     private readonly MatchRoomManager _roomManager;
+    private readonly MatchResultService _matchResultService;
 
-    public MatchHub(MatchRoomManager roomManager)
+    public MatchHub(MatchRoomManager roomManager, MatchResultService matchResultService)
     {
         _roomManager = roomManager;
+        _matchResultService = matchResultService;
     }
 
     private const int MaxRoomCodeLength = 12;
@@ -49,7 +52,8 @@ public class MatchHub : Hub
     {
         var normalizedRoomCode = NormalizeRoomCode(roomCode);
         var room = GetExistingRoom(normalizedRoomCode);
-        await RemoveFromRoom(room);
+        // Leaving on purpose during a running match counts as giving up.
+        await RemoveFromRoom(room, MatchEndReasons.Concede);
         await BroadcastRoomList();
     }
 
@@ -151,9 +155,9 @@ public class MatchHub : Hub
         await BroadcastRoomList();
     }
 
-    private async Task RemoveFromRoom(MatchRoom room)
+    private async Task RemoveFromRoom(MatchRoom room, string endReason = MatchEndReasons.Disconnect)
     {
-        var update = room.RemovePlayer(Context.ConnectionId);
+        var update = room.RemovePlayer(Context.ConnectionId, endReason);
         await Groups.RemoveFromGroupAsync(Context.ConnectionId, room.RoomCode);
 
         if (update is not null)
@@ -203,6 +207,12 @@ public class MatchHub : Hub
 
     private async Task PublishMatchUpdate(string roomCode, MatchUpdate update)
     {
+        // Every update passes through here, so a finished match is saved exactly once.
+        if (update.MatchResult is not null)
+        {
+            _matchResultService.SaveInBackground(update.MatchResult);
+        }
+
         if (update.StateSnapshots.Count > 0)
         {
             foreach (var playerSnapshot in update.StateSnapshots)

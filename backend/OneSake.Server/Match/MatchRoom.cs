@@ -39,6 +39,11 @@ public sealed class MatchRoom
     private MatchPhase _phase = MatchPhase.Lobby;
     private BattleState? _battle;
 
+    // Result of the match that just ended. Reported once with the next update.
+    private DateTimeOffset _matchStartedAtUtc;
+    private bool _resultReported;
+    private MatchResultData? _pendingResult;
+
     public const int MaxPlayers = 2;
 
     private readonly DateTimeOffset _createdAtUtc;
@@ -65,7 +70,8 @@ public sealed class MatchRoom
 
     // Removes a player from the room. Returns null when the player was not in this room.
     // If a match was running, it is aborted and the room goes back to the lobby.
-    public MatchUpdate? RemovePlayer(string connectionId)
+    // endReason is stored when this ends a running match (the remaining player wins).
+    public MatchUpdate? RemovePlayer(string connectionId, string endReason = MatchEndReasons.Disconnect)
     {
         lock (_sync)
         {
@@ -73,6 +79,13 @@ public sealed class MatchRoom
             if (player is null)
             {
                 return null;
+            }
+
+            var wasMatchRunning = _phase != MatchPhase.Lobby && _phase != MatchPhase.GameOver;
+            var remainingPlayer = _players.FirstOrDefault(entry => entry.PlayerId != connectionId);
+            if (wasMatchRunning && remainingPlayer is not null)
+            {
+                RecordResult(remainingPlayer, player, endReason);
             }
 
             _players.Remove(player);
@@ -180,6 +193,9 @@ public sealed class MatchRoom
 
             _turnNumber = 1;
             _phase = MatchPhase.Mulligan;
+            _matchStartedAtUtc = DateTimeOffset.UtcNow;
+            _resultReported = false;
+            _pendingResult = null;
             _activePlayerId = _players[0].PlayerId;
             _winnerPlayerId = string.Empty;
             _battle = null;
@@ -639,7 +655,7 @@ public sealed class MatchRoom
         else if (result.DefenderLostGame)
         {
             CreateLogEvent("LEADER_DAMAGE", $"{defender.DisplayName}'s Leader took damage with 0 Life ({powerText}).");
-            EndGame(attacker, $"{attacker.DisplayName} wins!");
+            EndGame(attacker, $"{attacker.DisplayName} wins!", MatchEndReasons.Life);
             return;
         }
         else
@@ -761,17 +777,37 @@ public sealed class MatchRoom
 
         var winner = GetPlayerSlot(GetOtherPlayerId(emptyDeckPlayer.PlayerId));
         CreateLogEvent("DECK_OUT", $"{emptyDeckPlayer.DisplayName} has no cards left in their deck.");
-        EndGame(winner, $"{winner.DisplayName} wins!");
+        EndGame(winner, $"{winner.DisplayName} wins!", MatchEndReasons.DeckOut);
         return true;
     }
 
-    private void EndGame(PlayerState winner, string message)
+    private void EndGame(PlayerState winner, string message, string endReason)
     {
         _phase = MatchPhase.GameOver;
         _winnerPlayerId = winner.PlayerId;
         _battle = null;
         _openChoicePrompts.Clear();
         CreateLogEvent("GAME_OVER", message);
+        RecordResult(winner, GetPlayerSlot(GetOtherPlayerId(winner.PlayerId)), endReason);
+    }
+
+    // Prepares the result for saving. The flag makes sure a match is only reported once.
+    private void RecordResult(PlayerState winner, PlayerState loser, string endReason)
+    {
+        if (_resultReported)
+        {
+            return;
+        }
+
+        _resultReported = true;
+        _pendingResult = new MatchResultData(
+            _roomCode,
+            _matchStartedAtUtc,
+            DateTimeOffset.UtcNow,
+            _turnNumber,
+            endReason,
+            new MatchPlayerResult(winner.GuestId, winner.DisplayName, winner.LeaderCardId),
+            new MatchPlayerResult(loser.GuestId, loser.DisplayName, loser.LeaderCardId));
     }
 
     #endregion
@@ -787,11 +823,13 @@ public sealed class MatchRoom
             StateSnapshots = _players
                 .ToDictionary(player => player.PlayerId, player => CreateStateSnapshot(player.PlayerId), StringComparer.Ordinal),
             LogEvents = _pendingLogEvents.ToArray(),
-            ChoicePrompts = _pendingChoicePrompts.ToArray()
+            ChoicePrompts = _pendingChoicePrompts.ToArray(),
+            MatchResult = _pendingResult
         };
 
         _pendingLogEvents.Clear();
         _pendingChoicePrompts.Clear();
+        _pendingResult = null;
 
         return update;
     }
@@ -1017,4 +1055,7 @@ public sealed record MatchUpdate
         new Dictionary<string, GameStateDto>(StringComparer.Ordinal);
     public IReadOnlyList<LogEventDto> LogEvents { get; init; } = [];
     public IReadOnlyList<ChoicePromptDto> ChoicePrompts { get; init; } = [];
+
+    // Set exactly once, in the update where the match ended.
+    public MatchResultData? MatchResult { get; init; }
 }
