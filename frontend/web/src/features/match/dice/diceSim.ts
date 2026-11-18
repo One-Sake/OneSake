@@ -25,8 +25,8 @@ const INV_MASS = 1 / MASS;
 // Cube inertia around its center: m * L^2 / 6 (the same for every axis).
 const INV_INERTIA = 6 / (MASS * DIE_SIZE * DIE_SIZE);
 const DIE_RADIUS = 0.62;
-const REST_LINEAR = 0.08;
-const REST_ANGULAR = 0.15;
+const REST_LINEAR = 0.25;
+const REST_ANGULAR = 0.35;
 const REST_STEPS = 30;
 const MIN_ROLL_TIME = 0.6;
 // Extra damping after this time so the dice settle before the hard limit.

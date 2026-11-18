@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { DeckbuilderPage } from '../../features/deckbuilder/DeckbuilderPage';
 import { MatchPage } from '../../features/match/MatchPage';
+import { MetaPage } from '../../features/meta/MetaPage';
 import { ProfilePage } from '../../features/profile/ProfilePage';
 import { ToolsPage } from '../../features/tools/ToolsPage';
 import { BottomNav, type AppSection } from './BottomNav';
@@ -28,6 +29,7 @@ export function AppShell({ initialPage = 'match' }: AppShellProps) {
           />
         )}
         {activeSection === 'deckbuilder' && <DeckbuilderPage />}
+        {activeSection === 'meta' && <MetaPage />}
         {activeSection === 'tools' && (
           <ToolsPage onOpenDeckbuilder={() => setActiveSection('deckbuilder')} />
         )}

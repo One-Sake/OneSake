@@ -29,6 +29,7 @@ export function RoomTile({ isJoined, joinDisabled, onJoinRoom, room }: RoomTileP
         <strong className="room-tile__host">{hostName}</strong>
         <span className="room-tile__meta">
           <span className="room-tile__code">{room.roomCode}</span>
+          <span className="lobby-mode-tag lobby-mode-tag--casual">Casual</span>
           <span className={`room-tile__status ${isOpen ? 'is-open' : ''}`}>
             {getStatusLabel(room, isFull)}
           </span>

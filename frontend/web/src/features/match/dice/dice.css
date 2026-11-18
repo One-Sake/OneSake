@@ -1,0 +1,216 @@
+/* Dice roll for the first player (overlay above the board) */
+
+.dice-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  display: grid;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 55% at 50% 50%, rgb(0 0 0 / 25%), rgb(0 0 0 / 55%));
+  animation: dice-fade-in 300ms var(--ease-out) both;
+}
+
+.dice-overlay--announce {
+  animation: dice-fade-out 400ms ease-in 1200ms both;
+}
+
+.dice-overlay__message {
+  position: absolute;
+  top: 9%;
+  left: 50%;
+  z-index: 2;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  width: min(92%, 560px);
+  text-align: center;
+  transform: translateX(-50%);
+}
+
+.dice-overlay__message strong {
+  color: #fff3c7;
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 2.6vw, 1.8rem);
+  letter-spacing: 0.04em;
+  text-shadow: 0 2px 12px rgb(0 0 0 / 70%), 0 0 24px var(--color-gold-glow);
+  animation: dice-fade-in 300ms var(--ease-out) both;
+}
+
+.dice-overlay__waiting {
+  color: var(--color-text-light);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-shadow: 0 2px 8px rgb(0 0 0 / 70%);
+}
+
+.dice-overlay__choices,
+.dice-overlay__sound {
+  pointer-events: auto;
+}
+
+/* Same look as the ChoiceBar, but placed below the message instead of on the board midline. */
+.match-choice-bar.dice-overlay__choices {
+  position: static;
+  padding: 6px;
+  transform: none;
+}
+
+.dice-overlay__choices .match-choice-bar__button {
+  min-height: 40px;
+  padding: 8px 16px;
+  font-size: 0.95rem;
+}
+
+.dice-overlay__sound {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 3;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgb(240 191 56 / 30%);
+  border-radius: 999px;
+  padding: 0;
+  background: rgb(5 13 21 / 70%);
+  font-size: 1rem;
+}
+
+/* 3D scene: camera looks at the table from above at an angle */
+
+.dice-scene {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  perspective: 1100px;
+  perspective-origin: 50% 30%;
+}
+
+.dice-table {
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.dice-table.is-leaving {
+  animation: dice-fade-out 400ms ease-in 900ms both;
+}
+
+.dice-slot {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+.dice-die,
+.dice-shadow,
+.dice-value {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--die-size);
+  height: var(--die-size);
+  margin: calc(var(--die-size) / -2) 0 0 calc(var(--die-size) / -2);
+}
+
+.dice-die {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.dice-shadow {
+  border-radius: 30%;
+  background: radial-gradient(circle, rgb(0 0 0 / 70%) 0%, rgb(0 0 0 / 35%) 45%, transparent 72%);
+  will-change: transform, opacity;
+}
+
+.dice-shadow.is-winner {
+  background: radial-gradient(circle, rgb(240 191 56 / 70%) 0%, rgb(240 191 56 / 25%) 50%, transparent 75%);
+  box-shadow: 0 0 calc(var(--die-size) * 0.8) rgb(240 191 56 / 45%);
+}
+
+.dice-face,
+.dice-core {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+}
+
+.dice-face {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  padding: 14%;
+  border-radius: 18%;
+  background:
+    radial-gradient(circle at 30% 25%, rgb(255 255 255 / 42%), transparent 55%),
+    linear-gradient(145deg, color-mix(in srgb, var(--die-color) 100%, #ffffff 18%), color-mix(in srgb, var(--die-color) 82%, #000000));
+  box-shadow: inset 0 0 calc(var(--die-size) * 0.12) rgb(0 0 0 / 35%);
+}
+
+/* Fills the gaps at the rounded edges. */
+.dice-core {
+  inset: 4%;
+  border-radius: 8%;
+  background: color-mix(in srgb, var(--die-color) 75%, #000000);
+  backface-visibility: visible;
+}
+
+.dice-die.is-winner .dice-face {
+  box-shadow:
+    inset 0 0 calc(var(--die-size) * 0.12) rgb(0 0 0 / 30%),
+    0 0 calc(var(--die-size) * 0.35) rgb(240 191 56 / 75%);
+}
+
+.dice-pip {
+  place-self: center;
+  width: 70%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
+.dice-pip.is-on {
+  background: radial-gradient(circle at 40% 35%, #3a2b18, #120c05 70%);
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / 60%), 0 1px 0 rgb(255 255 255 / 25%);
+}
+
+.dice-value {
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: calc(var(--die-size) * 0.9);
+  font-weight: 700;
+  text-shadow: 0 3px 10px rgb(0 0 0 / 80%);
+  animation: dice-fade-in 300ms var(--ease-out) both;
+}
+
+.dice-value.is-winner {
+  color: var(--color-gold);
+  text-shadow: 0 3px 10px rgb(0 0 0 / 80%), 0 0 22px var(--color-gold-glow);
+}
+
+@keyframes dice-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes dice-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dice-overlay,
+  .dice-overlay__message strong,
+  .dice-value {
+    animation: none;
+  }
+}

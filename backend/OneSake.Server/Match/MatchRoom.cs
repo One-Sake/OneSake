@@ -932,7 +932,12 @@ public sealed class MatchRoom
             _turnNumber,
             endReason,
             new MatchPlayerResult(winner.GuestId, winner.DisplayName, winner.LeaderCardId),
-            new MatchPlayerResult(loser.GuestId, loser.DisplayName, loser.LeaderCardId));
+            new MatchPlayerResult(loser.GuestId, loser.DisplayName, loser.LeaderCardId),
+            IsRanked: IsQuickMatch,
+            FirstPlayerGuestId: _firstPlayerId is null
+                ? null
+                : _players.FirstOrDefault(player => player.PlayerId == _firstPlayerId)?.GuestId,
+            WinnerWentFirst: _firstPlayerId is null ? null : winner.PlayerId == _firstPlayerId);
     }
 
     #endregion
@@ -975,7 +980,8 @@ public sealed class MatchRoom
                 Players = _players
                     .Select(player => CreatePlayerStateSnapshot(player, viewerPlayerId))
                     .ToArray(),
-                TurnOrderRoll = CreateTurnOrderSnapshot()
+                TurnOrderRoll = CreateTurnOrderSnapshot(),
+                IsRanked = IsQuickMatch
             };
         }
     }

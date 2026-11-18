@@ -15,6 +15,10 @@ export interface RecentMatchDto {
   won: boolean;
   endReason: 'LIFE' | 'DECK_OUT' | 'CONCEDE' | 'DISCONNECT' | string;
   turnCount: number;
+  isRanked?: boolean;
+  // Rating points / bounty won (+) or lost (-); null when the match did not change the rating.
+  ratingChange?: number | null;
+  bountyChange?: number | null;
 }
 
 export interface PlayerStatsDto {

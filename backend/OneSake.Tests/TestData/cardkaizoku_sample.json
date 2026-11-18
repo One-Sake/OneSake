@@ -1,0 +1,43 @@
+[
+  {
+    "leader": "OP01-001",
+    "leaderKey": "OP01-001",
+    "variantName": null,
+    "leaderName": "Test Zoro",
+    "wins": 999,
+    "number_of_matches": 999,
+    "total_matches": 999,
+    "raw_win_rate": 0.99,
+    "play_rate": 0.5,
+    "weighted_win_rate": 0.99,
+    "first_win_rate": 0.99,
+    "second_win_rate": 0.99,
+    "matchups": [
+      { "opponent": "OP02-001", "opponentKey": "OP02-001", "wins": 33, "total_games": 50, "matchup_win_rate": 0.66,
+        "first_wins": 18, "first_games": 30, "first_win_rate": 0.6, "second_wins": 15, "second_games": 20, "second_win_rate": 0.75 },
+      { "opponent": "ST01-001", "opponentKey": "ST01-001", "wins": 2, "total_games": 10, "matchup_win_rate": 0.2,
+        "first_wins": 2, "first_games": 10, "first_win_rate": 0.2, "second_wins": 0, "second_games": 0, "second_win_rate": null }
+    ]
+  },
+  {
+    "leader": "OP02-001",
+    "leaderKey": "OP02-001",
+    "variantName": null,
+    "leaderName": "Test Whitebeard",
+    "wins": 17, "number_of_matches": 50, "total_matches": 999, "raw_win_rate": 0.34, "play_rate": 0.2,
+    "weighted_win_rate": 0.34, "first_win_rate": 0.25, "second_win_rate": 0.4,
+    "matchups": [
+      { "opponent": "OP01-001", "opponentKey": "OP01-001", "wins": 17, "total_games": 50, "matchup_win_rate": 0.34,
+        "first_wins": 5, "first_games": 20, "first_win_rate": 0.25, "second_wins": 12, "second_games": 30, "second_win_rate": 0.4 }
+    ]
+  },
+  {
+    "leader": "P-999",
+    "leaderKey": "P-999",
+    "variantName": null,
+    "leaderName": null,
+    "wins": 0, "number_of_matches": 0, "total_matches": 999, "raw_win_rate": 0, "play_rate": 0,
+    "weighted_win_rate": 0, "first_win_rate": 0, "second_win_rate": 0,
+    "matchups": []
+  }
+]

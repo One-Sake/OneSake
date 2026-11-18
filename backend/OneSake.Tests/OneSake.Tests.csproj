@@ -21,6 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="TestData\**" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\OneSake.Game\OneSake.Game.csproj" />
     <ProjectReference Include="..\OneSake.Domain\OneSake.Domain.csproj" />
     <ProjectReference Include="..\OneSake.Server\OneSake.Server.csproj" />

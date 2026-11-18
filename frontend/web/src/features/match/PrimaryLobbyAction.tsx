@@ -91,6 +91,7 @@ export function PrimaryLobbyAction({
         >
           <span>
             {label}
+            {(mode === 'queue' || mode === 'searching') && <small className="lobby-mode-tag">Ranked</small>}
             {mode === 'searching' && queueStartedAt !== null && (
               <>
                 {' '}
@@ -108,6 +109,7 @@ export function PrimaryLobbyAction({
             type="button"
           >
             Tisch eröffnen
+            <small className="lobby-mode-tag lobby-mode-tag--casual">Casual</small>
           </button>
         )}
 

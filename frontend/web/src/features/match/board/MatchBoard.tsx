@@ -312,6 +312,10 @@ export function MatchBoard({
       return 'Click a hand card to play it, or click your Leader/Character to give DON!! or attack.';
     }
 
+    if (gameState?.phase === 'TurnOrder') {
+      return 'Rolling the dice for the first turn...';
+    }
+
     if (gameState?.phase === 'Mulligan') {
       return 'Decide whether to keep your opening hand.';
     }

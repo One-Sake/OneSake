@@ -12,6 +12,7 @@ public class OneSakeDbContext : DbContext
 
     public DbSet<Card> Cards => Set<Card>();
     public DbSet<MatchResult> MatchResults => Set<MatchResult>();
+    public DbSet<PlayerRating> PlayerRatings => Set<PlayerRating>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -55,6 +56,20 @@ public class OneSakeDbContext : DbContext
             entity.Property(r => r.LoserGuestId).HasMaxLength(36);
             entity.Property(r => r.LoserDisplayName).HasMaxLength(64).IsRequired();
             entity.Property(r => r.LoserLeaderCardId).HasMaxLength(50).IsRequired();
+
+            entity.Property(r => r.FirstPlayerGuestId).HasMaxLength(36);
+            // The leaderboard and the "same pair in 24 h" rule look at the newest matches.
+            entity.HasIndex(r => r.EndedAtUtc);
+        });
+
+        modelBuilder.Entity<PlayerRating>(entity =>
+        {
+            entity.HasKey(r => r.GuestId);
+            entity.HasIndex(r => r.Rating);
+
+            entity.Property(r => r.GuestId).HasMaxLength(36);
+            entity.Property(r => r.DisplayName).HasMaxLength(64).IsRequired();
+            entity.Property(r => r.FavoriteLeaderCardId).HasMaxLength(50);
         });
     }
 }

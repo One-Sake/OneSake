@@ -18,4 +18,8 @@ public sealed record MatchResultData(
     int TurnCount,
     string EndReason,
     MatchPlayerResult Winner,
-    MatchPlayerResult Loser);
+    MatchPlayerResult Loser,
+    // Quick Match rooms are ranked, private tables are casual.
+    bool IsRanked = false,
+    string? FirstPlayerGuestId = null,
+    bool? WinnerWentFirst = null);

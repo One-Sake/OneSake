@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
 
-export type AppSection = 'match' | 'deckbuilder' | 'tools' | 'profile';
+import { MetaIcon } from '../ui/Icons';
+
+export type AppSection = 'match' | 'deckbuilder' | 'meta' | 'tools' | 'profile';
 
 interface BottomNavItem {
   id: AppSection;
@@ -43,6 +45,11 @@ const NAV_ITEMS: BottomNavItem[] = [
         <path d="M6 17V6a2 2 0 0 1 2-2h7M3 14V5a2 2 0 0 1 2-2" />
       </svg>
     ),
+  },
+  {
+    id: 'meta',
+    label: 'Meta',
+    icon: <MetaIcon />,
   },
   {
     id: 'tools',

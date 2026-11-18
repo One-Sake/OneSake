@@ -8,11 +8,13 @@ import type {
   GameStateDto,
   LogEventDto,
 } from '../../types/realtime';
+import { BountyChangeBanner } from './BountyChangeBanner';
 import { ChoiceBar } from './ChoiceBar';
 import { ConnectionStatusBadge } from './ConnectionStatusBadge';
 import { MatchFeed } from './MatchFeed';
 import { MatchBoard } from './board/MatchBoard';
 import { MatchCardPreview } from './board/MatchCardPreview';
+import { DiceRoll } from './dice/DiceRoll';
 import { formatPhase } from './matchFormatters';
 
 // These prompts are answered directly on the board (click cards / action bar).
@@ -106,6 +108,11 @@ export function FullscreenMatchView({
           <span>Active</span>
           <strong>{activePlayerDisplay}</strong>
         </div>
+        {gameState && (
+          <div className={`match-fullscreen__meta match-mode-tag ${gameState.isRanked ? 'is-ranked' : 'is-casual'}`}>
+            <strong>{gameState.isRanked ? 'Ranked' : 'Casual'}</strong>
+          </div>
+        )}
         <ConnectionStatusBadge status={connectionStatus} />
         {canShowStartMatch && (
           <button
@@ -179,6 +186,14 @@ export function FullscreenMatchView({
               />
             }
             onPreviewCard={setPreviewCard}
+            onSubmitChoice={onSubmitChoice}
+            pending={pending}
+          />
+          <BountyChangeBanner gameState={gameState} />
+          <DiceRoll
+            canSubmitChoice={canSubmitChoice}
+            currentPrompt={currentPrompt}
+            gameState={gameState}
             onSubmitChoice={onSubmitChoice}
             pending={pending}
           />
