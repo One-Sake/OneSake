@@ -13,6 +13,7 @@ import { ConnectionStatusBadge } from './ConnectionStatusBadge';
 import { MatchFeed } from './MatchFeed';
 import { MatchBoard } from './board/MatchBoard';
 import { MatchCardPreview } from './board/MatchCardPreview';
+import { DiceRoll } from './dice/DiceRoll';
 import { formatPhase } from './matchFormatters';
 
 // These prompts are answered directly on the board (click cards / action bar).
@@ -179,6 +180,13 @@ export function FullscreenMatchView({
               />
             }
             onPreviewCard={setPreviewCard}
+            onSubmitChoice={onSubmitChoice}
+            pending={pending}
+          />
+          <DiceRoll
+            canSubmitChoice={canSubmitChoice}
+            currentPrompt={currentPrompt}
+            gameState={gameState}
             onSubmitChoice={onSubmitChoice}
             pending={pending}
           />

@@ -4,6 +4,7 @@
 @import './features/start/start-screen.css';
 @import './features/match/match.css';
 @import './features/match/board/match-board.css';
+@import './features/match/dice/dice.css';
 @import './features/deckbuilder/deckbuilder.css';
 @import './features/profile/profile.css';
 @import './features/tools/tools.css';

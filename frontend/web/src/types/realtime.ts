@@ -1,5 +1,6 @@
 export type MatchPhase =
   | 'Lobby'
+  | 'TurnOrder'
   | 'Mulligan'
   | 'Refresh'
   | 'Draw'
@@ -95,6 +96,26 @@ export interface GameStateDto {
   phase: MatchPhase;
   battle?: BattleDto | null;
   players: PlayerStateDto[];
+  // Dice roll for the first player (stays after the decision). Missing on older servers.
+  turnOrderRoll?: TurnOrderRollDto | null;
+}
+
+export interface DiceRollDto {
+  playerId: string;
+  value: number;
+}
+
+export interface TurnOrderRoundDto {
+  rolls: DiceRollDto[];
+  // 32-bit seed, only for the animation.
+  animationSeed: number;
+}
+
+export interface TurnOrderRollDto {
+  rounds: TurnOrderRoundDto[];
+  winnerPlayerId: string;
+  decision?: 'GO_FIRST' | 'GO_SECOND' | null;
+  firstPlayerId?: string | null;
 }
 
 export interface ChoicePromptDto {
