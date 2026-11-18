@@ -61,6 +61,40 @@ dotnet ef database update --project OneSake.Persistence --startup-project OneSak
 | `AddMatchResults` | Tabelle `MatchResults` (Ergebnisse für die Profil-Statistik), Indizes auf `WinnerGuestId` und `LoserGuestId` |
 | `AddRankingAndTurnOrder` | Neue Spalten in `MatchResults` (`IsRanked`, `FirstPlayerGuestId`, `WinnerWentFirst`, Rating vorher/nachher für Gewinner und Verlierer), Index auf `EndedAtUtc`, neue Tabelle `PlayerRatings` (ELO/Kopfgeld pro Gast-ID) |
 
+## Meta-Daten (externer Anbieter)
+
+Der Meta-Reiter zeigt **ausschließlich** Daten eines externen Anbieters (zuerst Card Kaizoku,
+tägliche JSON-Snapshots unter `https://cdn.cardkaizoku.com/stats/`). Es gibt keine eigene
+Meta-Auswertung aus OneSake-Matches. Das Backend lädt die Daten (der Browser ruft den
+Anbieter nie direkt auf), cached sie 6 Stunden und liefert bei Ausfall den letzten Snapshot
+mit `isStale` aus.
+
+> **Meta-Daten erst aktivieren, wenn die schriftliche Erlaubnis von Card Kaizoku vorliegt.**
+
+Die Nutzung dieser Daten ist nicht offiziell dokumentiert. Darum ist Meta in
+`appsettings.json` und `appsettings.Production.json` **deaktiviert** (`"Meta": { "Enabled": false }`).
+Nur `appsettings.Development.json` schaltet es für die lokale Entwicklung ein.
+Solange Meta aus ist, antworten alle `/meta/...`-Endpunkte mit `200` und `enabled: false`,
+das Frontend zeigt „Meta-Daten sind noch nicht verfügbar.“ (die Bounty-Rangliste funktioniert trotzdem).
+
+Aktivieren nach Erlaubnis (z. B. als Umgebungsvariable auf dem Server):
+
+```bash
+Meta__Enabled=true
+# optional: Meta__Format=eb05_lw_p_top20  (Teil des Dateinamens stats_<Format>_<YYYYMMDD>.json)
+```
+
+Quellenangabe: Unter jeder Meta-Ansicht steht „Daten: Card Kaizoku · Snapshot <Datum>“.
+
+## Würfel-Test-Hook (nur Development)
+
+`Match:FixedDiceRolls` gibt die Würfe fest vor, z. B. `[3, 3, 5, 2]` (erst Gleichstand, dann 5:2).
+Wird außerhalb von Development ignoriert.
+
+```bash
+Match__FixedDiceRolls__0=3 Match__FixedDiceRolls__1=3 Match__FixedDiceRolls__2=5 Match__FixedDiceRolls__3=2
+```
+
 ## Hinweis zur Gast-ID
 
 Match-Ergebnisse werden einer Gast-ID zugeordnet, die der Browser selbst erzeugt
