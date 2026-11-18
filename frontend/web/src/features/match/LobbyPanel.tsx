@@ -11,6 +11,7 @@ import { LeaderHero } from './LeaderHero';
 import { DiceIcon, SparkIcon } from './LobbyIcons';
 import { PrimaryLobbyAction, type LobbyActionMode } from './PrimaryLobbyAction';
 import { getLeaderImage } from './useLeaderCards';
+import { WhatsNewLink } from './WhatsNewLink';
 
 interface LobbyPanelProps {
   roomCodeInput: string;
@@ -184,13 +185,16 @@ export function LobbyPanel({
             Bereit für die See{playerName ? `, ${playerName}` : ''}?
           </h1>
         </div>
-        <span
-          aria-label={CONNECTION_LABELS[connectionStatus]}
-          aria-live="polite"
-          className={`lobby-connection-dot lobby-connection-dot--${connectionStatus}`}
-          role="img"
-          title={CONNECTION_LABELS[connectionStatus]}
-        />
+        <div className="lobby__header-side">
+          <WhatsNewLink />
+          <span
+            aria-label={CONNECTION_LABELS[connectionStatus]}
+            aria-live="polite"
+            className={`lobby-connection-dot lobby-connection-dot--${connectionStatus}`}
+            role="img"
+            title={CONNECTION_LABELS[connectionStatus]}
+          />
+        </div>
       </header>
 
       <div className="lobby__grid">
