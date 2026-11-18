@@ -1,4 +1,5 @@
 using OneSake.Domain;
+using OneSake.Game.Effects;
 using OneSake.Game.State;
 
 namespace OneSake.Game.Actions;
@@ -38,9 +39,15 @@ public sealed class AttackAction
         var targetCard = opponent.FindFieldCard(targetId)
             ?? throw new InvalidOperationException("The target must be the opponent's Leader or one of their Characters.");
 
-        if (targetCard.IsCharacter && !targetCard.IsRested)
+        if (targetCard.IsCharacter && !targetCard.IsRested && !attackingCard.HasFlag(EffectFlags.CanAttackActiveCharacters))
         {
             throw new InvalidOperationException("You can only attack rested Characters.");
+        }
+
+        // [Rush: Character]: in the turn it was played, it may only attack Characters.
+        if (targetCard.IsLeader && attackingCard.IsCharacter && attackingCard.PlayedOnTurn == turnNumber && !attackingCard.HasRush)
+        {
+            throw new InvalidOperationException($"{attackingCard.Name} can only attack Characters in the turn it was played.");
         }
 
         attackingCard.IsRested = true;
@@ -64,7 +71,7 @@ public sealed class AttackAction
     // Active Leader, or active Character that was not played this turn (unless it has [Rush]).
     public static bool CanAttack(CardInstance card, PlayerState owner, int turnNumber)
     {
-        if (card.IsRested || !CanBattleThisTurn(owner))
+        if (card.IsRested || !CanBattleThisTurn(owner) || card.HasFlag(EffectFlags.CannotAttack))
         {
             return false;
         }
@@ -74,6 +81,7 @@ public sealed class AttackAction
             return true;
         }
 
-        return card.IsCharacter && (card.PlayedOnTurn != turnNumber || card.HasRush);
+        return card.IsCharacter
+            && (card.PlayedOnTurn != turnNumber || card.HasRush || card.HasFlag(EffectFlags.RushCharacter));
     }
 }

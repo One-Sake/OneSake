@@ -55,6 +55,8 @@ export async function toPlayerDeckSubmission(deck: Deck): Promise<PlayerDeckSubm
     leaderLife: toNumber(leader?.life),
     leaderText: leader?.card_text ?? '',
     leaderImageUrl: leader?.card_image ?? '',
+    leaderTypes: leader?.sub_types ?? '',
+    leaderAttribute: leader?.attribute ?? '',
     cards: deck.cards.map((card) => {
       const detail = details.get(card.cardId);
 
@@ -69,6 +71,8 @@ export async function toPlayerDeckSubmission(deck: Deck): Promise<PlayerDeckSubm
         counter: toNumber(detail?.counter_amount ?? card.counter),
         text: detail?.card_text ?? '',
         imageUrl: detail?.card_image ?? '',
+        types: detail?.sub_types ?? '',
+        attribute: detail?.attribute ?? '',
       };
     }),
   };

@@ -423,6 +423,12 @@ button.match-card-view,
     0 0 14px rgb(95 224 180 / 45%);
 }
 
+/* Card with an [Activate: Main] ability that can be used now. */
+.match-card-view.can-activate {
+  outline: 2px dashed rgb(240 191 56 / 85%);
+  outline-offset: 2px;
+}
+
 .match-card-view.is-targetable,
 .match-don-card.is-targetable {
   cursor: crosshair;
@@ -1698,4 +1704,127 @@ button.match-card-view,
     animation: none !important;
     transition-duration: 1ms !important;
   }
+}
+
+/* ---------- Card effect prompts (choose a target, pay a cost, activate a [Trigger]) ---------- */
+
+.effect-choice-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 76;
+  display: grid;
+  place-items: center;
+  padding: max(12px, env(safe-area-inset-top)) 16px max(12px, env(safe-area-inset-bottom));
+  background: rgb(0 0 0 / 55%);
+  backdrop-filter: blur(3px);
+}
+
+.effect-choice-overlay__dialog {
+  display: grid;
+  gap: 10px;
+  width: min(94vw, 640px);
+  max-height: calc(100dvh - 24px);
+  overflow-y: auto;
+  border: 1px solid rgb(229 176 73 / 55%);
+  border-radius: 14px;
+  padding: 14px;
+  color: var(--color-text-light);
+  background:
+    linear-gradient(180deg, rgb(255 221 137 / 10%), transparent 40%),
+    rgb(5 11 17 / 97%);
+  box-shadow:
+    0 0 38px rgb(240 191 56 / 18%),
+    0 20px 58px rgb(0 0 0 / 55%);
+}
+
+.effect-choice-overlay__header span {
+  display: block;
+  color: var(--color-gold-soft);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.effect-choice-overlay__header h2 {
+  margin: 2px 0 0;
+  color: #ffffff;
+  font-size: 1.08rem;
+  line-height: 1.15;
+}
+
+.effect-choice-overlay__text {
+  margin: 0;
+  border-left: 3px solid rgb(240 191 56 / 55%);
+  padding: 4px 8px;
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.effect-choice-overlay__title {
+  margin: 0;
+  color: #ffffff;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.effect-choice-overlay__cards {
+  --card-w: 96px;
+  --card-radius: 6px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  gap: 10px;
+}
+
+.effect-choice-overlay__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.effect-choice-overlay__actions button {
+  min-height: 36px;
+  border: 1px solid rgb(240 191 56 / 45%);
+  border-radius: 9px;
+  padding: 6px 14px;
+  color: #f8da84;
+  font: inherit;
+  font-weight: 900;
+  background: rgb(10 18 26 / 92%);
+  cursor: pointer;
+}
+
+.effect-choice-overlay__actions button.is-primary {
+  color: #10221b;
+  border-color: transparent;
+  background: var(--color-gold);
+}
+
+.effect-choice-overlay__actions button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.card-inspect-overlay__effect-status {
+  margin: 0;
+  border-radius: 8px;
+  padding: 6px 8px;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.card-inspect-overlay__effect-status.is-auto {
+  color: #9ff0d3;
+  background: rgb(31 196 159 / 12%);
+}
+
+.card-inspect-overlay__effect-status.is-manual {
+  color: #ffd9a0;
+  background: rgb(240 191 56 / 12%);
+}
+
+.card-inspect-overlay__effect-status ul {
+  margin: 4px 0 0;
+  padding-left: 18px;
 }

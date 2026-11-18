@@ -60,6 +60,14 @@ public record CardInstanceDto
     public int AttachedDon { get; init; }
     public bool CanAttack { get; init; }
     public IReadOnlyList<string> Keywords { get; init; } = [];
+    // True when the card has an [Activate: Main] ability that can be used right now.
+    public bool CanActivate { get; init; }
+    // Event with a [Counter] effect (usable in the counter step for its cost).
+    public bool IsCounterEvent { get; init; }
+    // "auto" (all effects automated), "partial", "manual" (resolve by hand) or "" (no effect text).
+    public string EffectStatus { get; init; } = string.Empty;
+    // Effect texts the server does not automate. The players resolve them manually.
+    public IReadOnlyList<string> ManualEffects { get; init; } = [];
 }
 
 public record BattleDto
@@ -85,6 +93,9 @@ public record PlayerDeckCardDto
     public int? Counter { get; init; }
     public string Text { get; init; } = string.Empty;
     public string ImageUrl { get; init; } = string.Empty;
+    // Card types like "Straw Hat Crew" and the attribute ("Slash"...). Needed for card effects.
+    public string Types { get; init; } = string.Empty;
+    public string Attribute { get; init; } = string.Empty;
 }
 
 public record PlayerDeckSubmissionDto
@@ -98,6 +109,8 @@ public record PlayerDeckSubmissionDto
     public int? LeaderLife { get; init; }
     public string LeaderText { get; init; } = string.Empty;
     public string LeaderImageUrl { get; init; } = string.Empty;
+    public string LeaderTypes { get; init; } = string.Empty;
+    public string LeaderAttribute { get; init; } = string.Empty;
     public IReadOnlyList<PlayerDeckCardDto> Cards { get; init; } = [];
 }
 
@@ -150,6 +163,10 @@ public record ChoicePromptDto
     public string Kind { get; init; } = string.Empty;
     public string Title { get; init; } = string.Empty;
     public IReadOnlyList<string> Options { get; init; } = [];
+    // Card effect prompts: the cards the player can choose and the effect text.
+    public IReadOnlyList<CardInstanceDto> Cards { get; init; } = [];
+    public string SourceName { get; init; } = string.Empty;
+    public string EffectText { get; init; } = string.Empty;
 }
 
 public record ChoiceSubmissionDto
