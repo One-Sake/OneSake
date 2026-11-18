@@ -1477,3 +1477,123 @@
   color: #a83232 !important;
 }
 
+
+/* Deck import modal */
+
+.deckbuilder-page .deck-import-modal {
+  width: min(94vw, 620px);
+  max-height: 86dvh;
+  margin-top: 6vh;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  border: 1px solid rgb(229 176 73 / 24%);
+  color: #d9e9ee;
+  background: #071522;
+}
+
+.deck-import {
+  display: grid;
+  gap: 12px;
+}
+
+.deck-import label {
+  color: #9db5bd;
+}
+
+.deck-import textarea,
+.deck-import input {
+  border-color: rgb(148 187 194 / 34%);
+  color: #eef8f9;
+  background: #0b1a2a;
+}
+
+.deck-import__textarea {
+  min-height: 150px;
+  resize: vertical;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 0.92rem;
+}
+
+.deck-import__preview {
+  display: grid;
+  gap: 8px;
+}
+
+.deck-import__summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  color: #9db5bd;
+  font-size: 0.9rem;
+}
+
+.deck-import__summary strong {
+  color: #ffffff;
+}
+
+.deck-import__list {
+  display: grid;
+  gap: 4px;
+  max-height: 220px;
+  margin: 0;
+  overflow-y: auto;
+  padding: 0;
+  list-style: none;
+}
+
+.deck-import__list li {
+  display: grid;
+  grid-template-columns: 34px 92px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  border-radius: 6px;
+  padding: 4px 8px;
+  background: rgb(255 255 255 / 4%);
+  font-size: 0.86rem;
+}
+
+.deck-import__list li small {
+  overflow: hidden;
+  color: #9db5bd;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.deck-import__list li.is-error {
+  outline: 1px solid rgb(234 111 99 / 50%);
+  background: rgb(168 50 50 / 18%);
+}
+
+.deck-import__list li.is-error small {
+  color: #ff9b90;
+}
+
+.deck-import__errors,
+.deck-import__error {
+  margin: 0;
+  border: 1px solid rgb(234 111 99 / 40%);
+  border-radius: 8px;
+  padding: 8px 10px 8px 26px;
+  color: #ffd1cc;
+  background: rgb(168 50 50 / 18%);
+  font-size: 0.86rem;
+}
+
+.deck-import__error {
+  padding-left: 10px;
+}
+
+.deck-import__validation {
+  border: 1px solid rgb(240 191 56 / 32%);
+  border-radius: 8px;
+  padding: 8px 10px;
+  color: #ffe7a1;
+  background: rgb(240 191 56 / 8%);
+  font-size: 0.86rem;
+}
+
+.deck-import__validation ul {
+  margin: 4px 0 0;
+  padding-left: 18px;
+}
