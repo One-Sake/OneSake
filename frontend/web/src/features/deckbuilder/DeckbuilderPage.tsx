@@ -7,6 +7,7 @@ import { Button } from '../../components/ui/Button';
 import { Toast } from '../../components/ui/Toast';
 import type { CardDto } from '../../types/cards';
 import type { Deck, DeckCard } from '../../types/decks';
+import { getLeaderColors } from '../match/leaderColors';
 import { CardFilterSheet, type CardFilters } from './CardFilterSheet';
 import { CardGrid } from './CardGrid';
 import { CardHoverPreview } from './CardHoverPreview';
@@ -610,7 +611,15 @@ export function DeckbuilderPage() {
     showDeckNotice('Deck deleted.');
   };
 
+  // Visual only: the leader colors of the deck being edited tint the page background.
+  const leaderAccent = getLeaderColors(deck.leaderColors);
+  const pageAccentStyle = {
+    '--page-accent': leaderAccent.primary,
+    '--page-accent-2': leaderAccent.secondary,
+  } as CSSProperties;
+
   return (
+    <div className="ui-page-bg deckbuilder-backdrop" style={pageAccentStyle}>
     <section className="deckbuilder-page">
       <div className="deckbuilder-layout">
         <main className="deckbuilder-main">
@@ -811,5 +820,6 @@ export function DeckbuilderPage() {
       />
 
     </section>
+    </div>
   );
 }
