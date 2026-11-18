@@ -28,6 +28,19 @@ builder.Services.AddControllers(); // Support Adden fuer Controllers
 
 builder.Services.AddHttpClient<CardService>();
 builder.Services.AddMemoryCache();
+
+// Meta data of an external provider (Card Kaizoku). Disabled unless "Meta:Enabled" is true.
+builder.Services.Configure<OneSake.Server.Services.Meta.MetaOptions>(
+    builder.Configuration.GetSection(OneSake.Server.Services.Meta.MetaOptions.SectionName));
+builder.Services.AddSingleton(TimeProvider.System);
+builder.Services
+    .AddHttpClient<OneSake.Server.Services.Meta.IMetaProvider, OneSake.Server.Services.Meta.CardKaizokuMetaProvider>(client =>
+    {
+        client.Timeout = TimeSpan.FromSeconds(10);
+        // Generic client name only, no personal data.
+        client.DefaultRequestHeaders.UserAgent.ParseAdd("OneSake/1.0");
+    });
+builder.Services.AddSingleton<OneSake.Server.Services.Meta.MetaService>();
 builder.Services.AddScoped<CardImportService>();
 builder.Services.AddScoped<CardQueryService>();
 
