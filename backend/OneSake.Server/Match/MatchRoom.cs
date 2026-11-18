@@ -122,7 +122,7 @@ public sealed class MatchRoom
     #endregion
 
     #region PUBLIC API
-    public MatchUpdate JoinPlayer(string connectionId, string displayName)
+    public MatchUpdate JoinPlayer(string connectionId, string displayName, string? guestId = null)
     {
         lock (_sync)
         {
@@ -142,12 +142,14 @@ public sealed class MatchRoom
                 {
                     PlayerId = connectionId,
                     DisplayName = normalizedDisplayName,
+                    GuestId = guestId,
                     Connected = true
                 });
             }
             else
             {
                 existingPlayer.DisplayName = normalizedDisplayName;
+                existingPlayer.GuestId = guestId ?? existingPlayer.GuestId;
                 existingPlayer.Connected = true;
             }
 

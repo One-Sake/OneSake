@@ -25,14 +25,24 @@ public class MatchHub : Hub
     {
         var normalizedRoomCode = NormalizeRoomCode(roomCode);
         var room = RunRoomAction(() => _roomManager.Create(normalizedRoomCode));
-        await JoinExistingRoom(room, normalizedRoomCode, displayName);
+        await JoinExistingRoom(room, normalizedRoomCode, displayName, GetConnectionGuestId());
     }
 
     public async Task JoinRoom(string roomCode, string displayName)
     {
         var normalizedRoomCode = NormalizeRoomCode(roomCode);
         var room = GetExistingRoom(normalizedRoomCode);
-        await JoinExistingRoom(room, normalizedRoomCode, displayName);
+        await JoinExistingRoom(room, normalizedRoomCode, displayName, GetConnectionGuestId());
+    }
+
+    // The client sends its guest ID in the hub URL (/matchHub?guestId=...).
+    // SignalR does not support optional hub method parameters, so a third argument on
+    // CreateRoom/JoinRoom would break older clients. Without the query value the ID is null.
+    // NOT secure authentication - see GuestIdValidator.
+    private string? GetConnectionGuestId()
+    {
+        var guestId = Context.GetHttpContext()?.Request.Query["guestId"].ToString();
+        return GuestIdValidator.Normalize(guestId);
     }
 
     public async Task LeaveRoom(string roomCode)
@@ -124,7 +134,7 @@ public class MatchHub : Hub
         await Clients.Group(normalizedRoomCode).SendAsync("LogEvent", logEvent);
     }
 
-    private async Task JoinExistingRoom(MatchRoom room, string roomCode, string displayName)
+    private async Task JoinExistingRoom(MatchRoom room, string roomCode, string displayName, string? guestId)
     {
         // A connection can only be in one room at a time.
         foreach (var otherRoom in _roomManager.GetRoomsForConnection(Context.ConnectionId))
@@ -135,7 +145,7 @@ public class MatchHub : Hub
             }
         }
 
-        var update = RunRoomAction(() => room.JoinPlayer(Context.ConnectionId, displayName));
+        var update = RunRoomAction(() => room.JoinPlayer(Context.ConnectionId, displayName, guestId));
         await Groups.AddToGroupAsync(Context.ConnectionId, roomCode);
         await PublishMatchUpdate(roomCode, update);
         await BroadcastRoomList();
