@@ -1,8 +1,9 @@
 import { useState } from 'react';
 
-import { Button } from '../../../components/ui/Button';
+import { HandIcon, RefreshIcon } from '../../../components/ui/Icons';
 import type { Deck } from '../../../types/decks';
 import { getTotalCards } from '../../deckbuilder/utils/deckValidation';
+import { useCardImages } from '../../profile/useCardImages';
 import { drawOpeningHand } from './mulliganLogic';
 import type { MulliganDrawResult, MulliganSessionStats } from './mulliganTypes';
 
@@ -32,18 +33,33 @@ function createEmptyDrawResult(): MulliganDrawResult {
   };
 }
 
-function formatKeepRate(stats: MulliganSessionStats): string {
+function getKeepRate(stats: MulliganSessionStats): number {
   const decisions = stats.keeps + stats.mulligans;
   if (decisions === 0) {
-    return '0%';
+    return 0;
   }
 
-  return `${Math.round((stats.keeps / decisions) * 100)}%`;
+  return Math.round((stats.keeps / decisions) * 100);
+}
+
+function ToolHeader({ description }: { description: string }) {
+  return (
+    <div className="tool-card__header">
+      <span className="tool-card__icon" aria-hidden="true">
+        <HandIcon />
+      </span>
+      <div>
+        <h2 className="ui-heading">Mulligan Trainer</h2>
+        <p className="tools-muted">{description}</p>
+      </div>
+    </div>
+  );
 }
 
 export function MulliganTrainer({ deck }: MulliganTrainerProps) {
   const [drawResult, setDrawResult] = useState<MulliganDrawResult>(() => createEmptyDrawResult());
   const [stats, setStats] = useState<MulliganSessionStats>(emptyStats);
+  const cardImagesById = useCardImages(drawResult.hand.map((card) => card.cardId));
 
   const totalCards = deck ? getTotalCards(deck.cards) : 0;
   const canDraw = Boolean(deck && totalCards >= 5);
@@ -81,9 +97,8 @@ export function MulliganTrainer({ deck }: MulliganTrainerProps) {
 
   if (!deck) {
     return (
-      <section className="panel tools-panel tool-card mulligan-trainer">
-        <span className="tools-kicker">Practice</span>
-        <h2>Mulligan Trainer</h2>
+      <section className="ui-glass tool-card mulligan-trainer">
+        <ToolHeader description="Draw opening hands and practice keep or mulligan decisions." />
       </section>
     );
   }
@@ -101,22 +116,21 @@ export function MulliganTrainer({ deck }: MulliganTrainerProps) {
     { label: 'Hands Drawn', value: stats.handsDrawn },
     { label: 'Keeps', value: stats.keeps },
     { label: 'Mulligans', value: stats.mulligans },
-    { label: 'Keep Rate', value: formatKeepRate(stats) },
   ];
+  const keepRate = getKeepRate(stats);
 
   return (
-    <section className="panel tools-panel tool-card mulligan-trainer">
+    <section className="ui-glass tool-card mulligan-trainer">
       <div className="mulligan-header">
-        <div>
-          <span className="tools-kicker">Practice</span>
-          <h2>Mulligan Trainer</h2>
-          <p>
-            {deck.name} / {totalCards} cards
-          </p>
-        </div>
-        <Button disabled={!canDraw} onClick={drawHand}>
-          Draw Hand
-        </Button>
+        <ToolHeader description={`Practice opening hands · ${deck.name} / ${totalCards} cards`} />
+        <button
+          className="ui-btn-primary ui-btn-primary--compact"
+          disabled={!canDraw}
+          onClick={drawHand}
+          type="button"
+        >
+          <span>Draw Hand</span>
+        </button>
       </div>
 
       {!canDraw && (
@@ -135,7 +149,11 @@ export function MulliganTrainer({ deck }: MulliganTrainerProps) {
             {drawResult.hand.map((card) => (
               <article key={card.cardId} className="mulligan-card">
                 <div className="mulligan-card__art" aria-hidden="true">
-                  {card.cardId}
+                  {cardImagesById[card.cardId] ? (
+                    <img alt="" loading="lazy" src={cardImagesById[card.cardId]} />
+                  ) : (
+                    card.cardId
+                  )}
                 </div>
                 <div className="mulligan-card__body">
                   <strong>{card.name}</strong>
@@ -159,7 +177,7 @@ export function MulliganTrainer({ deck }: MulliganTrainerProps) {
 
           <div className="mulligan-metrics">
             {metricCards.map((metric) => (
-              <div key={metric.label}>
+              <div key={metric.label} className="ui-stat">
                 <span>{metric.label}</span>
                 <strong>{metric.value}</strong>
               </div>
@@ -167,26 +185,36 @@ export function MulliganTrainer({ deck }: MulliganTrainerProps) {
           </div>
 
           <div className="mulligan-actions">
-            <Button onClick={() => recordDecision('keep')}>Keep</Button>
-            <Button onClick={() => recordDecision('mulligan')} variant="secondary">
+            <button className="ui-btn-secondary" onClick={() => recordDecision('keep')} type="button">
+              Keep
+            </button>
+            <button className="ui-btn-secondary" onClick={() => recordDecision('mulligan')} type="button">
               Mulligan
-            </Button>
+            </button>
           </div>
         </>
       )}
 
       <div className="mulligan-stats">
         {statCards.map((stat) => (
-          <div key={stat.label}>
+          <div key={stat.label} className="ui-stat">
             <span>{stat.label}</span>
             <strong>{stat.value}</strong>
           </div>
         ))}
+        <div className="ui-stat ui-stat--accent mulligan-stats__rate">
+          <span>Keep Rate</span>
+          <strong>{keepRate}%</strong>
+          <span className="ui-meter" aria-hidden="true">
+            <span style={{ width: `${keepRate}%` }} />
+          </span>
+        </div>
       </div>
 
-      <Button onClick={resetSession} variant="ghost">
+      <button className="ui-btn-ghost mulligan-reset" onClick={resetSession} type="button">
+        <RefreshIcon />
         Reset Session
-      </Button>
+      </button>
     </section>
   );
 }

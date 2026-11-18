@@ -117,24 +117,12 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .tools-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .mulligan-header {
     grid-template-columns: 1fr auto;
     align-items: start;
   }
 
-  .mulligan-hand {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .probability-form {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .probability-actions {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -303,23 +291,17 @@
     font-size: 0.74rem;
   }
 
-  .tools-deck-context__stats,
-  .probability-result__stats,
-  .mulligan-metrics,
   .mulligan-stats,
   .profile-stat-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .probability-section__title,
-  .profile-card__header,
-  .saved-deck-select__header {
+  .profile-card__header {
     align-items: stretch;
     flex-wrap: wrap;
   }
 
-  .saved-deck-select__toolbar,
-  .saved-deck-select__stats,
   .card-search__controls {
     grid-template-columns: 1fr;
   }
@@ -358,12 +340,6 @@
 }
 
 @media (max-width: 420px) {
-  .tools-deck-context__stats,
-  .probability-result__stats,
-  .mulligan-metrics {
-    grid-template-columns: 1fr;
-  }
-
   .mulligan-actions {
     grid-template-columns: 1fr;
   }

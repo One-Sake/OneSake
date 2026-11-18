@@ -1,7 +1,10 @@
 import { useMemo, useState } from 'react';
+import type { CSSProperties } from 'react';
 
 import { loadStoredDecks } from '../deckbuilder/utils/deckStorage';
 import { validateDeck } from '../deckbuilder/utils/deckValidation';
+import { getLeaderColors } from '../match/leaderColors';
+import { useLeaderCards } from '../match/useLeaderCards';
 import { MulliganTrainer } from './mulligan/MulliganTrainer';
 import { ProbabilityCalculator } from './probability/ProbabilityCalculator';
 import { SavedDeckSelect } from './SavedDeckSelect';
@@ -21,27 +24,39 @@ export function ToolsPage({ onOpenDeckbuilder }: ToolsPageProps) {
     () => (selectedDeck ? validateDeck(selectedDeck) : null),
     [selectedDeck],
   );
+  const leaderCardsById = useLeaderCards(savedDecks);
+
+  // The leader colors of the selected deck tint the page background.
+  const leaderCard = selectedDeck ? leaderCardsById[selectedDeck.leaderCardId] ?? null : null;
+  const leaderColors = getLeaderColors(leaderCard?.card_color || selectedDeck?.leaderColors);
+  const pageStyle = {
+    '--page-accent': leaderColors.primary,
+    '--page-accent-2': leaderColors.secondary,
+    '--leader-color': leaderColors.primary,
+    '--leader-color-2': leaderColors.secondary,
+  } as CSSProperties;
 
   return (
-    <section className="tools-page">
-      <header className="panel header-panel tools-hero">
+    <section className="tools-page ui-page" style={pageStyle}>
+      <header className="ui-page-header">
         <div>
-          <span className="tools-kicker">Game Analysis</span>
-          <h1>Captain Tools</h1>
+          <span className="ui-kicker">OneSake · Game Analysis</span>
+          <h1 className="ui-title">Captain Tools</h1>
         </div>
         {selectedDeck && selectedDeckValidation && (
-          <div
-            className={`tools-deck-badge ${
-              selectedDeckValidation.isValid ? 'is-valid' : 'is-invalid'
+          <span
+            className={`ui-badge tools-deck-badge ${
+              selectedDeckValidation.isValid ? 'ui-badge--success' : 'ui-badge--danger'
             }`}
           >
             {selectedDeckValidation.isValid ? 'Valid Deck' : 'Needs Work'}
-          </div>
+          </span>
         )}
       </header>
 
       <SavedDeckSelect
         decks={savedDecks}
+        leaderCardsById={leaderCardsById}
         onOpenDeckbuilder={onOpenDeckbuilder}
         onSelectDeck={setSelectedDeckId}
         selectedDeckId={selectedDeckId}
