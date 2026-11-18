@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { CopyIcon } from './LobbyIcons';
+import { CopyIcon } from '../../components/ui/Icons';
 
 // Which big action the lobby offers right now. Derived from the room state in LobbyPanel.
 export type LobbyActionMode = 'queue' | 'searching' | 'waiting' | 'start' | 'board';

@@ -1,5 +1,5 @@
 import type { RoomSummaryDto } from '../../types/realtime';
-import { RefreshIcon } from './LobbyIcons';
+import { RefreshIcon } from '../../components/ui/Icons';
 import { RoomTile } from './RoomTile';
 
 interface ServerBrowserProps {

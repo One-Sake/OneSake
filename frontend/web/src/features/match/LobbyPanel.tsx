@@ -8,7 +8,7 @@ import { getTotalCards } from '../deckbuilder/utils/deckValidation';
 import { DeckCarousel } from './DeckCarousel';
 import { getLeaderColorHex, getLeaderColorNames, getLeaderColors } from './leaderColors';
 import { LeaderHero } from './LeaderHero';
-import { DiceIcon, SparkIcon } from './LobbyIcons';
+import { DiceIcon, SparkIcon } from '../../components/ui/Icons';
 import { PrimaryLobbyAction, type LobbyActionMode } from './PrimaryLobbyAction';
 import { getLeaderImage } from './useLeaderCards';
 import { WhatsNewLink } from './WhatsNewLink';
