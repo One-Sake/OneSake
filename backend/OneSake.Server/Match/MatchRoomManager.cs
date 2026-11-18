@@ -4,6 +4,9 @@ namespace OneSake.Server.Match;
 
 public sealed class MatchRoomManager
 {
+    private const string RoomCodeAlphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    private const int RoomCodeLength = 6;
+
     private readonly object _sync = new();
     private readonly Dictionary<string, MatchRoom> _rooms = new(StringComparer.OrdinalIgnoreCase);
 
@@ -20,6 +23,39 @@ public sealed class MatchRoomManager
             _rooms[roomCode] = createdRoom;
             return createdRoom;
         }
+    }
+
+    // Creates a private room with a random code and puts both Quick Match players into it.
+    public (MatchRoom Room, MatchUpdate Update) CreateQuickMatchRoom(QueuePair pair)
+    {
+        MatchRoom room;
+        lock (_sync)
+        {
+            string roomCode;
+            do
+            {
+                roomCode = CreateRandomRoomCode();
+            }
+            while (_rooms.ContainsKey(roomCode));
+
+            room = new MatchRoom(roomCode, isQuickMatch: true);
+            _rooms[roomCode] = room;
+        }
+
+        room.JoinPlayer(pair.First.ConnectionId, pair.First.DisplayName, pair.First.GuestId);
+        var update = room.JoinPlayer(pair.Second.ConnectionId, pair.Second.DisplayName, pair.Second.GuestId);
+        return (room, update);
+    }
+
+    private static string CreateRandomRoomCode()
+    {
+        var chars = new char[RoomCodeLength];
+        for (var index = 0; index < chars.Length; index += 1)
+        {
+            chars[index] = RoomCodeAlphabet[Random.Shared.Next(RoomCodeAlphabet.Length)];
+        }
+
+        return new string(chars);
     }
 
     public MatchRoom? Get(string roomCode)
@@ -45,6 +81,7 @@ public sealed class MatchRoomManager
         lock (_sync)
         {
             return _rooms.Values
+                .Where(room => !room.IsQuickMatch)
                 .Select(room => room.CreateSummary())
                 .OrderByDescending(summary => summary.CreatedAtUnixMs)
                 .ToArray();

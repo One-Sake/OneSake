@@ -9,6 +9,7 @@ import {
   ChoicePromptDto,
   GameStateDto,
   LogEventDto,
+  MatchFoundDto,
   PlayerDeckSubmissionDto,
   RoomSummaryDto,
 } from '../types/realtime';
@@ -19,6 +20,7 @@ type ChoicePromptHandler = (prompt: ChoicePromptDto) => void;
 type ChatMessageHandler = (message: ChatMessageDto) => void;
 type LogEventHandler = (event: LogEventDto) => void;
 type RoomListHandler = (rooms: RoomSummaryDto[]) => void;
+type MatchFoundHandler = (matchFound: MatchFoundDto) => void;
 export type ConnectionStatus =
   | 'disconnected'
   | 'connecting'
@@ -40,6 +42,7 @@ export class SignalRClient {
   private chatMessageHandler: ChatMessageHandler | null = null;
   private logEventHandler: LogEventHandler | null = null;
   private roomListHandler: RoomListHandler | null = null;
+  private matchFoundHandler: MatchFoundHandler | null = null;
 
   constructor(hubUrl: string) {
     this.hubUrl = hubUrl;
@@ -115,6 +118,10 @@ export class SignalRClient {
         this.roomListHandler?.(rooms);
       });
 
+      this.connection.on('MatchFound', (matchFound: MatchFoundDto) => {
+        this.matchFoundHandler?.(matchFound);
+      });
+
       this.connection.onreconnecting(() => {
         this.notifyConnectionStatus('reconnecting');
       });
@@ -181,6 +188,17 @@ export class SignalRClient {
     await this.connection!.invoke('JoinRoom', roomCode, displayName);
   }
 
+  // Quick Match: wait for an opponent. The server answers with a "MatchFound" event.
+  async joinQueue(displayName: string): Promise<void> {
+    await this.connect();
+    await this.connection!.invoke('JoinQueue', displayName, getGuestId());
+  }
+
+  async leaveQueue(): Promise<void> {
+    await this.connect();
+    await this.connection!.invoke('LeaveQueue');
+  }
+
   async startMatch(roomCode: string): Promise<void> {
     await this.connect();
     await this.connection!.invoke('StartMatch', roomCode);
@@ -219,6 +237,10 @@ export class SignalRClient {
 
   onRoomList(handler: RoomListHandler): void {
     this.roomListHandler = handler;
+  }
+
+  onMatchFound(handler: MatchFoundHandler): void {
+    this.matchFoundHandler = handler;
   }
 
   onConnectionStatus(handler: ConnectionStatusHandler): void {

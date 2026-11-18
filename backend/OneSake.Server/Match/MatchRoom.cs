@@ -49,14 +49,18 @@ public sealed class MatchRoom
     private readonly DateTimeOffset _createdAtUtc;
     private DateTimeOffset _lastActivityUtc;
 
-    public MatchRoom(string roomCode)
+    public MatchRoom(string roomCode, bool isQuickMatch = false)
     {
         _roomCode = roomCode;
+        IsQuickMatch = isQuickMatch;
         _createdAtUtc = DateTimeOffset.UtcNow;
         _lastActivityUtc = _createdAtUtc;
     }
 
     public string RoomCode => _roomCode;
+
+    // Quick Match rooms are private and do not appear in the public room list.
+    public bool IsQuickMatch { get; }
 
     #region ROOM MEMBERSHIP
 

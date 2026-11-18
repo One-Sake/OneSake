@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useMemo, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 
 import { getMatchHubUrl } from '../../api/backendUrl';
 import { SignalRClient, type ConnectionStatus } from '../../api/signalrClient';
@@ -8,6 +8,7 @@ import {
   ChoiceSubmissionDto,
   GameStateDto,
   LogEventDto,
+  MatchFoundDto,
   RoomSummaryDto,
 } from '../../types/realtime';
 import { Modal } from '../../components/ui/Modal';
@@ -139,6 +140,11 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
   const [copyStatus, setCopyStatus] = useState<CopyStatus>('');
   const [displayNamePlaceholder] = useState(() => generatePirateName());
   const [rooms, setRooms] = useState<RoomSummaryDto[]>([]);
+  // Time when the Quick Match search started, null while not searching.
+  const [queueStartedAt, setQueueStartedAt] = useState<number | null>(null);
+  // The SignalR handler is registered once, so it calls the latest version through this ref.
+  const matchFoundHandlerRef = useRef<(matchFound: MatchFoundDto) => void>(() => undefined);
+  const isSearchingRef = useRef(false);
 
   useEffect(() => {
     if (!signalRClient) {
@@ -167,6 +173,10 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
 
     client.onLogEvent((event) => {
       setLogEvents((previous) => [...previous, event]);
+    });
+
+    client.onMatchFound((matchFound) => {
+      matchFoundHandlerRef.current(matchFound);
     });
 
     client.onConnectionStatus((status) => {
@@ -199,6 +209,11 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
       connectionStatus === 'reconnecting' ||
       connectionStatus === 'disconnected' ||
       connectionStatus === 'error';
+
+    // The server drops the queue entry when the connection is gone.
+    if (lostConnection) {
+      setQueueStartedAt(null);
+    }
 
     if (lostConnection && joinedRoomCode) {
       resetRoomState();
@@ -265,6 +280,8 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
     connectionStatus !== 'connecting' &&
     !signalRConfigError;
   const canJoin = canCreate && hasRoomCode;
+  // Quick Match needs the same as Create/Join plus a live connection.
+  const canQuickMatch = canCreate && connectionStatus === 'connected';
   const canStart =
     joinedRoomCode.length > 0 &&
     connectionStatus === 'connected' &&
@@ -367,27 +384,84 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
       } else {
         await signalRClient.joinRoom(normalizedRoomCode, normalizedDisplayName);
       }
-      setJoinedRoomCode(normalizedRoomCode);
-      setRoomCodeInput(normalizedRoomCode);
-
-      if (selectedDeck && selectedDeckValidation?.isValid) {
-        await signalRClient.setPlayerDeck(
-          normalizedRoomCode,
-          await toPlayerDeckSubmission(selectedDeck),
-        );
-        setRecentDeckIds(saveRecentDeckId(selectedDeck.id));
-      }
-
-      setIsBoardMode(true);
-      if (isMobileViewport()) {
-        void requestBoardPresentation();
-      }
+      await completeRoomEntry(normalizedRoomCode);
     } catch (joinError) {
       setError(toHubErrorMessage(joinError, 'Join fehlgeschlagen.'));
     } finally {
       setPending(false);
     }
   };
+
+  // Shared by Create/Join and Quick Match: remember the room, send the deck, open the board.
+  const completeRoomEntry = async (roomCode: string): Promise<void> => {
+    if (!signalRClient) {
+      return;
+    }
+
+    setQueueStartedAt(null);
+    setJoinedRoomCode(roomCode);
+    setRoomCodeInput(roomCode);
+
+    if (selectedDeck && selectedDeckValidation?.isValid) {
+      await signalRClient.setPlayerDeck(roomCode, await toPlayerDeckSubmission(selectedDeck));
+      setRecentDeckIds(saveRecentDeckId(selectedDeck.id));
+    }
+
+    setIsBoardMode(true);
+    if (isMobileViewport()) {
+      void requestBoardPresentation();
+    }
+  };
+
+  const startQuickMatch = async (): Promise<void> => {
+    const normalizedDisplayName = displayNameInput.trim();
+    if (!signalRClient || !normalizedDisplayName) {
+      return;
+    }
+
+    setError('');
+    setQueueStartedAt(Date.now());
+    try {
+      await signalRClient.joinQueue(normalizedDisplayName);
+    } catch (queueError) {
+      setQueueStartedAt(null);
+      setError(toHubErrorMessage(queueError, 'Quick Match fehlgeschlagen.'));
+    }
+  };
+
+  const cancelQuickMatch = (): void => {
+    setQueueStartedAt(null);
+    signalRClient?.leaveQueue().catch((queueError) => {
+      console.warn('[OneSake] LeaveQueue failed', queueError);
+    });
+  };
+
+  const handleMatchFound = async (matchFound: MatchFoundDto): Promise<void> => {
+    setPending(true);
+    setError('');
+    try {
+      await completeRoomEntry(matchFound.roomCode.trim().toUpperCase());
+    } catch (matchError) {
+      setError(toHubErrorMessage(matchError, 'Quick Match room could not be entered.'));
+    } finally {
+      setPending(false);
+    }
+  };
+
+  useEffect(() => {
+    matchFoundHandlerRef.current = (matchFound) => void handleMatchFound(matchFound);
+    isSearchingRef.current = queueStartedAt !== null;
+  });
+
+  // Leaving the match tab while searching takes the player out of the queue.
+  useEffect(
+    () => () => {
+      if (isSearchingRef.current) {
+        signalRClient?.leaveQueue().catch(() => undefined);
+      }
+    },
+    [signalRClient],
+  );
 
   const createRoom = (): void => {
     const roomCode = roomCodeInput.trim() || createRoomCode();
@@ -579,6 +653,7 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
       <LobbyPanel
         canCreate={canCreate}
         canJoin={canJoin}
+        canQuickMatch={canQuickMatch}
         canStart={canStart}
         connectionNotice={connectionNotice}
         connectionStatus={connectionStatus}
@@ -591,6 +666,7 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
         isMatchRunning={isMatchRunning}
         joinedRoomCode={joinedRoomCode}
         leaderCardsById={leaderCardsById}
+        onCancelQuickMatch={cancelQuickMatch}
         onCopyRoomCode={() => void copyRoomCode()}
         onCreateRoom={createRoom}
         onDisplayNameChange={setDisplayNameInput}
@@ -604,8 +680,10 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
         onRoomCodeChange={updateRoomCodeInput}
         onSelectDeck={setSelectedDeckId}
         onStartMatch={() => void startMatch()}
+        onStartQuickMatch={() => void startQuickMatch()}
         pending={pending}
         playersInRoom={playersInRoom}
+        queueStartedAt={queueStartedAt}
         roomCodeInput={roomCodeInput}
         selectedDeck={selectedDeck}
         selectedDeckId={selectedDeckId}

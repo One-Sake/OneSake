@@ -46,6 +46,8 @@ builder.Services
 builder.Services.AddSingleton<MatchRoomManager>();
 // Speichert beendete Matches (Fehler werden nur geloggt, das Spiel laeuft weiter)
 builder.Services.AddSingleton<MatchResultService>();
+// Warteschlange fuer Quick Match
+builder.Services.AddSingleton<MatchmakingQueue>();
 // Loescht leere Rooms automatisch nach 5 Minuten
 builder.Services.AddHostedService<RoomCleanupService>();
 // Erlaubt frontend (localhost:5173) zu backend zu reden

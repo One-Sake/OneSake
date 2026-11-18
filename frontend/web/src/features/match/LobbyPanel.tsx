@@ -17,6 +17,7 @@ interface LobbyPanelProps {
   displayNameInput: string;
   canCreate: boolean;
   canJoin: boolean;
+  canQuickMatch: boolean;
   canStart: boolean;
   connectionStatus: ConnectionStatus;
   connectionNotice: string;
@@ -27,6 +28,7 @@ interface LobbyPanelProps {
   joinedRoomCode: string;
   playersInRoom: number;
   isMatchRunning: boolean;
+  queueStartedAt: number | null;
   pending: boolean;
   decks: Deck[];
   selectedDeck: Deck | null;
@@ -38,6 +40,8 @@ interface LobbyPanelProps {
   onGenerateRoomCode: () => void;
   onRandomizeDisplayName: () => void;
   onCreateRoom: () => void;
+  onStartQuickMatch: () => void;
+  onCancelQuickMatch: () => void;
   onJoinRoom: () => void;
   onLeaveRoom: () => void;
   onCopyRoomCode: () => void;
@@ -56,9 +60,14 @@ const CONNECTION_LABELS: Record<ConnectionStatus, string> = {
   error: 'Verbindungsfehler',
 };
 
-function getActionMode(joinedRoomCode: string, isMatchRunning: boolean, playersInRoom: number): LobbyActionMode {
+function getActionMode(
+  joinedRoomCode: string,
+  isMatchRunning: boolean,
+  playersInRoom: number,
+  isSearching: boolean,
+): LobbyActionMode {
   if (!joinedRoomCode) {
-    return 'create';
+    return isSearching ? 'searching' : 'queue';
   }
 
   if (isMatchRunning) {
@@ -71,6 +80,7 @@ function getActionMode(joinedRoomCode: string, isMatchRunning: boolean, playersI
 export function LobbyPanel({
   canCreate,
   canJoin,
+  canQuickMatch,
   canStart,
   connectionNotice,
   connectionStatus,
@@ -83,6 +93,7 @@ export function LobbyPanel({
   isMatchRunning,
   joinedRoomCode,
   leaderCardsById,
+  onCancelQuickMatch,
   onCopyRoomCode,
   onCreateRoom,
   onDisplayNameChange,
@@ -96,8 +107,10 @@ export function LobbyPanel({
   onRoomCodeChange,
   onSelectDeck,
   onStartMatch,
+  onStartQuickMatch,
   pending,
   playersInRoom,
+  queueStartedAt,
   roomCodeInput,
   selectedDeck,
   selectedDeckId,
@@ -114,19 +127,22 @@ export function LobbyPanel({
     leaderCard?.card_name || selectedDeck?.leaderName || selectedDeck?.leaderCardId || 'Kein Deck';
   const playerName = displayNameInput.trim();
 
-  const mode = getActionMode(joinedRoomCode, isMatchRunning, playersInRoom);
+  const mode = getActionMode(joinedRoomCode, isMatchRunning, playersInRoom, queueStartedAt !== null);
   const isPrimaryDisabled =
-    pending || (mode === 'create' && !canCreate) || (mode === 'start' && !canStart);
+    pending || (mode === 'queue' && !canQuickMatch) || (mode === 'start' && !canStart);
 
   // One short line that explains why the main button is locked.
   let blockedReason = '';
   if (mode === 'waiting') {
     blockedReason = 'Teile den Room-Code mit deinem Gegner.';
+  } else if (mode === 'searching') {
+    blockedReason = 'Du wirst automatisch einem Tisch zugewiesen.';
   } else if (isPrimaryDisabled && !pending) {
     blockedReason =
       deckNotice ||
-      (mode === 'create' && !playerName ? 'Gib einen Spielernamen ein.' : '') ||
-      connectionNotice;
+      (mode === 'queue' && !playerName ? 'Gib einen Spielernamen ein.' : '') ||
+      connectionNotice ||
+      (connectionStatus !== 'connected' ? CONNECTION_LABELS[connectionStatus] : '');
   }
 
   // Failures get a slim red strip at the top. "Connecting" is shown by the status dot only.
@@ -256,14 +272,18 @@ export function LobbyPanel({
             <PrimaryLobbyAction
               blockedReason={blockedReason}
               copyStatus={copyStatus}
+              createDisabled={!canCreate || pending}
               disabled={isPrimaryDisabled}
               joinedRoomCode={joinedRoomCode}
               mode={mode}
+              onCancelQuickMatch={onCancelQuickMatch}
               onCopyRoomCode={onCopyRoomCode}
               onCreateRoom={onCreateRoom}
               onOpenBoard={onOpenBoard}
               onStartMatch={onStartMatch}
+              onStartQuickMatch={onStartQuickMatch}
               pending={pending}
+              queueStartedAt={queueStartedAt}
             />
 
             <div className="lobby-links">

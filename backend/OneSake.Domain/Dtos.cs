@@ -159,3 +159,9 @@ public record RoomSummaryDto
     public IReadOnlyList<string> PlayerNames { get; init; } = [];
     public long CreatedAtUnixMs { get; init; }
 }
+
+// Sent to both players when Quick Match found an opponent.
+public record MatchFoundDto
+{
+    public string RoomCode { get; init; } = string.Empty;
+}

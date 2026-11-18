@@ -1117,8 +1117,30 @@
   box-shadow: none;
 }
 
-.lobby-primary-button--waiting:disabled > span {
+.lobby-primary-button--waiting:disabled > span,
+.lobby-primary-button--searching:disabled > span {
   animation: lobby-pulse 2s ease-in-out infinite;
+}
+
+.lobby-primary-button--searching:disabled {
+  border-color: rgb(240 191 56 / 40%);
+  color: #ffe7a1;
+}
+
+.lobby-primary-button__timer {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+.lobby-action__secondary {
+  flex: 0 0 auto;
+  min-height: 62px;
+  border-radius: 14px;
+}
+
+.lobby-action__cancel {
+  justify-self: start;
 }
 
 .lobby-primary-button--start:not(:disabled) {

@@ -9,11 +9,16 @@ public class MatchHub : Hub
 {
     private readonly MatchRoomManager _roomManager;
     private readonly MatchResultService _matchResultService;
+    private readonly MatchmakingQueue _matchmakingQueue;
 
-    public MatchHub(MatchRoomManager roomManager, MatchResultService matchResultService)
+    public MatchHub(
+        MatchRoomManager roomManager,
+        MatchResultService matchResultService,
+        MatchmakingQueue matchmakingQueue)
     {
         _roomManager = roomManager;
         _matchResultService = matchResultService;
+        _matchmakingQueue = matchmakingQueue;
     }
 
     private const int MaxRoomCodeLength = 12;
@@ -48,6 +53,46 @@ public class MatchHub : Hub
         return GuestIdValidator.Normalize(guestId);
     }
 
+    // Quick Match: waits in the queue or, if somebody is already waiting, creates a private
+    // room for both players and sends them "MatchFound". Each client then sets its deck as usual.
+    public async Task JoinQueue(string displayName, string? guestId)
+    {
+        // Searching for a match means leaving the current room.
+        var currentRooms = _roomManager.GetRoomsForConnection(Context.ConnectionId);
+        foreach (var room in currentRooms)
+        {
+            await RemoveFromRoom(room);
+        }
+
+        var entry = new QueueEntry(
+            Context.ConnectionId,
+            displayName ?? string.Empty,
+            GuestIdValidator.Normalize(guestId) ?? GetConnectionGuestId());
+        var pair = _matchmakingQueue.Enqueue(entry);
+
+        if (pair is not null)
+        {
+            var (matchRoom, update) = _roomManager.CreateQuickMatchRoom(pair);
+            await Groups.AddToGroupAsync(pair.First.ConnectionId, matchRoom.RoomCode);
+            await Groups.AddToGroupAsync(pair.Second.ConnectionId, matchRoom.RoomCode);
+            await PublishMatchUpdate(matchRoom.RoomCode, update);
+
+            var matchFound = new MatchFoundDto { RoomCode = matchRoom.RoomCode };
+            await Clients.Clients(pair.First.ConnectionId, pair.Second.ConnectionId).SendAsync("MatchFound", matchFound);
+        }
+
+        if (currentRooms.Count > 0)
+        {
+            await BroadcastRoomList();
+        }
+    }
+
+    public Task LeaveQueue()
+    {
+        _matchmakingQueue.Remove(Context.ConnectionId);
+        return Task.CompletedTask;
+    }
+
     public async Task LeaveRoom(string roomCode)
     {
         var normalizedRoomCode = NormalizeRoomCode(roomCode);
@@ -59,6 +104,8 @@ public class MatchHub : Hub
 
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
+        _matchmakingQueue.Remove(Context.ConnectionId);
+
         foreach (var room in _roomManager.GetRoomsForConnection(Context.ConnectionId))
         {
             await RemoveFromRoom(room);
@@ -140,6 +187,9 @@ public class MatchHub : Hub
 
     private async Task JoinExistingRoom(MatchRoom room, string roomCode, string displayName, string? guestId)
     {
+        // Entering a room ends a running Quick Match search.
+        _matchmakingQueue.Remove(Context.ConnectionId);
+
         // A connection can only be in one room at a time.
         foreach (var otherRoom in _roomManager.GetRoomsForConnection(Context.ConnectionId))
         {
