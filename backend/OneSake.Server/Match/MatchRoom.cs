@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using OneSake.Domain;
 using OneSake.Game.Actions;
+using OneSake.Game.Effects;
 using OneSake.Game.State;
 
 namespace OneSake.Server.Match;
@@ -15,6 +16,19 @@ public sealed class MatchRoom
     public const string MainActionKind = "MAIN_ACTION";
     public const string BlockStepKind = "BLOCK_STEP";
     public const string CounterStepKind = "COUNTER_STEP";
+    // A card effect asks the player something (choose a target, pay a cost...).
+    public const string EffectChoiceKind = "EFFECT_CHOICE";
+    // A Life card with [Trigger] was added by damage: activate it or add it to the hand.
+    public const string TriggerDecisionKind = "TRIGGER_DECISION";
+    public const string ActivateTriggerOption = "ACTIVATE";
+    public const string DeclineTriggerOption = "DECLINE";
+
+    // Card effects. The engine resolves abilities, the continuation runs when it is finished.
+    private readonly EffectEngine _effects = new();
+    private readonly RoomContext _context;
+    private Action? _afterEffects;
+    private int _damageLeft;
+    private CardInstance? _pendingTriggerCard;
 
     private const int OpeningHandSize = 5;
     private const int DefaultLeaderLife = 5;
@@ -68,6 +82,28 @@ public sealed class MatchRoom
         _diceRoller = diceRoller ?? CryptoDiceRoller.Instance;
         _createdAtUtc = DateTimeOffset.UtcNow;
         _lastActivityUtc = _createdAtUtc;
+        _context = new RoomContext(this);
+    }
+
+    // Gives the effect engine access to the running match.
+    private sealed class RoomContext : IGameContext
+    {
+        private readonly MatchRoom _room;
+
+        public RoomContext(MatchRoom room)
+        {
+            _room = room;
+        }
+
+        public IReadOnlyList<PlayerState> Players => _room._players;
+        public int TurnNumber => _room._turnNumber;
+        public string ActivePlayerId => _room._activePlayerId;
+        public BattleState? Battle => _room._battle;
+
+        public void Log(string type, string text)
+        {
+            _room.CreateLogEvent(type, text);
+        }
     }
 
     public string RoomCode => _roomCode;
@@ -117,6 +153,7 @@ public sealed class MatchRoom
                 _battle = null;
                 _openChoicePrompts.Clear();
                 _mulliganPlayerDecisions.Clear();
+                ResetEffectState();
                 ResetTurnOrder();
                 CreateLogEvent("MATCH_ABORTED", "Match ended because a player left.");
             }
@@ -221,6 +258,7 @@ public sealed class MatchRoom
             _logSeq = 0;
             _openChoicePrompts.Clear();
             _mulliganPlayerDecisions.Clear();
+            ResetEffectState();
 
             foreach (var player in _players)
             {
@@ -236,6 +274,8 @@ public sealed class MatchRoom
                 player.ActiveDon = 0;
                 player.RestedDon = 0;
                 player.TurnsStarted = 0;
+                player.TurnFlags.Clear();
+                player.DonToActivateAtEndOfTurn = 0;
                 player.Connected = true;
             }
 
@@ -334,6 +374,20 @@ public sealed class MatchRoom
 
                 case CounterStepKind:
                     HandleCounterStep(normalizedOption, player, submission, prompt);
+                    break;
+
+                case EffectChoiceKind:
+                {
+                    // Answer() throws for invalid answers - then the prompt stays open.
+                    var request = _effects.Answer(_context, normalizedOption, submission.SelectedCardInstanceId);
+                    _openChoicePrompts.Remove(prompt.ChoiceId);
+                    ContinueEffects(request);
+                    break;
+                }
+
+                case TriggerDecisionKind:
+                    _openChoicePrompts.Remove(prompt.ChoiceId);
+                    HandleTriggerDecision(normalizedOption, player);
                     break;
 
                 default:
@@ -533,6 +587,13 @@ public sealed class MatchRoom
         {
             case "PLAY_CARD":
             {
+                var handCard = player.FindHandCard(submission.SelectedCardInstanceId);
+                if (handCard is not null && handCard.IsEvent
+                    && !handCard.Text.Contains("[Main]", StringComparison.OrdinalIgnoreCase))
+                {
+                    throw new InvalidOperationException($"{handCard.Name} has no [Main] effect and cannot be played in the main phase.");
+                }
+
                 var playedCard = _playCardAction.Execute(
                     player,
                     _phase,
@@ -542,11 +603,35 @@ public sealed class MatchRoom
                     _turnNumber);
 
                 _openChoicePrompts.Remove(prompt.ChoiceId);
-                var effectNote = playedCard.IsEvent ? " (event effect must be resolved manually)" : string.Empty;
+                playedCard.OwnerId = player.PlayerId;
                 CreateLogEvent(
                     "PLAY_CARD",
-                    $"{player.DisplayName} played {playedCard.Name} for {playedCard.Cost} DON!!{effectNote}.");
-                CreateMainActionPrompt(player);
+                    $"{player.DisplayName} played {playedCard.Name} for {playedCard.Cost} DON!!.");
+
+                var timing = playedCard.IsEvent ? EffectTiming.EventMain : EffectTiming.OnPlay;
+                QueueAbilities(playedCard, player, timing, alreadyChosen: playedCard.IsEvent);
+                RunEffects(() => CreateMainActionPrompt(player));
+                break;
+            }
+
+            case "ACTIVATE":
+            {
+                if (_phase != MatchPhase.Main || player.PlayerId != _activePlayerId)
+                {
+                    throw new InvalidOperationException("Abilities can only be activated in your main phase.");
+                }
+
+                var card = player.FieldCards().FirstOrDefault(entry => entry.InstanceId == submission.SelectedCardInstanceId)
+                    ?? throw new InvalidOperationException("Choose your Leader, Character or Stage with an [Activate: Main] ability.");
+
+                var ability = card.Script.WithTiming(EffectTiming.ActivateMain)
+                    .FirstOrDefault(entry => EffectEngine.CanActivate(entry, card, player.PlayerId, _context))
+                    ?? throw new InvalidOperationException($"{card.Name} has no ability that can be activated right now.");
+
+                _openChoicePrompts.Remove(prompt.ChoiceId);
+                CreateLogEvent("ACTIVATE", $"{player.DisplayName} activates {card.Name}.");
+                _effects.Enqueue(ability, card, player.PlayerId, alreadyChosen: true);
+                RunEffects(() => CreateMainActionPrompt(player));
                 break;
             }
 
@@ -583,7 +668,15 @@ public sealed class MatchRoom
                     "ATTACK",
                     $"{player.DisplayName}'s {battle.Attacker.Name} ({battle.Attacker.GetPower(true)}) attacks " +
                     $"{opponent.DisplayName}'s {battle.Target.Name} ({battle.Target.GetPower(false)}).");
-                ContinueBattle();
+
+                // [When Attacking] of the attacker first, then [On Your Opponent's Attack] of the defender.
+                QueueAbilities(battle.Attacker, player, EffectTiming.WhenAttacking);
+                foreach (var card in opponent.FieldCards().ToList())
+                {
+                    QueueAbilities(card, opponent, EffectTiming.OnOpponentsAttack);
+                }
+
+                RunEffects(ContinueBattle);
                 break;
             }
 
@@ -593,10 +686,18 @@ public sealed class MatchRoom
                 _openChoicePrompts.Remove(prompt.ChoiceId);
 
                 EnterEndPhase(player);
-                CreateLogEvent("TURN_END", $"{player.DisplayName} ended turn {_turnNumber}.");
 
-                _turnNumber += 1;
-                BeginTurn(opponent);
+                foreach (var card in player.FieldCards().ToList())
+                {
+                    QueueAbilities(card, player, EffectTiming.EndOfYourTurn);
+                }
+
+                foreach (var card in opponent.FieldCards().ToList())
+                {
+                    QueueAbilities(card, opponent, EffectTiming.EndOfOpponentsTurn);
+                }
+
+                RunEffects(() => FinishTurn(player, opponent));
                 break;
             }
 
@@ -618,6 +719,7 @@ public sealed class MatchRoom
             case "BLOCK":
                 var blocker = _blockAction.Execute(battle, defender, submission.SelectedCardInstanceId);
                 CreateLogEvent("BLOCK", $"{defender.DisplayName} blocks with {blocker.Name}.");
+                QueueAbilities(blocker, defender, EffectTiming.OnBlock);
                 break;
             case "NO_BLOCK":
                 CreateLogEvent("NO_BLOCK", $"{defender.DisplayName} does not block.");
@@ -628,7 +730,7 @@ public sealed class MatchRoom
 
         _openChoicePrompts.Remove(prompt.ChoiceId);
         battle.Step = BattleStep.Counter;
-        ContinueBattle();
+        RunEffects(ContinueBattle);
     }
 
     private void HandleCounterStep(
@@ -642,6 +744,27 @@ public sealed class MatchRoom
         switch (action)
         {
             case "COUNTER":
+                var handCard = defender.FindHandCard(submission.SelectedCardInstanceId);
+                if (handCard is not null && IsCounterEvent(handCard))
+                {
+                    // Event with [Counter]: pay its cost, trash it and resolve the effect.
+                    if (handCard.Cost > defender.ActiveDon)
+                    {
+                        throw new InvalidOperationException(
+                            $"Not enough DON!!: {handCard.Name} costs {handCard.Cost}, you have {defender.ActiveDon} active DON!!.");
+                    }
+
+                    defender.ActiveDon -= handCard.Cost;
+                    defender.RestedDon += handCard.Cost;
+                    defender.Hand.Remove(handCard);
+                    defender.TrashCards.Add(handCard);
+                    _openChoicePrompts.Remove(prompt.ChoiceId);
+                    CreateLogEvent("COUNTER", $"{defender.DisplayName} used the Event {handCard.Name} ({handCard.Cost} DON!!).");
+                    QueueAbilities(handCard, defender, EffectTiming.EventCounter, alreadyChosen: true);
+                    RunEffects(ContinueBattle);
+                    break;
+                }
+
                 var counterCard = _counterAction.Execute(battle, defender, submission.SelectedCardInstanceId);
                 CreateLogEvent(
                     "COUNTER",
@@ -658,7 +781,14 @@ public sealed class MatchRoom
         }
     }
 
-    private void CreateChoicePrompt(string playerId, string kind, string title, IReadOnlyList<string> options)
+    private void CreateChoicePrompt(
+        string playerId,
+        string kind,
+        string title,
+        IReadOnlyList<string> options,
+        IReadOnlyList<CardInstanceDto>? cards = null,
+        string sourceName = "",
+        string effectText = "")
     {
         var prompt = new ChoicePromptDto
         {
@@ -666,7 +796,10 @@ public sealed class MatchRoom
             PlayerId = playerId,
             Kind = kind,
             Title = title,
-            Options = options.ToArray()
+            Options = options.ToArray(),
+            Cards = cards?.ToArray() ?? [],
+            SourceName = sourceName,
+            EffectText = effectText
         };
 
         _openChoicePrompts[prompt.ChoiceId] = prompt;
@@ -682,7 +815,7 @@ public sealed class MatchRoom
 
         var options = new List<string>();
 
-        if (player.Hand.Any(card => card.Cost <= player.ActiveDon))
+        if (player.Hand.Any(card => card.Cost <= player.ActiveDon && CanPlayInMainPhase(card)))
         {
             options.Add("PLAY_CARD");
         }
@@ -695,6 +828,11 @@ public sealed class MatchRoom
         if (GetAttackers(player).Any())
         {
             options.Add("ATTACK");
+        }
+
+        if (player.FieldCards().Any(card => CanActivateAny(card, player)))
+        {
+            options.Add("ACTIVATE");
         }
 
         options.Add("END_TURN");
@@ -723,16 +861,28 @@ public sealed class MatchRoom
     private void ContinueBattle()
     {
         var battle = _battle;
-        if (battle is null)
+        if (battle is null || _phase == MatchPhase.GameOver)
         {
             return;
         }
 
+        var attacker = GetPlayerSlot(battle.AttackerPlayerId);
         var defender = GetPlayerSlot(battle.DefenderPlayerId);
+
+        // An effect (e.g. [When Attacking] K.O.) removed the attacker or the target: the battle ends.
+        if (!attacker.FieldCards().Contains(battle.Attacker) || !defender.FieldCards().Contains(battle.Target))
+        {
+            CreateLogEvent("BATTLE_END", "The attacker or the target left the field. The battle ends.");
+            EndBattle(attacker);
+            return;
+        }
 
         if (battle.Step == BattleStep.Block)
         {
-            if (BlockAction.HasPossibleBlocker(defender, battle))
+            var blockersAllowed = !battle.Attacker.HasFlag(EffectFlags.CannotBeBlocked)
+                && !attacker.TurnFlags.Contains(EffectFlags.CannotBeBlocked);
+
+            if (blockersAllowed && BlockAction.HasPossibleBlocker(defender, battle))
             {
                 CreateChoicePrompt(
                     defender.PlayerId,
@@ -745,7 +895,7 @@ public sealed class MatchRoom
             battle.Step = BattleStep.Counter;
         }
 
-        if (CounterAction.HasCounterCard(defender))
+        if (CounterAction.HasCounterCard(defender) || defender.Hand.Any(card => IsCounterEvent(card) && card.Cost <= defender.ActiveDon))
         {
             var attackerPower = battle.Attacker.GetPower(isOwnersTurn: true);
             var targetPower = battle.Target.GetPower(isOwnersTurn: false) + battle.CounterBonus;
@@ -760,37 +910,281 @@ public sealed class MatchRoom
         ResolveDamageStep(battle);
     }
 
+    // Rule 7-1-4 Damage Step: compare power, then K.O. the Character or deal damage to the Leader.
     private void ResolveDamageStep(BattleState battle)
     {
         var attacker = GetPlayerSlot(battle.AttackerPlayerId);
         var defender = GetPlayerSlot(battle.DefenderPlayerId);
-        var result = _damageStepAction.Execute(battle, attacker, defender);
-        _battle = null;
+        var attackerPower = battle.Attacker.GetPower(isOwnersTurn: true);
+        var targetPower = battle.Target.GetPower(isOwnersTurn: false) + battle.CounterBonus;
+        var powerText = $"{attackerPower} vs {targetPower}";
 
-        var powerText = $"{result.AttackerPower} vs {result.TargetPower}";
-
-        if (!result.AttackerWon)
+        if (attackerPower < targetPower)
         {
             CreateLogEvent("ATTACK_FAILED", $"{battle.Attacker.Name} lost the battle ({powerText}).");
+            EndBattle(attacker);
+            return;
         }
-        else if (result.CharacterKnockedOut)
+
+        if (!battle.Target.IsLeader)
         {
-            CreateLogEvent("KO", $"{defender.DisplayName}'s {battle.Target.Name} was K.O.'d ({powerText}).");
+            if (_effects.KnockOut(battle.Target, _context, byEffect: false))
+            {
+                CreateLogEvent("KO", $"{defender.DisplayName}'s {battle.Target.Name} was K.O.'d ({powerText}).");
+            }
+            else
+            {
+                CreateLogEvent("KO_PREVENTED", $"{battle.Target.Name} cannot be K.O.'d in battle ({powerText}).");
+            }
+
+            EndBattle(attacker);
+            return;
         }
-        else if (result.DefenderLostGame)
+
+        // Rule 7-1-4-1-1-1: 0 Life when damage is dealt -> the defender loses.
+        if (defender.LifeCards.Count == 0)
         {
             CreateLogEvent("LEADER_DAMAGE", $"{defender.DisplayName}'s Leader took damage with 0 Life ({powerText}).");
             EndGame(attacker, $"{attacker.DisplayName} wins!", MatchEndReasons.Life);
             return;
         }
-        else
+
+        CreateLogEvent("LEADER_HIT", $"{battle.Attacker.Name} hits {defender.DisplayName}'s Leader ({powerText}).");
+        _damageLeft = battle.Attacker.HasDoubleAttack ? 2 : 1;
+        DealNextDamage();
+    }
+
+    // Rule 7-1-4-1-1-2/3: one Life card per damage. [Banish] trashes it, a [Trigger] can be activated.
+    private void DealNextDamage()
+    {
+        var battle = _battle;
+        if (battle is null || _phase == MatchPhase.GameOver)
         {
-            CreateLogEvent(
-                "LIFE_LOST",
-                $"{defender.DisplayName} lost {result.LifeCardsLost} Life ({powerText}). {defender.LifeCount} Life left.");
+            return;
         }
 
-        CreateMainActionPrompt(attacker);
+        var attacker = GetPlayerSlot(battle.AttackerPlayerId);
+        var defender = GetPlayerSlot(battle.DefenderPlayerId);
+
+        if (_damageLeft <= 0 || defender.LifeCards.Count == 0)
+        {
+            _damageLeft = 0;
+            EndBattle(attacker);
+            return;
+        }
+
+        _damageLeft -= 1;
+        var lifeCard = defender.LifeCards[^1];
+        defender.LifeCards.RemoveAt(defender.LifeCards.Count - 1);
+
+        if (battle.Attacker.HasBanish)
+        {
+            defender.TrashCards.Add(lifeCard);
+            CreateLogEvent("LIFE_LOST", $"{defender.DisplayName} lost 1 Life ([Banish]: {lifeCard.Name} was trashed). {defender.LifeCount} Life left.");
+            DealNextDamage();
+            return;
+        }
+
+        var trigger = lifeCard.Script.WithTiming(EffectTiming.Trigger).FirstOrDefault();
+        if (trigger is not null)
+        {
+            _pendingTriggerCard = lifeCard;
+            lifeCard.OwnerId = defender.PlayerId;
+            CreateChoicePrompt(
+                defender.PlayerId,
+                TriggerDecisionKind,
+                $"{lifeCard.Name} has a [Trigger]. Activate it instead of adding the card to your hand?",
+                [ActivateTriggerOption, DeclineTriggerOption],
+                [ToCardInstanceDto(lifeCard, defender)],
+                lifeCard.Name,
+                trigger.Text);
+            return;
+        }
+
+        defender.Hand.Add(lifeCard);
+        var manualNote = lifeCard.HasTrigger ? $" {lifeCard.Name} has a [Trigger] that must be resolved manually." : string.Empty;
+        CreateLogEvent("LIFE_LOST", $"{defender.DisplayName} lost 1 Life. {defender.LifeCount} Life left.{manualNote}");
+        DealNextDamage();
+    }
+
+    private void HandleTriggerDecision(string option, PlayerState defender)
+    {
+        var lifeCard = _pendingTriggerCard ?? throw new InvalidOperationException("There is no [Trigger] to decide.");
+        _pendingTriggerCard = null;
+
+        if (option != ActivateTriggerOption)
+        {
+            defender.Hand.Add(lifeCard);
+            CreateLogEvent("LIFE_LOST", $"{defender.DisplayName} lost 1 Life and added {lifeCard.Name} to their hand. {defender.LifeCount} Life left.");
+            DealNextDamage();
+            return;
+        }
+
+        CreateLogEvent("TRIGGER", $"{defender.DisplayName} reveals {lifeCard.Name} and activates its [Trigger].");
+        QueueAbilities(lifeCard, defender, EffectTiming.Trigger, alreadyChosen: true);
+        RunEffects(() =>
+        {
+            // The card is trashed after its [Trigger], unless the effect played it or moved it.
+            if (!IsInAnyZone(lifeCard))
+            {
+                defender.TrashCards.Add(lifeCard);
+            }
+
+            DealNextDamage();
+        });
+    }
+
+    // Removes "during this battle" effects and goes back to the attacker's main phase.
+    private void EndBattle(PlayerState attacker)
+    {
+        foreach (var card in _players.SelectMany(player => player.FieldCards()))
+        {
+            card.Modifiers.RemoveAll(modifier => modifier.Duration == Duration.ThisBattle);
+        }
+
+        _battle = null;
+        _damageLeft = 0;
+        RunEffects(() => CreateMainActionPrompt(attacker));
+    }
+
+    #endregion
+
+    #region EFFECTS
+
+    // Queues all abilities of one card for the given timing.
+    private void QueueAbilities(CardInstance card, PlayerState owner, EffectTiming timing, bool alreadyChosen = false)
+    {
+        var isEvent = timing is EffectTiming.EventMain or EffectTiming.EventCounter or EffectTiming.Trigger;
+
+        foreach (var ability in card.Script.WithTiming(timing))
+        {
+            if (!isEvent && (!EffectQueries.AbilityIsActive(ability, card, owner.PlayerId, _context)
+                || EffectEngine.IsUsedThisTurn(ability, card, _context)))
+            {
+                continue;
+            }
+
+            _effects.Enqueue(ability, card, owner.PlayerId, alreadyChosen);
+        }
+
+        foreach (var manualText in ManualTexts(card, timing))
+        {
+            CreateLogEvent("EFFECT_MANUAL", $"{card.Name}: \"{manualText}\" is not automated - please resolve it manually.");
+        }
+    }
+
+    // Unsupported texts of a card that belong to the timing (e.g. all "[On Play] ..." parts).
+    private static IEnumerable<string> ManualTexts(CardInstance card, EffectTiming timing)
+    {
+        var tag = timing switch
+        {
+            EffectTiming.OnPlay => "[On Play]",
+            EffectTiming.WhenAttacking => "[When Attacking]",
+            EffectTiming.OnBlock => "[On Block]",
+            EffectTiming.OnKO => "[On K.O.]",
+            EffectTiming.EventMain => "[Main]",
+            EffectTiming.EventCounter => "[Counter]",
+            EffectTiming.Trigger => "[Trigger]",
+            EffectTiming.EndOfYourTurn => "[End of Your Turn]",
+            EffectTiming.OnOpponentsAttack => "[On Your Opponent's Attack]",
+            _ => null
+        };
+
+        return tag is null
+            ? []
+            : card.Script.UnsupportedTexts.Where(text => text.Contains(tag, StringComparison.OrdinalIgnoreCase));
+    }
+
+    // Runs all queued effects. "continuation" runs when everything is resolved.
+    private void RunEffects(Action continuation)
+    {
+        _afterEffects = continuation;
+        ContinueEffects(_effects.Run(_context));
+    }
+
+    private void ContinueEffects(EffectChoiceRequest? request)
+    {
+        StaticEffects.Recalculate(_context);
+
+        if (_phase == MatchPhase.GameOver)
+        {
+            return;
+        }
+
+        if (request is not null)
+        {
+            var player = GetPlayerSlot(request.PlayerId);
+            CreateChoicePrompt(
+                request.PlayerId,
+                EffectChoiceKind,
+                request.Title,
+                request.Options,
+                request.Cards.Select(card => ToCardInstanceDto(card, _context.FindOwner(card) ?? player)).ToArray(),
+                request.SourceName,
+                request.AbilityText);
+            return;
+        }
+
+        // Rule 1-2-1-1-2: a player whose deck became empty by an effect loses.
+        if (_phase == MatchPhase.Main && CheckDeckOut())
+        {
+            return;
+        }
+
+        var next = _afterEffects;
+        _afterEffects = null;
+        next?.Invoke();
+    }
+
+    private bool IsInAnyZone(CardInstance card)
+    {
+        return _players.Any(player =>
+            player.Hand.Contains(card)
+            || player.TrashCards.Contains(card)
+            || player.Characters.Contains(card)
+            || player.Stage == card
+            || player.LifeCards.Contains(card)
+            || player.DrawDeck.Contains(card));
+    }
+
+    private bool CanActivateAny(CardInstance card, PlayerState owner)
+    {
+        return _phase == MatchPhase.Main
+            && _battle is null
+            && owner.PlayerId == _activePlayerId
+            && !_effects.IsBusy
+            && card.Script.WithTiming(EffectTiming.ActivateMain).Any(ability => EffectEngine.CanActivate(ability, card, owner.PlayerId, _context));
+    }
+
+    private static bool IsCounterEvent(CardInstance card)
+    {
+        return card.IsEvent && card.Text.Contains("[Counter]", StringComparison.OrdinalIgnoreCase);
+    }
+
+    // Events without a [Main] effect (e.g. only [Counter]) cannot be played in the main phase.
+    private static bool CanPlayInMainPhase(CardInstance card)
+    {
+        return !card.IsEvent || card.Text.Contains("[Main]", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private void ResetEffectState()
+    {
+        _effects.Clear();
+        _afterEffects = null;
+        _damageLeft = 0;
+        _pendingTriggerCard = null;
+    }
+
+    // Removes effects that end with this turn. "Until the end of your opponent's next turn"
+    // effects end at the end of the turn after the one in which they were created.
+    private void ExpireModifiers(int endingTurn)
+    {
+        foreach (var card in _players.SelectMany(player => player.FieldCards()))
+        {
+            card.Modifiers.RemoveAll(modifier =>
+                modifier.Duration is Duration.ThisTurn or Duration.ThisBattle
+                || (modifier.Duration == Duration.UntilEndOfOpponentsNextTurn && modifier.CreatedOnTurn < endingTurn));
+        }
     }
 
     #endregion
@@ -828,18 +1222,56 @@ public sealed class MatchRoom
         {
             player.RestedDon += card.AttachedDon;
             card.AttachedDon = 0;
-            card.IsRested = false;
+            RefreshCard(card);
         }
 
         if (player.Stage is not null)
         {
-            player.Stage.IsRested = false;
+            RefreshCard(player.Stage);
         }
 
         player.ActiveDon += player.RestedDon;
         player.RestedDon = 0;
 
+        StaticEffects.Recalculate(_context);
         CreateLogEvent("REFRESH_PHASE", $"Refresh phase for {player.DisplayName}.");
+    }
+
+    // A card with "will not become active in the next Refresh Phase" stays rested once.
+    private void RefreshCard(CardInstance card)
+    {
+        if (card.Modifiers.RemoveAll(modifier => modifier.Flag == EffectFlags.SkipNextRefresh) > 0)
+        {
+            CreateLogEvent("REFRESH_SKIPPED", $"{card.Name} does not become active this Refresh Phase.");
+            return;
+        }
+
+        card.IsRested = false;
+    }
+
+    // Rule 6-6: end of the turn. Effects that last "during this turn" end, then the next turn starts.
+    private void FinishTurn(PlayerState player, PlayerState opponent)
+    {
+        if (player.DonToActivateAtEndOfTurn > 0)
+        {
+            var amount = Math.Min(player.DonToActivateAtEndOfTurn, player.RestedDon);
+            player.RestedDon -= amount;
+            player.ActiveDon += amount;
+            player.DonToActivateAtEndOfTurn = 0;
+            CreateLogEvent("EFFECT", $"{player.DisplayName} sets {amount} DON!! as active.");
+        }
+
+        ExpireModifiers(_turnNumber);
+        foreach (var entry in _players)
+        {
+            entry.TurnFlags.Clear();
+        }
+
+        StaticEffects.Recalculate(_context);
+        CreateLogEvent("TURN_END", $"{player.DisplayName} ended turn {_turnNumber}.");
+
+        _turnNumber += 1;
+        BeginTurn(opponent);
     }
 
     // Rule 6-3: draw 1 card. The player going first does not draw on their first turn.
@@ -912,6 +1344,7 @@ public sealed class MatchRoom
         _winnerPlayerId = winner.PlayerId;
         _battle = null;
         _openChoicePrompts.Clear();
+        ResetEffectState();
         CreateLogEvent("GAME_OVER", message);
         RecordResult(winner, GetPlayerSlot(GetOtherPlayerId(winner.PlayerId)), endReason);
     }
@@ -1037,6 +1470,10 @@ public sealed class MatchRoom
     private CardInstanceDto ToCardInstanceDto(CardInstance card, PlayerState owner)
     {
         var isOwnersTurn = owner.PlayerId == _activePlayerId;
+        var script = card.Script;
+        var effectStatus = EffectParser.Clean(card.Text).Length == 0
+            ? string.Empty
+            : script.IsFullySupported ? "auto" : script.Abilities.Count > 0 ? "partial" : "manual";
 
         return new CardInstanceDto
         {
@@ -1047,7 +1484,7 @@ public sealed class MatchRoom
             Color = card.Color,
             ImageUrl = card.ImageUrl,
             Text = card.Text,
-            Cost = card.Cost,
+            Cost = card.CurrentCost,
             BasePower = card.BasePower,
             Power = card.GetPower(isOwnersTurn),
             Counter = card.Counter,
@@ -1055,9 +1492,15 @@ public sealed class MatchRoom
             AttachedDon = card.AttachedDon,
             CanAttack = _phase == MatchPhase.Main
                 && _battle is null
+                && !_effects.IsBusy
                 && isOwnersTurn
+                && owner.FieldCards().Contains(card)
                 && AttackAction.CanAttack(card, owner, _turnNumber),
-            Keywords = card.Keywords
+            Keywords = card.Keywords,
+            CanActivate = owner.FieldCards().Contains(card) && CanActivateAny(card, owner),
+            IsCounterEvent = IsCounterEvent(card),
+            EffectStatus = effectStatus,
+            ManualEffects = script.UnsupportedTexts.ToArray()
         };
     }
     #endregion
@@ -1124,8 +1567,11 @@ public sealed class MatchRoom
             Color = deck?.LeaderColor ?? string.Empty,
             Text = deck?.LeaderText ?? string.Empty,
             ImageUrl = deck?.LeaderImageUrl ?? string.Empty,
+            Types = deck?.LeaderTypes ?? string.Empty,
+            Attribute = deck?.LeaderAttribute ?? string.Empty,
             BasePower = deck?.LeaderPower ?? DefaultLeaderPower,
-            Life = deck?.LeaderLife ?? DefaultLeaderLife
+            Life = deck?.LeaderLife ?? DefaultLeaderLife,
+            OwnerId = player.PlayerId
         };
     }
 
@@ -1138,6 +1584,9 @@ public sealed class MatchRoom
                 {
                     InstanceId = $"{player.PlayerId}:{card.CardId}:{index + 1}:{Guid.NewGuid():N}",
                     CardId = card.CardId,
+                    OwnerId = player.PlayerId,
+                    Types = card.Types,
+                    Attribute = card.Attribute,
                     Name = string.IsNullOrWhiteSpace(card.Name) ? card.CardId : card.Name,
                     Category = NormalizeCategory(card.Category),
                     Color = card.Color,

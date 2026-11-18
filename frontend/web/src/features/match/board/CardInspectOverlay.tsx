@@ -119,6 +119,19 @@ export function CardInspectOverlay({ card, onClose, onSelectCard, pile = null }:
             ))}
         </dl>
         {card.text && <p className="card-inspect-overlay__text">{card.text}</p>}
+        {card.effectStatus === 'auto' && (
+          <p className="card-inspect-overlay__effect-status is-auto">Effects are automated.</p>
+        )}
+        {(card.effectStatus === 'partial' || card.effectStatus === 'manual') && (
+          <div className="card-inspect-overlay__effect-status is-manual">
+            <strong>Resolve manually:</strong>
+            <ul>
+              {(card.manualEffects ?? []).map((text) => (
+                <li key={text}>{text}</li>
+              ))}
+            </ul>
+          </div>
+        )}
       </section>
     </div>
   );

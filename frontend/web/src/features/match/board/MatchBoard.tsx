@@ -12,6 +12,8 @@ import { BoardSlot, CardStack } from './BoardSlot';
 import type { BoardSide, BoardZoneDefinition } from './boardTypes';
 import { CardInspectOverlay } from './CardInspectOverlay';
 import type { CardPile } from './CardInspectOverlay';
+import { EFFECT_PROMPT_KINDS } from '../choiceOptions';
+import { EffectChoiceOverlay } from './EffectChoiceOverlay';
 import { MatchCardView } from './MatchCardView';
 import { MatchHand } from './MatchHand';
 
@@ -110,8 +112,9 @@ export function MatchBoard({
   const isMainAction = myPrompt?.kind === 'MAIN_ACTION';
   const isBlockStep = myPrompt?.kind === 'BLOCK_STEP';
   const isCounterStep = myPrompt?.kind === 'COUNTER_STEP';
+  const isEffectPrompt = Boolean(myPrompt && EFFECT_PROMPT_KINDS.includes(myPrompt.kind));
 
-  const localFieldCards = [localPlayer?.leader, ...(localPlayer?.boardCards ?? [])].filter(
+  const localFieldCards = [localPlayer?.leader, ...(localPlayer?.boardCards ?? []), localPlayer?.stage].filter(
     (card): card is CardInstanceDto => Boolean(card),
   );
   const selectedCard = localFieldCards.find((card) => card.instanceId === selectedCardId) ?? null;
@@ -163,7 +166,13 @@ export function MatchBoard({
   }
 
   function canCounterWith(card: CardInstanceDto): boolean {
-    return isCounterStep && card.category === 'Character' && (card.counter ?? 0) > 0;
+    if (!isCounterStep) {
+      return false;
+    }
+
+    // Character cards use their Counter value, Events with [Counter] are paid with DON!!.
+    const isCounterEvent = Boolean(card.isCounterEvent) && (card.cost ?? 0) <= (localPlayer?.activeDonCount ?? 0);
+    return (card.category === 'Character' && (card.counter ?? 0) > 0) || isCounterEvent;
   }
 
   function canBlockWith(card: CardInstanceDto): boolean {
@@ -213,7 +222,8 @@ export function MatchBoard({
       return;
     }
 
-    if (isMainAction && (card.category === 'Leader' || card.category === 'Character')) {
+    const canSelect = card.category === 'Leader' || card.category === 'Character' || Boolean(card.canActivate);
+    if (isMainAction && canSelect) {
       setMode({ kind: 'idle' });
       setSelectedCardId((previous) => (previous === card.instanceId ? '' : card.instanceId));
       return;
@@ -251,6 +261,10 @@ export function MatchBoard({
         classes.push('can-attack');
       }
 
+      if (isMainAction && hasOption(myPrompt, 'ACTIVATE') && card.canActivate) {
+        classes.push('can-activate');
+      }
+
       if (canBlockWith(card) || (mode.kind === 'replace' && card.category === 'Character')) {
         classes.push('is-targetable');
       }
@@ -271,7 +285,9 @@ export function MatchBoard({
 
   function getHandCardAriaLabel(card: CardInstanceDto): string {
     if (canCounterWith(card)) {
-      return `Counter with ${card.name} (+${card.counter})`;
+      return card.isCounterEvent
+        ? `Use the Event ${card.name} (cost ${card.cost ?? 0})`
+        : `Counter with ${card.name} (+${card.counter})`;
     }
 
     if (canPlayFromHand(card)) {
@@ -286,6 +302,10 @@ export function MatchBoard({
   function getHint(): string {
     if (isGameOver) {
       return didWin ? 'You won the game!' : 'You lost the game.';
+    }
+
+    if (isEffectPrompt) {
+      return 'Resolve the card effect.';
     }
 
     if (mode.kind === 'attack') {
@@ -306,10 +326,16 @@ export function MatchBoard({
 
     if (isMainAction) {
       if (selectedCard) {
-        return `${selectedCard.name} selected: give DON!! or attack.`;
+        return selectedCard.canActivate
+          ? `${selectedCard.name} selected: give DON!!, attack or activate its ability.`
+          : `${selectedCard.name} selected: give DON!! or attack.`;
       }
 
       return 'Click a hand card to play it, or click your Leader/Character to give DON!! or attack.';
+    }
+
+    if (gameState?.phase === 'Main' && gameState.activePlayerId !== localPlayer?.playerId && !myPrompt) {
+      return 'Waiting for your opponent...';
     }
 
     if (gameState?.phase === 'TurnOrder') {
@@ -327,9 +353,12 @@ export function MatchBoard({
     return '';
   }
 
-  const canGiveDon = isMainAction && hasOption(myPrompt, 'ATTACH_DON') && Boolean(selectedCard);
+  const canGiveDon =
+    isMainAction && hasOption(myPrompt, 'ATTACH_DON') && Boolean(selectedCard) && selectedCard?.category !== 'Stage';
   const canStartAttack =
     isMainAction && hasOption(myPrompt, 'ATTACK') && Boolean(selectedCard?.canAttack);
+  const canActivateSelected =
+    isMainAction && hasOption(myPrompt, 'ACTIVATE') && Boolean(selectedCard?.canActivate);
 
   function giveDon(): void {
     if (canGiveDon && selectedCard) {
@@ -520,6 +549,14 @@ export function MatchBoard({
                   >
                     {mode.kind === 'attack' ? 'Cancel Attack' : 'Attack'}
                   </button>
+                  <button
+                    disabled={!canActivateSelected}
+                    onClick={() => selectedCard && submit('ACTIVATE', selectedCard.instanceId)}
+                    type="button"
+                  >
+                    Activate
+                    <small>Effect</small>
+                  </button>
                 </>
               )}
               {mode.kind === 'replace' && (
@@ -584,6 +621,12 @@ export function MatchBoard({
         onClose={closeInspect}
         onSelectCard={setInspectedCard}
         pile={inspectedPile}
+      />
+
+      <EffectChoiceOverlay
+        disabled={pending || !canSubmitChoice}
+        onSubmit={(option, cardId) => submit(option, cardId)}
+        prompt={isEffectPrompt ? myPrompt : null}
       />
     </div>
   );

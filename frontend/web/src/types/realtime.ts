@@ -49,6 +49,14 @@ export interface CardInstanceDto {
   attachedDon?: number;
   canAttack?: boolean;
   keywords?: string[];
+  // [Activate: Main] ability that can be used right now.
+  canActivate?: boolean;
+  // Event with a [Counter] effect (usable in the counter step for its cost).
+  isCounterEvent?: boolean;
+  // 'auto' = all effects automated, 'partial', 'manual' = resolve by hand, '' = no effect text.
+  effectStatus?: '' | 'auto' | 'partial' | 'manual';
+  // Effect texts the server does not automate.
+  manualEffects?: string[];
 }
 
 export interface BattleDto {
@@ -72,6 +80,9 @@ export interface PlayerDeckCardDto {
   counter?: number | null;
   text?: string;
   imageUrl?: string;
+  // Card types ("Straw Hat Crew") and attribute ("Slash"). The server needs them for card effects.
+  types?: string;
+  attribute?: string;
 }
 
 export interface PlayerDeckSubmissionDto {
@@ -84,6 +95,8 @@ export interface PlayerDeckSubmissionDto {
   leaderLife?: number | null;
   leaderText?: string;
   leaderImageUrl?: string;
+  leaderTypes?: string;
+  leaderAttribute?: string;
   cards: PlayerDeckCardDto[];
 }
 
@@ -126,6 +139,10 @@ export interface ChoicePromptDto {
   kind: string;
   title: string;
   options: string[];
+  // Card effect prompts (EFFECT_CHOICE, TRIGGER_DECISION): cards to choose from and the effect text.
+  cards?: CardInstanceDto[];
+  sourceName?: string;
+  effectText?: string;
 }
 
 export interface ChoiceSubmissionDto {

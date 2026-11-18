@@ -12,6 +12,13 @@ public static class CardKeywords
 
     private static readonly string[] KnownKeywords = [Rush, Blocker, DoubleAttack, Banish];
 
+    // Returns the keyword with the right spelling ("double attack" -> "Double Attack") or null.
+    public static string? Normalize(string? value)
+    {
+        return KnownKeywords.FirstOrDefault(known =>
+            string.Equals(known, value?.Trim(), StringComparison.OrdinalIgnoreCase));
+    }
+
     public static IReadOnlyList<string> Parse(string? text)
     {
         var keywords = new List<string>();

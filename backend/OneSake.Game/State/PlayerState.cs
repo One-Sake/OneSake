@@ -43,6 +43,54 @@ public sealed class PlayerState
     // How many turns this player has started. Used for "no battle on your first turn".
     public int TurnsStarted { get; set; }
 
+    // Flags for this player that end with the turn (e.g. "your opponent cannot activate [Blocker]").
+    public HashSet<string> TurnFlags { get; } = new(StringComparer.OrdinalIgnoreCase);
+
+    // "Set up to 2 of your DON!! cards as active at the end of this turn"
+    public int DonToActivateAtEndOfTurn { get; set; }
+
+    // All DON!! on the field: cost area (active + rested) and given to the Leader/Characters.
+    public int DonOnField => ActiveDon + RestedDon + FieldCards().Sum(card => card.AttachedDon);
+
+    // Leader, Characters and Stage.
+    public IEnumerable<CardInstance> FieldCards()
+    {
+        if (Leader is not null)
+        {
+            yield return Leader;
+        }
+
+        foreach (var character in Characters)
+        {
+            yield return character;
+        }
+
+        if (Stage is not null)
+        {
+            yield return Stage;
+        }
+    }
+
+    // Removes a card from the Character area or Stage area without moving it anywhere.
+    // Given DON!! go back to the cost area rested. Returns false when the card was not there.
+    public bool RemoveFromField(CardInstance card)
+    {
+        var removed = Characters.Remove(card);
+        if (!removed && Stage == card)
+        {
+            Stage = null;
+            removed = true;
+        }
+
+        if (removed)
+        {
+            RestedDon += card.AttachedDon;
+            card.ResetFieldState();
+        }
+
+        return removed;
+    }
+
     public int DeckCount => DrawDeck.Count;
     public int HandCount => Hand.Count;
     public int LifeCount => LifeCards.Count;
