@@ -1,5 +1,6 @@
 using OneSake.Domain;
 using OneSake.Game.Effects;
+using OneSake.Game.Randomness;
 using OneSake.Game.Rules;
 using OneSake.Game.State;
 
@@ -421,7 +422,7 @@ public sealed class ManualActions
 
         if (kind == SearchView)
         {
-            Shuffle(actor.DrawDeck);
+            actor.DrawDeck.Shuffle(actor.Random);
             return "beendet die Suche und mischt das Deck";
         }
 
@@ -433,7 +434,7 @@ public sealed class ManualActions
     private static string ShuffleDeck(PlayerState actor)
     {
         actor.CloseManualView();
-        Shuffle(actor.DrawDeck);
+        actor.DrawDeck.Shuffle(actor.Random);
         return "mischt das Deck";
     }
 
@@ -659,15 +660,6 @@ public sealed class ManualActions
     private static string CardCount(int amount)
     {
         return amount == 1 ? "1 Karte" : $"{amount} Karten";
-    }
-
-    private static void Shuffle(List<CardInstance> cards)
-    {
-        for (var index = cards.Count - 1; index > 0; index -= 1)
-        {
-            var swapIndex = Random.Shared.Next(index + 1);
-            (cards[index], cards[swapIndex]) = (cards[swapIndex], cards[index]);
-        }
     }
 
     #endregion

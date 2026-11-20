@@ -1,5 +1,6 @@
 using OneSake.Game.State;
 
+using OneSake.Game.Randomness;
 using OneSake.Game.Rules;
 
 namespace OneSake.Game.Effects;
@@ -710,7 +711,7 @@ public sealed class EffectEngine
                 return null;
 
             case StepKind.ShuffleDeck:
-                Shuffle(player.DrawDeck);
+                player.DrawDeck.Shuffle(player.Random);
                 return null;
 
             case StepKind.LookAndReveal:
@@ -1320,15 +1321,6 @@ public sealed class EffectEngine
         {
             player.TrashCards.Add(player.DrawDeck[0]);
             player.DrawDeck.RemoveAt(0);
-        }
-    }
-
-    private static void Shuffle(IList<CardInstance> cards)
-    {
-        for (var index = cards.Count - 1; index > 0; index -= 1)
-        {
-            var swapIndex = Random.Shared.Next(index + 1);
-            (cards[index], cards[swapIndex]) = (cards[swapIndex], cards[index]);
         }
     }
 

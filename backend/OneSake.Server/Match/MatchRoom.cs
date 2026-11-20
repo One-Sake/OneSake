@@ -2,6 +2,8 @@ using System.Security.Cryptography;
 using OneSake.Domain;
 using OneSake.Game.Actions;
 using OneSake.Game.Effects;
+using OneSake.Game.Randomness;
+using OneSake.Game.Replay;
 using OneSake.Game.Rules;
 using OneSake.Game.State;
 
@@ -78,7 +80,14 @@ public sealed class MatchRoom
     private MatchPhase _phase = MatchPhase.Lobby;
     private BattleState? _battle;
 
-    private readonly IDiceRoller _diceRoller;
+    // Determinism: everything random in a match comes from one secret seed (Pcg32 streams).
+    // A fixed seed / dice roller is only given by tests and replays.
+    private readonly ulong? _fixedSeed;
+    private readonly IDiceRoller? _customDiceRoller;
+    private IDiceRoller _diceRoller = CryptoDiceRoller.Instance;
+    private ulong _seed;
+    // Prompt IDs are numbered, so they are the same when a match is played again.
+    private int _choiceSeq;
     private readonly List<TurnOrderRoundDto> _turnOrderRounds = [];
     private string _turnOrderWinnerId = string.Empty;
     private string? _turnOrderDecision;
@@ -94,11 +103,12 @@ public sealed class MatchRoom
     private readonly DateTimeOffset _createdAtUtc;
     private DateTimeOffset _lastActivityUtc;
 
-    public MatchRoom(string roomCode, bool isQuickMatch = false, IDiceRoller? diceRoller = null)
+    public MatchRoom(string roomCode, bool isQuickMatch = false, IDiceRoller? diceRoller = null, ulong? seed = null)
     {
         _roomCode = roomCode;
         IsQuickMatch = isQuickMatch;
-        _diceRoller = diceRoller ?? CryptoDiceRoller.Instance;
+        _customDiceRoller = diceRoller;
+        _fixedSeed = seed;
         _createdAtUtc = DateTimeOffset.UtcNow;
         _lastActivityUtc = _createdAtUtc;
         _context = new RoomContext(this);
@@ -285,12 +295,21 @@ public sealed class MatchRoom
             _mulliganPlayerDecisions.Clear();
             ResetEffectState();
 
-            foreach (var player in _players)
+            // A new secret seed per match. Clients never see it; it is stored with the recording
+            // after the match. Every purpose has its own stream (see Pcg32.FromSeed).
+            _seed = _fixedSeed ?? Pcg32.CreateSeed();
+            _diceRoller = _customDiceRoller ?? new SeededDiceRoller(Pcg32.FromSeed(_seed, "dice"));
+            _choiceSeq = 0;
+
+            for (var index = 0; index < _players.Count; index += 1)
             {
-                player.Leader = BuildLeader(player);
+                var player = _players[index];
+                var seat = index + 1;
+                player.Random = Pcg32.FromSeed(_seed, $"deck:{seat}");
+                player.Leader = BuildLeader(player, seat);
                 player.Stage = null;
-                player.DrawDeck = BuildMatchDeck(player);
-                Shuffle(player.DrawDeck);
+                player.DrawDeck = BuildMatchDeck(player, seat);
+                player.DrawDeck.Shuffle(player.Random);
                 player.Hand.Clear();
                 player.Characters.Clear();
                 player.LifeCards.Clear();
@@ -507,6 +526,7 @@ public sealed class MatchRoom
                     new DiceRollDto { PlayerId = first.PlayerId, Value = firstValue },
                     new DiceRollDto { PlayerId = second.PlayerId, Value = secondValue }
                 ],
+                // Only for the dice animation, not part of the game logic or the replay.
                 AnimationSeed = BitConverter.ToUInt32(RandomNumberGenerator.GetBytes(4))
             });
             CreateLogEvent(
@@ -847,7 +867,7 @@ public sealed class MatchRoom
     {
         var prompt = new ChoicePromptDto
         {
-            ChoiceId = Guid.NewGuid().ToString("N"),
+            ChoiceId = $"c{++_choiceSeq}",
             PlayerId = playerId,
             Kind = kind,
             Title = title,
@@ -1265,7 +1285,8 @@ public sealed class MatchRoom
     // The main action prompt is created again, all other open prompts are sent again unchanged.
     private void ResendOpenPrompts()
     {
-        foreach (var prompt in _openChoicePrompts.Values.ToList())
+        // In the order the prompts were created (dictionary order is not guaranteed).
+        foreach (var prompt in _openChoicePrompts.Values.OrderBy(PromptNumber).ToList())
         {
             if (prompt.Kind == MainActionKind)
             {
@@ -1579,6 +1600,30 @@ public sealed class MatchRoom
 
     #region UTILITIES
 
+    // Fingerprint of the complete game state (for determinism and replay checks).
+    public string ComputeStateHash()
+    {
+        lock (_sync)
+        {
+            var seats = _players.Select((player, index) => (player.PlayerId, Seat: $"seat{index + 1}"))
+                .ToDictionary(entry => entry.PlayerId, entry => entry.Seat, StringComparer.Ordinal);
+            string Seat(string? playerId) => playerId is not null && seats.TryGetValue(playerId, out var seat) ? seat : "-";
+
+            var lines = new List<string>
+            {
+                $"turn={_turnNumber} phase={_phase} active={Seat(_activePlayerId)} winner={Seat(_winnerPlayerId)} damageLeft={_damageLeft}",
+                _battle is null
+                    ? "battle=-"
+                    : $"battle={_battle.Attacker.InstanceId}>{_battle.Target.InstanceId} step={_battle.Step} counter={_battle.CounterBonus} blocked={_battle.BlockerUsed}",
+                $"effects busy={_resolver.IsBusy} hold={_resolver.HoldNewEffects}"
+            };
+            lines.AddRange(_openChoicePrompts.Values.OrderBy(PromptNumber)
+                .Select(prompt => $"prompt {prompt.ChoiceId} {Seat(prompt.PlayerId)} {prompt.Kind} {string.Join(',', prompt.Options)} {string.Join(',', prompt.Cards.Select(card => card.InstanceId))}"));
+
+            return StateHasher.Hash(_players, lines);
+        }
+    }
+
     public string ResolvePlayerId(string connectionId)
     {
         lock (_sync)
@@ -1605,11 +1650,16 @@ public sealed class MatchRoom
             ?? throw new InvalidOperationException("Player is not in this room.");
     }
 
+    private static int PromptNumber(ChoicePromptDto prompt)
+    {
+        return int.TryParse(prompt.ChoiceId.AsSpan(1), out var number) ? number : int.MaxValue;
+    }
+
     private static void ResolveMulligan(PlayerState player)
     {
         player.DrawDeck.AddRange(player.Hand);
         player.Hand.Clear();
-        Shuffle(player.DrawDeck);
+        player.DrawDeck.Shuffle(player.Random);
         player.DrawCards(OpeningHandSize);
     }
 
@@ -1626,13 +1676,15 @@ public sealed class MatchRoom
         }
     }
 
-    private static CardInstance BuildLeader(PlayerState player)
+    // Instance IDs come from the seat and a counter (no connection ID, no Guid), so they are the
+    // same in a replay. Hidden cards are never sent to the opponent, so they reveal nothing.
+    private static CardInstance BuildLeader(PlayerState player, int seat)
     {
         var deck = player.DeckSubmission;
 
         return new CardInstance
         {
-            InstanceId = $"{player.PlayerId}:leader:{Guid.NewGuid():N}",
+            InstanceId = $"s{seat}:leader",
             CardId = player.LeaderCardId,
             Name = string.IsNullOrWhiteSpace(deck?.LeaderName) ? player.LeaderCardId : deck.LeaderName,
             Category = CardInstance.LeaderCategory,
@@ -1647,14 +1699,14 @@ public sealed class MatchRoom
         };
     }
 
-    private static List<CardInstance> BuildMatchDeck(PlayerState player)
+    private static List<CardInstance> BuildMatchDeck(PlayerState player, int seat)
     {
         return player.DeckCards
             .Where(card => card.Quantity > 0 && !string.IsNullOrWhiteSpace(card.CardId))
             .SelectMany(card =>
                 Enumerable.Range(0, card.Quantity).Select(index => new CardInstance
                 {
-                    InstanceId = $"{player.PlayerId}:{card.CardId}:{index + 1}:{Guid.NewGuid():N}",
+                    InstanceId = $"s{seat}:{card.CardId}:{index + 1}",
                     CardId = card.CardId,
                     OwnerId = player.PlayerId,
                     Types = card.Types,
@@ -1687,15 +1739,6 @@ public sealed class MatchRoom
 
         // Unknown categories are treated as Characters so older decks stay playable.
         return CardInstance.CharacterCategory;
-    }
-
-    private static void Shuffle(IList<CardInstance> cards)
-    {
-        for (var index = cards.Count - 1; index > 0; index -= 1)
-        {
-            var swapIndex = Random.Shared.Next(index + 1);
-            (cards[index], cards[swapIndex]) = (cards[swapIndex], cards[index]);
-        }
     }
 
     #endregion

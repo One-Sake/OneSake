@@ -15,6 +15,20 @@ public sealed class CryptoDiceRoller : IDiceRoller
     public int Roll() => RandomNumberGenerator.GetInt32(1, 7);
 }
 
+// Default for matches: the dice come from the match seed (own stream), so a recorded match
+// rolls the same dice when it is played again. The seed stays secret on the server.
+public sealed class SeededDiceRoller : IDiceRoller
+{
+    private readonly OneSake.Game.Randomness.IRandom _random;
+
+    public SeededDiceRoller(OneSake.Game.Randomness.IRandom random)
+    {
+        _random = random;
+    }
+
+    public int Roll() => _random.Next(6) + 1;
+}
+
 // Development/test hook: returns the given values in order, then falls back to real rolls.
 // Example config (Development only): "Match": { "FixedDiceRolls": [3, 3, 5, 2] } -> tie, then 5:2.
 public sealed class FixedDiceRoller : IDiceRoller
