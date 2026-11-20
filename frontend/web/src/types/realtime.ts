@@ -71,6 +71,8 @@ export interface CardInstanceDto {
   isRested?: boolean;
   attachedDon?: number;
   canAttack?: boolean;
+  // [Rush: Character] in the turn it was played: only Characters are valid attack targets.
+  canAttackOnlyCharacters?: boolean;
   keywords?: string[];
   // [Activate: Main] ability that can be used right now.
   canActivate?: boolean;

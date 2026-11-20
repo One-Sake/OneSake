@@ -88,6 +88,8 @@ public record CardInstanceDto
     public bool IsRested { get; init; }
     public int AttachedDon { get; init; }
     public bool CanAttack { get; init; }
+    // [Rush: Character] in the turn it was played: it may attack Characters, but not the Leader.
+    public bool CanAttackOnlyCharacters { get; init; }
     public IReadOnlyList<string> Keywords { get; init; } = [];
     // True when the card has an [Activate: Main] ability that can be used right now.
     public bool CanActivate { get; init; }

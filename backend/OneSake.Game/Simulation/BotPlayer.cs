@@ -140,9 +140,9 @@ public static class ValidDecisions
         return (me.Leader is null ? me.BoardCards : me.BoardCards.Prepend(me.Leader)).Where(card => card.CanAttack);
     }
 
-    public static IEnumerable<CardInstanceDto> AttackTargets(PlayerStateDto opponent)
+    public static IEnumerable<CardInstanceDto> AttackTargets(PlayerStateDto opponent, CardInstanceDto attacker)
     {
-        return (opponent.Leader is null ? [] : new[] { opponent.Leader })
+        return (opponent.Leader is null || attacker.CanAttackOnlyCharacters ? [] : new[] { opponent.Leader })
             .Concat(opponent.BoardCards.Where(card => card.IsRested == true));
     }
 
@@ -179,7 +179,7 @@ public static class ValidDecisions
         {
             foreach (var attacker in Attackers(me))
             {
-                decisions.AddRange(AttackTargets(view.Opponent).Select(target => BotDecision.Answer(prompt, "ATTACK", attacker.InstanceId, target.InstanceId)));
+                decisions.AddRange(AttackTargets(view.Opponent, attacker).Select(target => BotDecision.Answer(prompt, "ATTACK", attacker.InstanceId, target.InstanceId)));
             }
         }
 

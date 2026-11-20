@@ -47,7 +47,7 @@ public sealed class AttackAction
         }
 
         // [Rush: Character]: in the turn it was played, it may only attack Characters.
-        if (targetCard.IsLeader && attackingCard.IsCharacter && attackingCard.PlayedOnTurn == turnNumber && !attackingCard.HasRush)
+        if (targetCard.IsLeader && CanAttackOnlyCharacters(attackingCard, turnNumber))
         {
             throw new InvalidOperationException($"{attackingCard.Name} can only attack Characters in the turn it was played.");
         }
@@ -66,6 +66,12 @@ public sealed class AttackAction
         events?.Publish(new CardRested(attackingCard, attacker.PlayerId));
         events?.Publish(new AttackDeclared(attackingCard, targetCard, attacker.PlayerId, opponent.PlayerId));
         return battle;
+    }
+
+    // Rule 10-1-6-1: a [Rush: Character] card may attack only Characters in the turn it was played.
+    public static bool CanAttackOnlyCharacters(CardInstance card, int turnNumber)
+    {
+        return card.IsCharacter && card.PlayedOnTurn == turnNumber && !card.HasRush;
     }
 
     // Rule 6-5-6-1: no battles on your own first turn.

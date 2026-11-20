@@ -28,6 +28,8 @@ public sealed record SimulationResult
     public bool Finished { get; init; }
     public string WinnerSeat { get; init; } = string.Empty;
     public int Rejections { get; init; }
+    // Why the server rejected bot decisions: "<prompt kind> <option>: <message>" -> count.
+    public IReadOnlyDictionary<string, int> RejectionReasons { get; init; } = new Dictionary<string, int>();
     public IReadOnlyList<InvariantViolation> Violations { get; init; } = [];
     // Number of recorded decisions when the first violation was found.
     public int? FailedAtSeq { get; init; }
@@ -91,6 +93,7 @@ public static class MatchSimulator
         var violations = new List<InvariantViolation>();
         var steps = 0;
         var rejections = 0;
+        var rejectionReasons = new Dictionary<string, int>(StringComparer.Ordinal);
 
         try
         {
@@ -136,9 +139,11 @@ public static class MatchSimulator
                             : room.SubmitChoice(decision.Choice!);
                         applied = decision;
                     }
-                    catch (InvalidOperationException)
+                    catch (InvalidOperationException exception)
                     {
                         // The server does not accept it (rules a client cannot see) - choose again.
+                        var reason = $"{prompt.Kind} {decision.Choice?.SelectedOption ?? decision.Manual?.Kind}: {exception.Message}";
+                        rejectionReasons[reason] = rejectionReasons.GetValueOrDefault(reason) + 1;
                         rejections += 1;
                         rejected.Add(decision.Key);
                         if (rejected.Count >= options.MaxRejections)
@@ -208,6 +213,7 @@ public static class MatchSimulator
             Finished = match.IsGameOver,
             WinnerSeat = match.Winner switch { Seat1 => "1", Seat2 => "2", _ => string.Empty },
             Rejections = rejections,
+            RejectionReasons = rejectionReasons,
             Violations = violations,
             FailedAtSeq = violations.Count > 0 ? room.RecordedInputCount : null,
             Recording = violations.Count > 0 ? room.CreateRecordingSnapshot() : null,

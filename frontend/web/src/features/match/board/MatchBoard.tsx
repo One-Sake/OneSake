@@ -336,7 +336,17 @@ export function MatchBoard({
   }
 
   function isAttackTarget(card: CardInstanceDto): boolean {
-    return mode.kind === 'attack' && (card.category === 'Leader' || Boolean(card.isRested));
+    if (mode.kind !== 'attack') {
+      return false;
+    }
+
+    // [Rush: Character] in its first turn: not the Leader.
+    const attacker = localFieldCards.find((entry) => entry.instanceId === mode.attackerId);
+    if (card.category === 'Leader') {
+      return !attacker?.canAttackOnlyCharacters;
+    }
+
+    return Boolean(card.isRested);
   }
 
   // ---------- Click handlers ----------
@@ -605,7 +615,10 @@ export function MatchBoard({
     }
 
     if (mode.kind === 'attack') {
-      return 'Choose a target: the opponent Leader or a rested Character.';
+      const attacker = localFieldCards.find((entry) => entry.instanceId === mode.attackerId);
+      return attacker?.canAttackOnlyCharacters
+        ? 'Choose a rested Character: [Rush: Character] cannot attack the Leader this turn.'
+        : 'Choose a target: the opponent Leader or a rested Character.';
     }
 
     if (mode.kind === 'replace') {

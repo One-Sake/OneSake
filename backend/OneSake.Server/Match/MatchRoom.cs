@@ -1628,6 +1628,7 @@ public sealed class MatchRoom
                 && isOwnersTurn
                 && owner.FieldCards().Contains(card)
                 && AttackAction.CanAttack(card, owner, _turnNumber),
+            CanAttackOnlyCharacters = AttackAction.CanAttackOnlyCharacters(card, _turnNumber),
             Keywords = card.Keywords,
             CanActivate = owner.FieldCards().Contains(card) && CanActivateAny(card, owner),
             IsCounterEvent = IsCounterEvent(card),

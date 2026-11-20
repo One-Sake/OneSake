@@ -63,6 +63,13 @@ Console.WriteLine($"Games: {games} in {stopwatch.Elapsed.TotalSeconds:0.0} s ({g
 Console.WriteLine($"Finished: {results.Count(result => result.Finished)}, failed: {failed.Count}");
 Console.WriteLine($"Average length: {results.Average(result => result.Turns):0.0} turns, {results.Average(result => result.Steps):0} decisions");
 Console.WriteLine($"Rejected bot decisions: {results.Sum(result => result.Rejections)}");
+foreach (var reason in results.SelectMany(result => result.RejectionReasons)
+    .GroupBy(entry => System.Text.RegularExpressions.Regex.Replace(entry.Key, @"[A-Z0-9]+-\d{3}|\d+", "#"))
+    .Select(group => (Reason: group.Key, Count: group.Sum(entry => entry.Value)))
+    .OrderByDescending(entry => entry.Count).Take(8))
+{
+    Console.WriteLine($"  {reason.Count,6}  {reason.Reason}");
+}
 Console.WriteLine($"Games with \"manual\" cards: {100.0 * results.Count(result => result.ManualCardIds.Count > 0) / games:0.0} %");
 Console.WriteLine($"Winner seat 1 / 2: {results.Count(result => result.WinnerSeat == "1")} / {results.Count(result => result.WinnerSeat == "2")}");
 
