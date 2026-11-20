@@ -51,6 +51,8 @@ public sealed class MatchRoom
     private Action? _afterEffects;
     private int _damageLeft;
     private CardInstance? _pendingTriggerCard;
+    // Rule 10-1-5-3: an activated [Trigger] card belongs to no area until its effect is resolved.
+    private CardInstance? _triggerCardInResolution;
 
     private const int OpeningHandSize = 5;
     private const int DefaultLeaderLife = 5;
@@ -1134,9 +1136,11 @@ public sealed class MatchRoom
 
         // Rule 10-1-5-3: the card belongs to no area while its [Trigger] resolves, then it is trashed.
         CreateLogEvent("TRIGGER", $"{defender.DisplayName} reveals {lifeCard.Name} and activates its [Trigger].");
+        _triggerCardInResolution = lifeCard;
         _resolver.Activate(lifeCard, defender.PlayerId, EffectTiming.Trigger);
         RunEffects(() =>
         {
+            _triggerCardInResolution = null;
             // The card is trashed after its [Trigger], unless the effect played it or moved it.
             if (!IsInAnyZone(lifeCard))
             {
@@ -1260,6 +1264,7 @@ public sealed class MatchRoom
         _afterEffects = null;
         _damageLeft = 0;
         _pendingTriggerCard = null;
+        _triggerCardInResolution = null;
     }
 
     #endregion
@@ -1663,6 +1668,30 @@ public sealed class MatchRoom
             {
                 return _recorder?.InputCount ?? 0;
             }
+        }
+    }
+
+    // The internal state for the invariant checks of the simulator (OneSake.Game/Simulation).
+    public OneSake.Game.Simulation.InvariantSnapshot CreateInvariantSnapshot()
+    {
+        lock (_sync)
+        {
+            var inResolution = new[] { _pendingTriggerCard, _triggerCardInResolution }
+                .Where(card => card is not null && !IsInAnyZone(card))
+                .Select(card => card!)
+                .Distinct()
+                .ToArray();
+
+            return new OneSake.Game.Simulation.InvariantSnapshot
+            {
+                Players = _players.ToArray(),
+                ExpectedCardCounts = _players.ToDictionary(player => player.PlayerId, player => 1 + player.MainDeckCount, StringComparer.Ordinal),
+                CardsInResolution = inResolution,
+                Phase = _phase,
+                ActivePlayerId = _activePlayerId,
+                WinnerPlayerId = _winnerPlayerId,
+                OpenPrompts = _openChoicePrompts.Values.OrderBy(PromptNumber).ToArray()
+            };
         }
     }
 
