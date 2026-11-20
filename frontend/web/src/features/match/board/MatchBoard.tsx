@@ -13,13 +13,17 @@ import type { BoardSide, BoardZoneDefinition } from './boardTypes';
 import { CardInspectOverlay } from './CardInspectOverlay';
 import type { CardPile } from './CardInspectOverlay';
 import { EFFECT_PROMPT_KINDS } from '../choiceOptions';
+import { getLeaderColors } from '../leaderColors';
 import { EffectChoiceOverlay } from './EffectChoiceOverlay';
 import { MatchCardView } from './MatchCardView';
 import { MatchHand } from './MatchHand';
+import { useBoardMetrics } from './useBoardMetrics';
 
 const MAX_CHARACTERS = CHARACTER_SLOT_COUNT;
 const PREVIEW_DELAY_MS = 350;
 const MAX_OPPONENT_HAND_BACKS = 12;
+// Below this card width the stack badges only show the number (no "DECK" / "LIFE" text).
+const SMALL_CARD_W = 60;
 
 // What the player is doing right now on the board.
 type BoardMode =
@@ -52,6 +56,13 @@ function getVisiblePlayers(gameState: GameStateDto | null): Record<BoardSide, Pl
     player: viewerPlayer,
     opponent: opponentPlayer,
   };
+}
+
+// The leader color is used as an accent on the player name plates.
+function getPlateStyle(player: PlayerStateDto | null): CSSProperties | undefined {
+  return player?.leader?.color
+    ? ({ '--leader-accent': getLeaderColors(player.leader.color).primary } as CSSProperties)
+    : undefined;
 }
 
 function hasOption(prompt: ChoicePromptDto | null, option: string): boolean {
@@ -96,6 +107,8 @@ export function MatchBoard({
   const [selectedCardId, setSelectedCardId] = useState('');
   const [mode, setMode] = useState<BoardMode>({ kind: 'idle' });
   const previewTimer = useRef<number>();
+  const frameRef = useRef<HTMLDivElement>(null);
+  const metrics = useBoardMetrics(frameRef);
 
   const visiblePlayers = getVisiblePlayers(gameState);
   const localPlayer = visiblePlayers.player;
@@ -489,13 +502,22 @@ export function MatchBoard({
   const hint = getHint();
   const showActions = isMainAction || isBlockStep || isCounterStep || mode.kind === 'replace';
 
+  const frameStyle = metrics
+    ? ({
+        '--board-card-w': `${metrics.cardWidth}px`,
+        '--board-card-h': `${(metrics.cardWidth * 88) / 63}px`,
+      } as CSSProperties)
+    : undefined;
+  const frameClassName =
+    metrics && metrics.cardWidth < SMALL_CARD_W ? 'match-board-frame is-small-cards' : 'match-board-frame';
+
   return (
-    <div className="match-board-frame">
+    <div ref={frameRef} className={frameClassName} style={frameStyle}>
       <div className="match-board" aria-label="OneSake match board">
         <div
           className={`match-board__opponent-bar${opponent?.playerId === activePlayerId ? ' is-active' : ''}`}
         >
-          <div className="match-player-plate">
+          <div className="match-player-plate" style={getPlateStyle(opponent)}>
             <span>Opponent</span>
             <strong>{opponent?.displayName || 'Waiting...'}</strong>
           </div>
@@ -590,6 +612,7 @@ export function MatchBoard({
         className={`match-player-plate match-player-plate--self${
           localPlayer?.playerId === activePlayerId ? ' is-active' : ''
         }`}
+        style={getPlateStyle(localPlayer)}
       >
         <span>You</span>
         <strong>{localPlayer?.displayName || 'Player'}</strong>

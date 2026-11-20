@@ -32,17 +32,22 @@
 }
 
 /* All direct children share the card size, so the hand matches the board.
- * --card-w is limited by the height (6 card rows + bars + hand must fit) and by the width
- * (7 columns plus room for the action buttons on the right). */
+ * --board-card-w/-h are measured by useBoardMetrics.ts (ResizeObserver on this frame): the
+ * largest card that lets the whole board, both hands and the action bar fit without scrolling.
+ * The clamp() is only a fallback until the first measurement.
+ * Row heights, gaps and the action bar width below must match useBoardMetrics.ts. */
 .match-board-frame > * {
-  --card-w: clamp(22px, min(9.6cqh - 3px, 9.4cqw - 3px), 170px);
-  --card-h: calc(var(--card-w) * 88 / 63);
+  --card-w: var(--board-card-w, clamp(22px, min(9.6cqh - 3px, 9.4cqw - 3px), 170px));
+  --card-h: var(--board-card-h, calc(var(--card-w) * 88 / 63));
   --card-radius: calc(var(--card-w) * 0.07);
-  --gap: calc(var(--card-w) * 0.1);
+  --gap: calc(var(--card-w) * 0.08);
   --don-w: calc(var(--card-w) * 0.6);
   --don-h: calc(var(--don-w) * 88 / 63);
-  /* Height of the resting hand (scale 0.55 + fan + lift), kept free below the board. */
-  --hand-peek: calc(var(--card-h) * 0.66);
+  /* Height of the resting hand (scale 0.62 + fan + lift), kept free below the board. */
+  --hand-scale: 0.62;
+  --hand-peek: calc(var(--card-h) * 0.72);
+  /* Room for the hint toast between the board and the resting hand. */
+  --bottom-extra: 36px;
   --accent: #f0bf38;
   --glow: rgb(255 214 120 / 55%);
 }
@@ -54,7 +59,7 @@
   flex-direction: column;
   align-items: center;
   height: 100%;
-  padding-bottom: calc(var(--hand-peek) + 28px);
+  padding-bottom: calc(var(--hand-peek) + var(--bottom-extra));
 }
 
 .match-board__side {
@@ -88,7 +93,7 @@
   position: relative;
   align-self: stretch;
   flex: 0 0 auto;
-  height: calc(var(--card-h) * 0.24);
+  height: calc(var(--card-h) * 0.18);
 }
 
 .match-board__midline::before {
@@ -143,10 +148,11 @@
   transform: translate(-50%, -50%);
   max-width: 100%;
   overflow: hidden;
-  color: rgb(185 207 214 / 55%);
-  font-size: clamp(7px, calc(var(--card-w) * 0.11), 14px);
+  color: rgb(205 224 230 / 78%);
+  font-size: max(11px, min(calc(var(--card-w) * 0.11), 14px));
   font-weight: 800;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.12em;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 80%);
   text-overflow: ellipsis;
   text-transform: uppercase;
   white-space: nowrap;
@@ -160,7 +166,10 @@
 /* "Character" sits vertically in the empty column left of the five slots. */
 .board-zone--character > .board-zone__label {
   top: 50%;
-  right: calc(100% + var(--card-w) * 0.16);
+  right: calc(100% + var(--card-w) * 0.12);
+  border-left: 2px solid rgb(240 191 56 / 45%);
+  padding: 0 3px;
+  color: rgb(225 236 240 / 85%);
   left: auto;
   transform: translateY(-50%) rotate(180deg);
   writing-mode: vertical-rl;
@@ -199,18 +208,19 @@
   position: relative;
   flex: 0 0 auto;
   align-self: stretch;
-  height: calc(var(--card-h) * 0.3);
+  height: calc(var(--card-h) * 0.26);
 }
 
 .match-player-plate {
   position: absolute;
   z-index: 5;
   display: grid;
-  max-width: 28cqw;
+  max-width: max(110px, calc((100cqw - var(--card-w) * 7.48) / 2 - 20px));
   border: 1px solid rgb(148 187 194 / 22%);
+  border-left: 4px solid var(--leader-accent, #e3bd68);
   border-radius: 8px;
-  padding: 3px 9px;
-  background: rgb(4 11 18 / 78%);
+  padding: 4px 11px 4px 9px;
+  background: rgb(4 11 18 / 86%);
   line-height: 1.15;
 }
 
@@ -225,16 +235,17 @@
 }
 
 .match-player-plate span {
-  color: #8ea9b3;
-  font-size: 0.6rem;
+  color: var(--leader-accent, #a9c0c8);
+  font-size: 0.7rem;
   font-weight: 900;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .match-player-plate strong {
   overflow: hidden;
   color: #ffffff;
-  font-size: 0.8rem;
+  font-size: clamp(0.9rem, calc(var(--card-w) * 0.15), 1.15rem);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -471,10 +482,11 @@ button.match-card-view,
 }
 
 .match-card-stat {
+  border: 1px solid rgb(240 191 56 / 40%);
   border-radius: 4px;
   padding: 0 0.35em;
   color: #ffffff;
-  font-size: 1em;
+  font-size: max(13px, min(calc(var(--card-w, 90px) * 0.15), 17px));
   font-weight: 900;
   line-height: 1.35;
   background: rgb(5 11 17 / 86%);
@@ -591,19 +603,32 @@ button.match-card-view,
   border-radius: 999px;
   padding: 0 6px;
   color: #ffffff;
-  font-size: clamp(8px, calc(var(--card-w) * 0.14), 18px);
+  font-size: max(13px, min(calc(var(--card-w) * 0.15), 18px));
   font-weight: 900;
-  line-height: 1.5;
+  line-height: 1.45;
   white-space: nowrap;
-  background: rgb(4 11 18 / 90%);
+  background: rgb(4 11 18 / 94%);
   box-shadow: 0 2px 6px rgb(0 0 0 / 55%);
   pointer-events: none;
 }
 
 .card-stack__badge small {
-  color: #c9b27a;
+  color: #e3c98a;
   font-size: 0.72em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
+}
+
+/* Small cards: the badge shows only the number so it stays inside its zone. */
+.is-small-cards .card-stack__badge small {
+  display: none;
+}
+
+/* Small cards: labels keep their minimum size and may use the full zone width. */
+.is-small-cards .board-zone__label {
+  max-width: none;
+  overflow: visible;
+  letter-spacing: 0.02em;
 }
 
 /* ---------- DON!! cost area ---------- */
@@ -694,8 +719,8 @@ button.match-card-view,
   justify-content: center;
   transform-origin: 50% 100%;
   /* Lifted a bit so the tilted outer cards are not cut off at the bottom edge. */
-  translate: -50% calc(var(--card-h) * -0.08);
-  scale: 0.55;
+  translate: -50% calc(var(--card-h) * -0.05);
+  scale: var(--hand-scale);
   transition:
     translate 180ms ease,
     scale 180ms ease;
@@ -782,27 +807,29 @@ button.match-card-view,
 .match-actions {
   position: absolute;
   top: 50%;
-  right: max(10px, 2cqw);
+  right: 12px;
   z-index: 15;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  width: clamp(104px, 13cqw, 170px);
+  gap: calc(var(--card-w) * 0.07);
+  /* Must match ACTIONS_NORMAL in useBoardMetrics.ts. */
+  width: clamp(112px, calc(var(--card-w) * 1.3), 200px);
   transform: translateY(-50%);
 }
 
 .match-actions button {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
   justify-content: center;
-  gap: 5px;
-  min-height: 34px;
+  gap: 0 5px;
+  min-height: clamp(34px, calc(var(--card-w) * 0.42), 50px);
   border: 1px solid rgb(240 191 56 / 45%);
   border-radius: 9px;
   padding: 5px 8px;
   color: #f8da84;
   font: inherit;
-  font-size: 0.8rem;
+  font-size: max(12px, min(calc(var(--card-w) * 0.13), 16px));
   font-weight: 900;
   background: rgb(10 18 26 / 92%);
   box-shadow: 0 4px 12px rgb(0 0 0 / 40%);
@@ -815,7 +842,7 @@ button.match-card-view,
 
 .match-actions button small {
   color: #c9b27a;
-  font-size: 0.7rem;
+  font-size: 0.8em;
 }
 
 .match-actions button:hover:not(:disabled),
@@ -837,20 +864,24 @@ button.match-card-view,
 }
 
 .match-actions button:disabled {
-  border-color: rgb(148 187 194 / 18%);
-  color: #6f8a94;
-  background: rgb(10 18 26 / 75%);
+  border: 1px dashed rgb(148 187 194 / 35%);
+  color: #93a9b1;
+  background: rgb(10 18 26 / 62%);
   box-shadow: none;
   cursor: not-allowed;
 }
 
+.match-actions button:disabled small {
+  color: #7d939b;
+}
+
 .match-actions .match-actions__end-turn {
-  min-height: 52px;
+  min-height: clamp(46px, calc(var(--card-w) * 0.6), 66px);
   margin-top: 4px;
   border: 2px solid #ffe39b;
   border-radius: 999px;
   color: #1a1207;
-  font-size: 1rem;
+  font-size: max(14px, min(calc(var(--card-w) * 0.16), 19px));
   letter-spacing: 0.04em;
   text-transform: uppercase;
   background: linear-gradient(180deg, #ffe39b, #e0a332 55%, #b77a1d);
@@ -871,20 +902,22 @@ button.match-card-view,
   bottom: calc(var(--hand-peek) + 4px);
   left: 50%;
   z-index: 12;
-  max-width: min(640px, 64cqw);
+  max-width: min(760px, calc(100cqw - 24px));
   margin: 0;
   overflow: hidden;
   transform: translateX(-50%);
-  border: 1px solid rgb(240 191 56 / 22%);
+  border: 1px solid rgb(240 191 56 / 50%);
   border-radius: 999px;
-  padding: 3px 12px;
-  color: #ffe7a1;
-  font-size: clamp(0.72rem, calc(var(--card-w) * 0.11), 0.95rem);
-  font-weight: 700;
+  padding: 4px 16px;
+  color: #fff0c2;
+  font-size: max(14px, min(calc(var(--card-w) * 0.15), 16px));
+  font-weight: 800;
+  line-height: 1.4;
+  box-shadow: 0 4px 14px rgb(0 0 0 / 45%);
   text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
-  background: rgb(4 11 18 / 80%);
+  background: rgb(4 11 18 / 92%);
   pointer-events: none;
 }
 
@@ -1006,13 +1039,11 @@ button.match-card-view,
 /* ---------- Short boards (phones in landscape): two rows per player ---------- */
 
 @container board (max-height: 520px) and (min-aspect-ratio: 3 / 2) {
+  /* Must match COMPACT in useBoardMetrics.ts. */
   .match-board-frame > * {
-    --card-w: clamp(20px, min(13cqh - 5px, 6.2cqw), 90px);
-    --hand-peek: calc(var(--card-h) * 0.34);
-  }
-
-  .match-board {
-    padding-bottom: calc(var(--hand-peek) + 24px);
+    --card-w: var(--board-card-w, clamp(20px, min(13cqh - 5px, 6.2cqw), 90px));
+    --hand-peek: calc(var(--card-h) * 0.4);
+    --bottom-extra: 26px;
   }
 
   .match-board__side {
@@ -1036,6 +1067,7 @@ button.match-card-view,
   }
 
   .match-player-plate {
+    max-width: max(90px, calc((100cqw - var(--card-w) * 10.72) / 2 - 14px));
     padding: 2px 7px;
   }
 
@@ -1044,34 +1076,36 @@ button.match-card-view,
   }
 
   .match-player-plate strong {
-    font-size: 0.7rem;
+    font-size: 0.82rem;
   }
 
   .match-actions {
+    right: 6px;
     gap: 4px;
-    width: clamp(92px, 15cqw, 130px);
+    width: clamp(92px, calc(var(--card-w) * 1.5), 140px);
   }
 
   .match-actions button {
     min-height: 28px;
     padding: 3px 6px;
-    font-size: 0.7rem;
+    font-size: 12px;
   }
 
   .match-actions .match-actions__end-turn {
-    min-height: 38px;
-    font-size: 0.82rem;
+    min-height: 36px;
+    font-size: 13px;
   }
 
   .match-board__hint {
-    font-size: 0.68rem;
+    padding: 2px 12px;
+    font-size: 13px;
   }
 }
 
 /* Narrow boards (phones in portrait): actions move above the hand. */
 @container board (max-width: 560px) {
   .match-board {
-    padding-bottom: calc(var(--hand-peek) + 76px);
+    padding-bottom: calc(var(--hand-peek) + var(--bottom-extra) + 48px);
   }
 
   /* Without a positioned midline the actions are placed relative to the frame. */
@@ -1288,7 +1322,8 @@ button.match-card-view,
 .match-fullscreen__stage {
   --feed-w: 300px;
   --splitter-w: 10px;
-  --preview-w: clamp(240px, 20vw, 380px);
+  /* Only as wide as the card image needs; below 1200px the preview floats as an overlay. */
+  --preview-w: clamp(220px, 17vw, 330px);
   position: relative;
   display: grid;
   grid-template-columns: var(--feed-w) var(--splitter-w) minmax(0, 1fr) var(--preview-w);
