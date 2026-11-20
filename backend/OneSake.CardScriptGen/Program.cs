@@ -79,7 +79,8 @@ foreach (var card in cards.Values.OrderBy(entry => entry.CardId, StringComparer.
     }
 
     Directory.CreateDirectory(Path.GetDirectoryName(path)!);
-    var changed = !File.Exists(path) || File.ReadAllText(path) != json;
+    // Git may check the files out with CRLF line endings: that is not a change.
+    var changed = !File.Exists(path) || File.ReadAllText(path).ReplaceLineEndings("\n") != json;
     if (changed)
     {
         File.WriteAllText(path, json);

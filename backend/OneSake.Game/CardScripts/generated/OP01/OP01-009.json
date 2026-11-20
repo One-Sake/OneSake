@@ -1,6 +1,6 @@
 {
   "cardId": "OP01-009",
-  "status": "generated",
+  "status": "verified",
   "sourceTextHash": "2da2b4ecee268b88d3ac4a9f5a064db5876964bfeb48754fd603d27cf296cac0",
   "parserVersion": "cardscriptgen-1",
   "script": {
