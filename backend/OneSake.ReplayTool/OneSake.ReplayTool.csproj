@@ -9,6 +9,11 @@
     <IsPublishable>false</IsPublishable>
   </PropertyGroup>
 
+  <!-- Npgsql pulls in an older EF Core Relational than the other packages; use the newest 8.x. -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.*" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\OneSake.Server\OneSake.Server.csproj" />
     <ProjectReference Include="..\OneSake.Persistence\OneSake.Persistence.csproj" />

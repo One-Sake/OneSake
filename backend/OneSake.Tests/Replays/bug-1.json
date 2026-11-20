@@ -1,0 +1,569 @@
+{
+  "report": {
+    "id": 1,
+    "category": "EFFECT",
+    "description": "Test: Zoro h\u00E4tte \u002B1000 Power bekommen sollen.",
+    "cardId": "ST01-014",
+    "atSeq": 12,
+    "createdAtUtc": "2026-11-20T23:03:29.331533Z"
+  },
+  "recording": {
+    "formatVersion": 1,
+    "engineVersion": "1.0.0\u002Bd4adf12a65611a8f605b4c2b5e7cf2920412e56e",
+    "seed": "18214928158571046514",
+    "roomCode": "72R2F7",
+    "isQuickMatch": false,
+    "startedAtUnixMs": 1795215790422,
+    "players": [
+      {
+        "seat": 1,
+        "displayName": "Player 1",
+        "deck": {
+          "deckId": "pw-deck",
+          "deckName": "PW Red",
+          "leaderCardId": "ST01-001",
+          "leaderName": "Monkey.D.Luffy (001)",
+          "leaderColor": "Red",
+          "leaderPower": 5000,
+          "leaderLife": 5,
+          "leaderText": "[Activate: Main] [Once Per Turn] Give this Leader or 1 of your Characters up to 1 rested DON!! card.",
+          "leaderImageUrl": "https://www.optcgapi.com/media/static/Card_Images/ST01-001.jpg",
+          "leaderTypes": "Straw Hat Crew Supernovas",
+          "leaderAttribute": "Strike",
+          "cards": [
+            {
+              "cardId": "ST01-002",
+              "name": "Usopp",
+              "quantity": 4,
+              "category": "Character",
+              "color": "Red",
+              "cost": 2,
+              "power": 2000,
+              "counter": 1000,
+              "text": "[DON!! x2] [When Attacking] Your opponent cannot activate a [Blocker] Character that has 5000 or more power during this battle. [Trigger] Play this card.",
+              "imageUrl": "https://www.optcgapi.com/media/static/Card_Images/ST01-002.jpg",
+              "types": "Straw Hat Crew",
+              "attribute": "Ranged"
+            },
+            {
+              "cardId": "ST01-003",
+              "name": "Karoo",
+              "quantity": 4,
+              "category": "Character",
+              "color": "Red",
+              "cost": 1,
+              "power": 3000,
+              "counter": 1000,
+              "text": "NULL",
+              "imageUrl": "https://www.optcgapi.com/media/static/Card_Images/ST01-003.jpg",
+              "types": "Animal Alabasta",
+              "attribute": "Strike"
+            },
+            {
+              "cardId": "ST01-004",
+              "name": "Sanji",
+              "quantity": 4,
+              "category": "Character",
+              "color": "Red",
+              "cost": 2,
+              "power": 4000,
+              "counter": 0,
+              "text": "[DON!! x2] This Character gains [Rush]. (This card can attack on the turn in which it is played.)",
+              "imageUrl": "https://www.optcgapi.com/media/static/Card_Images/ST01-004.jpg",
+              "types": "Straw Hat Crew",
+              "attribute": "Strike"
+            },
+            {
+              "cardId": "ST01-005",
+              "name": "Jinbe",
+              "quantity": 4,
+              "category": "Character",
+              "color": "Red",
+              "cost": 3,
+              "power": 5000,
+              "counter": 0,
+              "text": "[DON!! x1] [When Attacking] Up to 1 of your Leader or Character cards other than this card gains \u002B1000 power during this turn.",
+              "imageUrl": "https://www.optcgapi.com/media/static/Card_Images/ST01-005.jpg",
+              "types": "Fish-Man Straw Hat Crew",
+              "attribute": "Strike"
+            },
+            {
+              "cardId": "ST01-006",
+              "name": "Tony Tony.Chopper",
+              "quantity": 4,
+              "category": "Character",
+              "color": "Red",
+              "cost": 1,
+              "power": 1000,
+              "counter": 0,
+              "text": "[Blocker] (After your opponent declares an attack, you may rest this card to make it the new target of the attack.)",
+              "imageUrl": "https://www.optcgapi.com/media/static/Card_Images/ST01-006.jpg",
+              "types": "Animal Straw Hat Crew",
+              "attribute": "Strike"
+            },
+            {
+              "cardId": "ST01-008",
+              "name": "Nico Robin",
+              "quantity": 4,
+              "category": "Character",
+              "color": "Red",
+              "cost": 3,
+              "power": 5000,
+              "counter": 1000,
+              "text": "NULL",
+              "imageUrl": "https://www.optcgapi.com/media/static/Card_Images/ST01-008.jpg",
+              "types": "Straw Hat Crew",
+              "attribute": "Wisdom"
+            },
+            {
+              "cardId": "ST01-009",
+              "name": "Nefeltari Vivi",
+              "quantity": 4,
+              "category": "Character",
+              "color": "Red",
+              "cost": 2,
+              "power": 4000,
+              "counter": 1000,
+              "text": "NULL",
+              "imageUrl": "https://www.optcgapi.com/media/static/Card_Images/ST01-009.jpg",
+              "types": "Alabasta",
+              "attribute": "Slash"
+            },
+            {
+              "cardId": "ST01-010",
+              "name": "Franky",
+              "quantity": 4,
+              "category": "Character",
+              "color": "Red",
+              "cost": 4,
+              "power": 6000,
+              "counter": 1000,
+              "text": "NULL",
+              "imageUrl": "https://www.optcgapi.com/media/static/Card_Images/ST01-010.jpg",
+              "types": "Straw Hat Crew",
+              "attribute": "Strike"
+            },
+            {
+              "cardId": "ST01-011",
+              "name": "Brook",
+              "quantity": 4,
+              "category": "Character",
+              "color": "Red",
+              "cost": 2,
+              "power": 3000,
+              "counter": 2000,
+              "text": "[On Play] Give up to 2 rested DON!! cards to your Leader or 1 of your Characters.",
+              "imageUrl": "https://www.optcgapi.com/media/static/Card_Images/ST01-011.jpg",
+              "types": "Straw Hat Crew",
+              "attribute": "Slash"
+            },
+            {
+              "cardId": "ST01-013",
+              "name": "Roronoa Zoro",
+              "quantity": 4,
+              "category": "Character",
+              "color": "Red",
+              "cost": 3,
+              "power": 5000,
+              "counter": 0,
+              "text": "[DON!! x1] This Character gains \u002B1000 power.",
+              "imageUrl": "https://www.optcgapi.com/media/static/Card_Images/ST01-013.jpg",
+              "types": "Straw Hat Crew Supernovas",
+              "attribute": "Slash"
+            },
+            {
+              "cardId": "ST01-014",
+              "name": "Guard Point",
+              "quantity": 4,
+              "category": "Event",
+              "color": "Red",
+              "cost": 1,
+              "text": "[Counter] Up to 1 of your Leader or Character cards gains \u002B3000 power during this battle. [Trigger] Up to 1 of your Leader or Character cards gains \u002B1000 power during this turn.",
+              "imageUrl": "https://www.optcgapi.com/media/static/Card_Images/ST01-014.jpg",
+              "types": "Animal Straw Hat Crew",
+              "attribute": ""
+            },
+            {
+              "cardId": "ST01-016",
+              "name": "Diable Jambe",
+              "quantity": 2,
+              "category": "Event",
+              "color": "Red",
+              "cost": 1,
+              "text": "[Main] Select up to 1 of your {Straw Hat Crew} type Leader or Character cards. Your opponent cannot activate [Blocker] if that Leader or Character attacks during this turn. [Trigger] K.O. up to 1 of your opponent\u0027s [Blocker] Characters with a cost of 3 or less.",
+              "imageUrl": "https://www.optcgapi.com/media/static/Card_Images/ST01-016.jpg",
+              "types": "Straw Hat Crew",
+              "attribute": ""
+            },
+            {
+              "cardId": "ST01-017",
+              "name": "Thousand Sunny",
+              "quantity": 4,
+              "category": "Stage",
+              "color": "Red",
+              "cost": 2,
+              "counter": 0,
+              "text": "[Activate: Main] You may rest this Stage: Up to 1 {Straw Hat Crew} type Leader or Character card on your field gains \u002B1000 power during this turn.",
+              "imageUrl": "https://www.optcgapi.com/media/static/Card_Images/ST01-017.jpg",
+              "types": "Straw Hat Crew",
+              "attribute": "NULL"
+            }
+          ]
+        }
+      },
+      {
+        "seat": 2,
+        "displayName": "Player 2",
+        "deck": {
+          "deckId": "pw-deck",
+          "deckName": "PW Red",
+          "leaderCardId": "ST01-001",
+          "leaderName": "Monkey.D.Luffy (001)",
+          "leaderColor": "Red",
+          "leaderPower": 5000,
+          "leaderLife": 5,
+          "leaderText": "[Activate: Main] [Once Per Turn] Give this Leader or 1 of your Characters up to 1 rested DON!! card.",
+          "leaderImageUrl": "https://www.optcgapi.com/media/static/Card_Images/ST01-001.jpg",
+          "leaderTypes": "Straw Hat Crew Supernovas",
+          "leaderAttribute": "Strike",
+          "cards": [
+            {
+              "cardId": "ST01-002",
+              "name": "Usopp",
+              "quantity": 4,
+              "category": "Character",
+              "color": "Red",
+              "cost": 2,
+              "power": 2000,
+              "counter": 1000,
+              "text": "[DON!! x2] [When Attacking] Your opponent cannot activate a [Blocker] Character that has 5000 or more power during this battle. [Trigger] Play this card.",
+              "imageUrl": "https://www.optcgapi.com/media/static/Card_Images/ST01-002.jpg",
+              "types": "Straw Hat Crew",
+              "attribute": "Ranged"
+            },
+            {
+              "cardId": "ST01-003",
+              "name": "Karoo",
+              "quantity": 4,
+              "category": "Character",
+              "color": "Red",
+              "cost": 1,
+              "power": 3000,
+              "counter": 1000,
+              "text": "NULL",
+              "imageUrl": "https://www.optcgapi.com/media/static/Card_Images/ST01-003.jpg",
+              "types": "Animal Alabasta",
+              "attribute": "Strike"
+            },
+            {
+              "cardId": "ST01-004",
+              "name": "Sanji",
+              "quantity": 4,
+              "category": "Character",
+              "color": "Red",
+              "cost": 2,
+              "power": 4000,
+              "counter": 0,
+              "text": "[DON!! x2] This Character gains [Rush]. (This card can attack on the turn in which it is played.)",
+              "imageUrl": "https://www.optcgapi.com/media/static/Card_Images/ST01-004.jpg",
+              "types": "Straw Hat Crew",
+              "attribute": "Strike"
+            },
+            {
+              "cardId": "ST01-005",
+              "name": "Jinbe",
+              "quantity": 4,
+              "category": "Character",
+              "color": "Red",
+              "cost": 3,
+              "power": 5000,
+              "counter": 0,
+              "text": "[DON!! x1] [When Attacking] Up to 1 of your Leader or Character cards other than this card gains \u002B1000 power during this turn.",
+              "imageUrl": "https://www.optcgapi.com/media/static/Card_Images/ST01-005.jpg",
+              "types": "Fish-Man Straw Hat Crew",
+              "attribute": "Strike"
+            },
+            {
+              "cardId": "ST01-006",
+              "name": "Tony Tony.Chopper",
+              "quantity": 4,
+              "category": "Character",
+              "color": "Red",
+              "cost": 1,
+              "power": 1000,
+              "counter": 0,
+              "text": "[Blocker] (After your opponent declares an attack, you may rest this card to make it the new target of the attack.)",
+              "imageUrl": "https://www.optcgapi.com/media/static/Card_Images/ST01-006.jpg",
+              "types": "Animal Straw Hat Crew",
+              "attribute": "Strike"
+            },
+            {
+              "cardId": "ST01-008",
+              "name": "Nico Robin",
+              "quantity": 4,
+              "category": "Character",
+              "color": "Red",
+              "cost": 3,
+              "power": 5000,
+              "counter": 1000,
+              "text": "NULL",
+              "imageUrl": "https://www.optcgapi.com/media/static/Card_Images/ST01-008.jpg",
+              "types": "Straw Hat Crew",
+              "attribute": "Wisdom"
+            },
+            {
+              "cardId": "ST01-009",
+              "name": "Nefeltari Vivi",
+              "quantity": 4,
+              "category": "Character",
+              "color": "Red",
+              "cost": 2,
+              "power": 4000,
+              "counter": 1000,
+              "text": "NULL",
+              "imageUrl": "https://www.optcgapi.com/media/static/Card_Images/ST01-009.jpg",
+              "types": "Alabasta",
+              "attribute": "Slash"
+            },
+            {
+              "cardId": "ST01-010",
+              "name": "Franky",
+              "quantity": 4,
+              "category": "Character",
+              "color": "Red",
+              "cost": 4,
+              "power": 6000,
+              "counter": 1000,
+              "text": "NULL",
+              "imageUrl": "https://www.optcgapi.com/media/static/Card_Images/ST01-010.jpg",
+              "types": "Straw Hat Crew",
+              "attribute": "Strike"
+            },
+            {
+              "cardId": "ST01-011",
+              "name": "Brook",
+              "quantity": 4,
+              "category": "Character",
+              "color": "Red",
+              "cost": 2,
+              "power": 3000,
+              "counter": 2000,
+              "text": "[On Play] Give up to 2 rested DON!! cards to your Leader or 1 of your Characters.",
+              "imageUrl": "https://www.optcgapi.com/media/static/Card_Images/ST01-011.jpg",
+              "types": "Straw Hat Crew",
+              "attribute": "Slash"
+            },
+            {
+              "cardId": "ST01-013",
+              "name": "Roronoa Zoro",
+              "quantity": 4,
+              "category": "Character",
+              "color": "Red",
+              "cost": 3,
+              "power": 5000,
+              "counter": 0,
+              "text": "[DON!! x1] This Character gains \u002B1000 power.",
+              "imageUrl": "https://www.optcgapi.com/media/static/Card_Images/ST01-013.jpg",
+              "types": "Straw Hat Crew Supernovas",
+              "attribute": "Slash"
+            },
+            {
+              "cardId": "ST01-014",
+              "name": "Guard Point",
+              "quantity": 4,
+              "category": "Event",
+              "color": "Red",
+              "cost": 1,
+              "text": "[Counter] Up to 1 of your Leader or Character cards gains \u002B3000 power during this battle. [Trigger] Up to 1 of your Leader or Character cards gains \u002B1000 power during this turn.",
+              "imageUrl": "https://www.optcgapi.com/media/static/Card_Images/ST01-014.jpg",
+              "types": "Animal Straw Hat Crew",
+              "attribute": ""
+            },
+            {
+              "cardId": "ST01-016",
+              "name": "Diable Jambe",
+              "quantity": 2,
+              "category": "Event",
+              "color": "Red",
+              "cost": 1,
+              "text": "[Main] Select up to 1 of your {Straw Hat Crew} type Leader or Character cards. Your opponent cannot activate [Blocker] if that Leader or Character attacks during this turn. [Trigger] K.O. up to 1 of your opponent\u0027s [Blocker] Characters with a cost of 3 or less.",
+              "imageUrl": "https://www.optcgapi.com/media/static/Card_Images/ST01-016.jpg",
+              "types": "Straw Hat Crew",
+              "attribute": ""
+            },
+            {
+              "cardId": "ST01-017",
+              "name": "Thousand Sunny",
+              "quantity": 4,
+              "category": "Stage",
+              "color": "Red",
+              "cost": 2,
+              "counter": 0,
+              "text": "[Activate: Main] You may rest this Stage: Up to 1 {Straw Hat Crew} type Leader or Character card on your field gains \u002B1000 power during this turn.",
+              "imageUrl": "https://www.optcgapi.com/media/static/Card_Images/ST01-017.jpg",
+              "types": "Straw Hat Crew",
+              "attribute": "NULL"
+            }
+          ]
+        }
+      }
+    ],
+    "diceRolls": [
+      5,
+      2
+    ],
+    "inputs": [
+      {
+        "seq": 1,
+        "playerSlot": 1,
+        "kind": "CHOICE",
+        "payload": {
+          "choiceId": "c1",
+          "playerId": "",
+          "selectedOption": "GO_FIRST"
+        },
+        "tsUnixMs": 1795215794613,
+        "stateHash": "23a13d1eddfbfabc1784d1c00b88bb5c29b0d667a158bb3610b29093bf066117"
+      },
+      {
+        "seq": 2,
+        "playerSlot": 1,
+        "kind": "CHOICE",
+        "payload": {
+          "choiceId": "c2",
+          "playerId": "",
+          "selectedOption": "KEEP"
+        },
+        "tsUnixMs": 1795215795157,
+        "stateHash": "539068e9a7bb6931b78681ca47202c54794439412d737520cca29eac67aac1a3"
+      },
+      {
+        "seq": 3,
+        "playerSlot": 2,
+        "kind": "CHOICE",
+        "payload": {
+          "choiceId": "c3",
+          "playerId": "",
+          "selectedOption": "KEEP"
+        },
+        "tsUnixMs": 1795215795241,
+        "stateHash": "6900cf9b7ef589c3aa26cc9a2d0bd57be2347d5134cc1ebd83667a1cea0642d1"
+      },
+      {
+        "seq": 4,
+        "playerSlot": 1,
+        "kind": "CHOICE",
+        "payload": {
+          "choiceId": "c4",
+          "playerId": "",
+          "selectedOption": "END_TURN"
+        },
+        "tsUnixMs": 1795215796646,
+        "stateHash": "c1da378159a13d8c07396666626985b5fe707658108aacec78b09775003746a2"
+      },
+      {
+        "seq": 5,
+        "playerSlot": 2,
+        "kind": "CHOICE",
+        "payload": {
+          "choiceId": "c5",
+          "playerId": "",
+          "selectedOption": "END_TURN"
+        },
+        "tsUnixMs": 1795215798480,
+        "stateHash": "0aeb62f44190df3378255bac9ebc122b9edf3383be3a68941091e1dc2c7bf3fe"
+      },
+      {
+        "seq": 6,
+        "playerSlot": 1,
+        "kind": "CHOICE",
+        "payload": {
+          "choiceId": "c6",
+          "playerId": "",
+          "selectedOption": "PLAY_CARD",
+          "selectedCardInstanceId": "s1:ST01-005:3"
+        },
+        "tsUnixMs": 1795215799436,
+        "stateHash": "6a00aff392fe8d305b5b91343cd1d0354980574d240786cd6c07af28ec0fb469"
+      },
+      {
+        "seq": 7,
+        "playerSlot": 1,
+        "kind": "CHOICE",
+        "payload": {
+          "choiceId": "c7",
+          "playerId": "",
+          "selectedOption": "ATTACK",
+          "selectedCardInstanceId": "s1:leader",
+          "targetCardInstanceId": "s2:leader"
+        },
+        "tsUnixMs": 1795215800453,
+        "stateHash": "ce6b1e17eaf890f2a955368b9d89d441e0510fec89901e880cf78f2f561d9e68"
+      },
+      {
+        "seq": 8,
+        "playerSlot": 2,
+        "kind": "CHOICE",
+        "payload": {
+          "choiceId": "c8",
+          "playerId": "",
+          "selectedOption": "PASS"
+        },
+        "tsUnixMs": 1795215800855,
+        "stateHash": "38267a77e01e1310612050605746150a7560efbac8dac0aec492a3c220ed31cf"
+      },
+      {
+        "seq": 9,
+        "playerSlot": 1,
+        "kind": "CHOICE",
+        "payload": {
+          "choiceId": "c9",
+          "playerId": "",
+          "selectedOption": "END_TURN"
+        },
+        "tsUnixMs": 1795215803732,
+        "stateHash": "79766b631728b84f62bff4dbfd92270d9dd3cf2894c42bff42a1a712274cb6c6"
+      },
+      {
+        "seq": 10,
+        "playerSlot": 2,
+        "kind": "CHOICE",
+        "payload": {
+          "choiceId": "c10",
+          "playerId": "",
+          "selectedOption": "PLAY_CARD",
+          "selectedCardInstanceId": "s2:ST01-010:2"
+        },
+        "tsUnixMs": 1795215804685,
+        "stateHash": "4bec6b48aa1b2779ffa50a2638c89650d8f27350c4584080ebc98ae02085ef3e"
+      },
+      {
+        "seq": 11,
+        "playerSlot": 2,
+        "kind": "CHOICE",
+        "payload": {
+          "choiceId": "c11",
+          "playerId": "",
+          "selectedOption": "ATTACK",
+          "selectedCardInstanceId": "s2:leader",
+          "targetCardInstanceId": "s1:leader"
+        },
+        "tsUnixMs": 1795215805706,
+        "stateHash": "035fa3423810c407dbf5e2a97cc609e2109399bff01176bbbc1a3bd3330eae57"
+      },
+      {
+        "seq": 12,
+        "playerSlot": 1,
+        "kind": "CHOICE",
+        "payload": {
+          "choiceId": "c12",
+          "playerId": "",
+          "selectedOption": "PASS"
+        },
+        "tsUnixMs": 1795215806115,
+        "stateHash": "377f9652251c9946604eff0330de8638da5085d4462d59d18a9947cd38cc6747"
+      }
+    ],
+    "finished": false
+  }
+}

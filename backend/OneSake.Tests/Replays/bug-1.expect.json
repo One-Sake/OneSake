@@ -1,0 +1,15 @@
+{
+  "seq": 12,
+  "note": "Beispiel aus dem lokalen Test: Zustand von Spieler 1, als die Meldung gesendet wurde.",
+  "checks": [
+    { "seat": 1, "field": "life", "expected": 4 },
+    { "seat": 1, "field": "hand", "expected": 6 },
+    { "seat": 1, "field": "deck", "expected": 39 },
+    { "seat": 2, "field": "life", "expected": 4 },
+    { "instanceId": "s1:ST01-005:3", "field": "zone", "expected": "character" },
+    { "instanceId": "s1:leader", "field": "power", "expected": 5000 },
+    { "instanceId": "s2:ST01-010:2", "field": "power", "expected": 6000 },
+    { "field": "phase", "expected": "Main" },
+    { "field": "turn", "expected": 4 }
+  ]
+}
