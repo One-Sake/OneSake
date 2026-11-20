@@ -1010,6 +1010,7 @@ public sealed class MatchRoom
         }
 
         CreateLogEvent("LEADER_HIT", $"{battle.Attacker.Name} hits {defender.DisplayName}'s Leader ({powerText}).");
+        _resolver.HoldNewEffects = true;
         DealNextDamage();
     }
 
@@ -1027,7 +1028,9 @@ public sealed class MatchRoom
 
         if (_damageLeft <= 0 || defender.LifeCards.Count == 0)
         {
+            // Rule 8-6-2: damage processing is over, the effects it caused can be activated now.
             _damageLeft = 0;
+            _resolver.HoldNewEffects = false;
             EndBattle(attacker);
             return;
         }

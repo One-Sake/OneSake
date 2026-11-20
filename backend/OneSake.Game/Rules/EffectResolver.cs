@@ -38,6 +38,11 @@ public sealed class EffectResolver
     public TriggerQueue Queue { get; } = new();
     public TriggerCollector Collector { get; }
 
+    // Rule 8-6-2: effects that become pending during damage processing are activated only after
+    // all damage processing is resolved. While true, new effects wait; a [Trigger] (activated by
+    // the player, rule 8-6-2-1) is still resolved at once.
+    public bool HoldNewEffects { get; set; }
+
     public bool IsBusy => Engine.IsBusy || !Queue.IsEmpty || _manualEffect is not null || _orderPending;
 
     // Effects the player starts on purpose (Event [Main]/[Counter], [Trigger]).
@@ -75,7 +80,11 @@ public sealed class EffectResolver
             }
 
             // Rule 8-6-3: everything that became pending while the last effect resolved is one batch.
-            Queue.CloseBatch(_context.ActivePlayerId);
+            if (!HoldNewEffects)
+            {
+                Queue.CloseBatch(_context.ActivePlayerId);
+            }
+
             var step = Queue.Next();
             if (step is null)
             {
@@ -154,6 +163,7 @@ public sealed class EffectResolver
         Queue.Clear();
         _manualEffect = null;
         _orderPending = false;
+        HoldNewEffects = false;
     }
 
     private ResolverRequest? Stop()
