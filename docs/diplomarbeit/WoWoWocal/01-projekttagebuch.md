@@ -207,6 +207,13 @@ Keine Commits. Sprint 3 wurde ab 06.10.2026 geplant.
 
 ---
 
+### 2026-11-20 20:10 – Persönlicher Doku-Ordner ★ 🤖
+- Alle Diplomarbeits-Dateien nach `docs/diplomarbeit/WoWoWocal/` verschoben; Regel in `AGENTS.md`:
+  jedes Teammitglied schreibt nur in seinen eigenen Ordner `docs/diplomarbeit/<GitHub-Name>/`.
+- **Überlegung:** Die Mitschrift ist persönliche Grundlage für die eigene Diplomarbeit. Getrennte
+  Ordner verhindern, dass Teamkollegen (oder ihre KI-Agenten) in dieselben Dateien schreiben.
+  Nur der „Was ist neu“-Changelog in der App bleibt gemeinsam.
+
 <!-- Neue Einträge unten anfügen. Vorlage:
 
 ### JJJJ-MM-TT HH:MM – Titel ★/👥/🤖
