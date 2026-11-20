@@ -1,0 +1,59 @@
+{
+  "cardId": "OP05-064",
+  "status": "generated",
+  "sourceTextHash": "486c0be77e456d9da1f7d0b77480a65f04317eb1d15ed96a0c7ee5a69cae67ad",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] Look at 5 cards from the top of your deck; reveal up to 1 {Kid Pirates} type card other than [Killer] and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "LookAndReveal",
+            "amount": 5,
+            "secondAmount": 1,
+            "optional": false,
+            "filter": {
+              "owner": "You",
+              "allowLeader": false,
+              "allowCharacter": true,
+              "allowStage": true,
+              "category": "",
+              "useBaseValues": false,
+              "typeIncludes": "Kid Pirates",
+              "name": "",
+              "nameNot": "Killer",
+              "color": "",
+              "attribute": "",
+              "keyword": "",
+              "excludeSource": false,
+              "requiresTrigger": false,
+              "nameOrType": false,
+              "maxCostFrom": ""
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Look at 5 cards from the top of your deck; reveal up to 1 {Kid Pirates} type card other than [Killer] and add it to your hand"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

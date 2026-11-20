@@ -1,0 +1,93 @@
+{
+  "cardId": "ST14-003",
+  "status": "generated",
+  "sourceTextHash": "76f193e23d79d0e2951a40ac490a764cc32f4f3091dd561e5a8a074255a548a6",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] If you have a Character with a cost of 6 or more, K.O. up to 1 of your opponent's Characters with a cost of 5 or less.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "KO",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": true,
+              "all": false,
+              "self": false,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "Opponent",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "maxCost": 5,
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [
+              {
+                "kind": "HasCard",
+                "amount": 1,
+                "text": "you have a Character with a cost of 6 or more",
+                "filter": {
+                  "owner": "You",
+                  "allowLeader": false,
+                  "allowCharacter": true,
+                  "allowStage": true,
+                  "category": "",
+                  "minCost": 6,
+                  "useBaseValues": false,
+                  "typeIncludes": "",
+                  "name": "",
+                  "nameNot": "",
+                  "color": "",
+                  "attribute": "",
+                  "keyword": "",
+                  "excludeSource": false,
+                  "requiresTrigger": false,
+                  "nameOrType": false,
+                  "maxCostFrom": ""
+                }
+              }
+            ],
+            "text": "K.O. up to 1 of your opponent's Characters with a cost of 5 or less"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

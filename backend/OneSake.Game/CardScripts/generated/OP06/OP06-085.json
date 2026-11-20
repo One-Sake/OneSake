@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-085",
+  "status": "manual",
+  "sourceTextHash": "3afc7d40d585121d76658e41022e76258261e866a55f04fae7d08ccb7abba162",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x2] [Your Turn] This Character gains +1000 power for every 5 cards in your trash.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x2] [Your Turn] This Character gains +1000 power for every 5 cards in your trash."
+    ],
+    "failedParts": [
+      "This Character gains +1000 power for every 5 cards in your trash"
+    ]
+  }
+}

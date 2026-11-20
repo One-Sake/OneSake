@@ -1,0 +1,60 @@
+{
+  "cardId": "OP14-102",
+  "status": "generated",
+  "sourceTextHash": "2d5fb08a206c3ad61af74930121b14942b6e9ca68ec5638b15663254cc23b613",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Play up to 1 {Thriller Bark Pirates} type Character card with a cost of 4 or less from your trash rested.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "PlayCard",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "filter": {
+              "owner": "You",
+              "allowLeader": false,
+              "allowCharacter": true,
+              "allowStage": true,
+              "category": "Character",
+              "maxCost": 4,
+              "useBaseValues": false,
+              "typeIncludes": "Thriller Bark Pirates",
+              "name": "",
+              "nameNot": "",
+              "color": "",
+              "attribute": "",
+              "keyword": "",
+              "excludeSource": false,
+              "requiresTrigger": false,
+              "nameOrType": false,
+              "maxCostFrom": ""
+            },
+            "zone": "Trash",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": true,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Play up to 1 {Thriller Bark Pirates} type Character card with a cost of 4 or less from your trash rested"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "cardId": "OP16-014",
+  "status": "manual",
+  "sourceTextHash": "0cec993e0513584e6662a262f058a8531e60d76ac874327ed105592ab20e7442",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If one of your Characters would be removed from the field by your opponent's effect, you may K.O. this character instead. | [On K.O.] You may trash 1 Character card with 8000 power from your hand: Play this Character card from your trash.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If one of your Characters would be removed from the field by your opponent's effect, you may K.O. this character instead.",
+      "[On K.O.] You may trash 1 Character card with 8000 power from your hand: Play this Character card from your trash."
+    ],
+    "failedParts": [
+      "IF: If one of your Characters would be removed from the field by your opponent's effect, you may K.O. this character instead",
+      "Play this Character card from your trash"
+    ]
+  }
+}

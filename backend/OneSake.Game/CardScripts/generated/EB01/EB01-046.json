@@ -1,0 +1,16 @@
+{
+  "cardId": "EB01-046",
+  "status": "manual",
+  "sourceTextHash": "140b153697ef60ecf70a8b06227411ddc6019090ffa167569ee4a9fb4fb4602a",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play]/[When Attacking] Give up to 1 of your opponent's Characters -1 cost during this turn. Then, K.O. up to 1 of your opponent's Characters with a cost of 0.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play]/[When Attacking] Give up to 1 of your opponent's Characters -1 cost during this turn. Then, K.O. up to 1 of your opponent's Characters with a cost of 0."
+    ],
+    "failedParts": [
+      "/[When Attacking] Give up to 1 of your opponent's Characters -1 cost during this turn"
+    ]
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "cardId": "OP15-116",
+  "status": "generated",
+  "sourceTextHash": "6ca6eedd30f293bc9e3ba55599725249023bc5a55c22e6309517da91978b44d6",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "EventMain",
+        "text": "[Main] If your Leader has the {Straw Hat Crew} type, trash 1 card from the top of your Life cards. Then, add up to 1 card from the top of your deck to the top of your Life cards and trash 1 card from your hand.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "TrashLife",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [
+              {
+                "kind": "LeaderHasType",
+                "amount": 0,
+                "text": "your Leader has the {Straw Hat Crew} type",
+                "filter": {
+                  "owner": "You",
+                  "allowLeader": false,
+                  "allowCharacter": true,
+                  "allowStage": false,
+                  "category": "",
+                  "useBaseValues": false,
+                  "typeIncludes": "Straw Hat Crew",
+                  "name": "",
+                  "nameNot": "",
+                  "color": "",
+                  "attribute": "",
+                  "keyword": "",
+                  "excludeSource": false,
+                  "requiresTrigger": false,
+                  "nameOrType": false,
+                  "maxCostFrom": ""
+                }
+              }
+            ],
+            "text": "Trash 1 card from the top of your Life cards"
+          },
+          {
+            "kind": "DeckTopToLife",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Add up to 1 card from the top of your deck to the top of your Life cards"
+          },
+          {
+            "kind": "TrashFromHand",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "filter": {
+              "owner": "You",
+              "allowLeader": false,
+              "allowCharacter": true,
+              "allowStage": true,
+              "category": "",
+              "useBaseValues": false,
+              "typeIncludes": "",
+              "name": "",
+              "nameNot": "",
+              "color": "",
+              "attribute": "",
+              "keyword": "",
+              "excludeSource": false,
+              "requiresTrigger": false,
+              "nameOrType": false,
+              "maxCostFrom": ""
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Trash 1 card from your hand"
+          }
+        ],
+        "index": 0
+      },
+      {
+        "timing": "EventCounter",
+        "text": "[Counter] Your Leader gains +4000 power during this battle.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "PowerModifier",
+            "amount": 4000,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": false,
+              "yourLeader": true,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisBattle",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Your Leader gains +4000 power during this battle"
+          }
+        ],
+        "index": 1
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

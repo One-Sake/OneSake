@@ -1,0 +1,108 @@
+{
+  "cardId": "OP14-108",
+  "status": "generated",
+  "sourceTextHash": "8f5aa8f3a87d43890a74e70db337aacd915f0e7380448ce60387dfc35a487e72",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] If your Leader is multicolored and your opponent has 3 or less Life cards, K.O. up to 1 of your opponent's Characters with 7000 base power or less.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "KO",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": true,
+              "all": false,
+              "self": false,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "Opponent",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "maxPower": 7000,
+                "useBaseValues": true,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [
+              {
+                "kind": "LeaderIsMulticolored",
+                "amount": 0,
+                "text": "your Leader is multicolored"
+              },
+              {
+                "kind": "OpponentLifeAtMost",
+                "amount": 3,
+                "text": "your opponent has 3 or less Life cards"
+              }
+            ],
+            "text": "K.O. up to 1 of your opponent's Characters with 7000 base power or less"
+          }
+        ],
+        "index": 0
+      },
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Activate this card's [On Play] effect.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "ActivateOwnAbility",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "On Play",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Activate this card's [On Play] effect"
+          }
+        ],
+        "index": 1
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

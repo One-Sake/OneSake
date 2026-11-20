@@ -1,0 +1,46 @@
+{
+  "cardId": "OP02-075",
+  "status": "generated",
+  "sourceTextHash": "6ac90f311ef97a06a07fc86d58aed6a67391f86df7ece1005b67d2411c5d1ac7",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] DON!! -1: Play this card.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [
+          {
+            "kind": "ReturnDon",
+            "amount": 1
+          }
+        ],
+        "steps": [
+          {
+            "kind": "PlayThisCard",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Play this card"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

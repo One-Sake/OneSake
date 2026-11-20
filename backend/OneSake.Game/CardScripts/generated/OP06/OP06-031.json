@@ -1,0 +1,60 @@
+{
+  "cardId": "OP06-031",
+  "status": "generated",
+  "sourceTextHash": "e37653f4b4dd0809030b24295b8e82c422cd55a0f0b74baf1294f379c7779c6c",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Play up to 1 [Fish-Man] or {Merfolk} type Character card with a cost of 3 or less from your hand.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "PlayCard",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "filter": {
+              "owner": "You",
+              "allowLeader": false,
+              "allowCharacter": true,
+              "allowStage": true,
+              "category": "Character",
+              "maxCost": 3,
+              "useBaseValues": false,
+              "typeIncludes": "Merfolk",
+              "name": "Fish-Man",
+              "nameNot": "",
+              "color": "",
+              "attribute": "",
+              "keyword": "",
+              "excludeSource": false,
+              "requiresTrigger": false,
+              "nameOrType": true,
+              "maxCostFrom": ""
+            },
+            "zone": "Hand",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Play up to 1 [Fish-Man] or {Merfolk} type Character card with a cost of 3 or less from your hand"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

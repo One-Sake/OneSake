@@ -1,0 +1,41 @@
+{
+  "cardId": "OP04-049",
+  "status": "generated",
+  "sourceTextHash": "b02659efc3d971061b7558ee0c9a0717ab40a2ccfcfd57470cfb5782571a1f8f",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnKO",
+        "text": "[On K.O.] Draw 1 card.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Draw 1 card"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

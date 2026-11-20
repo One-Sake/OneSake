@@ -1,0 +1,68 @@
+{
+  "cardId": "OP09-009",
+  "status": "generated",
+  "sourceTextHash": "a2e3a5de90cb89ea2d3166beabf947d37ec23983640625cae829d0fcce7f86e0",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] Trash up to 1 of your opponent's Characters with 6000 power or less.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "TrashCard",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": true,
+              "all": false,
+              "self": false,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "Opponent",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "maxPower": 6000,
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Trash up to 1 of your opponent's Characters with 6000 power or less"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

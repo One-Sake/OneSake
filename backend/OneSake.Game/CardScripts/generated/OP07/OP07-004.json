@@ -1,0 +1,83 @@
+{
+  "cardId": "OP07-004",
+  "status": "generated",
+  "sourceTextHash": "193d13325337d89b57edb3596b3e582f225cbbdcd634a95c60de36a36d8f2380",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] You may trash 1 card from your hand: Look at 5 cards from the top of your deck; reveal up to 1 Character card with 2000 power or less and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [
+          {
+            "kind": "TrashFromHand",
+            "amount": 1,
+            "filter": {
+              "owner": "You",
+              "allowLeader": false,
+              "allowCharacter": true,
+              "allowStage": true,
+              "category": "",
+              "useBaseValues": false,
+              "typeIncludes": "",
+              "name": "",
+              "nameNot": "",
+              "color": "",
+              "attribute": "",
+              "keyword": "",
+              "excludeSource": false,
+              "requiresTrigger": false,
+              "nameOrType": false,
+              "maxCostFrom": ""
+            }
+          }
+        ],
+        "steps": [
+          {
+            "kind": "LookAndReveal",
+            "amount": 5,
+            "secondAmount": 1,
+            "optional": false,
+            "filter": {
+              "owner": "You",
+              "allowLeader": false,
+              "allowCharacter": true,
+              "allowStage": true,
+              "category": "Character",
+              "maxPower": 2000,
+              "useBaseValues": false,
+              "typeIncludes": "",
+              "name": "",
+              "nameNot": "",
+              "color": "",
+              "attribute": "",
+              "keyword": "",
+              "excludeSource": false,
+              "requiresTrigger": false,
+              "nameOrType": false,
+              "maxCostFrom": ""
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Look at 5 cards from the top of your deck; reveal up to 1 Character card with 2000 power or less and add it to your hand"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

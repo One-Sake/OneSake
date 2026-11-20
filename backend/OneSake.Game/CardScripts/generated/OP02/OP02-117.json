@@ -1,0 +1,123 @@
+{
+  "cardId": "OP02-117",
+  "status": "generated",
+  "sourceTextHash": "1fe501c3ad5397db6dd86e7d2c6f169a330f2b4ff3a1b2e85f6301b6daaaea64",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "EventMain",
+        "text": "[Main] Give up to 1 of your opponent's Characters -5 cost during this turn.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "CostModifier",
+            "amount": -5,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": true,
+              "all": false,
+              "self": false,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "Opponent",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Give up to 1 of your opponent's Characters -5 cost during this turn"
+          }
+        ],
+        "index": 0
+      },
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] K.O. up to 1 of your opponent's Characters with a cost of 3 or less.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "KO",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": true,
+              "all": false,
+              "self": false,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "Opponent",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "maxCost": 3,
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "K.O. up to 1 of your opponent's Characters with a cost of 3 or less"
+          }
+        ],
+        "index": 1
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

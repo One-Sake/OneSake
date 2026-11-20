@@ -1,0 +1,188 @@
+{
+  "cardId": "OP12-100",
+  "status": "generated",
+  "sourceTextHash": "ad07a825f29b4e076ce2d1e6ec7e8c8f4b55728ecaa35d61a0e9fe591a18f5b1",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Static",
+        "text": "If you have 3 or less Life cards, this Character gains [Blocker] and +3 cost.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [
+          {
+            "kind": "LifeAtMost",
+            "amount": 3,
+            "text": "you have 3 or less Life cards"
+          },
+          {
+            "kind": "LifeAtMost",
+            "amount": 3,
+            "text": "you have 3 or less Life cards"
+          }
+        ],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "GainFlag",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "Permanent",
+            "flag": "Blocker",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "This Character gains [Blocker]"
+          },
+          {
+            "kind": "CostModifier",
+            "amount": 3,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "Permanent",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "This Character gains +3 cost"
+          }
+        ],
+        "index": 0
+      },
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] You may add 1 card from the top of your Life cards to your hand: Draw 2 cards and trash 1 card from your hand.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [
+          {
+            "kind": "LifeToHand",
+            "amount": 1
+          }
+        ],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 2,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Draw 2 cards and trash 1 card from your hand"
+          },
+          {
+            "kind": "TrashFromHand",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "filter": {
+              "owner": "You",
+              "allowLeader": false,
+              "allowCharacter": true,
+              "allowStage": false,
+              "category": "",
+              "useBaseValues": false,
+              "typeIncludes": "",
+              "name": "",
+              "nameNot": "",
+              "color": "",
+              "attribute": "",
+              "keyword": "",
+              "excludeSource": false,
+              "requiresTrigger": false,
+              "nameOrType": false,
+              "maxCostFrom": ""
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Draw 2 cards and trash 1 card from your hand"
+          }
+        ],
+        "index": 1
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

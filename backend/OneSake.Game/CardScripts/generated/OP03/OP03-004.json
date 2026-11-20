@@ -1,0 +1,72 @@
+{
+  "cardId": "OP03-004",
+  "status": "manual",
+  "sourceTextHash": "f4b972a02f9c9d809b3001a76e95782f090134edf073af8c0787db536708a35f",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: This Character cannot attack a Leader on the turn in which it is played.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Static",
+        "text": "[DON!! x1] This Character gains [Rush].",
+        "requiredDon": 1,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "GainFlag",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "Permanent",
+            "flag": "Rush",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "This Character gains [Rush]"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "This Character cannot attack a Leader on the turn in which it is played."
+    ],
+    "failedParts": [
+      "This Character cannot attack a Leader on the turn in which it is played"
+    ]
+  }
+}

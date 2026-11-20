@@ -1,0 +1,18 @@
+{
+  "cardId": "OP15-070",
+  "status": "manual",
+  "sourceTextHash": "70776a5655701170c8aa341bcad5d14e10732e0b023a8313cc6d328cf5c374d6",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: All of your [Shura] cards and this Character gain [Unblockable]. | [Opponent's Turn] All of your [Shura] cards' base power and this Character's base power become 6000.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "All of your [Shura] cards and this Character gain [Unblockable].",
+      "[Opponent's Turn] All of your [Shura] cards' base power and this Character's base power become 6000."
+    ],
+    "failedParts": [
+      "All of your [Shura] cards and this Character gain [Unblockable]",
+      "All of your [Shura] cards' base power and this Character's base power become 6000"
+    ]
+  }
+}

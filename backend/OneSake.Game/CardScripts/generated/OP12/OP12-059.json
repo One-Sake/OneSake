@@ -1,0 +1,70 @@
+{
+  "cardId": "OP12-059",
+  "status": "manual",
+  "sourceTextHash": "8e82f85f4b012150a368eb2355ced7a26b37118a513fc949ed85725e6370a096",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Counter] If you have 4 or more Events in your trash, up to 1 of your Leader gains +4000 power during this battle.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "EventMain",
+        "text": "[Main] If your Leader is [Sanji], draw 1 card.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [
+              {
+                "kind": "LeaderIsName",
+                "amount": 0,
+                "text": "your Leader is [Sanji]",
+                "filter": {
+                  "owner": "You",
+                  "allowLeader": false,
+                  "allowCharacter": true,
+                  "allowStage": false,
+                  "category": "",
+                  "useBaseValues": false,
+                  "typeIncludes": "",
+                  "name": "Sanji",
+                  "nameNot": "",
+                  "color": "",
+                  "attribute": "",
+                  "keyword": "",
+                  "excludeSource": false,
+                  "requiresTrigger": false,
+                  "nameOrType": false,
+                  "maxCostFrom": ""
+                }
+              }
+            ],
+            "text": "Draw 1 card"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Counter] If you have 4 or more Events in your trash, up to 1 of your Leader gains +4000 power during this battle."
+    ],
+    "failedParts": [
+      "IF: If you have 4 or more Events in your trash, up to 1 of your Leader gains +4000 power during this battle"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP02-008",
+  "status": "manual",
+  "sourceTextHash": "acff9e4d204f3a28b7dc4f7d2ef4598d4f6685e4035b3001ffd171c41e9ab172",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] If you have 2 or less Life cards and your Leader's type includes \"Whitebeard Pirates\", this Character gains [Rush].",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] If you have 2 or less Life cards and your Leader's type includes \"Whitebeard Pirates\", this Character gains [Rush]."
+    ],
+    "failedParts": [
+      "IF: If you have 2 or less Life cards and your Leader's type includes \"Whitebeard Pirates\", this Character gains [Rush]"
+    ]
+  }
+}

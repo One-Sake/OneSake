@@ -1,0 +1,83 @@
+{
+  "cardId": "OP11-047",
+  "status": "generated",
+  "sourceTextHash": "cfb9031d93c15261d45d42da57d19becaf7962f6c64fc39e1eac16000f34fb22",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] If your Leader has the {The Vinsmoke Family} type, look at 5 cards from the top of your deck; reveal up to 1 card with a type including {GERMA} and add it to your hand. Then, trash the rest.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "LookAndReveal",
+            "amount": 5,
+            "secondAmount": 1,
+            "optional": false,
+            "filter": {
+              "owner": "You",
+              "allowLeader": false,
+              "allowCharacter": true,
+              "allowStage": true,
+              "category": "",
+              "useBaseValues": false,
+              "typeIncludes": "GERMA",
+              "name": "",
+              "nameNot": "",
+              "color": "",
+              "attribute": "",
+              "keyword": "",
+              "excludeSource": false,
+              "requiresTrigger": false,
+              "nameOrType": false,
+              "maxCostFrom": ""
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "trash",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [
+              {
+                "kind": "LeaderHasType",
+                "amount": 0,
+                "text": "your Leader has the {The Vinsmoke Family} type",
+                "filter": {
+                  "owner": "You",
+                  "allowLeader": false,
+                  "allowCharacter": true,
+                  "allowStage": false,
+                  "category": "",
+                  "useBaseValues": false,
+                  "typeIncludes": "The Vinsmoke Family",
+                  "name": "",
+                  "nameNot": "",
+                  "color": "",
+                  "attribute": "",
+                  "keyword": "",
+                  "excludeSource": false,
+                  "requiresTrigger": false,
+                  "nameOrType": false,
+                  "maxCostFrom": ""
+                }
+              }
+            ],
+            "text": "Look at 5 cards from the top of your deck; reveal up to 1 card with a type including {GERMA} and add it to your hand"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "EB02-057",
+  "status": "manual",
+  "sourceTextHash": "46bd9d534963f8e5ed42c6ef5ee88affece3ab42d5c5fa73798fa980d538ca6a",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking] You may add 1 card from the top or bottom of your Life cards to your hand: Add up to 1 of your opponent's Characters with a cost of 3 or less to the top or bottom of your opponent's Life cards face-up.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[When Attacking] You may add 1 card from the top or bottom of your Life cards to your hand: Add up to 1 of your opponent's Characters with a cost of 3 or less to the top or bottom of your opponent's Life cards face-up."
+    ],
+    "failedParts": [
+      "Add up to 1 of your opponent's Characters with a cost of 3 or less to the top or bottom of your opponent's Life cards face-up"
+    ]
+  }
+}

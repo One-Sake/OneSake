@@ -1,0 +1,18 @@
+{
+  "cardId": "OP17-043",
+  "status": "manual",
+  "sourceTextHash": "5a9d4d1a15201a8f6b2d2be41b4484575977dc5fb0d7b0731224e3b08ddadf04",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If this Character would be removed from the field, you may trash 2 cards from your hand instead. | [On Play] Your Leader's base power becomes 6000 until the end of your opponent's next End Phase.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If this Character would be removed from the field, you may trash 2 cards from your hand instead.",
+      "[On Play] Your Leader's base power becomes 6000 until the end of your opponent's next End Phase."
+    ],
+    "failedParts": [
+      "IF: If this Character would be removed from the field, you may trash 2 cards from your hand instead",
+      "Your Leader's base power becomes 6000 until the end of your opponent's next End Phase"
+    ]
+  }
+}

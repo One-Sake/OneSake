@@ -1,0 +1,114 @@
+{
+  "cardId": "OP09-010",
+  "status": "generated",
+  "sourceTextHash": "edf2fa3ddd919b1a56a3fde748b32ee815dbc8f06fd57bfc5808c9aa4b08ab19",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] Play up to 1 [Monster] from your hand.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "PlayCard",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "filter": {
+              "owner": "You",
+              "allowLeader": false,
+              "allowCharacter": true,
+              "allowStage": true,
+              "category": "",
+              "useBaseValues": false,
+              "typeIncludes": "",
+              "name": "Monster",
+              "nameNot": "",
+              "color": "",
+              "attribute": "",
+              "keyword": "",
+              "excludeSource": false,
+              "requiresTrigger": false,
+              "nameOrType": false,
+              "maxCostFrom": ""
+            },
+            "zone": "Hand",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Play up to 1 [Monster] from your hand"
+          }
+        ],
+        "index": 0
+      },
+      {
+        "timing": "WhenAttacking",
+        "text": "[DON!! x1] [When Attacking] This Character gains +2000 power during this turn.",
+        "requiredDon": 1,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "PowerModifier",
+            "amount": 2000,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "This Character gains +2000 power during this turn"
+          }
+        ],
+        "index": 1
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

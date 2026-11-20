@@ -1,0 +1,118 @@
+{
+  "cardId": "OP14-039",
+  "status": "generated",
+  "sourceTextHash": "ebf5f1b5e9fd9bd12d4390c691f3d49195eac7c79b5ce2a10f47c7a641b1aa33",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] If your Leader is [Dracule Mihawk], draw 1 card.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [
+              {
+                "kind": "LeaderIsName",
+                "amount": 0,
+                "text": "your Leader is [Dracule Mihawk]",
+                "filter": {
+                  "owner": "You",
+                  "allowLeader": false,
+                  "allowCharacter": true,
+                  "allowStage": false,
+                  "category": "",
+                  "useBaseValues": false,
+                  "typeIncludes": "",
+                  "name": "Dracule Mihawk",
+                  "nameNot": "",
+                  "color": "",
+                  "attribute": "",
+                  "keyword": "",
+                  "excludeSource": false,
+                  "requiresTrigger": false,
+                  "nameOrType": false,
+                  "maxCostFrom": ""
+                }
+              }
+            ],
+            "text": "Draw 1 card"
+          }
+        ],
+        "index": 0
+      },
+      {
+        "timing": "EndOfYourTurn",
+        "text": "[End of Your Turn] If your Leader is [Dracule Mihawk], set up to 1 of your DON!! cards as active.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "SetDonActive",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [
+              {
+                "kind": "LeaderIsName",
+                "amount": 0,
+                "text": "your Leader is [Dracule Mihawk]",
+                "filter": {
+                  "owner": "You",
+                  "allowLeader": false,
+                  "allowCharacter": true,
+                  "allowStage": false,
+                  "category": "",
+                  "useBaseValues": false,
+                  "typeIncludes": "",
+                  "name": "Dracule Mihawk",
+                  "nameNot": "",
+                  "color": "",
+                  "attribute": "",
+                  "keyword": "",
+                  "excludeSource": false,
+                  "requiresTrigger": false,
+                  "nameOrType": false,
+                  "maxCostFrom": ""
+                }
+              }
+            ],
+            "text": "Set up to 1 of your DON!! cards as active"
+          }
+        ],
+        "index": 1
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

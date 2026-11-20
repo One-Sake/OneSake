@@ -1,0 +1,16 @@
+{
+  "cardId": "EB01-047",
+  "status": "manual",
+  "sourceTextHash": "d3d29ebfeadfa814b395d3c8036d498289d28b9134ac514a0ade0c93bca51c2e",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Once Per Turn] When a Character is K.O.'d, draw 1 card and trash 1 card from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Once Per Turn] When a Character is K.O.'d, draw 1 card and trash 1 card from your hand."
+    ],
+    "failedParts": [
+      "When a Character is K.O.'d, draw 1 card and trash 1 card from your hand"
+    ]
+  }
+}

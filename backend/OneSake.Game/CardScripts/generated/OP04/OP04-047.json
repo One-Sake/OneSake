@@ -1,0 +1,16 @@
+{
+  "cardId": "OP04-047",
+  "status": "manual",
+  "sourceTextHash": "43792cfce936428d7aa697387a35c9eef15ba44a8c11c158be1aec8ffc58e7cc",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] At the end of a battle in which this Character battles your opponent's Character with a cost of 5 or less, place the opponent's Character you battled with at the bottom of the owner's deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] At the end of a battle in which this Character battles your opponent's Character with a cost of 5 or less, place the opponent's Character you battled with at the bottom of the owner's deck."
+    ],
+    "failedParts": [
+      "At the end of a battle in which this Character battles your opponent's Character with a cost of 5 or less, place the opponent's Character you battled with at the bottom of the owner's deck"
+    ]
+  }
+}

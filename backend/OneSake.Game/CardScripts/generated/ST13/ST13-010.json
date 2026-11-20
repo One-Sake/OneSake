@@ -1,0 +1,16 @@
+{
+  "cardId": "ST13-010",
+  "status": "manual",
+  "sourceTextHash": "6fdca3c3b3b4897bf7ec1dab0782c894816f6efb7b38382fe744aacc18d47a98",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may trash this Character: Reveal 1 card from the top of your Life cards. If that card is a [Portgas.D.Ace] with a cost of 5, you may play that card. If you do, up to 1 of your Leader gains +2000 power until the end of your opponent's next turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may trash this Character: Reveal 1 card from the top of your Life cards. If that card is a [Portgas.D.Ace] with a cost of 5, you may play that card. If you do, up to 1 of your Leader gains +2000 power until the end of your opponent's next turn."
+    ],
+    "failedParts": [
+      "Reveal 1 card from the top of your Life cards"
+    ]
+  }
+}

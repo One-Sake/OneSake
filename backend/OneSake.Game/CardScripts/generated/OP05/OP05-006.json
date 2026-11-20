@@ -1,0 +1,91 @@
+{
+  "cardId": "OP05-006",
+  "status": "generated",
+  "sourceTextHash": "339eff671e5d148cc37932c04d2c6da488ce2356015875f8404094e8daa516c7",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] If your Leader has the {Revolutionary Army} type, give up to 1 of your opponent's Characters -3000 power during this turn.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "PowerModifier",
+            "amount": -3000,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": true,
+              "all": false,
+              "self": false,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "Opponent",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [
+              {
+                "kind": "LeaderHasType",
+                "amount": 0,
+                "text": "your Leader has the {Revolutionary Army} type",
+                "filter": {
+                  "owner": "You",
+                  "allowLeader": false,
+                  "allowCharacter": true,
+                  "allowStage": false,
+                  "category": "",
+                  "useBaseValues": false,
+                  "typeIncludes": "Revolutionary Army",
+                  "name": "",
+                  "nameNot": "",
+                  "color": "",
+                  "attribute": "",
+                  "keyword": "",
+                  "excludeSource": false,
+                  "requiresTrigger": false,
+                  "nameOrType": false,
+                  "maxCostFrom": ""
+                }
+              }
+            ],
+            "text": "Give up to 1 of your opponent's Characters -3000 power during this turn"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

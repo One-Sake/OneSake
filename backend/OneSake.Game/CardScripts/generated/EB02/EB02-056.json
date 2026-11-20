@@ -1,0 +1,101 @@
+{
+  "cardId": "EB02-056",
+  "status": "manual",
+  "sourceTextHash": "68d3931b0823d32dbab55601c23fe6df6fd4068c80e12d7c52b295c3cdde48c3",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Blocker] [On Play] Look at 5 cards from the top of your deck; play up to 1 {Scientist} type Character card with a cost of 5 or less other than [Vegapunk]. Then, place the rest at the bottom of your deck in any order and if your opponent has 2 or less Characters, trash 1 card from your hand.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Static",
+        "text": "[Blocker]",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "GainFlag",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "Permanent",
+            "flag": "Blocker",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "[Blocker]"
+          }
+        ],
+        "index": 0
+      },
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Draw 1 card.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Draw 1 card"
+          }
+        ],
+        "index": 1
+      }
+    ],
+    "unsupportedTexts": [
+      "[Blocker] [On Play] Look at 5 cards from the top of your deck; play up to 1 {Scientist} type Character card with a cost of 5 or less other than [Vegapunk]. Then, place the rest at the bottom of your deck in any order and if your opponent has 2 or less Characters, trash 1 card from your hand."
+    ],
+    "failedParts": [
+      "Look at 5 cards from the top of your deck; play up to 1 {Scientist} type Character card with a cost of 5 or less other than [Vegapunk]"
+    ]
+  }
+}

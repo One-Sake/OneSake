@@ -1,0 +1,89 @@
+{
+  "cardId": "OP13-102",
+  "status": "manual",
+  "sourceTextHash": "78065d2f049ae3137d5ae9ce04f0929ffeeb433e53c7fef1135d32c7f355be0d",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may trash this Character: If the number of your Life cards is equal to or less than the number of your opponent's Life cards, draw 1 card. Then, rest up to 1 of your opponent's Characters with a cost of 3 or less.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Draw 1 card and rest up to 1 of your opponent's Characters with a cost of 3 or less.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Draw 1 card"
+          },
+          {
+            "kind": "Rest",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": true,
+              "all": false,
+              "self": false,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "Opponent",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "maxCost": 3,
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Rest up to 1 of your opponent's Characters with a cost of 3 or less"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Activate: Main] You may trash this Character: If the number of your Life cards is equal to or less than the number of your opponent's Life cards, draw 1 card. Then, rest up to 1 of your opponent's Characters with a cost of 3 or less."
+    ],
+    "failedParts": [
+      "IF: If the number of your Life cards is equal to or less than the number of your opponent's Life cards, draw 1 card"
+    ]
+  }
+}

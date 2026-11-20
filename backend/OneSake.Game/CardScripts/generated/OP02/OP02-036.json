@@ -1,0 +1,16 @@
+{
+  "cardId": "OP02-036",
+  "status": "manual",
+  "sourceTextHash": "d7c20e6ff8c09aadb25eda5d7c9cc05f6e8e77180a370effe89bd97bc2af30bf",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play]/[When Attacking] RESTDON1: Look at 3 cards from the top of your deck; reveal up to 1 {FILM} type card other than [Nami] and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play]/[When Attacking] RESTDON1: Look at 3 cards from the top of your deck; reveal up to 1 {FILM} type card other than [Nami] and add it to your hand. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "COST: /[When Attacking] RESTDON1"
+    ]
+  }
+}

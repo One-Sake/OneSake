@@ -1,0 +1,72 @@
+{
+  "cardId": "OP01-112",
+  "status": "generated",
+  "sourceTextHash": "1f7ca2fcbc417da93461d892b66891e6bb9b7ec23a1856040ec5d424c0755a8e",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "ActivateMain",
+        "text": "[Activate: Main] [Once Per Turn] DON!! -1: This Character can also attack your opponent's active Characters during this turn.",
+        "requiredDon": 0,
+        "oncePerTurn": true,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [
+          {
+            "kind": "ReturnDon",
+            "amount": 1
+          }
+        ],
+        "steps": [
+          {
+            "kind": "GainFlag",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "CanAttackActiveCharacters",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "This Character can also attack your opponent's active Characters during this turn"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

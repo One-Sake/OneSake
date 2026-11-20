@@ -1,0 +1,16 @@
+{
+  "cardId": "OP12-020",
+  "status": "manual",
+  "sourceTextHash": "9f78edd98282d2370b919d501cb296a13e4c5aa0f523b636d1cae6e02312b87b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x3] [Activate: Main] [Once Per Turn] If this Leader battles your opponent's Character during this turn, set this Leader as active. Then, this Leader cannot attack your opponent's Characters with a base cost of 7 or less during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x3] [Activate: Main] [Once Per Turn] If this Leader battles your opponent's Character during this turn, set this Leader as active. Then, this Leader cannot attack your opponent's Characters with a base cost of 7 or less during this turn."
+    ],
+    "failedParts": [
+      "IF: If this Leader battles your opponent's Character during this turn, set this Leader as active"
+    ]
+  }
+}

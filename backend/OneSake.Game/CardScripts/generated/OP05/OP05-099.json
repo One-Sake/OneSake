@@ -1,0 +1,16 @@
+{
+  "cardId": "OP05-099",
+  "status": "manual",
+  "sourceTextHash": "4aa3f3b2a2484892641dc31aedb61492b5e0d98dec74977f4ffaca1767deca8a",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Your Opponent's Attack] You may rest this Character: Your opponent may trash 1 card from the top of their Life cards. If they do not, give up to 1 of your opponent's Leader or Character cards -2000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Your Opponent's Attack] You may rest this Character: Your opponent may trash 1 card from the top of their Life cards. If they do not, give up to 1 of your opponent's Leader or Character cards -2000 power during this turn."
+    ],
+    "failedParts": [
+      "Your opponent may trash 1 card from the top of their Life cards"
+    ]
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "cardId": "ST06-006",
+  "status": "generated",
+  "sourceTextHash": "c512eff295bb8b5ccb8cba1c2958b729fdcee836f0a446ea0f128d34ebd11ca4",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "ActivateMain",
+        "text": "[Activate: Main] You may rest this Character: Give up to 1 of your opponent's Characters 2 cost during this turn.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [
+          {
+            "kind": "RestThis",
+            "amount": 1
+          }
+        ],
+        "steps": [
+          {
+            "kind": "CostModifier",
+            "amount": -2,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": true,
+              "all": false,
+              "self": false,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "Opponent",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Give up to 1 of your opponent's Characters 2 cost during this turn"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "cardId": "OP07-114",
+  "status": "generated",
+  "sourceTextHash": "1992efff27e2306749ffb8913e7cd44eda0bf367bcd5cf1032e11c754b3b5834",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "EventMain",
+        "text": "[Main] Look at 5 cards from the top of your deck; reveal up to 1 {Egghead} type card other than [He Possesses the World's Most Brilliant Mind] and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "LookAndReveal",
+            "amount": 5,
+            "secondAmount": 1,
+            "optional": false,
+            "filter": {
+              "owner": "You",
+              "allowLeader": false,
+              "allowCharacter": true,
+              "allowStage": true,
+              "category": "",
+              "useBaseValues": false,
+              "typeIncludes": "Egghead",
+              "name": "",
+              "nameNot": "He Possesses the World's Most Brilliant Mind",
+              "color": "",
+              "attribute": "",
+              "keyword": "",
+              "excludeSource": false,
+              "requiresTrigger": false,
+              "nameOrType": false,
+              "maxCostFrom": ""
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Look at 5 cards from the top of your deck; reveal up to 1 {Egghead} type card other than [He Possesses the World's Most Brilliant Mind] and add it to your hand"
+          }
+        ],
+        "index": 0
+      },
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Draw 1 card.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Draw 1 card"
+          }
+        ],
+        "index": 1
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

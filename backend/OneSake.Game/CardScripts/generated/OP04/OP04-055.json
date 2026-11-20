@@ -1,0 +1,46 @@
+{
+  "cardId": "OP04-055",
+  "status": "manual",
+  "sourceTextHash": "e9a6c55611024f3686aad6051d130a6a3882db5c72a9da5717277d33672277ab",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] You may trash 1 [Ice Oni] from your hand and place 1 Character with a cost of 4 or less at the bottom of the owner's deck: Play 1 [Ice Oni] from your trash.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Activate this card's [Main] effect.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "ActivateOwnAbility",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "Main",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Activate this card's [Main] effect"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Main] You may trash 1 [Ice Oni] from your hand and place 1 Character with a cost of 4 or less at the bottom of the owner's deck: Play 1 [Ice Oni] from your trash."
+    ],
+    "failedParts": [
+      "COST: You may trash 1 [Ice Oni] from your hand and place 1 Character with a cost of 4 or less at the bottom of the owner's deck"
+    ]
+  }
+}

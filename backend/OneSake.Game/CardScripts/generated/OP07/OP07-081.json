@@ -1,0 +1,67 @@
+{
+  "cardId": "OP07-081",
+  "status": "generated",
+  "sourceTextHash": "c493b7fb2e426dadbaa903e98f396f45a544158a48e5c4ffef5875b9ffcd1b36",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Static",
+        "text": "[DON!! x1] [Your Turn] Give all of your opponent's Characters -1 cost.",
+        "requiredDon": 1,
+        "oncePerTurn": false,
+        "onlyYourTurn": true,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "CostModifier",
+            "amount": -1,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 2147483647,
+              "upTo": true,
+              "all": true,
+              "self": false,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "Opponent",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "Permanent",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Give all of your opponent's Characters -1 cost"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

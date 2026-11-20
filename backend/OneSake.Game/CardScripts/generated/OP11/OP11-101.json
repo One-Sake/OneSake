@@ -1,0 +1,72 @@
+{
+  "cardId": "OP11-101",
+  "status": "manual",
+  "sourceTextHash": "a94224d9548233b15fb28f98dea034b12c5fdeb4ed4e57511d8aa87ef1edf7ee",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Blocker] [Once Per Turn] If your {Supernovas} type Character other than [Capone\"Gang\"Bege] would be removed from the field by your opponent's effect, you may add it to the top of your Life cards face-down instead.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Static",
+        "text": "[Blocker]",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "GainFlag",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "Permanent",
+            "flag": "Blocker",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "[Blocker]"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Blocker] [Once Per Turn] If your {Supernovas} type Character other than [Capone\"Gang\"Bege] would be removed from the field by your opponent's effect, you may add it to the top of your Life cards face-down instead."
+    ],
+    "failedParts": [
+      "IF: If your {Supernovas} type Character other than [Capone\"Gang\"Bege] would be removed from the field by your opponent's effect, you may add it to the top of your Life cards face-down instead"
+    ]
+  }
+}

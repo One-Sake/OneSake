@@ -1,0 +1,18 @@
+{
+  "cardId": "EB01-028",
+  "status": "manual",
+  "sourceTextHash": "87d0e9d0c1ea55a463b3a3b0951a350b70514f84bc786c167dec7b70d7af6980",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Counter] If your Leader has the {Impel Down} type, up to 1 of your Leader or Character cards gains +2000 power during this battle. Then, your opponent returns 1 of their active Characters to the owner's hand. | [Trigger] Return up to 1 Character with a cost of 3 or less to the bottom of the owner's deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Counter] If your Leader has the {Impel Down} type, up to 1 of your Leader or Character cards gains +2000 power during this battle. Then, your opponent returns 1 of their active Characters to the owner's hand.",
+      "[Trigger] Return up to 1 Character with a cost of 3 or less to the bottom of the owner's deck."
+    ],
+    "failedParts": [
+      "Your opponent returns 1 of their active Characters to the owner's hand",
+      "Return up to 1 Character with a cost of 3 or less to the bottom of the owner's deck"
+    ]
+  }
+}

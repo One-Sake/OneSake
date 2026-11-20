@@ -1,0 +1,16 @@
+{
+  "cardId": "OP13-078",
+  "status": "manual",
+  "sourceTextHash": "47d58ce097c29b94675a8d90523d46cea34d800a64dcaa9935ea86e08cddb43b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Once Per Turn] When your Character with a type including {Roger Pirates} is removed from the field by your opponent's effect, add up to 1 DON!! card from your DON!! deck and rest it.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Once Per Turn] When your Character with a type including {Roger Pirates} is removed from the field by your opponent's effect, add up to 1 DON!! card from your DON!! deck and rest it."
+    ],
+    "failedParts": [
+      "When your Character with a type including {Roger Pirates} is removed from the field by your opponent's effect, add up to 1 DON!! card from your DON!! deck and rest it"
+    ]
+  }
+}

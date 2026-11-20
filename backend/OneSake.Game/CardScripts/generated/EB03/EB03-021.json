@@ -1,0 +1,16 @@
+{
+  "cardId": "EB03-021",
+  "status": "manual",
+  "sourceTextHash": "16b8b8b41424b962c2ef0b416b4675658b713c02ee4dc57950e8c8d2c186abb8",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] You may trash 1 card from your hand: Place up to 1 of your opponent's Characters with 4000 base power or less and up to 1 Character with a base cost of 3 or less at the bottom of the owner's deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] You may trash 1 card from your hand: Place up to 1 of your opponent's Characters with 4000 base power or less and up to 1 Character with a base cost of 3 or less at the bottom of the owner's deck."
+    ],
+    "failedParts": [
+      "Place up to 1 of your opponent's Characters with 4000 base power or less and up to 1 Character with a base cost of 3 or less at the bottom of the owner's deck"
+    ]
+  }
+}

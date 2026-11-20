@@ -1,0 +1,75 @@
+{
+  "cardId": "OP05-017",
+  "status": "manual",
+  "sourceTextHash": "12391d26426297c05e872cd19728ca4df92397ac3f9d2907641f3996e03fdcb7",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking] If this Character has 7000 power or more, K.O. up to 1 of your opponent's Characters with 3000 power or less.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] You may trash 1 card from your hand: If your Leader is multicolored, play this card.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [
+          {
+            "kind": "TrashFromHand",
+            "amount": 1,
+            "filter": {
+              "owner": "You",
+              "allowLeader": false,
+              "allowCharacter": true,
+              "allowStage": true,
+              "category": "",
+              "useBaseValues": false,
+              "typeIncludes": "",
+              "name": "",
+              "nameNot": "",
+              "color": "",
+              "attribute": "",
+              "keyword": "",
+              "excludeSource": false,
+              "requiresTrigger": false,
+              "nameOrType": false,
+              "maxCostFrom": ""
+            }
+          }
+        ],
+        "steps": [
+          {
+            "kind": "PlayThisCard",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [
+              {
+                "kind": "LeaderIsMulticolored",
+                "amount": 0,
+                "text": "your Leader is multicolored"
+              }
+            ],
+            "text": "Play this card"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[When Attacking] If this Character has 7000 power or more, K.O. up to 1 of your opponent's Characters with 3000 power or less."
+    ],
+    "failedParts": [
+      "IF: If this Character has 7000 power or more, K.O. up to 1 of your opponent's Characters with 3000 power or less"
+    ]
+  }
+}

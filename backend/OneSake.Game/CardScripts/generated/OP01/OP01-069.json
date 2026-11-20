@@ -1,0 +1,16 @@
+{
+  "cardId": "OP01-069",
+  "status": "manual",
+  "sourceTextHash": "aaf7ebcaecc13c347f3577865f135f7b56553b332ce0d71250481528ebd5794a",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On K.O.] Play up to 1 [Smiley] from your deck, then shuffle your deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On K.O.] Play up to 1 [Smiley] from your deck, then shuffle your deck."
+    ],
+    "failedParts": [
+      "Play up to 1 [Smiley] from your deck, then shuffle your deck"
+    ]
+  }
+}

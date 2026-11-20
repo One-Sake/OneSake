@@ -1,0 +1,16 @@
+{
+  "cardId": "ST07-017",
+  "status": "manual",
+  "sourceTextHash": "c95204e846a03a943e864eac433cb4de33431c356cd45b3e4a9141528495bca1",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may rest this Stage and add 1 card from the top or bottom of your Life cards to your hand: Add up to 1 of your Characters with a cost of 3 to the top of the owner's Life cards face-up.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may rest this Stage and add 1 card from the top or bottom of your Life cards to your hand: Add up to 1 of your Characters with a cost of 3 to the top of the owner's Life cards face-up."
+    ],
+    "failedParts": [
+      "Add up to 1 of your Characters with a cost of 3 to the top of the owner's Life cards face-up"
+    ]
+  }
+}

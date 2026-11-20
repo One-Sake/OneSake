@@ -1,0 +1,90 @@
+{
+  "cardId": "P-081",
+  "status": "generated",
+  "sourceTextHash": "8b2c48af58fac0865b63d502125703164bb07a5e661dcf6a5f13b9851b1a9c5a",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "ActivateMain",
+        "text": "[Activate: Main] You may return this Character to the owner's hand: If you have 3 or more blue {Cross Guild} type Characters, play up to 1 {Cross Guild} type Character card with a cost of 5 from your hand.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [
+          {
+            "kind": "ReturnThis",
+            "amount": 1
+          }
+        ],
+        "steps": [
+          {
+            "kind": "PlayCard",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "filter": {
+              "owner": "You",
+              "allowLeader": false,
+              "allowCharacter": true,
+              "allowStage": true,
+              "category": "Character",
+              "maxCost": 5,
+              "minCost": 5,
+              "useBaseValues": false,
+              "typeIncludes": "Cross Guild",
+              "name": "",
+              "nameNot": "",
+              "color": "",
+              "attribute": "",
+              "keyword": "",
+              "excludeSource": false,
+              "requiresTrigger": false,
+              "nameOrType": false,
+              "maxCostFrom": ""
+            },
+            "zone": "Hand",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [
+              {
+                "kind": "CharactersAtLeast",
+                "amount": 3,
+                "text": "you have 3 or more blue {Cross Guild} type Characters",
+                "filter": {
+                  "owner": "You",
+                  "allowLeader": false,
+                  "allowCharacter": true,
+                  "allowStage": false,
+                  "category": "",
+                  "useBaseValues": false,
+                  "typeIncludes": "Cross Guild",
+                  "name": "",
+                  "nameNot": "",
+                  "color": "blue",
+                  "attribute": "",
+                  "keyword": "",
+                  "excludeSource": false,
+                  "requiresTrigger": false,
+                  "nameOrType": false,
+                  "maxCostFrom": ""
+                }
+              }
+            ],
+            "text": "Play up to 1 {Cross Guild} type Character card with a cost of 5 from your hand"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

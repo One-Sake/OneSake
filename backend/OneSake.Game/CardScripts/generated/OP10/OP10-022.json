@@ -1,0 +1,16 @@
+{
+  "cardId": "OP10-022",
+  "status": "manual",
+  "sourceTextHash": "687a99aa30b3b8667c064c36ba4cbcccd5e610c54172b227dd00ec17db6bb2a1",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] [Activate: Main] [Once Per Turn] If the total cost of your Characters is 5 or more, you may return 1 of your Characters to the owner's hand: Reveal 1 card from the top of your Life cards. If that card is a {Supernovas} type Character card with a cost of 5 or less, you may play that card.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] [Activate: Main] [Once Per Turn] If the total cost of your Characters is 5 or more, you may return 1 of your Characters to the owner's hand: Reveal 1 card from the top of your Life cards. If that card is a {Supernovas} type Character card with a cost of 5 or less, you may play that card."
+    ],
+    "failedParts": [
+      "COST: If the total cost of your Characters is 5 or more, you may return 1 of your Characters to the owner's hand"
+    ]
+  }
+}

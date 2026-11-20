@@ -1,0 +1,16 @@
+{
+  "cardId": "OP10-049",
+  "status": "manual",
+  "sourceTextHash": "94c4896673edba2517a7d4f9897038e8acab75d7a59defccf190c1b68eb294cf",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If your Character with a base cost of 7 or less other than [Sabo] would be removed from the field by your opponent's effect, you may return this Character to the owner's hand instead.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If your Character with a base cost of 7 or less other than [Sabo] would be removed from the field by your opponent's effect, you may return this Character to the owner's hand instead."
+    ],
+    "failedParts": [
+      "IF: If your Character with a base cost of 7 or less other than [Sabo] would be removed from the field by your opponent's effect, you may return this Character to the owner's hand instead"
+    ]
+  }
+}

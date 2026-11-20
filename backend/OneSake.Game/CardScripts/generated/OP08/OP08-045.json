@@ -1,0 +1,16 @@
+{
+  "cardId": "OP08-045",
+  "status": "manual",
+  "sourceTextHash": "0ac99eea2cfd82b9a99b2382f6b7e9d2c7e5b07b20bfec87c299701ce3950f10",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If this Character would be removed from the field by your opponent's effect or K.O.'d, trash this Character and draw 1 card instead.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If this Character would be removed from the field by your opponent's effect or K.O.'d, trash this Character and draw 1 card instead."
+    ],
+    "failedParts": [
+      "IF: If this Character would be removed from the field by your opponent's effect or K.O.'d, trash this Character and draw 1 card instead"
+    ]
+  }
+}

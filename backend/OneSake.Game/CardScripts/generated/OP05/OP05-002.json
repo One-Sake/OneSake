@@ -1,0 +1,16 @@
+{
+  "cardId": "OP05-002",
+  "status": "manual",
+  "sourceTextHash": "ff21efa83eba8ce40fcf967cbda8ce98b3d012629209546d4f2978270470a6a8",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] You may trash 1 {Revolutionary Army} type card from your hand: Up to 3 of your {Revolutionary Army} type Characters or Characters with a [Trigger] gain +3000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] You may trash 1 {Revolutionary Army} type card from your hand: Up to 3 of your {Revolutionary Army} type Characters or Characters with a [Trigger] gain +3000 power during this turn."
+    ],
+    "failedParts": [
+      "Up to 3 of your {Revolutionary Army} type Characters or Characters with a [Trigger] gain +3000 power during this turn"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP09-108",
+  "status": "manual",
+  "sourceTextHash": "707764984f04d84685701d0d96d5e52650a23b34e014f852a7d214688bd5108d",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Trigger] If your Leader has the {Revolutionary Army} type and you and your opponent have a total of 5 or less Life cards, play this card.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Trigger] If your Leader has the {Revolutionary Army} type and you and your opponent have a total of 5 or less Life cards, play this card."
+    ],
+    "failedParts": [
+      "IF: If your Leader has the {Revolutionary Army} type and you and your opponent have a total of 5 or less Life cards, play this card"
+    ]
+  }
+}

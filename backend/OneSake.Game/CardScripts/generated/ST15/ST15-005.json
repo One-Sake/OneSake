@@ -1,0 +1,18 @@
+{
+  "cardId": "ST15-005",
+  "status": "manual",
+  "sourceTextHash": "e723d62771909967905155f98bc69d721c7e185dc86c69754f4ccfba4a77a927",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If your Leader's type includes \"Whitebeard Pirates\", this Character gains [Rush] | [Once Per Turn] If this Character would be removed from the field by your opponent's effect, you may give this Character -2000 power during this turn instead.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If your Leader's type includes \"Whitebeard Pirates\", this Character gains [Rush]",
+      "[Once Per Turn] If this Character would be removed from the field by your opponent's effect, you may give this Character -2000 power during this turn instead."
+    ],
+    "failedParts": [
+      "IF: If your Leader's type includes \"Whitebeard Pirates\", this Character gains [Rush]",
+      "IF: If this Character would be removed from the field by your opponent's effect, you may give this Character -2000 power during this turn instead"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "ST13-012",
+  "status": "manual",
+  "sourceTextHash": "a6cf1b13324c1ef956898fbc67dad7b742d9e4109029955e31098debc0a39a74",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] You may add 1 card from the top or bottom of your Life cards to your hand: Look at all of your Life cards and place them back in your Life area in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] You may add 1 card from the top or bottom of your Life cards to your hand: Look at all of your Life cards and place them back in your Life area in any order."
+    ],
+    "failedParts": [
+      "Look at all of your Life cards and place them back in your Life area in any order"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "EB02-051",
+  "status": "manual",
+  "sourceTextHash": "a950ec13b577f85ff12fbc21b1d2c4acd6b141e5f230930c24fe7f3e2bb01a25",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] Choose one: . K.O. up to 1 of your opponent's Characters with a cost of 2 or less. . Give up to 1 of your opponent's Characters 4 cost during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Main] Choose one: . K.O. up to 1 of your opponent's Characters with a cost of 2 or less. . Give up to 1 of your opponent's Characters 4 cost during this turn."
+    ],
+    "failedParts": [
+      "COST: Choose one"
+    ]
+  }
+}

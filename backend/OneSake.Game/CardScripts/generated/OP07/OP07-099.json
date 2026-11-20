@@ -1,0 +1,16 @@
+{
+  "cardId": "OP07-099",
+  "status": "manual",
+  "sourceTextHash": "9b295d2640a4815405c74c438133c0ada78520d857c772b18d9801b51b1273d2",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Trigger] Up to 1 of your {Egghead} type Leader or Character cards gains +2000 power until the end of your next turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Trigger] Up to 1 of your {Egghead} type Leader or Character cards gains +2000 power until the end of your next turn."
+    ],
+    "failedParts": [
+      "Up to 1 of your {Egghead} type Leader or Character cards gains +2000 power until the end of your next turn"
+    ]
+  }
+}

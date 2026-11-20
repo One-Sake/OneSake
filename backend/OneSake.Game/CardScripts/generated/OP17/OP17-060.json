@@ -1,0 +1,16 @@
+{
+  "cardId": "OP17-060",
+  "status": "manual",
+  "sourceTextHash": "78c4ae19f875ddca7d2b2b4443a70dfaa21de9c91293fb7285b97583d3a6d371",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your Leader has the {Animal Kingdom Pirates} type, add up to 1 DON!! card as active from your DON!! deck. Then, K.O. up to 1 of your opponent's Characters with 3000 power or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your Leader has the {Animal Kingdom Pirates} type, add up to 1 DON!! card as active from your DON!! deck. Then, K.O. up to 1 of your opponent's Characters with 3000 power or less."
+    ],
+    "failedParts": [
+      "Add up to 1 DON!! card as active from your DON!! deck"
+    ]
+  }
+}

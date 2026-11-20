@@ -1,0 +1,16 @@
+{
+  "cardId": "OP12-048",
+  "status": "manual",
+  "sourceTextHash": "1dfcee928e5d94bd2ceee1cebe1f5b773370cf9aa23a5f6a4a6ff1e0e8a8b6fd",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Opponent's Turn] If your blue {Navy} type Character would be removed from the field by your opponent's effect, you may rest this Character and trash 1 card from your hand instead.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Opponent's Turn] If your blue {Navy} type Character would be removed from the field by your opponent's effect, you may rest this Character and trash 1 card from your hand instead."
+    ],
+    "failedParts": [
+      "IF: If your blue {Navy} type Character would be removed from the field by your opponent's effect, you may rest this Character and trash 1 card from your hand instead"
+    ]
+  }
+}

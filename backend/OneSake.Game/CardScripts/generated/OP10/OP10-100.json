@@ -1,0 +1,18 @@
+{
+  "cardId": "OP10-100",
+  "status": "manual",
+  "sourceTextHash": "7e69012ee6ff59c74e85aa673f7fefaea5712f0dd8c8cee493cff2a61150307d",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] [When Attacking] Rest up to 1 of your opponent's Characters with a cost equal to or less than the total of your and your opponent's Life cards. | [Trigger] If your Leader has the {Revolutionary Army} type and you and your opponent have a total of 5 or less Life cards, play this card.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] [When Attacking] Rest up to 1 of your opponent's Characters with a cost equal to or less than the total of your and your opponent's Life cards.",
+      "[Trigger] If your Leader has the {Revolutionary Army} type and you and your opponent have a total of 5 or less Life cards, play this card."
+    ],
+    "failedParts": [
+      "Rest up to 1 of your opponent's Characters with a cost equal to or less than the total of your and your opponent's Life cards",
+      "IF: If your Leader has the {Revolutionary Army} type and you and your opponent have a total of 5 or less Life cards, play this card"
+    ]
+  }
+}

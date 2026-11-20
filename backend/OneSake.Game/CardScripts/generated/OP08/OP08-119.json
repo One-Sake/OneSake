@@ -1,0 +1,104 @@
+{
+  "cardId": "OP08-119",
+  "status": "generated",
+  "sourceTextHash": "e94ad6671d8f03cf76aaedbcfde62aa4054d5db9b3d91ac64e370a66a4c0b3c7",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "WhenAttacking",
+        "text": "[When Attacking] DON!! 10: K.O. all Characters other than this Character. Then, add up to 1 card from the top of your deck to the top of your Life cards and trash up to 1 card from the top of your opponent's Life cards.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [
+          {
+            "kind": "ReturnDon",
+            "amount": 10
+          }
+        ],
+        "steps": [
+          {
+            "kind": "KO",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 2147483647,
+              "upTo": true,
+              "all": true,
+              "self": false,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "Any",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": true,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "K.O. all Characters other than this Character"
+          },
+          {
+            "kind": "DeckTopToLife",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Add up to 1 card from the top of your deck to the top of your Life cards"
+          },
+          {
+            "kind": "TrashLife",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "Opponent",
+            "conditions": [],
+            "text": "Trash up to 1 card from the top of your opponent's Life cards"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

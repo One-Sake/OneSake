@@ -1,0 +1,46 @@
+{
+  "cardId": "ST05-006",
+  "status": "generated",
+  "sourceTextHash": "151552a787f8dcc0d89faa2de71704d45cc41a0ab49648e7de9a3725992e14c7",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "WhenAttacking",
+        "text": "[When Attacking] DON!! -2: Draw 2 cards.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [
+          {
+            "kind": "ReturnDon",
+            "amount": 2
+          }
+        ],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 2,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Draw 2 cards"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

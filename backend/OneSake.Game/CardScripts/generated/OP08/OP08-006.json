@@ -1,0 +1,16 @@
+{
+  "cardId": "OP08-006",
+  "status": "manual",
+  "sourceTextHash": "91fcdf705510baa0b6397d845a0b69176f982b46df8686220d9304d83b1c2191",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] If you have [Kuromarimo] and [Chess] in your trash, this Character gains +2000 power.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] If you have [Kuromarimo] and [Chess] in your trash, this Character gains +2000 power."
+    ],
+    "failedParts": [
+      "IF: If you have [Kuromarimo] and [Chess] in your trash, this Character gains +2000 power"
+    ]
+  }
+}

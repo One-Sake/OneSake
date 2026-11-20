@@ -1,0 +1,95 @@
+{
+  "cardId": "OP14-029",
+  "status": "manual",
+  "sourceTextHash": "f2bfeda863e7440baaaa814984fd24d4dd0d4cf5d2a404962a6283d96bc55886",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Opponent's Turn] If this Character would be removed from the field by your opponent's effect, you may rest 1 of your cards instead.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "ActivateMain",
+        "text": "[Activate: Main] [Once Per Turn] You may rest 2 of your cards: This Character gains +2000 power until the end of your opponent's next End Phase.",
+        "requiredDon": 0,
+        "oncePerTurn": true,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [
+          {
+            "kind": "RestOwnCards",
+            "amount": 2,
+            "filter": {
+              "owner": "You",
+              "allowLeader": true,
+              "allowCharacter": true,
+              "allowStage": true,
+              "category": "",
+              "useBaseValues": false,
+              "typeIncludes": "",
+              "name": "",
+              "nameNot": "",
+              "color": "",
+              "attribute": "",
+              "keyword": "",
+              "excludeSource": false,
+              "requiresTrigger": false,
+              "nameOrType": false,
+              "maxCostFrom": ""
+            }
+          }
+        ],
+        "steps": [
+          {
+            "kind": "PowerModifier",
+            "amount": 2000,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "UntilEndOfOpponentsNextTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "This Character gains +2000 power until the end of your opponent's next End Phase"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Opponent's Turn] If this Character would be removed from the field by your opponent's effect, you may rest 1 of your cards instead."
+    ],
+    "failedParts": [
+      "IF: If this Character would be removed from the field by your opponent's effect, you may rest 1 of your cards instead"
+    ]
+  }
+}

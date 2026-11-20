@@ -1,0 +1,16 @@
+{
+  "cardId": "OP08-007",
+  "status": "manual",
+  "sourceTextHash": "21d99eac8192254e9ceb7061f44a37999fcc8b489f440892734faad43cccff2c",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] [On Play]/[When Attacking] Look at 5 cards from the top of your deck and play up to 1 {Animal} type Character card with 4000 power or less rested. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] [On Play]/[When Attacking] Look at 5 cards from the top of your deck and play up to 1 {Animal} type Character card with 4000 power or less rested. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "/[When Attacking] Look at 5 cards from the top of your deck and play up to 1 {Animal} type Character card with 4000 power or less rested"
+    ]
+  }
+}

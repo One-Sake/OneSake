@@ -1,0 +1,16 @@
+{
+  "cardId": "EB01-004",
+  "status": "manual",
+  "sourceTextHash": "fdadf37db80d60bed18479570d3273181344a12df13559bc550fe8710d868046",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking] You may give your 1 active Leader -5000 power during this turn: Give up to 1 of your opponent's Characters -3000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[When Attacking] You may give your 1 active Leader -5000 power during this turn: Give up to 1 of your opponent's Characters -3000 power during this turn."
+    ],
+    "failedParts": [
+      "COST: You may give your 1 active Leader -5000 power during this turn"
+    ]
+  }
+}

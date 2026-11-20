@@ -1,0 +1,95 @@
+{
+  "cardId": "EB04-029",
+  "status": "manual",
+  "sourceTextHash": "ecd3491014e74044508acb270aa948c9c1c3acc8ba3dcf0f8bf7f85d85c79f43",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] If your Leader is [Sanji], look at 3 cards from the top of your deck; reveal up to 1 [Sanji] or Event card and add it to your hand. Then, trash the rest.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "EventCounter",
+        "text": "[Counter] You may trash 1 card from your hand: Up to 1 of your [Sanji] cards gains +4000 power during this battle.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [
+          {
+            "kind": "TrashFromHand",
+            "amount": 1,
+            "filter": {
+              "owner": "You",
+              "allowLeader": false,
+              "allowCharacter": true,
+              "allowStage": true,
+              "category": "",
+              "useBaseValues": false,
+              "typeIncludes": "",
+              "name": "",
+              "nameNot": "",
+              "color": "",
+              "attribute": "",
+              "keyword": "",
+              "excludeSource": false,
+              "requiresTrigger": false,
+              "nameOrType": false,
+              "maxCostFrom": ""
+            }
+          }
+        ],
+        "steps": [
+          {
+            "kind": "PowerModifier",
+            "amount": 4000,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": true,
+              "all": false,
+              "self": false,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": true,
+                "allowCharacter": true,
+                "allowStage": true,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "Sanji",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisBattle",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Up to 1 of your [Sanji] cards gains +4000 power during this battle"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Main] If your Leader is [Sanji], look at 3 cards from the top of your deck; reveal up to 1 [Sanji] or Event card and add it to your hand. Then, trash the rest."
+    ],
+    "failedParts": [
+      "Look at 3 cards from the top of your deck; reveal up to 1 [Sanji] or Event card and add it to your hand"
+    ]
+  }
+}

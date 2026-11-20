@@ -1,0 +1,16 @@
+{
+  "cardId": "OP05-080",
+  "status": "manual",
+  "sourceTextHash": "de675012cb63b9d3adf828495c7e9bb0a964e0ec2616a924f7d5e84804aea0f7",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking] [Once Per Turn] You may return 20 cards from your trash to your deck and shuffle it: This Character gains and +10000 power during this battle.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[When Attacking] [Once Per Turn] You may return 20 cards from your trash to your deck and shuffle it: This Character gains and +10000 power during this battle."
+    ],
+    "failedParts": [
+      "COST: You may return 20 cards from your trash to your deck and shuffle it"
+    ]
+  }
+}

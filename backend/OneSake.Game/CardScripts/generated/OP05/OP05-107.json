@@ -1,0 +1,16 @@
+{
+  "cardId": "OP05-107",
+  "status": "manual",
+  "sourceTextHash": "9fa0f55c06b7036eea5d290bbfc260f7918df43454823e5d5ec4882e1e78a467",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] [Once Per Turn] When a card is added to your hand from your Life, this Character gains +2000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] [Once Per Turn] When a card is added to your hand from your Life, this Character gains +2000 power during this turn."
+    ],
+    "failedParts": [
+      "When a card is added to your hand from your Life, this Character gains +2000 power during this turn"
+    ]
+  }
+}

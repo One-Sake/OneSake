@@ -1,0 +1,16 @@
+{
+  "cardId": "OP09-069",
+  "status": "manual",
+  "sourceTextHash": "e16f67d7254b585515881042dec867331fd2faf2c6caeab46810f66e450b2d29",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Look at 4 cards from the top of your deck; reveal up to 1 \"Straw Hat Crew\" or {Heart Pirates} type card with a cost of 2 or more and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Look at 4 cards from the top of your deck; reveal up to 1 \"Straw Hat Crew\" or {Heart Pirates} type card with a cost of 2 or more and add it to your hand. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "Look at 4 cards from the top of your deck; reveal up to 1 \"Straw Hat Crew\" or {Heart Pirates} type card with a cost of 2 or more and add it to your hand"
+    ]
+  }
+}

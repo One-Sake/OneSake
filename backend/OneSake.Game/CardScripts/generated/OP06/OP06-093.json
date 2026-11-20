@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-093",
+  "status": "manual",
+  "sourceTextHash": "baa926191c55a5472f056f074aec0fbbc9931ce72f8d82248c861a1d3476bcb9",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your opponent has 5 or more cards in their hand, choose one: . Your opponent trashes 1 card from their hand. . Give up to 1 of your opponent's Characters -3 cost during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your opponent has 5 or more cards in their hand, choose one: . Your opponent trashes 1 card from their hand. . Give up to 1 of your opponent's Characters -3 cost during this turn."
+    ],
+    "failedParts": [
+      "COST: If your opponent has 5 or more cards in their hand, choose one"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP13-035",
+  "status": "manual",
+  "sourceTextHash": "c37ce0dd8bb17dd391695ff636d00c82bcf80d9c4043fcc4c43b45afe6850948",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [End of Your Turn] Set this Character or up to 1 of your DON!! cards as active.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[End of Your Turn] Set this Character or up to 1 of your DON!! cards as active."
+    ],
+    "failedParts": [
+      "Set this Character or up to 1 of your DON!! cards as active"
+    ]
+  }
+}

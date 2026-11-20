@@ -1,0 +1,46 @@
+{
+  "cardId": "EB03-057",
+  "status": "manual",
+  "sourceTextHash": "c50a5c73b82b3417bbb3996917e518a4f2789df1dd1dfd8ed49f7ce78509ab09",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Give up to 3 rested DON!! cards to your {Land of Wano} type Leader.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnKO",
+        "text": "[On K.O.] Trash up to 1 card from the top of your opponent's Life cards.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "TrashLife",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "Opponent",
+            "conditions": [],
+            "text": "Trash up to 1 card from the top of your opponent's Life cards"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[On Play] Give up to 3 rested DON!! cards to your {Land of Wano} type Leader."
+    ],
+    "failedParts": [
+      "Give up to 3 rested DON!! cards to your {Land of Wano} type Leader"
+    ]
+  }
+}

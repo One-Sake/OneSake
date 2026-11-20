@@ -1,0 +1,16 @@
+{
+  "cardId": "EB02-059",
+  "status": "manual",
+  "sourceTextHash": "ea063aff9b560dd43730c512033e7767f8d9937742a02cb449c8f75906924445",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Counter] Up to 1 of your Leader or Character cards gains +1000 power during this battle. Then, if you have 1 or less Life cards, play up to 1 of your yellow {Straw Hat Crew} type Character cards or [Sanji] with a cost of 5 or less from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Counter] Up to 1 of your Leader or Character cards gains +1000 power during this battle. Then, if you have 1 or less Life cards, play up to 1 of your yellow {Straw Hat Crew} type Character cards or [Sanji] with a cost of 5 or less from your hand."
+    ],
+    "failedParts": [
+      "Play up to 1 of your yellow {Straw Hat Crew} type Character cards or [Sanji] with a cost of 5 or less from your hand"
+    ]
+  }
+}

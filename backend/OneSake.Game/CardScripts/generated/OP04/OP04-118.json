@@ -1,0 +1,16 @@
+{
+  "cardId": "OP04-118",
+  "status": "manual",
+  "sourceTextHash": "570fa3892cc41446de304fcde5b79a5161ea47681f96dce940bb11145c95cc43",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: All of your red Characters with a cost of 3 or more other than this Character gain [Rush]. (This card can attack on the turn in which it is played.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "All of your red Characters with a cost of 3 or more other than this Character gain [Rush]. (This card can attack on the turn in which it is played."
+    ],
+    "failedParts": [
+      "(This card can attack on the turn in which it is played"
+    ]
+  }
+}

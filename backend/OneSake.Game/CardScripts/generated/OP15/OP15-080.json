@@ -1,0 +1,18 @@
+{
+  "cardId": "OP15-080",
+  "status": "manual",
+  "sourceTextHash": "c6ea17f73a95aa2bc81efca77d6ea7d484bd02dd2a80d5a4b8e9ef8c29095fb0",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If you have [Gecko Moria] with 10000 power or more on your field and there are no other [Oars] cards, this Character gains +7000 power. | [On K.O.] You may place 3 cards from your trash at the bottom of your deck in any order: Play this Character card from your trash.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If you have [Gecko Moria] with 10000 power or more on your field and there are no other [Oars] cards, this Character gains +7000 power.",
+      "[On K.O.] You may place 3 cards from your trash at the bottom of your deck in any order: Play this Character card from your trash."
+    ],
+    "failedParts": [
+      "IF: If you have [Gecko Moria] with 10000 power or more on your field and there are no other [Oars] cards, this Character gains +7000 power",
+      "Play this Character card from your trash"
+    ]
+  }
+}

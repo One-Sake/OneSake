@@ -1,0 +1,16 @@
+{
+  "cardId": "OP07-038",
+  "status": "manual",
+  "sourceTextHash": "decfbcbc9ee7c3bbfd8ab382fa14906aafacc672faf9f94fcfee701fb3792d87",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] [Once Per Turn] This effect can be activated when a Character is removed from the field by your effect. If you have 5 or less cards in your hand, draw 1 card.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] [Once Per Turn] This effect can be activated when a Character is removed from the field by your effect. If you have 5 or less cards in your hand, draw 1 card."
+    ],
+    "failedParts": [
+      "This effect can be activated when a Character is removed from the field by your effect"
+    ]
+  }
+}

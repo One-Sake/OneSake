@@ -1,0 +1,16 @@
+{
+  "cardId": "OP04-091",
+  "status": "manual",
+  "sourceTextHash": "81816d29f757d55b19961d0e6fa3a283eaf309c931105f567f0b86c6a4ebcb80",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] You may rest your 1 Leader: If your Leader has the {Dressrosa} type, K.O. up to 1 of your opponent's Characters with a cost of 1 or less. Then, trash 2 cards from the top of your deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] You may rest your 1 Leader: If your Leader has the {Dressrosa} type, K.O. up to 1 of your opponent's Characters with a cost of 1 or less. Then, trash 2 cards from the top of your deck."
+    ],
+    "failedParts": [
+      "COST: You may rest your 1 Leader"
+    ]
+  }
+}

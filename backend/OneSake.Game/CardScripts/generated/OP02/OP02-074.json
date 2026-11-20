@@ -1,0 +1,16 @@
+{
+  "cardId": "OP02-074",
+  "status": "manual",
+  "sourceTextHash": "cf1c8f40514fe63b150b49181cd3e446a28e135d1f0b4920caeea007ec3a26a9",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: Your [Blugori] gains [Blocker].",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "Your [Blugori] gains [Blocker]."
+    ],
+    "failedParts": [
+      "Your [Blugori] gains [Blocker]"
+    ]
+  }
+}

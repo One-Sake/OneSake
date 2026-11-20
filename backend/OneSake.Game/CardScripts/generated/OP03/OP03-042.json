@@ -1,0 +1,16 @@
+{
+  "cardId": "OP03-042",
+  "status": "manual",
+  "sourceTextHash": "e3ef89d420ff391842d08face92fd55d413ff09e894df3a4ae29dc0af67ce97e",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Add up to 1 blue [Usopp from your trash to your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Add up to 1 blue [Usopp from your trash to your hand."
+    ],
+    "failedParts": [
+      "Add up to 1 blue [Usopp from your trash to your hand"
+    ]
+  }
+}

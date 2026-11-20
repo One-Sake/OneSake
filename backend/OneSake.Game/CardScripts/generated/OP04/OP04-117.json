@@ -1,0 +1,51 @@
+{
+  "cardId": "OP04-117",
+  "status": "manual",
+  "sourceTextHash": "2eeeaf96c6cd2a1950ab23123ba40938b11256f507abdb93f8f3960c545aa986",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] Add up to 1 of your opponent's Characters with a cost of 3 or less to the top or bottom of your opponent's Life cards face-up.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] You may add 1 card from the top or bottom of your Life cards to your hand: Add up to 1 card from your hand to the top of your Life cards.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [
+          {
+            "kind": "LifeToHand",
+            "amount": 1
+          }
+        ],
+        "steps": [
+          {
+            "kind": "HandToLife",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Add up to 1 card from your hand to the top of your Life cards"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Main] Add up to 1 of your opponent's Characters with a cost of 3 or less to the top or bottom of your opponent's Life cards face-up."
+    ],
+    "failedParts": [
+      "Add up to 1 of your opponent's Characters with a cost of 3 or less to the top or bottom of your opponent's Life cards face-up"
+    ]
+  }
+}

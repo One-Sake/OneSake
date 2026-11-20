@@ -1,0 +1,16 @@
+{
+  "cardId": "OP13-095",
+  "status": "manual",
+  "sourceTextHash": "dcfa4025c09347e3c1ab062103a61f22b14eb0e5e79fcc4fdbb162362287ee9c",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] You may trash 1 card from your hand: If you only have {Celestial Dragons} type Characters, K.O. up to 2 of your opponent's Characters with a base cost of 3 or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] You may trash 1 card from your hand: If you only have {Celestial Dragons} type Characters, K.O. up to 2 of your opponent's Characters with a base cost of 3 or less."
+    ],
+    "failedParts": [
+      "IF: If you only have {Celestial Dragons} type Characters, K.O. up to 2 of your opponent's Characters with a base cost of 3 or less"
+    ]
+  }
+}

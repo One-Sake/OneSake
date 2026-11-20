@@ -1,0 +1,16 @@
+{
+  "cardId": "ST10-013",
+  "status": "manual",
+  "sourceTextHash": "3f380efaa68abc047de287e2168aabc855b17d0b0826f7cd3bdde7b84fc9cff9",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] / [When Attacking] DON!! -1: Up to 1 of your Leader gains +1000 power until the start of your next turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] / [When Attacking] DON!! -1: Up to 1 of your Leader gains +1000 power until the start of your next turn."
+    ],
+    "failedParts": [
+      "COST: / [When Attacking] DON!! -1"
+    ]
+  }
+}

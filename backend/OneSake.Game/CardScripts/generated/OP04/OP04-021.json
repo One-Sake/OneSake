@@ -1,0 +1,46 @@
+{
+  "cardId": "OP04-021",
+  "status": "generated",
+  "sourceTextHash": "d7fe2865f97cf61f572938347f851d309747647442fcfec399e98ff8496c3210",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnOpponentsAttack",
+        "text": "[On Your Opponent's Attack] RESTDON2: Rest up to 1 of your opponent's DON!! cards.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [
+          {
+            "kind": "RestDon",
+            "amount": 2
+          }
+        ],
+        "steps": [
+          {
+            "kind": "RestOpponentDon",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Rest up to 1 of your opponent's DON!! cards"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-080",
+  "status": "manual",
+  "sourceTextHash": "b4e90d748628661383f0284aa8cd8beaaf6eb18975f8ee47a5abe867ff1d9043",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] [When Attacking] 2 You may trash 1 card from your hand: Trash 2 cards from the top of your deck and play up to 1 {Thriller Bark Pirates} type Character card with a cost of 4 or less from your trash.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] [When Attacking] 2 You may trash 1 card from your hand: Trash 2 cards from the top of your deck and play up to 1 {Thriller Bark Pirates} type Character card with a cost of 4 or less from your trash."
+    ],
+    "failedParts": [
+      "COST: 2 You may trash 1 card from your hand"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "EB01-009",
+  "status": "manual",
+  "sourceTextHash": "3581f2509ec726c8ec80f640f1e4a8169f140e8ba0705c2bade036ff86839b6e",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Counter] Look at 5 cards from the top of your deck and play up to 1 {Animal} type Character card with a cost of 3 or less. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Counter] Look at 5 cards from the top of your deck and play up to 1 {Animal} type Character card with a cost of 3 or less. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "Look at 5 cards from the top of your deck and play up to 1 {Animal} type Character card with a cost of 3 or less"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "EB04-056",
+  "status": "manual",
+  "sourceTextHash": "22da2a063a7c1618b914cf9741b32a9e3944c33f031d00e870729960d6088ff9",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If you have [Jewelry Bonney] and you have 0 Life cards, this Character gains [Blocker].",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If you have [Jewelry Bonney] and you have 0 Life cards, this Character gains [Blocker]."
+    ],
+    "failedParts": [
+      "IF: If you have [Jewelry Bonney] and you have 0 Life cards, this Character gains [Blocker]"
+    ]
+  }
+}

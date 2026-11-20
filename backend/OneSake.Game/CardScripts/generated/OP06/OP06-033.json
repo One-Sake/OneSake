@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-033",
+  "status": "manual",
+  "sourceTextHash": "9c54fe4e8a86dcd7850d4c2a751c66972343b3bfab898dcd148472ce18ca20fd",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] You may trash 1 {Fish-Man} type card from your hand or 1 [The Ark Noah] from your hand or field: K.O. up to 1 of your opponent's rested Characters.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] You may trash 1 {Fish-Man} type card from your hand or 1 [The Ark Noah] from your hand or field: K.O. up to 1 of your opponent's rested Characters."
+    ],
+    "failedParts": [
+      "COST: You may trash 1 {Fish-Man} type card from your hand or 1 [The Ark Noah] from your hand or field"
+    ]
+  }
+}

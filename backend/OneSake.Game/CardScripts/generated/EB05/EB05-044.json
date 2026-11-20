@@ -1,0 +1,16 @@
+{
+  "cardId": "EB05-044",
+  "status": "manual",
+  "sourceTextHash": "003099532a0af1b61d14e3bb96242b107ce0d3cc64dbef299a3950da721f32a6",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your Leader's type includes \"Baroque Works\" and your opponent has a Character with a cost of 0, give your opponent's Leader -1000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your Leader's type includes \"Baroque Works\" and your opponent has a Character with a cost of 0, give your opponent's Leader -1000 power during this turn."
+    ],
+    "failedParts": [
+      "IF: If your Leader's type includes \"Baroque Works\" and your opponent has a Character with a cost of 0, give your opponent's Leader -1000 power during this turn"
+    ]
+  }
+}

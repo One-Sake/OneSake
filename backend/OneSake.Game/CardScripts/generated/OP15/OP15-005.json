@@ -1,0 +1,16 @@
+{
+  "cardId": "OP15-005",
+  "status": "manual",
+  "sourceTextHash": "4bbf8ba5e87ffcf22a7af38b1eb74ee6a8d3405b229c0e8be76883971d582707",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking] If your opponent has any DON!! cards given, this Character gains +2000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[When Attacking] If your opponent has any DON!! cards given, this Character gains +2000 power during this turn."
+    ],
+    "failedParts": [
+      "IF: If your opponent has any DON!! cards given, this Character gains +2000 power during this turn"
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "cardId": "OP12-016",
+  "status": "manual",
+  "sourceTextHash": "e665dfaebbaed8827a8fcab2887a3a9ed484df0e5b06527d668b35a72fa7ac0a",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] You may give 2 active DON!! cards to 1 of your [Silvers Rayleigh]: Your opponent cannot activate [Blocker] when the card given these DON!! cards attacks during this turn. | [Counter] Up to 1 of your Characters or [Silvers Rayleigh] gains +2000 power during this battle.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Main] You may give 2 active DON!! cards to 1 of your [Silvers Rayleigh]: Your opponent cannot activate [Blocker] when the card given these DON!! cards attacks during this turn.",
+      "[Counter] Up to 1 of your Characters or [Silvers Rayleigh] gains +2000 power during this battle."
+    ],
+    "failedParts": [
+      "COST: You may give 2 active DON!! cards to 1 of your [Silvers Rayleigh]",
+      "Up to 1 of your Characters or [Silvers Rayleigh] gains +2000 power during this battle"
+    ]
+  }
+}

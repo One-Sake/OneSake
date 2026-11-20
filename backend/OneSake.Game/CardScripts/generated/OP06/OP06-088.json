@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-088",
+  "status": "manual",
+  "sourceTextHash": "8793075d09944b77fc6358c7eed0814a8745cdb56303c1d410c30b2cf9dd00f6",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If your Leader has the {Dressrosa} type and is active, this Character gains +2000 power.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If your Leader has the {Dressrosa} type and is active, this Character gains +2000 power."
+    ],
+    "failedParts": [
+      "IF: If your Leader has the {Dressrosa} type and is active, this Character gains +2000 power"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP14-068",
+  "status": "manual",
+  "sourceTextHash": "22d4baa9722581f7814fece99f684c96d71c72b9b292e1a0517f0be8f9779bc4",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Opponent's Turn] [Once Per Turn] When a DON!! card on your field is returned to your DON!! deck, if your Leader has the {Donquixote Pirates} type, add up to 1 DON!! card from your DON!! deck and rest it.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Opponent's Turn] [Once Per Turn] When a DON!! card on your field is returned to your DON!! deck, if your Leader has the {Donquixote Pirates} type, add up to 1 DON!! card from your DON!! deck and rest it."
+    ],
+    "failedParts": [
+      "When a DON!! card on your field is returned to your DON!! deck, if your Leader has the {Donquixote Pirates} type, add up to 1 DON!! card from your DON!! deck and rest it"
+    ]
+  }
+}

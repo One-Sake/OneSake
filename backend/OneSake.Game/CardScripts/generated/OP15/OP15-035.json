@@ -1,0 +1,16 @@
+{
+  "cardId": "OP15-035",
+  "status": "manual",
+  "sourceTextHash": "0e7e7d9953aef68e725ba3562051d79ac6c00a81f1c51975abf6792d477c8f93",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If your Character with 7000 base power or less would be removed from the field by your opponent's effect, you may rest 2 of your cards instead.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If your Character with 7000 base power or less would be removed from the field by your opponent's effect, you may rest 2 of your cards instead."
+    ],
+    "failedParts": [
+      "IF: If your Character with 7000 base power or less would be removed from the field by your opponent's effect, you may rest 2 of your cards instead"
+    ]
+  }
+}

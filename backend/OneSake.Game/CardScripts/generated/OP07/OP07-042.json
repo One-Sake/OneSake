@@ -1,0 +1,16 @@
+{
+  "cardId": "OP07-042",
+  "status": "manual",
+  "sourceTextHash": "0067433be98e98ca7be9e11cb2373c4fffadc67bf24d64a340e7153fe5b89c30",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Once Per Turn] If your Leader has the {The Seven Warlords of the Sea} type and this Character would be removed from the field by your opponent's effect, you may place 1 of your Characters other than [Gecko Moria] at the bottom of the owner's deck instead.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Once Per Turn] If your Leader has the {The Seven Warlords of the Sea} type and this Character would be removed from the field by your opponent's effect, you may place 1 of your Characters other than [Gecko Moria] at the bottom of the owner's deck instead."
+    ],
+    "failedParts": [
+      "IF: If your Leader has the {The Seven Warlords of the Sea} type and this Character would be removed from the field by your opponent's effect, you may place 1 of your Characters other than [Gecko Moria] at the bottom of the owner's deck instead"
+    ]
+  }
+}

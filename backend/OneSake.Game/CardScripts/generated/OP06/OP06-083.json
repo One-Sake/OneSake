@@ -1,0 +1,72 @@
+{
+  "cardId": "OP06-083",
+  "status": "manual",
+  "sourceTextHash": "b353e62eaf973b60f040968392db3fd4db756d19e7b870c29a7b5b05ed398a8b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may K.O. 1 of your {Thriller Bark Pirates} type Characters: This Character's effect is negated during this turn.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Static",
+        "text": "This Character cannot attack.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "GainFlag",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "Permanent",
+            "flag": "CannotAttack",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "This Character cannot attack"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Activate: Main] You may K.O. 1 of your {Thriller Bark Pirates} type Characters: This Character's effect is negated during this turn."
+    ],
+    "failedParts": [
+      "K.O. 1 of your {Thriller Bark Pirates} type Characters: This Character's effect is negated during this turn"
+    ]
+  }
+}

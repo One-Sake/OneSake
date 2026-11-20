@@ -1,0 +1,107 @@
+{
+  "cardId": "OP02-089",
+  "status": "generated",
+  "sourceTextHash": "cea081d5a387ac4c92528d99d41ace2759dcc531989035d19f782e15c4c4ac22",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "EventCounter",
+        "text": "[Counter] DON!! -1: Give up to a total of 2 of your opponent's Leader or Character cards -3000 power during this turn.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [
+          {
+            "kind": "ReturnDon",
+            "amount": 1
+          }
+        ],
+        "steps": [
+          {
+            "kind": "PowerModifier",
+            "amount": -3000,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 2,
+              "upTo": true,
+              "all": false,
+              "self": false,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "Opponent",
+                "allowLeader": true,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Give up to a total of 2 of your opponent's Leader or Character cards -3000 power during this turn"
+          }
+        ],
+        "index": 0
+      },
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] If your opponent has 6 or more DON!! cards on their field, your opponent returns 1 DON!! card from their field to their DON!! deck.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "ReturnDonToDeck",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "Opponent",
+            "conditions": [
+              {
+                "kind": "OpponentDonOnFieldAtLeast",
+                "amount": 6,
+                "text": "your opponent has 6 or more DON!! cards on their field"
+              }
+            ],
+            "text": "Your opponent returns 1 DON!! card from their field to their DON!! deck"
+          }
+        ],
+        "index": 1
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

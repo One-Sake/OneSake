@@ -1,0 +1,16 @@
+{
+  "cardId": "ST20-005",
+  "status": "manual",
+  "sourceTextHash": "5d14f3bdd201b855a2f559b60821532088c2a14b8f0c23445e3210fc36a4401a",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] You may trash 1 card from your hand: Your opponent chooses one: . Your opponent trashes 2 cards from their hand. . Trash 1 card from the top of your opponent's Life cards.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] You may trash 1 card from your hand: Your opponent chooses one: . Your opponent trashes 2 cards from their hand. . Trash 1 card from the top of your opponent's Life cards."
+    ],
+    "failedParts": [
+      "Your opponent chooses one:"
+    ]
+  }
+}

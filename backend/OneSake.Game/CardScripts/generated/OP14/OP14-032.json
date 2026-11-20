@@ -1,0 +1,16 @@
+{
+  "cardId": "OP14-032",
+  "status": "manual",
+  "sourceTextHash": "9d4a19490f0f75d0b21f052097b87a199a156167751b2a8a06d3d61074e4b0f7",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] When this Character becomes rested, rest up to 1 of your opponent's Characters with a cost of 4 or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] When this Character becomes rested, rest up to 1 of your opponent's Characters with a cost of 4 or less."
+    ],
+    "failedParts": [
+      "When this Character becomes rested, rest up to 1 of your opponent's Characters with a cost of 4 or less"
+    ]
+  }
+}

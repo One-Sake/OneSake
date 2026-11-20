@@ -1,0 +1,47 @@
+{
+  "cardId": "OP05-118",
+  "status": "generated",
+  "sourceTextHash": "199680eb78adce521ed316ccfa8feafc6b7a8ab04850dd41623991d196cc9a70",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] Draw 4 cards if your opponent has 3 or less Life cards.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 4,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [
+              {
+                "kind": "OpponentLifeAtMost",
+                "amount": 3,
+                "text": "your opponent has 3 or less Life cards"
+              }
+            ],
+            "text": "Draw 4 cards"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

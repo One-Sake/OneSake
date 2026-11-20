@@ -1,0 +1,16 @@
+{
+  "cardId": "OP09-012",
+  "status": "manual",
+  "sourceTextHash": "5d70bc4931a39f46a66d664dcdcb55f4ef6e0f3dd6701f383143067fccd1cfa9",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If your Character [Bonk Punch] would be K.O.'d by an effect, you may trash this Character instead.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If your Character [Bonk Punch] would be K.O.'d by an effect, you may trash this Character instead."
+    ],
+    "failedParts": [
+      "IF: If your Character [Bonk Punch] would be K.O.'d by an effect, you may trash this Character instead"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP11-066",
+  "status": "manual",
+  "sourceTextHash": "de9b7ce318a7e008dc4e8527cfd57ac95e057cf3784a7fe94b313e8b2fb8746b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may rest this Character: Choose a cost and reveal 1 card from the top of your opponent's deck. If the revealed card has the chosen cost, K.O. up to 1 of your opponent's Characters with a base cost of 3 or less. Then, add up to 1 DON!! card from your DON!! deck and rest it.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may rest this Character: Choose a cost and reveal 1 card from the top of your opponent's deck. If the revealed card has the chosen cost, K.O. up to 1 of your opponent's Characters with a base cost of 3 or less. Then, add up to 1 DON!! card from your DON!! deck and rest it."
+    ],
+    "failedParts": [
+      "Choose a cost and reveal 1 card from the top of your opponent's deck"
+    ]
+  }
+}

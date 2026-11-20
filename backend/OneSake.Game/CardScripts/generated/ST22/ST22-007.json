@@ -1,0 +1,16 @@
+{
+  "cardId": "ST22-007",
+  "status": "manual",
+  "sourceTextHash": "57a773b24be7c9ff2d544cb879817c280379af2734fcf8a27c490bc4243d91f5",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] Reveal 1 card from the top of your deck. If that card's type includes \"Whitebeard Pirates\", give up to 1 rested DON!! card to your Leader or 1 of your Characters.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] Reveal 1 card from the top of your deck. If that card's type includes \"Whitebeard Pirates\", give up to 1 rested DON!! card to your Leader or 1 of your Characters."
+    ],
+    "failedParts": [
+      "Reveal 1 card from the top of your deck"
+    ]
+  }
+}

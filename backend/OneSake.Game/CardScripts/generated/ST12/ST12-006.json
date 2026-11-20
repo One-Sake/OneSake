@@ -1,0 +1,16 @@
+{
+  "cardId": "ST12-006",
+  "status": "manual",
+  "sourceTextHash": "6f79d95edd18b4f075b6695800d23cd74c7400f5fa1820199c331305f3c08ca4",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] [When Attacking] Choose one: . Rest up to 1 of your opponent's Characters with a cost of 2 or less. . K.O. up to 1 of your opponent's rested Characters with a cost of 2 or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] [When Attacking] Choose one: . Rest up to 1 of your opponent's Characters with a cost of 2 or less. . K.O. up to 1 of your opponent's rested Characters with a cost of 2 or less."
+    ],
+    "failedParts": [
+      "COST: Choose one"
+    ]
+  }
+}

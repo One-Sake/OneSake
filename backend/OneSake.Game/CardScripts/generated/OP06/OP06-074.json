@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-074",
+  "status": "manual",
+  "sourceTextHash": "fdf9ba2e69b6b21bd98a556dc3f45f02adaf83a8ab0606908f8a79249a709041",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] DON!! -1: Negate the effect of up to 1 of your opponent's Characters during this turn. Then, if that Character has 5000 power or less, K.O. it.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] DON!! -1: Negate the effect of up to 1 of your opponent's Characters during this turn. Then, if that Character has 5000 power or less, K.O. it."
+    ],
+    "failedParts": [
+      "Negate the effect of up to 1 of your opponent's Characters during this turn"
+    ]
+  }
+}

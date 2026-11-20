@@ -1,0 +1,16 @@
+{
+  "cardId": "ST17-005",
+  "status": "manual",
+  "sourceTextHash": "2358690d70628d23b1e7b9961c9967ffa647948312cd3c35d78b93086f9bf55b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] You may place 1 card from your hand at the top of your deck: Give up to 2 rested DON!! cards to your Leader or 1 of your Characters.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] You may place 1 card from your hand at the top of your deck: Give up to 2 rested DON!! cards to your Leader or 1 of your Characters."
+    ],
+    "failedParts": [
+      "COST: You may place 1 card from your hand at the top of your deck"
+    ]
+  }
+}

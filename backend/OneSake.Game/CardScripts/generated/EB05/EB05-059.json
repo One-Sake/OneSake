@@ -1,0 +1,82 @@
+{
+  "cardId": "EB05-059",
+  "status": "manual",
+  "sourceTextHash": "f8ab51a9fd11204a2dd90ce5081df7fba8be29e78b7918e19654ddf827185a97",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] Draw 1 card, and all of your Characters with 4000 base power and the {Big Mom Pirates} type cannot be K.O.'d in battle until the end of your opponent's next End Phase.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Draw 1 card and play up to 1 Character card with 4000 power and a [Trigger] from your hand.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Draw 1 card"
+          },
+          {
+            "kind": "PlayCard",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "filter": {
+              "owner": "You",
+              "allowLeader": false,
+              "allowCharacter": true,
+              "allowStage": true,
+              "category": "Character",
+              "maxPower": 4000,
+              "minPower": 4000,
+              "useBaseValues": false,
+              "typeIncludes": "",
+              "name": "",
+              "nameNot": "",
+              "color": "",
+              "attribute": "",
+              "keyword": "",
+              "excludeSource": false,
+              "requiresTrigger": true,
+              "nameOrType": false,
+              "maxCostFrom": ""
+            },
+            "zone": "Hand",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Play up to 1 Character card with 4000 power and a [Trigger] from your hand"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Main] Draw 1 card, and all of your Characters with 4000 base power and the {Big Mom Pirates} type cannot be K.O.'d in battle until the end of your opponent's next End Phase."
+    ],
+    "failedParts": [
+      "Draw 1 card, and all of your Characters with 4000 base power and the {Big Mom Pirates} type cannot be K.O.'d in battle until the end of your opponent's next End Phase"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP12-006",
+  "status": "manual",
+  "sourceTextHash": "c581d6910587ef54e4640b1ca6602ac2f6450999bcb6377401d87624fc5d4ffa",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Look at 5 cards from the top of your deck; reveal up to 1 [Monkey.D.Luffy] or 1 red Event and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Look at 5 cards from the top of your deck; reveal up to 1 [Monkey.D.Luffy] or 1 red Event and add it to your hand. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "Look at 5 cards from the top of your deck; reveal up to 1 [Monkey.D.Luffy] or 1 red Event and add it to your hand"
+    ]
+  }
+}

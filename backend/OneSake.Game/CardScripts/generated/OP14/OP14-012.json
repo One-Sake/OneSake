@@ -1,0 +1,16 @@
+{
+  "cardId": "OP14-012",
+  "status": "manual",
+  "sourceTextHash": "9d6cb3127cf2cf14e64fc9428be2814165e07ac4253e423caef94459da736910",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking] If this Character has 5000 power or more, give up to 2 rested DON!! cards to your Leader or 1 of your Characters.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[When Attacking] If this Character has 5000 power or more, give up to 2 rested DON!! cards to your Leader or 1 of your Characters."
+    ],
+    "failedParts": [
+      "IF: If this Character has 5000 power or more, give up to 2 rested DON!! cards to your Leader or 1 of your Characters"
+    ]
+  }
+}

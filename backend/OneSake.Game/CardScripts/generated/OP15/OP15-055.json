@@ -1,0 +1,16 @@
+{
+  "cardId": "OP15-055",
+  "status": "manual",
+  "sourceTextHash": "027dad7e4a3cc706c4e53b499b559d00de99d060a1372e91d9ac43cb88a148db",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] Choose one: . Draw 2 cards. . Up to 1 of your {Dressrosa} type Characters gains [Blocker] until the end of your opponent's next End Phase.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Main] Choose one: . Draw 2 cards. . Up to 1 of your {Dressrosa} type Characters gains [Blocker] until the end of your opponent's next End Phase."
+    ],
+    "failedParts": [
+      "COST: Choose one"
+    ]
+  }
+}

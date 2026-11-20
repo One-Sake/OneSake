@@ -1,0 +1,46 @@
+{
+  "cardId": "OP15-041",
+  "status": "manual",
+  "sourceTextHash": "0f50be2088b284278cf1e41d5f1178ec8aa5d490adb33240e62a4da88a79359b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] You may place 1 of your Characters at the bottom of the owner's deck: This Character gains [Rush] during this turn.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnKO",
+        "text": "[On K.O.] Draw 1 card.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Draw 1 card"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] You may place 1 of your Characters at the bottom of the owner's deck: This Character gains [Rush] during this turn."
+    ],
+    "failedParts": [
+      "COST: You may place 1 of your Characters at the bottom of the owner's deck"
+    ]
+  }
+}

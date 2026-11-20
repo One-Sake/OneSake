@@ -1,0 +1,16 @@
+{
+  "cardId": "OP05-097",
+  "status": "manual",
+  "sourceTextHash": "412fdbe21772d6164794406ced7f2510efa3b1f9d17af2f105d372c1ec205a3d",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] The cost of playing {Celestial Dragons} type Character cards with a cost of 2 or more from your hand will be reduced by 1.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] The cost of playing {Celestial Dragons} type Character cards with a cost of 2 or more from your hand will be reduced by 1."
+    ],
+    "failedParts": [
+      "The cost of playing {Celestial Dragons} type Character cards with a cost of 2 or more from your hand will be reduced by 1"
+    ]
+  }
+}

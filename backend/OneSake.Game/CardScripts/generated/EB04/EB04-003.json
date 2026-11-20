@@ -1,0 +1,72 @@
+{
+  "cardId": "EB04-003",
+  "status": "manual",
+  "sourceTextHash": "88df242a42a426570d9855e643bbb4c13023a4ce32cd882b08dbb3b5079f5d50",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Rush] [Opponent's Turn] Your {Navy} type Leader's base power becomes 7000.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Static",
+        "text": "[Rush]",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "GainFlag",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "Permanent",
+            "flag": "Rush",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "[Rush]"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Rush] [Opponent's Turn] Your {Navy} type Leader's base power becomes 7000."
+    ],
+    "failedParts": [
+      "Your {Navy} type Leader's base power becomes 7000"
+    ]
+  }
+}

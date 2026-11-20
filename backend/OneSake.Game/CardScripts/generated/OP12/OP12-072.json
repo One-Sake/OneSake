@@ -1,0 +1,16 @@
+{
+  "cardId": "OP12-072",
+  "status": "manual",
+  "sourceTextHash": "b4e14c8ac31977ffb8c559aa15d0450925ee9db800793d811ba6962b8be515fd",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: When a DON!! card on your field is returned to your DON!! deck, if your Leader is [Sanji], this Character gains [Rush] during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "When a DON!! card on your field is returned to your DON!! deck, if your Leader is [Sanji], this Character gains [Rush] during this turn."
+    ],
+    "failedParts": [
+      "When a DON!! card on your field is returned to your DON!! deck, if your Leader is [Sanji], this Character gains [Rush] during this turn"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP05-009",
+  "status": "manual",
+  "sourceTextHash": "5858ac8883355a9d0afb4ec9f90d876c69fc0d3a471b3b731e3f5acfaa29869f",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Draw 1 card if your Leader has 0 power or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Draw 1 card if your Leader has 0 power or less."
+    ],
+    "failedParts": [
+      "Draw 1 card if your Leader has 0 power or less"
+    ]
+  }
+}

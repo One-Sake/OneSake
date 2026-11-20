@@ -1,0 +1,18 @@
+{
+  "cardId": "OP15-014",
+  "status": "manual",
+  "sourceTextHash": "6762655753af8994f6fb16e52737737a4e10bc5069dfdce15da7497225d32c12",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If this Character would be K.O.'d, you may trash 1 Event from your hand instead. | [On Play] Activate up to 1 {Dressrosa} type Event with a base cost of 3 or less from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If this Character would be K.O.'d, you may trash 1 Event from your hand instead.",
+      "[On Play] Activate up to 1 {Dressrosa} type Event with a base cost of 3 or less from your hand."
+    ],
+    "failedParts": [
+      "IF: If this Character would be K.O.'d, you may trash 1 Event from your hand instead",
+      "Activate up to 1 {Dressrosa} type Event with a base cost of 3 or less from your hand"
+    ]
+  }
+}

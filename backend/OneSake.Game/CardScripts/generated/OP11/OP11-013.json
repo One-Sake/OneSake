@@ -1,0 +1,16 @@
+{
+  "cardId": "OP11-013",
+  "status": "manual",
+  "sourceTextHash": "5cd2e778864a976f37fe7f91fbb78a8b979b19015e9fae65cb55467b6af1a244",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking] All of your opponent's Characters with 2000 power or less cannot activate [Blocker] during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[When Attacking] All of your opponent's Characters with 2000 power or less cannot activate [Blocker] during this turn."
+    ],
+    "failedParts": [
+      "All of your opponent's Characters with 2000 power or less cannot activate [Blocker] during this turn"
+    ]
+  }
+}

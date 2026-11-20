@@ -1,0 +1,73 @@
+{
+  "cardId": "OP14-034",
+  "status": "manual",
+  "sourceTextHash": "cd5cbc67febd16fa013a347ff7bbfb01f43514a768daf0a8aebd6a012b02f576",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Once Per Turn] If your {Straw Hat Crew} type Character would be K.O.'d by your opponent's effect, you may rest 1 of your Characters instead.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Static",
+        "text": "[Your Turn] All of your green {Straw Hat Crew} type Characters with a base cost of 4 or more gain +1000 power.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": true,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "PowerModifier",
+            "amount": 1000,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 2147483647,
+              "upTo": true,
+              "all": true,
+              "self": false,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "minCost": 4,
+                "useBaseValues": true,
+                "typeIncludes": "Straw Hat Crew",
+                "name": "",
+                "nameNot": "",
+                "color": "green",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "Permanent",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "All of your green {Straw Hat Crew} type Characters with a base cost of 4 or more gain +1000 power"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Once Per Turn] If your {Straw Hat Crew} type Character would be K.O.'d by your opponent's effect, you may rest 1 of your Characters instead."
+    ],
+    "failedParts": [
+      "IF: If your {Straw Hat Crew} type Character would be K.O.'d by your opponent's effect, you may rest 1 of your Characters instead"
+    ]
+  }
+}

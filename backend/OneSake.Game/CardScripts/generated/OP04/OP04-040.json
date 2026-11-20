@@ -1,0 +1,16 @@
+{
+  "cardId": "OP04-040",
+  "status": "manual",
+  "sourceTextHash": "c1559375140d6842b4d00c1fd0500051f7f611fdcf280f8f1099a6ab2a77a3ad",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] [When Attacking] If you have a total of 4 or less cards in your Life area and hand, draw 1 card. If you have a Character with a cost of 8 or more, you may add up to 1 card from the top of your deck to the top of your Life cards instead of drawing 1 card.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] [When Attacking] If you have a total of 4 or less cards in your Life area and hand, draw 1 card. If you have a Character with a cost of 8 or more, you may add up to 1 card from the top of your deck to the top of your Life cards instead of drawing 1 card."
+    ],
+    "failedParts": [
+      "IF: If you have a total of 4 or less cards in your Life area and hand, draw 1 card"
+    ]
+  }
+}

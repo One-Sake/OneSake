@@ -1,0 +1,16 @@
+{
+  "cardId": "OP17-017",
+  "status": "manual",
+  "sourceTextHash": "5a4c56323d59a00ee8517c0106f66fc4c370e7ec513838447fbc3ecb5d443da1",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Counter] Up to 1 of your Leader with a type including {Whitebeard Pirates} or up to 1 of your Characters with a type including {Whitebeard Pirates} gains +2000 power during this battle. Then, give up to 1 of your opponent's Leader or Characters 2000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Counter] Up to 1 of your Leader with a type including {Whitebeard Pirates} or up to 1 of your Characters with a type including {Whitebeard Pirates} gains +2000 power during this battle. Then, give up to 1 of your opponent's Leader or Characters 2000 power during this turn."
+    ],
+    "failedParts": [
+      "Up to 1 of your Leader with a type including {Whitebeard Pirates} or up to 1 of your Characters with a type including {Whitebeard Pirates} gains +2000 power during this battle"
+    ]
+  }
+}

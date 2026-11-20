@@ -1,0 +1,16 @@
+{
+  "cardId": "EB05-029",
+  "status": "manual",
+  "sourceTextHash": "de744d3479abba204b46cb18495ba168775059cf893f2c40071e3bd7fa0cf7fb",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] You may trash 1 card from your hand: Negate the effect of up to 1 of your opponent's Characters with a cost of 6 or less during this turn, and return it to the owner's hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Main] You may trash 1 card from your hand: Negate the effect of up to 1 of your opponent's Characters with a cost of 6 or less during this turn, and return it to the owner's hand."
+    ],
+    "failedParts": [
+      "Negate the effect of up to 1 of your opponent's Characters with a cost of 6 or less during this turn, and return it to the owner's hand"
+    ]
+  }
+}

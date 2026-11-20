@@ -1,0 +1,46 @@
+{
+  "cardId": "OP16-109",
+  "status": "manual",
+  "sourceTextHash": "d753f61fe90db1cd430ab31f703f6a27de474c6ea69d8792ba15014c15672630",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On K.O.] If your Leader has the {Blackbeard Pirates} type, draw 1 card and K.O. up to 2 of your opponent's Characters with a cost of 1 or less.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Activate this card's [On K.O.] effect.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "ActivateOwnAbility",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "On K.O.",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Activate this card's [On K.O.] effect"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[On K.O.] If your Leader has the {Blackbeard Pirates} type, draw 1 card and K.O. up to 2 of your opponent's Characters with a cost of 1 or less."
+    ],
+    "failedParts": [
+      "Draw 1 card and K.O. up to 2 of your opponent's Characters with a cost of 1 or less"
+    ]
+  }
+}

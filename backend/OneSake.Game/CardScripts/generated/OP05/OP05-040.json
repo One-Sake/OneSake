@@ -1,0 +1,18 @@
+{
+  "cardId": "OP05-040",
+  "status": "manual",
+  "sourceTextHash": "de4a004e5e2ecac7be4ee04ba60e4f220d60b67ffcd4d78f962013911d3b50e5",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If your Leader is [Donquixote Doflamingo], all Characters with a cost of 5 or less do not become active in your and your opponent's Refresh Phases. | [End of Your Turn] If you have 10 DON!! cards on your field, K.O. all rested Characters with a cost of 5 or less. Then, trash this SAtage.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If your Leader is [Donquixote Doflamingo], all Characters with a cost of 5 or less do not become active in your and your opponent's Refresh Phases.",
+      "[End of Your Turn] If you have 10 DON!! cards on your field, K.O. all rested Characters with a cost of 5 or less. Then, trash this SAtage."
+    ],
+    "failedParts": [
+      "All Characters with a cost of 5 or less do not become active in your and your opponent's Refresh Phases",
+      "IF: If you have 10 DON!! cards on your field, K.O. all rested Characters with a cost of 5 or less"
+    ]
+  }
+}

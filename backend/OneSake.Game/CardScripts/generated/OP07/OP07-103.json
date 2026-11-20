@@ -1,0 +1,16 @@
+{
+  "cardId": "OP07-103",
+  "status": "manual",
+  "sourceTextHash": "0dd78980f75f2cf858f0b3025cd4c395e9787f246788a42add7803378654132d",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Trigger] Up to 1 of your {Egghead} type Characters gains [Blocker] during this turn. Then, add this card to your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Trigger] Up to 1 of your {Egghead} type Characters gains [Blocker] during this turn. Then, add this card to your hand."
+    ],
+    "failedParts": [
+      "Add this card to your hand"
+    ]
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "cardId": "EB05-040",
+  "status": "manual",
+  "sourceTextHash": "cbba18af3b116c1246647bfa24c76d249ef213e0ddb98427e0a2e38700eeb6dd",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] You may return 1 of your active DON!! cards to your DON!! deck: If your Leader has the {Donquixote Pirates} type, draw 3 cards and trash 1 card from your hand.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "EventCounter",
+        "text": "[Counter] Your Leader gains +2000 power during this battle.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "PowerModifier",
+            "amount": 2000,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": false,
+              "yourLeader": true,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisBattle",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Your Leader gains +2000 power during this battle"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Main] You may return 1 of your active DON!! cards to your DON!! deck: If your Leader has the {Donquixote Pirates} type, draw 3 cards and trash 1 card from your hand."
+    ],
+    "failedParts": [
+      "COST: You may return 1 of your active DON!! cards to your DON!! deck"
+    ]
+  }
+}

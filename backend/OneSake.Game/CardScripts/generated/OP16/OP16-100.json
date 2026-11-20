@@ -1,0 +1,72 @@
+{
+  "cardId": "OP16-100",
+  "status": "manual",
+  "sourceTextHash": "ec85c614d421b0f2873c43b6f5745e7ccfa42073bc53870cf845d061ac14c481",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] You may rest 2 of your DON!! cards: If your opponent's Character has been K.O.'d during this turn, set your Leader [Yamato] as active.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "EventCounter",
+        "text": "[Counter] Your Leader gains +3000 power during this battle.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "PowerModifier",
+            "amount": 3000,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": false,
+              "yourLeader": true,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisBattle",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Your Leader gains +3000 power during this battle"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Main] You may rest 2 of your DON!! cards: If your opponent's Character has been K.O.'d during this turn, set your Leader [Yamato] as active."
+    ],
+    "failedParts": [
+      "IF: If your opponent's Character has been K.O.'d during this turn, set your Leader [Yamato] as active"
+    ]
+  }
+}

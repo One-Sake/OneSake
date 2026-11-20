@@ -1,0 +1,73 @@
+{
+  "cardId": "ST32-004",
+  "status": "manual",
+  "sourceTextHash": "f2bb570cd117e4e372ad6679a6cebc84b7a542640f551a5ac9d2421845c8f072",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If your Leader has the attribute, this Character gains [Rush: Character].",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] Rest up to 2 of your opponent's Characters with a cost of 2 or less.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Rest",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 2,
+              "upTo": true,
+              "all": false,
+              "self": false,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "Opponent",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "maxCost": 2,
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Rest up to 2 of your opponent's Characters with a cost of 2 or less"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "If your Leader has the attribute, this Character gains [Rush: Character]."
+    ],
+    "failedParts": [
+      "IF: If your Leader has the attribute, this Character gains [Rush: Character]"
+    ]
+  }
+}

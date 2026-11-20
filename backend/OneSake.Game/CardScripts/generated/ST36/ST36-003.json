@@ -1,0 +1,16 @@
+{
+  "cardId": "ST36-003",
+  "status": "manual",
+  "sourceTextHash": "2e6b5bac16c782388fb399cc0a9bf47ef20132ae2bbb2fa0c1f6dffbdb1c820f",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Trigger] Draw 1 card and your {Supernovas} type Leader's base power becomes 7000 during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Trigger] Draw 1 card and your {Supernovas} type Leader's base power becomes 7000 during this turn."
+    ],
+    "failedParts": [
+      "Draw 1 card and your {Supernovas} type Leader's base power becomes 7000 during this turn"
+    ]
+  }
+}

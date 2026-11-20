@@ -1,0 +1,51 @@
+{
+  "cardId": "OP02-085",
+  "status": "manual",
+  "sourceTextHash": "f1de8c865b370091a432fb857d022db6018f839201f406ebe8f351f338393ecc",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Opponent's Turn] When this Character is K.O.'d, your opponent returns 2 DON!! cards from their field to their DON!! deck.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] DON!! -1: Your opponent returns 1 DON!! card from their field to their DON!! deck.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [
+          {
+            "kind": "ReturnDon",
+            "amount": 1
+          }
+        ],
+        "steps": [
+          {
+            "kind": "ReturnDonToDeck",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "Opponent",
+            "conditions": [],
+            "text": "Your opponent returns 1 DON!! card from their field to their DON!! deck"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Opponent's Turn] When this Character is K.O.'d, your opponent returns 2 DON!! cards from their field to their DON!! deck."
+    ],
+    "failedParts": [
+      "When this Character is K.O.'d, your opponent returns 2 DON!! cards from their field to their DON!! deck"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP07-060",
+  "status": "manual",
+  "sourceTextHash": "24cb44f2c26952f138ff2df9a4e5695e81b048d36a3eeae2c5cc10bd2593e59d",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] If your Leader has the {Foxy Pirates} type and you have no other [Itomimizu], add up to 1 DON!! card from your DON!! deck and rest it.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] If your Leader has the {Foxy Pirates} type and you have no other [Itomimizu], add up to 1 DON!! card from your DON!! deck and rest it."
+    ],
+    "failedParts": [
+      "IF: If your Leader has the {Foxy Pirates} type and you have no other [Itomimizu], add up to 1 DON!! card from your DON!! deck and rest it"
+    ]
+  }
+}

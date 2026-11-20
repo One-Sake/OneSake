@@ -1,0 +1,16 @@
+{
+  "cardId": "OP04-088",
+  "status": "manual",
+  "sourceTextHash": "849dfd4015de2c49cf9ebbd692be16d0520a9f3e37382461c8183a6f99e3d192",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may rest your 1 Leader: Give up to 1 of your opponent's Characters -4 cost during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may rest your 1 Leader: Give up to 1 of your opponent's Characters -4 cost during this turn."
+    ],
+    "failedParts": [
+      "COST: You may rest your 1 Leader"
+    ]
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "cardId": "OP01-109",
+  "status": "generated",
+  "sourceTextHash": "b73f3ee037247e69ac866062a5a8e3933dd09ba6995a3532740e63c215d2f016",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Static",
+        "text": "[DON!! x1] [Your Turn] If you have 8 or more DON!! cards on your field, this Character gains +1000 power.",
+        "requiredDon": 1,
+        "oncePerTurn": false,
+        "onlyYourTurn": true,
+        "onlyOpponentsTurn": false,
+        "conditions": [
+          {
+            "kind": "DonOnFieldAtLeast",
+            "amount": 8,
+            "text": "you have 8 or more DON!! cards on your field"
+          }
+        ],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "PowerModifier",
+            "amount": 1000,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "Permanent",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "This Character gains +1000 power"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP13-024",
+  "status": "manual",
+  "sourceTextHash": "157fc4f6ab8daa5221a80adaa288a98ea8a277b0649ed51c6c0832e31b28cc0b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] You may reveal 1 \"Music\" or {FILM} type card from your hand: Set up to 2 of your DON!! cards as active at the end of this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] You may reveal 1 \"Music\" or {FILM} type card from your hand: Set up to 2 of your DON!! cards as active at the end of this turn."
+    ],
+    "failedParts": [
+      "COST: You may reveal 1 \"Music\" or {FILM} type card from your hand"
+    ]
+  }
+}

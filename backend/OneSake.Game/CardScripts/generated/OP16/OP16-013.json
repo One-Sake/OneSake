@@ -1,0 +1,16 @@
+{
+  "cardId": "OP16-013",
+  "status": "manual",
+  "sourceTextHash": "c29c4d24cc6f5281816590d6ebde1afc96ad804532e6b3da83721c2983451875",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On K.O.] K.O. Up to 1 of your opponent's Characters with 8000 base power or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On K.O.] K.O. Up to 1 of your opponent's Characters with 8000 base power or less."
+    ],
+    "failedParts": [
+      "K.O"
+    ]
+  }
+}

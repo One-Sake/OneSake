@@ -1,0 +1,52 @@
+{
+  "cardId": "OP09-112",
+  "status": "manual",
+  "sourceTextHash": "8501bce0977249cab1d5d8f228ed13b7feb455ef8aa1ad04fac2be6eebe5530c",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Trigger] If your Leader has the {Revolutionary Army} type and you and your opponent have a total of 5 or less Life cards, play this card.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] If you have 2 or less Life cards, draw 1 card.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [
+              {
+                "kind": "LifeAtMost",
+                "amount": 2,
+                "text": "you have 2 or less Life cards"
+              }
+            ],
+            "text": "Draw 1 card"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Trigger] If your Leader has the {Revolutionary Army} type and you and your opponent have a total of 5 or less Life cards, play this card."
+    ],
+    "failedParts": [
+      "IF: If your Leader has the {Revolutionary Army} type and you and your opponent have a total of 5 or less Life cards, play this card"
+    ]
+  }
+}

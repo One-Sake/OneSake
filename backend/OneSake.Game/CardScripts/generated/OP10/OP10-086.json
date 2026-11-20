@@ -1,0 +1,72 @@
+{
+  "cardId": "OP10-086",
+  "status": "manual",
+  "sourceTextHash": "a1b1d34863a4a5570a45f9ffbca7b7c9d56891860f6ec3f11f8ad39dcf6330ae",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] If your Leader has the {Blackbeard Pirates} type, and this Character was played on this turn, K.O. up to 1 of your opponent's Characters with a base cost of 3 or less.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Static",
+        "text": "[Opponent's Turn] This Character gains +2000 power.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": true,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "PowerModifier",
+            "amount": 2000,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "Permanent",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "This Character gains +2000 power"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] If your Leader has the {Blackbeard Pirates} type, and this Character was played on this turn, K.O. up to 1 of your opponent's Characters with a base cost of 3 or less."
+    ],
+    "failedParts": [
+      "And this Character was played on this turn, K.O. up to 1 of your opponent's Characters with a base cost of 3 or less"
+    ]
+  }
+}

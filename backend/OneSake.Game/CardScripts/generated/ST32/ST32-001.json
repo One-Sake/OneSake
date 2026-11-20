@@ -1,0 +1,16 @@
+{
+  "cardId": "ST32-001",
+  "status": "manual",
+  "sourceTextHash": "26209d73a18563db562a02dbc51ce6e9fa68b80843e7a04ae0905cc3a25ec395",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] You may rest your attribute Leader or 1 of your DON!! cards: Draw 2 cards and trash 1 card from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] You may rest your attribute Leader or 1 of your DON!! cards: Draw 2 cards and trash 1 card from your hand."
+    ],
+    "failedParts": [
+      "COST: You may rest your attribute Leader or 1 of your DON!! cards"
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "cardId": "OP14-079",
+  "status": "manual",
+  "sourceTextHash": "917b9a5d247e5c347b2bcc464da434224f4a487a2d82618ed81cae89aa69d8a2",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: All of your opponent's Characters cannot be removed from the field by your effects. | [Activate: Main] [Once Per Turn] You may K.O. 1 of your Characters with a type including {Baroque Works}: Give up to 1 of your opponent's Characters -10 cost during this turn. Then, you may trash 2 cards from the top of your deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "All of your opponent's Characters cannot be removed from the field by your effects.",
+      "[Activate: Main] [Once Per Turn] You may K.O. 1 of your Characters with a type including {Baroque Works}: Give up to 1 of your opponent's Characters -10 cost during this turn. Then, you may trash 2 cards from the top of your deck."
+    ],
+    "failedParts": [
+      "All of your opponent's Characters cannot be removed from the field by your effects",
+      "K.O. 1 of your Characters with a type including {Baroque Works}: Give up to 1 of your opponent's Characters -10 cost during this turn"
+    ]
+  }
+}

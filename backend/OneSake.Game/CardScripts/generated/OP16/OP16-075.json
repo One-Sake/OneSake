@@ -1,0 +1,16 @@
+{
+  "cardId": "OP16-075",
+  "status": "manual",
+  "sourceTextHash": "e340b0e370c19b16b5dc248d0327fd8029013d05eb76c539fc868161e4420f39",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your Leader has the {Navy} type, add up to 1 DON!! card from your DON!! deck and set it as active, and add up to 1 additional DON!! card and rest it.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your Leader has the {Navy} type, add up to 1 DON!! card from your DON!! deck and set it as active, and add up to 1 additional DON!! card and rest it."
+    ],
+    "failedParts": [
+      "Add up to 1 DON!! card from your DON!! deck and set it as active, and add up to 1 additional DON!! card and rest it"
+    ]
+  }
+}

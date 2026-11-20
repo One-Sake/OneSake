@@ -1,0 +1,16 @@
+{
+  "cardId": "OP15-064",
+  "status": "manual",
+  "sourceTextHash": "ab36deabe3a1aecd2848db1b1d78c1ed298eabd7c8cdb2fe64a1cef923716efb",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] DON!! 2, You may rest this Character: If you have [Satori] and [Hotori], rest up to 1 of your opponent's Characters with 5000 power or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] DON!! 2, You may rest this Character: If you have [Satori] and [Hotori], rest up to 1 of your opponent's Characters with 5000 power or less."
+    ],
+    "failedParts": [
+      "IF: If you have [Satori] and [Hotori], rest up to 1 of your opponent's Characters with 5000 power or less"
+    ]
+  }
+}

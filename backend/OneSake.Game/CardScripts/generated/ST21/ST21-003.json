@@ -1,0 +1,16 @@
+{
+  "cardId": "ST21-003",
+  "status": "manual",
+  "sourceTextHash": "638dd54fbe2ba995d6b6037e0801f3275d53536a33c6946c02b63e7b80f91707",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Select up to 1 of your {Straw Hat Crew} type Characters with 6000 power or more. If the selected Character attacks during this turn, your opponent cannot activate [Blocker].",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Select up to 1 of your {Straw Hat Crew} type Characters with 6000 power or more. If the selected Character attacks during this turn, your opponent cannot activate [Blocker]."
+    ],
+    "failedParts": [
+      "IF: If the selected Character attacks during this turn, your opponent cannot activate [Blocker]"
+    ]
+  }
+}

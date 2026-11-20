@@ -1,0 +1,16 @@
+{
+  "cardId": "OP03-032",
+  "status": "manual",
+  "sourceTextHash": "e6f73f0d31919525ae595c282e135232da6135ef2ce3c5076505690c2f24824a",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: This Character cannot be K.O.'d in battle by \"Slash\" attribute cards.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "This Character cannot be K.O.'d in battle by \"Slash\" attribute cards."
+    ],
+    "failedParts": [
+      "This Character cannot be K.O.'d in battle by \"Slash\" attribute cards"
+    ]
+  }
+}

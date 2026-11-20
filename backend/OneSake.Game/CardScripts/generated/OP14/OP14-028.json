@@ -1,0 +1,16 @@
+{
+  "cardId": "OP14-028",
+  "status": "manual",
+  "sourceTextHash": "76ff83c42476b90b92cb8edb4140b4a363e263ed468c4118b315fecf5f99ff63",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] When this Character becomes rested, K.O. up to 1 of your opponent's rested Characters with a cost of 2 or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] When this Character becomes rested, K.O. up to 1 of your opponent's rested Characters with a cost of 2 or less."
+    ],
+    "failedParts": [
+      "When this Character becomes rested, K.O. up to 1 of your opponent's rested Characters with a cost of 2 or less"
+    ]
+  }
+}

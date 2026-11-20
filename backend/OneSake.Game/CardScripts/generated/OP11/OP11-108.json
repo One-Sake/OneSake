@@ -1,0 +1,16 @@
+{
+  "cardId": "OP11-108",
+  "status": "manual",
+  "sourceTextHash": "ae7172209c378b5493a6a25c4b4539ed8f9d03422fcaca277b4a9f3116e29dd4",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your Leader is [Shirahoshi], you may turn 1 card from the top of your Life cards face-down: Draw 2 cards and trash 1 card from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your Leader is [Shirahoshi], you may turn 1 card from the top of your Life cards face-down: Draw 2 cards and trash 1 card from your hand."
+    ],
+    "failedParts": [
+      "COST: If your Leader is [Shirahoshi], you may turn 1 card from the top of your Life cards face-down"
+    ]
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "cardId": "OP16-117",
+  "status": "manual",
+  "sourceTextHash": "21d30c1cf226164da5595cd4366589cd632fa7a0d595962e99b1a3c1512dcba1",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] You may trash 1 card with a [Trigger] from your hand: Negate the effects of up to 1 of your opponent's Characters with a cost of 8 or less during this turn.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Add up to 1 {Blackbeard Pirates} type card from your trash to your hand.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "TrashToHand",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "filter": {
+              "owner": "You",
+              "allowLeader": false,
+              "allowCharacter": true,
+              "allowStage": true,
+              "category": "",
+              "useBaseValues": false,
+              "typeIncludes": "Blackbeard Pirates",
+              "name": "",
+              "nameNot": "",
+              "color": "",
+              "attribute": "",
+              "keyword": "",
+              "excludeSource": false,
+              "requiresTrigger": false,
+              "nameOrType": false,
+              "maxCostFrom": ""
+            },
+            "zone": "Trash",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Add up to 1 {Blackbeard Pirates} type card from your trash to your hand"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Main] You may trash 1 card with a [Trigger] from your hand: Negate the effects of up to 1 of your opponent's Characters with a cost of 8 or less during this turn."
+    ],
+    "failedParts": [
+      "Negate the effects of up to 1 of your opponent's Characters with a cost of 8 or less during this turn"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP12-051",
+  "status": "manual",
+  "sourceTextHash": "3097f6d1df101ea6bb8c32373b8c59a70f13bc65f88d0e0ed07c02d021fc4b5b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may rest this Character and trash 1 card from your hand: Up to 1 of your opponent's Characters with a base cost of 4 or less cannot activate [Blocker] during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may rest this Character and trash 1 card from your hand: Up to 1 of your opponent's Characters with a base cost of 4 or less cannot activate [Blocker] during this turn."
+    ],
+    "failedParts": [
+      "Up to 1 of your opponent's Characters with a base cost of 4 or less cannot activate [Blocker] during this turn"
+    ]
+  }
+}

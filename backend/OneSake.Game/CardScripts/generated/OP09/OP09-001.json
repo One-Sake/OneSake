@@ -1,0 +1,16 @@
+{
+  "cardId": "OP09-001",
+  "status": "manual",
+  "sourceTextHash": "ce07aa33350ec4b043851e93337275452ec3f72ec1bd8aa3d48486f3cec54d71",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Once Per Turn] This effect can be activated when your opponent attacks. Give up to 1 of your opponent's Leader or Character cards 1000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Once Per Turn] This effect can be activated when your opponent attacks. Give up to 1 of your opponent's Leader or Character cards 1000 power during this turn."
+    ],
+    "failedParts": [
+      "This effect can be activated when your opponent attacks"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "ST09-002",
+  "status": "manual",
+  "sourceTextHash": "c9e9be779f8ac6c4a6b2de5e0428d776d0bf6f749f714a42e749019f3312de36",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Trigger] Rest up to 1 of your opponent's Characters with a cost of 2 or less and add this card to your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Trigger] Rest up to 1 of your opponent's Characters with a cost of 2 or less and add this card to your hand."
+    ],
+    "failedParts": [
+      "Rest up to 1 of your opponent's Characters with a cost of 2 or less and add this card to your hand"
+    ]
+  }
+}

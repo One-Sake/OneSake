@@ -1,0 +1,16 @@
+{
+  "cardId": "ST15-001",
+  "status": "manual",
+  "sourceTextHash": "53e1697401841e7a569cd088d63d022992a36f189b9e0d2d97b789d2e58548fb",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking] If your Leader is [Edward.Newgate], you cannot add Life cards to your hand using your own effects during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[When Attacking] If your Leader is [Edward.Newgate], you cannot add Life cards to your hand using your own effects during this turn."
+    ],
+    "failedParts": [
+      "You cannot add Life cards to your hand using your own effects during this turn"
+    ]
+  }
+}

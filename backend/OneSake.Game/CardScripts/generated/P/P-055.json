@@ -1,0 +1,16 @@
+{
+  "cardId": "P-055",
+  "status": "manual",
+  "sourceTextHash": "b2aa789366c40f94787c7d21c458735bed75b11a9c33b5324b0e9b897f4692df",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] You may trash 2 cards from your hand: Your opponent places 1 of their Characters at the bottom of the owner's deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] You may trash 2 cards from your hand: Your opponent places 1 of their Characters at the bottom of the owner's deck."
+    ],
+    "failedParts": [
+      "Your opponent places 1 of their Characters at the bottom of the owner's deck"
+    ]
+  }
+}

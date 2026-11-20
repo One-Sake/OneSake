@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-042",
+  "status": "manual",
+  "sourceTextHash": "45aaa1c40033282b805bcd339bc1222f583a7e5eb453a16332d7fd2a158d04c0",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] [Once Per Turn] When a DON!! card on your field is returned to your DON!! deck, draw 1 card.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] [Once Per Turn] When a DON!! card on your field is returned to your DON!! deck, draw 1 card."
+    ],
+    "failedParts": [
+      "When a DON!! card on your field is returned to your DON!! deck, draw 1 card"
+    ]
+  }
+}

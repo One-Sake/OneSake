@@ -1,0 +1,46 @@
+{
+  "cardId": "OP03-051",
+  "status": "manual",
+  "sourceTextHash": "6199dde8e0fe648c5c3b169b26e87e8c75affb245e77700b82ef3741f4e7d86e",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] When this Character's attack deals damage to your opponent's Life, you may trash 7 cards from the top of your deck.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnKO",
+        "text": "[On K.O.] You may trash 3 cards from the top of your deck.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "TrashTopOfDeck",
+            "amount": 3,
+            "secondAmount": 0,
+            "optional": true,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Trash 3 cards from the top of your deck"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[DON!! x1] When this Character's attack deals damage to your opponent's Life, you may trash 7 cards from the top of your deck."
+    ],
+    "failedParts": [
+      "When this Character's attack deals damage to your opponent's Life, you may trash 7 cards from the top of your deck"
+    ]
+  }
+}

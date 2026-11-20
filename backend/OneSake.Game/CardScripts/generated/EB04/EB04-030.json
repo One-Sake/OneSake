@@ -1,0 +1,18 @@
+{
+  "cardId": "EB04-030",
+  "status": "manual",
+  "sourceTextHash": "dfb6cda251f8a4fdbf54191b7be567d08319d4e5b98bc801f911fd23d845d5cf",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If this Character would be K.O.'d, you may return 1 DON!! card from your field to your DON!! deck instead. | [On Play] DON!! -2: If your Leader has the {Animal Kingdom Pirates} type, this Character gains Rush during this turn. Then, rest up to 1 of your opponent's Characters with a cost of 7 or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If this Character would be K.O.'d, you may return 1 DON!! card from your field to your DON!! deck instead.",
+      "[On Play] DON!! -2: If your Leader has the {Animal Kingdom Pirates} type, this Character gains Rush during this turn. Then, rest up to 1 of your opponent's Characters with a cost of 7 or less."
+    ],
+    "failedParts": [
+      "IF: If this Character would be K.O.'d, you may return 1 DON!! card from your field to your DON!! deck instead",
+      "This Character gains Rush during this turn"
+    ]
+  }
+}

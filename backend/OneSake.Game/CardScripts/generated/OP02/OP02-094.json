@@ -1,0 +1,16 @@
+{
+  "cardId": "OP02-094",
+  "status": "manual",
+  "sourceTextHash": "29d7ec062dbc1a482f373f2fee6ed1672b80c52813c9404010aa77ec58209ff1",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] [Once Per Turn] When this Character battles and K.O.'s your opponent's Character, set this Character as active.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] [Once Per Turn] When this Character battles and K.O.'s your opponent's Character, set this Character as active."
+    ],
+    "failedParts": [
+      "When this Character battles and K.O.'s your opponent's Character, set this Character as active"
+    ]
+  }
+}

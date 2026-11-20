@@ -1,0 +1,16 @@
+{
+  "cardId": "EB04-004",
+  "status": "manual",
+  "sourceTextHash": "472d535fce4ec104f1b8a86fdb80dca8e26014825a964f0cd1a3b3709217d76a",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking] Your Leader's base power becomes 7000 until the end of your opponent's next End Phase.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[When Attacking] Your Leader's base power becomes 7000 until the end of your opponent's next End Phase."
+    ],
+    "failedParts": [
+      "Your Leader's base power becomes 7000 until the end of your opponent's next End Phase"
+    ]
+  }
+}

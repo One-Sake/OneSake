@@ -1,0 +1,16 @@
+{
+  "cardId": "OP13-060",
+  "status": "manual",
+  "sourceTextHash": "e99ab2d3c714f9ebaa09bfd691b02f7a77b543f47cde404f4e7cd8a16ab4c6a7",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If your Character with a type including {Roger Pirates} would be K.O.'d by your opponent's effect, you may trash this Character instead.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If your Character with a type including {Roger Pirates} would be K.O.'d by your opponent's effect, you may trash this Character instead."
+    ],
+    "failedParts": [
+      "IF: If your Character with a type including {Roger Pirates} would be K.O.'d by your opponent's effect, you may trash this Character instead"
+    ]
+  }
+}

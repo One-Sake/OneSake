@@ -1,0 +1,16 @@
+{
+  "cardId": "OP01-063",
+  "status": "manual",
+  "sourceTextHash": "595500619302b27fcfb54add65196a1b3b45ac2c9bc2bd9a0b5b378bf937cf6b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] [Activate: Main] You may rest this Character: Choose 1 card from your opponent's hand; your opponent reveals that card. If the revealed card is an Event, place up to 1 card from your opponent's Life area at the bottom of the owner's deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] [Activate: Main] You may rest this Character: Choose 1 card from your opponent's hand; your opponent reveals that card. If the revealed card is an Event, place up to 1 card from your opponent's Life area at the bottom of the owner's deck."
+    ],
+    "failedParts": [
+      "Choose 1 card from your opponent's hand; your opponent reveals that card"
+    ]
+  }
+}

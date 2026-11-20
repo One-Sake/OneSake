@@ -1,0 +1,16 @@
+{
+  "cardId": "OP15-010",
+  "status": "manual",
+  "sourceTextHash": "7724aa1515228f66887c8fc92442b003282118a068f50a4965af4e273c65d1c9",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] Give up to 1 rested DON!! card to its owner's Leader or 1 of their Characters.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] Give up to 1 rested DON!! card to its owner's Leader or 1 of their Characters."
+    ],
+    "failedParts": [
+      "Give up to 1 rested DON!! card to its owner's Leader or 1 of their Characters"
+    ]
+  }
+}

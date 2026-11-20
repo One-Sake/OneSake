@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-048",
+  "status": "manual",
+  "sourceTextHash": "c1d3cb3a21e4018f84c27b8b2e0bd73b0b9368b070d08638acce236d58f034b2",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] When your opponent activates [Blocker] or an Event, if your Leader has the {East Blue} type, you may trash 4 cards from the top of your deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] When your opponent activates [Blocker] or an Event, if your Leader has the {East Blue} type, you may trash 4 cards from the top of your deck."
+    ],
+    "failedParts": [
+      "When your opponent activates [Blocker] or an Event, if your Leader has the {East Blue} type, you may trash 4 cards from the top of your deck"
+    ]
+  }
+}

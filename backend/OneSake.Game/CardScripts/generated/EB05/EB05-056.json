@@ -1,0 +1,46 @@
+{
+  "cardId": "EB05-056",
+  "status": "manual",
+  "sourceTextHash": "d8e1954452a3723538003f689a6064f62de97ca158d333fd1aa061d26150b7c4",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] You may trash 1 card with a Trigger from your hand: If your Leader is [Nico Robin], draw 2 cards.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Play this card.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "PlayThisCard",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Play this card"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[On Play] You may trash 1 card with a Trigger from your hand: If your Leader is [Nico Robin], draw 2 cards."
+    ],
+    "failedParts": [
+      "COST: You may trash 1 card with a Trigger from your hand"
+    ]
+  }
+}

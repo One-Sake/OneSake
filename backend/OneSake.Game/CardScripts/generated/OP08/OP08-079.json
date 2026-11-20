@@ -1,0 +1,16 @@
+{
+  "cardId": "OP08-079",
+  "status": "manual",
+  "sourceTextHash": "3e3075c4e0b1044ffeb4627f7181efd9b814cc91bb1ff50d69e969e593081067",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] You may trash 1 card from your hand: If this Character was played on this turn, trash up to 1 of your opponent's Characters with a cost of 7 or less. Then, your opponent trashes 1 card from their hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] You may trash 1 card from your hand: If this Character was played on this turn, trash up to 1 of your opponent's Characters with a cost of 7 or less. Then, your opponent trashes 1 card from their hand."
+    ],
+    "failedParts": [
+      "IF: If this Character was played on this turn, trash up to 1 of your opponent's Characters with a cost of 7 or less"
+    ]
+  }
+}

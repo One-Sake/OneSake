@@ -1,0 +1,18 @@
+{
+  "cardId": "OP12-102",
+  "status": "manual",
+  "sourceTextHash": "bf59147592b0e03e69c1d3fec120bc372318ff659d1843b20b9a55a9013c5d6d",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If your Character with a base cost of 6 or less would be removed from the field by your opponent's effect, you may turn 1 card from the top of your Life cards face-up instead. | [Opponent's Turn] If you have no other [Shirahoshi] with a base cost of 2, all of your {Neptunian} type Characters gain +2000 power.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If your Character with a base cost of 6 or less would be removed from the field by your opponent's effect, you may turn 1 card from the top of your Life cards face-up instead.",
+      "[Opponent's Turn] If you have no other [Shirahoshi] with a base cost of 2, all of your {Neptunian} type Characters gain +2000 power."
+    ],
+    "failedParts": [
+      "IF: If your Character with a base cost of 6 or less would be removed from the field by your opponent's effect, you may turn 1 card from the top of your Life cards face-up instead",
+      "IF: If you have no other [Shirahoshi] with a base cost of 2, all of your {Neptunian} type Characters gain +2000 power"
+    ]
+  }
+}

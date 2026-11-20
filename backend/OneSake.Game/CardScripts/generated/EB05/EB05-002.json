@@ -1,0 +1,16 @@
+{
+  "cardId": "EB05-002",
+  "status": "manual",
+  "sourceTextHash": "201e0c1bcd2496fe88ba7dfd3e2e028d2f96c01cb7f1b1f2a28f5e0a3e6dfbfa",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Look at 5 cards from the top of your deck; reveal up to 2 {Navy} type cards with a cost of 2 or more and add them to your hand, then place the rest at the bottom of your deck in any order. Then, trash 1 card from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Look at 5 cards from the top of your deck; reveal up to 2 {Navy} type cards with a cost of 2 or more and add them to your hand, then place the rest at the bottom of your deck in any order. Then, trash 1 card from your hand."
+    ],
+    "failedParts": [
+      "Look at 5 cards from the top of your deck; reveal up to 2 {Navy} type cards with a cost of 2 or more and add them to your hand, then place the rest at the bottom of your deck in any order"
+    ]
+  }
+}

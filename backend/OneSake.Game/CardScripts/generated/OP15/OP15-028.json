@@ -1,0 +1,16 @@
+{
+  "cardId": "OP15-028",
+  "status": "manual",
+  "sourceTextHash": "548a42d56cb91ca6fb3f6106b4e3089a7b9b8df2a22bee77fa2ef5033d65d61f",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your Leader has the {East Blue} type, give up to 1 DON!! card from your opponent's cost area to 1 of your opponent's Characters.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your Leader has the {East Blue} type, give up to 1 DON!! card from your opponent's cost area to 1 of your opponent's Characters."
+    ],
+    "failedParts": [
+      "Give up to 1 DON!! card from your opponent's cost area to 1 of your opponent's Characters"
+    ]
+  }
+}

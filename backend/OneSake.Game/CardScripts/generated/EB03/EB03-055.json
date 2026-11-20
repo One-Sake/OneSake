@@ -1,0 +1,75 @@
+{
+  "cardId": "EB03-055",
+  "status": "manual",
+  "sourceTextHash": "1e5b6ee25be9321ae87d0c0c76f173b4eba1e430ff3d990b5561cc3c2d49465c",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Opponent's Turn] [On K.O.] You may deal 1 damage to your opponent.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] You may trash 1 card from the top of your Life cards: If your Leader has the {Straw Hat Crew} type, add up to 2 cards from the top of your deck to the top of your Life cards.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [
+          {
+            "kind": "TrashLife",
+            "amount": 1
+          }
+        ],
+        "steps": [
+          {
+            "kind": "DeckTopToLife",
+            "amount": 2,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [
+              {
+                "kind": "LeaderHasType",
+                "amount": 0,
+                "text": "your Leader has the {Straw Hat Crew} type",
+                "filter": {
+                  "owner": "You",
+                  "allowLeader": false,
+                  "allowCharacter": true,
+                  "allowStage": false,
+                  "category": "",
+                  "useBaseValues": false,
+                  "typeIncludes": "Straw Hat Crew",
+                  "name": "",
+                  "nameNot": "",
+                  "color": "",
+                  "attribute": "",
+                  "keyword": "",
+                  "excludeSource": false,
+                  "requiresTrigger": false,
+                  "nameOrType": false,
+                  "maxCostFrom": ""
+                }
+              }
+            ],
+            "text": "Add up to 2 cards from the top of your deck to the top of your Life cards"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Opponent's Turn] [On K.O.] You may deal 1 damage to your opponent."
+    ],
+    "failedParts": [
+      "Deal 1 damage to your opponent"
+    ]
+  }
+}

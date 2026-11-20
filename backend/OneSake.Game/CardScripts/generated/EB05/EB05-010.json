@@ -1,0 +1,18 @@
+{
+  "cardId": "EB05-010",
+  "status": "manual",
+  "sourceTextHash": "47a06270c64cb204a482bd7e4f63855d9136e1b4e7be934a03f673c30e65f2f7",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Once Per Turn] When one of your Characters with the \"Wisdom\" attribute and without [Blocker] is K.O.'d, add up to 1 card from the top of your deck to the top of your Life cards. | [Activate: Main] [Once Per Turn] Set up to 1 of your Characters with the \"Wisdom\" attribute and 6000 power or less as active.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Once Per Turn] When one of your Characters with the \"Wisdom\" attribute and without [Blocker] is K.O.'d, add up to 1 card from the top of your deck to the top of your Life cards.",
+      "[Activate: Main] [Once Per Turn] Set up to 1 of your Characters with the \"Wisdom\" attribute and 6000 power or less as active."
+    ],
+    "failedParts": [
+      "When one of your Characters with the \"Wisdom\" attribute and without [Blocker] is K.O.'d, add up to 1 card from the top of your deck to the top of your Life cards",
+      "Set up to 1 of your Characters with the \"Wisdom\" attribute and 6000 power or less as active"
+    ]
+  }
+}

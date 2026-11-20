@@ -1,0 +1,72 @@
+{
+  "cardId": "OP12-117",
+  "status": "manual",
+  "sourceTextHash": "3cdc991e1cb8adc44a9ca19d2b48415f6704ed42a120ceb48d425e97c1f63808",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] You may rest 5 of your DON!! cards: If your Leader has the {Supernovas} type, add up to 1 Character with a cost of 9 or less to the top or bottom of the owner's Life cards face-down.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "EventCounter",
+        "text": "[Counter] Your Leader gains +3000 power during this battle.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "PowerModifier",
+            "amount": 3000,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": false,
+              "yourLeader": true,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisBattle",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Your Leader gains +3000 power during this battle"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Main] You may rest 5 of your DON!! cards: If your Leader has the {Supernovas} type, add up to 1 Character with a cost of 9 or less to the top or bottom of the owner's Life cards face-down."
+    ],
+    "failedParts": [
+      "Add up to 1 Character with a cost of 9 or less to the top or bottom of the owner's Life cards face-down"
+    ]
+  }
+}

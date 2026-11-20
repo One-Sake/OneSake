@@ -1,0 +1,16 @@
+{
+  "cardId": "OP05-104",
+  "status": "manual",
+  "sourceTextHash": "a1eecf213b2c4e4bd21b3f141ec5abcac80cd7bb073d4c2c3b297b45c56d7f26",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] You may place 1 of your Stages at the bottom of your deck: Draw 1 card and trash 1 card from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] You may place 1 of your Stages at the bottom of your deck: Draw 1 card and trash 1 card from your hand."
+    ],
+    "failedParts": [
+      "COST: You may place 1 of your Stages at the bottom of your deck"
+    ]
+  }
+}

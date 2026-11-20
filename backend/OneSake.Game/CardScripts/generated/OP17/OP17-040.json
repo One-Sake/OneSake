@@ -1,0 +1,46 @@
+{
+  "cardId": "OP17-040",
+  "status": "manual",
+  "sourceTextHash": "3ad077f64f8cebed420cca7a6363924d78dea96681049550392b13c11d6358bc",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Once Per Turn] When your Leader with a type including {Rocks Pirates} attacks or is attacked, you may trash 1 card from your hand to activate this effect. Your Leader gains +3000 power during this battle.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] Draw 1 card.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Draw 1 card"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Once Per Turn] When your Leader with a type including {Rocks Pirates} attacks or is attacked, you may trash 1 card from your hand to activate this effect. Your Leader gains +3000 power during this battle."
+    ],
+    "failedParts": [
+      "When your Leader with a type including {Rocks Pirates} attacks or is attacked, you may trash 1 card from your hand to activate this effect"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP14-022",
+  "status": "manual",
+  "sourceTextHash": "dc0f6d98f506d9dd01470ae35acfe23bbcc0c272458eb2dd795477af8b0a9958",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [End of Your Turn] If your Leader has the {FILM} or {Straw Hat Crew} type, set up to 2 of your DON!! cards as active.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[End of Your Turn] If your Leader has the {FILM} or {Straw Hat Crew} type, set up to 2 of your DON!! cards as active."
+    ],
+    "failedParts": [
+      "IF: If your Leader has the {FILM} or {Straw Hat Crew} type, set up to 2 of your DON!! cards as active"
+    ]
+  }
+}

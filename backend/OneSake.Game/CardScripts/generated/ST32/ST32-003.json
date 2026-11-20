@@ -1,0 +1,18 @@
+{
+  "cardId": "ST32-003",
+  "status": "manual",
+  "sourceTextHash": "d7377e1d36bb440079075054fda23b738be826bead1742e7a900ecbd0340138d",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] When this Character becomes rested, draw 1 card and trash 1 card from your hand. | [On Play] If your Leader has the attribute, play up to 1 Character card with a cost of 5 or less that is either [Perona] or has the attribute from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] When this Character becomes rested, draw 1 card and trash 1 card from your hand.",
+      "[On Play] If your Leader has the attribute, play up to 1 Character card with a cost of 5 or less that is either [Perona] or has the attribute from your hand."
+    ],
+    "failedParts": [
+      "When this Character becomes rested, draw 1 card and trash 1 card from your hand",
+      "IF: If your Leader has the attribute, play up to 1 Character card with a cost of 5 or less that is either [Perona] or has the attribute from your hand"
+    ]
+  }
+}

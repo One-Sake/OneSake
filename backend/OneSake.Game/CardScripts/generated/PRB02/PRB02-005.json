@@ -1,0 +1,16 @@
+{
+  "cardId": "PRB02-005",
+  "status": "manual",
+  "sourceTextHash": "d1b07f2591005a8a1d1bc557b638e5766971fe14c338dd605af90bd41e29c25d",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] [On Play] If your Leader is multicolored and your opponent has 7 or less DON!! cards on their field, your opponent rests 1 of their active DON!! cards at the start of their next Main Phase.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] [On Play] If your Leader is multicolored and your opponent has 7 or less DON!! cards on their field, your opponent rests 1 of their active DON!! cards at the start of their next Main Phase."
+    ],
+    "failedParts": [
+      "IF: If your Leader is multicolored and your opponent has 7 or less DON!! cards on their field, your opponent rests 1 of their active DON!! cards at the start of their next Main Phase"
+    ]
+  }
+}

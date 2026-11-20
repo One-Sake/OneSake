@@ -1,0 +1,46 @@
+{
+  "cardId": "ST05-017",
+  "status": "manual",
+  "sourceTextHash": "8581c7e915ccf160ce3be0e36aa0a4a629dff42ea4bf11528dce584d1f4712f5",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Counter] Up to 1 of your {FILM} type Leader or Character cards gains +4000 power during this battle. If that card is a Character, that Character cannot be K.O.'d during this turn.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Add up to 1 DON!! card from your DON!! deck and set it as active.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "AddDonFromDeck",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Add up to 1 DON!! card from your DON!! deck and set it as active"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Counter] Up to 1 of your {FILM} type Leader or Character cards gains +4000 power during this battle. If that card is a Character, that Character cannot be K.O.'d during this turn."
+    ],
+    "failedParts": [
+      "IF: If that card is a Character, that Character cannot be K.O.'d during this turn"
+    ]
+  }
+}

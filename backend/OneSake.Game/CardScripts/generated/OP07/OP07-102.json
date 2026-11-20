@@ -1,0 +1,16 @@
+{
+  "cardId": "OP07-102",
+  "status": "manual",
+  "sourceTextHash": "bd7ed431c2c3d52113f72ee2884b73159675ebed37342d66ef40fd65914c49b4",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Trigger] Return up to 1 of your opponent's Characters with a cost of 4 or less to the owner's hand and add this card to your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Trigger] Return up to 1 of your opponent's Characters with a cost of 4 or less to the owner's hand and add this card to your hand."
+    ],
+    "failedParts": [
+      "Return up to 1 of your opponent's Characters with a cost of 4 or less to the owner's hand and add this card to your hand"
+    ]
+  }
+}

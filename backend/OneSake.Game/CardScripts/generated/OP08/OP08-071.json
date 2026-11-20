@@ -1,0 +1,16 @@
+{
+  "cardId": "OP08-071",
+  "status": "manual",
+  "sourceTextHash": "bc54ee4a7d256447716146b9068717d410995adf6472c284e70bb65872f20ef3",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Opponent's Turn] [On K.O.] DON!! 1: Play up to 1 [Baron Tamago] with a cost of 4 or less from your deck. Then, shuffle your deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Opponent's Turn] [On K.O.] DON!! 1: Play up to 1 [Baron Tamago] with a cost of 4 or less from your deck. Then, shuffle your deck."
+    ],
+    "failedParts": [
+      "Play up to 1 [Baron Tamago] with a cost of 4 or less from your deck"
+    ]
+  }
+}

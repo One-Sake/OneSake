@@ -1,0 +1,18 @@
+{
+  "cardId": "OP14-020",
+  "status": "manual",
+  "sourceTextHash": "64baf61573d219018e1c360a047eab753e60e2fd0952f31350ba6acff35ebdda",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If your opponent's Leader has the \"Slash\" attribute, this leader gains +1000 power. | [Activate: Main] [Once Per Turn] You may rest 1 of your cards: If there is a Character with a cost of 5 or more, set up to 3 of your DON!! cards as active. Then, you cannot play character cards during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If your opponent's Leader has the \"Slash\" attribute, this leader gains +1000 power.",
+      "[Activate: Main] [Once Per Turn] You may rest 1 of your cards: If there is a Character with a cost of 5 or more, set up to 3 of your DON!! cards as active. Then, you cannot play character cards during this turn."
+    ],
+    "failedParts": [
+      "IF: If your opponent's Leader has the \"Slash\" attribute, this leader gains +1000 power",
+      "You cannot play character cards during this turn"
+    ]
+  }
+}

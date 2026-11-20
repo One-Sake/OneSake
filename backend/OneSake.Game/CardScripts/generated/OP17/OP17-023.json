@@ -1,0 +1,16 @@
+{
+  "cardId": "OP17-023",
+  "status": "manual",
+  "sourceTextHash": "09b452f5173ac9845aa66aba8dde22e72b95f1393185ea6e58f8697de96dfc74",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If one of your {East Blue} or {Straw Hat Crew} type Characters would be K.O.'d, you may rest this Character instead.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If one of your {East Blue} or {Straw Hat Crew} type Characters would be K.O.'d, you may rest this Character instead."
+    ],
+    "failedParts": [
+      "IF: If one of your {East Blue} or {Straw Hat Crew} type Characters would be K.O.'d, you may rest this Character instead"
+    ]
+  }
+}

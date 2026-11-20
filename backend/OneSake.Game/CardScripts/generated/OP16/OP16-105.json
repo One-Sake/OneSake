@@ -1,0 +1,16 @@
+{
+  "cardId": "OP16-105",
+  "status": "manual",
+  "sourceTextHash": "717f9b47622fd56488f50a05ecd40bebf7f91e7ba0683c6fa07b4de8a51ab048",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Trigger] If you have 1 or less Life cards, play up to 1 [Absalom], up to 1 [Dr. Hogback], and up to 1 [Perona], with a cost of 4 or less from your trash.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Trigger] If you have 1 or less Life cards, play up to 1 [Absalom], up to 1 [Dr. Hogback], and up to 1 [Perona], with a cost of 4 or less from your trash."
+    ],
+    "failedParts": [
+      "Play up to 1 [Absalom], up to 1 [Dr. Hogback], and up to 1 [Perona], with a cost of 4 or less from your trash"
+    ]
+  }
+}

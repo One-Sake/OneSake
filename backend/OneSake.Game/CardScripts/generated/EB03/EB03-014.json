@@ -1,0 +1,16 @@
+{
+  "cardId": "EB03-014",
+  "status": "manual",
+  "sourceTextHash": "33930845996ad49b24ff8b021dd02bc7305d63a8e1e379466a759ecca6a577af",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may rest this Character: Give up to 2 rested DON!! cards to your attribute Leader.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may rest this Character: Give up to 2 rested DON!! cards to your attribute Leader."
+    ],
+    "failedParts": [
+      "Give up to 2 rested DON!! cards to your attribute Leader"
+    ]
+  }
+}

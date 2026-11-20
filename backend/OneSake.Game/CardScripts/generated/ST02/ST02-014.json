@@ -1,0 +1,16 @@
+{
+  "cardId": "ST02-014",
+  "status": "manual",
+  "sourceTextHash": "3e267e4bd15d90c9fbec2f7d0ae069112b0f6ec02ce0da966ff764aca75ad6bd",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] [Your Turn] If this Character is rested, your \"Supernovas\" or {Navy} type Leaders and Characters gain +1000 power.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] [Your Turn] If this Character is rested, your \"Supernovas\" or {Navy} type Leaders and Characters gain +1000 power."
+    ],
+    "failedParts": [
+      "Your \"Supernovas\" or {Navy} type Leaders and Characters gain +1000 power"
+    ]
+  }
+}

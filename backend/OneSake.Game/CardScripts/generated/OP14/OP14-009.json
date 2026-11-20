@@ -1,0 +1,72 @@
+{
+  "cardId": "OP14-009",
+  "status": "manual",
+  "sourceTextHash": "5dca67c7f95686c7aa22468f0d00e24a2ff811c2d1b8b59ec75dfdb912d21a00",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Rush] [On Your Opponent's Attack] [Once Per Turn] You may trash 2 cards from your hand: Select your Leader and 1 Character. Swap the base power of the selected cards with each other during this battle.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Static",
+        "text": "[Rush]",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "GainFlag",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "Permanent",
+            "flag": "Rush",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "[Rush]"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Rush] [On Your Opponent's Attack] [Once Per Turn] You may trash 2 cards from your hand: Select your Leader and 1 Character. Swap the base power of the selected cards with each other during this battle."
+    ],
+    "failedParts": [
+      "Select your Leader and 1 Character"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP11-048",
+  "status": "manual",
+  "sourceTextHash": "69c29502d30935e80a4bd95a02b597dc283b21c69c29694f7ba828aeaf1925eb",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Look at 4 cards from the top of your deck; reveal up to 1 \"Firetank Pirates\" or {Straw Hat Crew} type card with a cost of 2 or more and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Look at 4 cards from the top of your deck; reveal up to 1 \"Firetank Pirates\" or {Straw Hat Crew} type card with a cost of 2 or more and add it to your hand. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "Look at 4 cards from the top of your deck; reveal up to 1 \"Firetank Pirates\" or {Straw Hat Crew} type card with a cost of 2 or more and add it to your hand"
+    ]
+  }
+}

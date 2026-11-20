@@ -1,0 +1,46 @@
+{
+  "cardId": "OP12-116",
+  "status": "manual",
+  "sourceTextHash": "d0af0627c07c0227ad0b9e630c1b01c53b1671f32c8a5258641e8b2e771aa67b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] Look at 5 cards from the top of your deck; reveal a total of up to 2 {Shandian Warrior} type Character cards or [Mont Blanc Noland] and add them to your hand. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Draw 1 card.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Draw 1 card"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Main] Look at 5 cards from the top of your deck; reveal a total of up to 2 {Shandian Warrior} type Character cards or [Mont Blanc Noland] and add them to your hand. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "Look at 5 cards from the top of your deck; reveal a total of up to 2 {Shandian Warrior} type Character cards or [Mont Blanc Noland] and add them to your hand"
+    ]
+  }
+}

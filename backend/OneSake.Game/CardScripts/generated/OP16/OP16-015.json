@@ -1,0 +1,18 @@
+{
+  "cardId": "OP16-015",
+  "status": "manual",
+  "sourceTextHash": "9f1365fbc5832bb94cff9e04fd837cf158c54f106f0f93929ab9316029cbde07",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If your Leader's card name includes \"Ace\" and you have 6 or more DON!! cards on your field, give this card in your hand -2 cost. | [On Your Opponent's Attack] You may trash 1 Character card with 8000 power from your hand: Your Leader and this Character's base power becomes 7000 during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If your Leader's card name includes \"Ace\" and you have 6 or more DON!! cards on your field, give this card in your hand -2 cost.",
+      "[On Your Opponent's Attack] You may trash 1 Character card with 8000 power from your hand: Your Leader and this Character's base power becomes 7000 during this turn."
+    ],
+    "failedParts": [
+      "IF: If your Leader's card name includes \"Ace\" and you have 6 or more DON!! cards on your field, give this card in your hand -2 cost",
+      "Your Leader and this Character's base power becomes 7000 during this turn"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP01-060",
+  "status": "manual",
+  "sourceTextHash": "bdd996f34b1287cdd2e316795150c37aea7175f211916465025e9fb414ccf7cd",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x2] [When Attacking] RESTDON1: Reveal 1 card from the top of your deck. If that card is a {The Seven Warlords of the Sea} type Character card with a cost of 4 or less, you may play that card rested.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x2] [When Attacking] RESTDON1: Reveal 1 card from the top of your deck. If that card is a {The Seven Warlords of the Sea} type Character card with a cost of 4 or less, you may play that card rested."
+    ],
+    "failedParts": [
+      "Reveal 1 card from the top of your deck"
+    ]
+  }
+}

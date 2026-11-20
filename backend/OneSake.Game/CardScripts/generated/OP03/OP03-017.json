@@ -1,0 +1,46 @@
+{
+  "cardId": "OP03-017",
+  "status": "manual",
+  "sourceTextHash": "b0f89d4b29f509d9c3e4d04555a6b9140665acd68c05bb4fd18eea45b02a6323",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] / [Counter] If your Leader's type includes \"Whitebeard Pirates\", give up to 1 of your opponent's Characters -4000 power during this turn.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Activate this card's [Main] effect.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "ActivateOwnAbility",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "Main",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Activate this card's [Main] effect"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Main] / [Counter] If your Leader's type includes \"Whitebeard Pirates\", give up to 1 of your opponent's Characters -4000 power during this turn."
+    ],
+    "failedParts": [
+      "/ [Counter] If your Leader's type includes \"Whitebeard Pirates\", give up to 1 of your opponent's Characters -4000 power during this turn"
+    ]
+  }
+}

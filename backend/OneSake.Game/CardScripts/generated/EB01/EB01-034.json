@@ -1,0 +1,72 @@
+{
+  "cardId": "EB01-034",
+  "status": "manual",
+  "sourceTextHash": "86a25147a354d3c9ff035107d752266393d372f2b070daf3cdc86e1de9925d71",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Blocker] [On Your Opponent's Attack] [Once Per Turn] DON!! -1: If your Leader's type includes \"Baroque Works\", add up to 1 DON!! card from your DON!! deck and set it as active.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Static",
+        "text": "[Blocker]",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "GainFlag",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "Permanent",
+            "flag": "Blocker",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "[Blocker]"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Blocker] [On Your Opponent's Attack] [Once Per Turn] DON!! -1: If your Leader's type includes \"Baroque Works\", add up to 1 DON!! card from your DON!! deck and set it as active."
+    ],
+    "failedParts": [
+      "IF: If your Leader's type includes \"Baroque Works\", add up to 1 DON!! card from your DON!! deck and set it as active"
+    ]
+  }
+}

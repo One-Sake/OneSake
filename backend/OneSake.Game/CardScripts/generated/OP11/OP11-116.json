@@ -1,0 +1,18 @@
+{
+  "cardId": "OP11-116",
+  "status": "manual",
+  "sourceTextHash": "1ac6756c27e49a6a83612349b848ecc3fe2da56c9d0fa4dd18290b46d8ecbe80",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] Add up to 1 Character with a cost of 6 or less to the top or bottom of the owner's Life cards face-up. | [Trigger] Add up to 1 of your opponent's Characters with a cost of 4 or less to the top or bottom of the owner's Life cards face-up.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Main] Add up to 1 Character with a cost of 6 or less to the top or bottom of the owner's Life cards face-up.",
+      "[Trigger] Add up to 1 of your opponent's Characters with a cost of 4 or less to the top or bottom of the owner's Life cards face-up."
+    ],
+    "failedParts": [
+      "Add up to 1 Character with a cost of 6 or less to the top or bottom of the owner's Life cards face-up",
+      "Add up to 1 of your opponent's Characters with a cost of 4 or less to the top or bottom of the owner's Life cards face-up"
+    ]
+  }
+}

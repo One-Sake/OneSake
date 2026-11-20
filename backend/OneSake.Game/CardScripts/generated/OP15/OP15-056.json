@@ -1,0 +1,46 @@
+{
+  "cardId": "OP15-056",
+  "status": "manual",
+  "sourceTextHash": "77cc99604d20cbe159e87dfbf515c8f8696865af413f68b07fe89c4e55620da4",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] Draw 2 cards. Then, your [Lucy] Leader gains [Double Attack] and +3000 power during this turn.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Draw 2 cards.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 2,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Draw 2 cards"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Main] Draw 2 cards. Then, your [Lucy] Leader gains [Double Attack] and +3000 power during this turn."
+    ],
+    "failedParts": [
+      "Your [Lucy] Leader gains [Double Attack] and +3000 power during this turn"
+    ]
+  }
+}

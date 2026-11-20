@@ -1,0 +1,72 @@
+{
+  "cardId": "OP17-115",
+  "status": "manual",
+  "sourceTextHash": "aaca5789a15e743b66aac1d9f2f52e11ac36a0af784c6e0c0569551c6a4914bb",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] Your [Charlotte Linlin] Leader gains [Unblockable] during this turn.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "EventCounter",
+        "text": "[Counter] Up to 1 of your [Charlotte Linlin] gains +4000 power during this battle.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "PowerModifier",
+            "amount": 4000,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": true,
+              "all": false,
+              "self": false,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "Charlotte Linlin",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisBattle",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Up to 1 of your [Charlotte Linlin] gains +4000 power during this battle"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Main] Your [Charlotte Linlin] Leader gains [Unblockable] during this turn."
+    ],
+    "failedParts": [
+      "Your [Charlotte Linlin] Leader gains [Unblockable] during this turn"
+    ]
+  }
+}

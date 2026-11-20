@@ -1,0 +1,16 @@
+{
+  "cardId": "OP10-087",
+  "status": "manual",
+  "sourceTextHash": "c3aab11c0afec156e1da5e8001b07c3a656ebeb0f87ce9789bdca29cc913da0b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may rest this Character and 1 of your {Dressrosa} type Leader or Stage cards: If your opponent has 5 or more cards in their hand, your opponent trashes 1 card from their hand. Then, trash 2 cards from the top of your deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may rest this Character and 1 of your {Dressrosa} type Leader or Stage cards: If your opponent has 5 or more cards in their hand, your opponent trashes 1 card from their hand. Then, trash 2 cards from the top of your deck."
+    ],
+    "failedParts": [
+      "COST: You may rest this Character and 1 of your {Dressrosa} type Leader or Stage cards"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP10-074",
+  "status": "manual",
+  "sourceTextHash": "2fc33ad5316caa2bcc46ffc73534b792a7ff88a22ef306f8180bc5b9773720ed",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Once Per Turn] If this Character would be K.O.'d by your opponent's effect, you may rest 2 of your active DON!! cards instead.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Once Per Turn] If this Character would be K.O.'d by your opponent's effect, you may rest 2 of your active DON!! cards instead."
+    ],
+    "failedParts": [
+      "IF: If this Character would be K.O.'d by your opponent's effect, you may rest 2 of your active DON!! cards instead"
+    ]
+  }
+}

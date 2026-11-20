@@ -1,0 +1,16 @@
+{
+  "cardId": "OP01-031",
+  "status": "manual",
+  "sourceTextHash": "c8cac44147edb9714fed230d97c10a5a8db30cd175ac201208f35f88f4ea1a3d",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] You can trash 1 {Land of Wano} type card from your hand: Set up to 2 of your DON!! cards as active.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] You can trash 1 {Land of Wano} type card from your hand: Set up to 2 of your DON!! cards as active."
+    ],
+    "failedParts": [
+      "COST: You can trash 1 {Land of Wano} type card from your hand"
+    ]
+  }
+}

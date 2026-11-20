@@ -1,0 +1,16 @@
+{
+  "cardId": "OP13-105",
+  "status": "manual",
+  "sourceTextHash": "ef0fad5bc5be724f608d7d6a24c4094690efa6b63a426229035b2f3d31407d98",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Look at all of your Life cards and place them back in your Life area in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Look at all of your Life cards and place them back in your Life area in any order."
+    ],
+    "failedParts": [
+      "Look at all of your Life cards and place them back in your Life area in any order"
+    ]
+  }
+}

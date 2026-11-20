@@ -1,0 +1,16 @@
+{
+  "cardId": "OP13-067",
+  "status": "manual",
+  "sourceTextHash": "9b1986a1ed444a40ff5e1dc1a16dcee9d5babaa984a6bfeadd8a3481d73a54be",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your Leader's type includes \"Roger Pirates\", draw 2 cards and trash 1 card from your hand. Then, add up to 1 DON!! card from your DON!! deck and rest it.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your Leader's type includes \"Roger Pirates\", draw 2 cards and trash 1 card from your hand. Then, add up to 1 DON!! card from your DON!! deck and rest it."
+    ],
+    "failedParts": [
+      "IF: If your Leader's type includes \"Roger Pirates\", draw 2 cards and trash 1 card from your hand"
+    ]
+  }
+}

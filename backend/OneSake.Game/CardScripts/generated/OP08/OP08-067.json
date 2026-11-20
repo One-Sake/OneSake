@@ -1,0 +1,16 @@
+{
+  "cardId": "OP08-067",
+  "status": "manual",
+  "sourceTextHash": "adc30c64bc699b5f23bdab803c76c3daee7253f2196a3ef8ce5d0e0f6cb9a956",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] [Once Per Turn] When a DON!! card on your field is returned to your DON!! deck, add up to 1 DON!! card from your DON!! deck and rest it.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] [Once Per Turn] When a DON!! card on your field is returned to your DON!! deck, add up to 1 DON!! card from your DON!! deck and rest it."
+    ],
+    "failedParts": [
+      "When a DON!! card on your field is returned to your DON!! deck, add up to 1 DON!! card from your DON!! deck and rest it"
+    ]
+  }
+}

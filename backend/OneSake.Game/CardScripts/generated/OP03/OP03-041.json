@@ -1,0 +1,72 @@
+{
+  "cardId": "OP03-041",
+  "status": "manual",
+  "sourceTextHash": "e8c75a678e530e1937dd1c4e5f01819950c8545706ae779aeb3bd6c893d2fd26",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Rush] [DON!! x1] When this Character's attack deals damage to your opponent's Life, you may trash 7 cards from the top of your deck.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Static",
+        "text": "[Rush]",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "GainFlag",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "Permanent",
+            "flag": "Rush",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "[Rush]"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Rush] [DON!! x1] When this Character's attack deals damage to your opponent's Life, you may trash 7 cards from the top of your deck."
+    ],
+    "failedParts": [
+      "When this Character's attack deals damage to your opponent's Life, you may trash 7 cards from the top of your deck"
+    ]
+  }
+}

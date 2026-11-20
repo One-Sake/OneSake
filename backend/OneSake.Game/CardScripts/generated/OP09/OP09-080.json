@@ -1,0 +1,16 @@
+{
+  "cardId": "OP09-080",
+  "status": "manual",
+  "sourceTextHash": "feb1504256801b9cc9df6dc96b389749996413da8e738fbc62c588e10c92ab77",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Opponent's Turn] You may rest this Stage: When your {Straw Hat Crew} type Character is removed from the field by your opponent's effect, add up to 1 DON!! card from your DON!! deck and rest it.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Opponent's Turn] You may rest this Stage: When your {Straw Hat Crew} type Character is removed from the field by your opponent's effect, add up to 1 DON!! card from your DON!! deck and rest it."
+    ],
+    "failedParts": [
+      "When your {Straw Hat Crew} type Character is removed from the field by your opponent's effect, add up to 1 DON!! card from your DON!! deck and rest it"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "ST26-005",
+  "status": "manual",
+  "sourceTextHash": "7042f53e008639ef79b6e0d5b506680e5dab642819c13d75590e3a66b9378166",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] / [When Attacking] DON!! -2: If your Leader is multicolored and your opponent has 5 or more DON!! cards on their field, your {Straw Hat Crew} type Leader's base power becomes 7000 until the end of your opponent's next End Phase.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] / [When Attacking] DON!! -2: If your Leader is multicolored and your opponent has 5 or more DON!! cards on their field, your {Straw Hat Crew} type Leader's base power becomes 7000 until the end of your opponent's next End Phase."
+    ],
+    "failedParts": [
+      "COST: / [When Attacking] DON!! -2"
+    ]
+  }
+}

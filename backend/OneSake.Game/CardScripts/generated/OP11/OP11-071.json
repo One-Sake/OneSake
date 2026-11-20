@@ -1,0 +1,16 @@
+{
+  "cardId": "OP11-071",
+  "status": "manual",
+  "sourceTextHash": "6b99d41764f1e670d557dc6aa268a07bc6ee4e6a4d11fd733cb9db8023e15b20",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] You may trash 1 card from your hand: Choose a cost and reveal 1 card from the top of your opponent's deck. If the revealed card has the chosen cost, draw 1 card and add up to 1 DON!! card from your DON!! deck and set it as active.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] You may trash 1 card from your hand: Choose a cost and reveal 1 card from the top of your opponent's deck. If the revealed card has the chosen cost, draw 1 card and add up to 1 DON!! card from your DON!! deck and set it as active."
+    ],
+    "failedParts": [
+      "Choose a cost and reveal 1 card from the top of your opponent's deck"
+    ]
+  }
+}

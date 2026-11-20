@@ -1,0 +1,18 @@
+{
+  "cardId": "EB04-044",
+  "status": "manual",
+  "sourceTextHash": "3608c298e612c633eb6e3c7e353b9db4e0f9f0a6d6b44d3bb5c7b64a0570598b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Once Per Turn] If your Leader has the {Navy} type and this Character would be removed from the field, you can discard 1 card from your hand instead. | [Your Turn] [Once Per Turn] When one of your opponent's Characters is KO'd, draw 1 card.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Once Per Turn] If your Leader has the {Navy} type and this Character would be removed from the field, you can discard 1 card from your hand instead.",
+      "[Your Turn] [Once Per Turn] When one of your opponent's Characters is KO'd, draw 1 card."
+    ],
+    "failedParts": [
+      "IF: If your Leader has the {Navy} type and this Character would be removed from the field, you can discard 1 card from your hand instead",
+      "When one of your opponent's Characters is KO'd, draw 1 card"
+    ]
+  }
+}

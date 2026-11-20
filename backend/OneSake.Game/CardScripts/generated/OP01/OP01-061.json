@@ -1,0 +1,16 @@
+{
+  "cardId": "OP01-061",
+  "status": "manual",
+  "sourceTextHash": "164b389d59b44c5eaf253e086f7f88d1b9cf46fbe9f53730262341d30a86e69b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] [Your Turn] [Once Per Turn] When your opponent's Character is K.O.'d, add up to 1 DON!! card from your DON!! deck and set it as active.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] [Your Turn] [Once Per Turn] When your opponent's Character is K.O.'d, add up to 1 DON!! card from your DON!! deck and set it as active."
+    ],
+    "failedParts": [
+      "When your opponent's Character is K.O.'d, add up to 1 DON!! card from your DON!! deck and set it as active"
+    ]
+  }
+}

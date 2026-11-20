@@ -1,0 +1,47 @@
+{
+  "cardId": "OP01-095",
+  "status": "generated",
+  "sourceTextHash": "2e6a2b8fd19873431efd822689943a6766b0a30487c5b047d4fedd7cdc2b5acb",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] Draw 1 card if you have 8 or more DON!! cards on your field.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [
+              {
+                "kind": "DonOnFieldAtLeast",
+                "amount": 8,
+                "text": "you have 8 or more DON!! cards on your field"
+              }
+            ],
+            "text": "Draw 1 card"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

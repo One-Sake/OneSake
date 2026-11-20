@@ -1,0 +1,16 @@
+{
+  "cardId": "OP04-042",
+  "status": "manual",
+  "sourceTextHash": "9ae59afc20d318a38b984a46920ddbf3743fd27561b6bdff5cbe6bf36bcb3cf6",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Up to 1 of your \"Slash\" attribute Characters gains +3000 power during this turn. Then, trash 1 card from the top of your deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Up to 1 of your \"Slash\" attribute Characters gains +3000 power during this turn. Then, trash 1 card from the top of your deck."
+    ],
+    "failedParts": [
+      "Up to 1 of your \"Slash\" attribute Characters gains +3000 power during this turn"
+    ]
+  }
+}

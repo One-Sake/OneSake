@@ -1,0 +1,18 @@
+{
+  "cardId": "OP09-114",
+  "status": "manual",
+  "sourceTextHash": "d0e78a168d2fac0f35a640d9c6e2a673ed9ae2ad0087752c5ca779657ee5888d",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If you and your opponent have a total of 5 or less Life cards, K.O. up to 1 of your opponent's Characters with 2000 power or less. | [Trigger] If you and your opponent have a total of 5 or less Life cards, play this card.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If you and your opponent have a total of 5 or less Life cards, K.O. up to 1 of your opponent's Characters with 2000 power or less.",
+      "[Trigger] If you and your opponent have a total of 5 or less Life cards, play this card."
+    ],
+    "failedParts": [
+      "IF: If you and your opponent have a total of 5 or less Life cards, K.O. up to 1 of your opponent's Characters with 2000 power or less",
+      "IF: If you and your opponent have a total of 5 or less Life cards, play this card"
+    ]
+  }
+}

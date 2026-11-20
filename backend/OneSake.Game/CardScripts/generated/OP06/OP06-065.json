@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-065",
+  "status": "manual",
+  "sourceTextHash": "27c834f30d69742cefb4f6892c3bc23b849f403658c116d7659ea933619cc272",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If the number of DON!! cards on your field is equal to or less than the number on your opponent's field, choose one: . K.O. up to 1 of your opponent's Characters with a cost of 2 or less. . Return up to 1 of your opponent's Characters with a cost of 4 or less to the owner's hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If the number of DON!! cards on your field is equal to or less than the number on your opponent's field, choose one: . K.O. up to 1 of your opponent's Characters with a cost of 2 or less. . Return up to 1 of your opponent's Characters with a cost of 4 or less to the owner's hand."
+    ],
+    "failedParts": [
+      "COST: If the number of DON!! cards on your field is equal to or less than the number on your opponent's field, choose one"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP03-086",
+  "status": "manual",
+  "sourceTextHash": "590e43a1013267b1864a1c651aade3a25a8a5f103207e5851c215a1b38938f92",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your Leader's type include \"CP\", look at 3 cards from the top of your deck; reveal up to 1 card with a type including {CP} other than [Spandam] and add it to your hand. Then, trash the rest.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your Leader's type include \"CP\", look at 3 cards from the top of your deck; reveal up to 1 card with a type including {CP} other than [Spandam] and add it to your hand. Then, trash the rest."
+    ],
+    "failedParts": [
+      "IF: If your Leader's type include \"CP\", look at 3 cards from the top of your deck; reveal up to 1 card with a type including {CP} other than [Spandam] and add it to your hand"
+    ]
+  }
+}

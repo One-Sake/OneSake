@@ -1,0 +1,16 @@
+{
+  "cardId": "OP16-069",
+  "status": "manual",
+  "sourceTextHash": "7501ff4a017fe11fd1d171905f714357fd7348b4d673362d61a5f726f0678840",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play]/[When Attacking] Add up to 1 DON!! card from your DON!! deck and set it as active.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play]/[When Attacking] Add up to 1 DON!! card from your DON!! deck and set it as active."
+    ],
+    "failedParts": [
+      "/[When Attacking] Add up to 1 DON!! card from your DON!! deck and set it as active"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-036",
+  "status": "manual",
+  "sourceTextHash": "3fc36c9e962bfed4a9916a45f4ffd5c679a7225c26b4a798cffea7a7dabbd20c",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] / [On K.O.] K.O. up to 1 of your opponent's rested Characters with a cost of 4 or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] / [On K.O.] K.O. up to 1 of your opponent's rested Characters with a cost of 4 or less."
+    ],
+    "failedParts": [
+      "/ [On K.O.] K.O. up to 1 of your opponent's rested Characters with a cost of 4 or less"
+    ]
+  }
+}

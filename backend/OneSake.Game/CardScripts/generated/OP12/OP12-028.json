@@ -1,0 +1,16 @@
+{
+  "cardId": "OP12-028",
+  "status": "manual",
+  "sourceTextHash": "dd462f7cb18f0265c0bd1e25885eeefe45d072eb15098e9a10eb834bc62058ee",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may rest 1 of your DON!! cards and this Character: If your Leader is [Roronoa Zoro], look at 5 cards from the top of your deck; reveal up to 1 attribute card or green Event and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may rest 1 of your DON!! cards and this Character: If your Leader is [Roronoa Zoro], look at 5 cards from the top of your deck; reveal up to 1 attribute card or green Event and add it to your hand. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "Look at 5 cards from the top of your deck; reveal up to 1 attribute card or green Event and add it to your hand"
+    ]
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "cardId": "OP13-037",
+  "status": "manual",
+  "sourceTextHash": "3cc9ba2475c9d74bc18566fc5cdfc32f46935df7f2fffbdb85504e604052d677",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your Leader has the \"FILM\" or {Straw Hat Crew} type, set up to 2 of your DON!! cards as active.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "EndOfYourTurn",
+        "text": "[End of Your Turn] Set this Character as active.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "SetActive",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Set this Character as active"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[On Play] If your Leader has the \"FILM\" or {Straw Hat Crew} type, set up to 2 of your DON!! cards as active."
+    ],
+    "failedParts": [
+      "IF: If your Leader has the \"FILM\" or {Straw Hat Crew} type, set up to 2 of your DON!! cards as active"
+    ]
+  }
+}

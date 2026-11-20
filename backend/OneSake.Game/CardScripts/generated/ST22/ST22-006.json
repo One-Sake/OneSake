@@ -1,0 +1,16 @@
+{
+  "cardId": "ST22-006",
+  "status": "manual",
+  "sourceTextHash": "c6b24846651801d4c3111abafa15e5d7b9bee8b254c0cce8f2826835a144f1a6",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Reveal 1 card from the top of your deck. If that card's type includes \"Whitebeard Pirates\", draw 2 cards and trash 1 card from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Reveal 1 card from the top of your deck. If that card's type includes \"Whitebeard Pirates\", draw 2 cards and trash 1 card from your hand."
+    ],
+    "failedParts": [
+      "Reveal 1 card from the top of your deck"
+    ]
+  }
+}

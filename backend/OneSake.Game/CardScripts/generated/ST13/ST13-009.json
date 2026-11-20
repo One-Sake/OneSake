@@ -1,0 +1,16 @@
+{
+  "cardId": "ST13-009",
+  "status": "manual",
+  "sourceTextHash": "57a37ed748f64eeda65d6aa8e90136a9fd6a9d850be71bbc28cd244331e69296",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] You may turn 1 of your face-up Life cards face-down: If your opponent has 7 or more cards in their hand, trash up to 1 card from the top of your opponent's Life cards.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] You may turn 1 of your face-up Life cards face-down: If your opponent has 7 or more cards in their hand, trash up to 1 card from the top of your opponent's Life cards."
+    ],
+    "failedParts": [
+      "COST: You may turn 1 of your face-up Life cards face-down"
+    ]
+  }
+}

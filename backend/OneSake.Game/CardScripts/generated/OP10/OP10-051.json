@@ -1,0 +1,59 @@
+{
+  "cardId": "OP10-051",
+  "status": "generated",
+  "sourceTextHash": "05e223489850e38080a09413e24234911781588e07598d70ea48831d73506766",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "WhenAttacking",
+        "text": "[DON!! x1] [When Attacking] Look at 3 cards from the top of your deck; reveal up to 1 {Revolutionary Army} type Character card and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+        "requiredDon": 1,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "LookAndReveal",
+            "amount": 3,
+            "secondAmount": 1,
+            "optional": false,
+            "filter": {
+              "owner": "You",
+              "allowLeader": false,
+              "allowCharacter": true,
+              "allowStage": true,
+              "category": "Character",
+              "useBaseValues": false,
+              "typeIncludes": "Revolutionary Army",
+              "name": "",
+              "nameNot": "",
+              "color": "",
+              "attribute": "",
+              "keyword": "",
+              "excludeSource": false,
+              "requiresTrigger": false,
+              "nameOrType": false,
+              "maxCostFrom": ""
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Look at 3 cards from the top of your deck; reveal up to 1 {Revolutionary Army} type Character card and add it to your hand"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

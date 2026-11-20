@@ -1,0 +1,46 @@
+{
+  "cardId": "OP08-053",
+  "status": "manual",
+  "sourceTextHash": "3489ffa77d46f495335f5b2dc957cf17bf0d3193bd2c26fa2c097dfdc74a9ec9",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] If your Leader's type includes \"Whitebeard Piratess\", look at 3 cards from the top of your deck; reveal up to 1 card with a type including {Whitebeard Piratess} or [Monkey.D.Luffy] and add it to your hand. Then, place the rest at the top or bottom of your deck in any order.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Draw 1 card.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Draw 1 card"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Main] If your Leader's type includes \"Whitebeard Piratess\", look at 3 cards from the top of your deck; reveal up to 1 card with a type including {Whitebeard Piratess} or [Monkey.D.Luffy] and add it to your hand. Then, place the rest at the top or bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "IF: If your Leader's type includes \"Whitebeard Piratess\", look at 3 cards from the top of your deck; reveal up to 1 card with a type including {Whitebeard Piratess} or [Monkey.D.Luffy] and add it to your hand"
+    ]
+  }
+}

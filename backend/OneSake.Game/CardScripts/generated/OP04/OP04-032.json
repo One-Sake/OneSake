@@ -1,0 +1,46 @@
+{
+  "cardId": "OP04-032",
+  "status": "generated",
+  "sourceTextHash": "847c1dd489e31be06464dd0bec76ae4d4a34d21a68cb2632053f7dadf8c5053b",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "EndOfYourTurn",
+        "text": "[End of Your Turn] You may trash this Character: Set up to 2 of your DON!! cards as active.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [
+          {
+            "kind": "TrashThis",
+            "amount": 1
+          }
+        ],
+        "steps": [
+          {
+            "kind": "SetDonActive",
+            "amount": 2,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Set up to 2 of your DON!! cards as active"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

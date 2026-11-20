@@ -1,0 +1,16 @@
+{
+  "cardId": "OP08-049",
+  "status": "manual",
+  "sourceTextHash": "ab5316333488af9b10123ae92d4bf3528efe988e78ee9c3e4bd1d1bbc6974bf2",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Reveal 1 card from the top of your deck and place it at the top or bottom of your deck. If the revealed card's type includes \"Whitebeard Piratess\", this Character gains [Rush] during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Reveal 1 card from the top of your deck and place it at the top or bottom of your deck. If the revealed card's type includes \"Whitebeard Piratess\", this Character gains [Rush] during this turn."
+    ],
+    "failedParts": [
+      "Reveal 1 card from the top of your deck and place it at the top or bottom of your deck"
+    ]
+  }
+}

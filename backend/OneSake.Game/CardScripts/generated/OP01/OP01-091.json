@@ -1,0 +1,16 @@
+{
+  "cardId": "OP01-091",
+  "status": "manual",
+  "sourceTextHash": "2b726486740ec5101d14ed69a450b52723cddd051e53f0069a84fde0f9889b03",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] If you have 10 DON!! cards on your field, give all of your opponent's Characters -1000 power.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] If you have 10 DON!! cards on your field, give all of your opponent's Characters -1000 power."
+    ],
+    "failedParts": [
+      "IF: If you have 10 DON!! cards on your field, give all of your opponent's Characters -1000 power"
+    ]
+  }
+}

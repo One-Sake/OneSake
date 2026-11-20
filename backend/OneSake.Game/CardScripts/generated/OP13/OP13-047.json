@@ -1,0 +1,16 @@
+{
+  "cardId": "OP13-047",
+  "status": "manual",
+  "sourceTextHash": "7e77a68835af13a9bb7a5829e7211fac84adb453790c5ded5cfd2d5e5ca9f2df",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If your Character with a type including {Whitebeard Pirates} would be K.O.'d by your opponent's effect, you may trash this Character instead.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If your Character with a type including {Whitebeard Pirates} would be K.O.'d by your opponent's effect, you may trash this Character instead."
+    ],
+    "failedParts": [
+      "IF: If your Character with a type including {Whitebeard Pirates} would be K.O.'d by your opponent's effect, you may trash this Character instead"
+    ]
+  }
+}

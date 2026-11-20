@@ -1,0 +1,16 @@
+{
+  "cardId": "EB02-028",
+  "status": "manual",
+  "sourceTextHash": "b1f5a5844156eae532f037304aaa5a21eba3f1f34f353613705a541c9ed5f3e4",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your Leader's type includes \"Whitebeard Pirates\", look at 5 cards from the top of your deck; reveal up to 1 Character card with a cost of 2 and add it to your hand. Then, place the rest at the bottom of your deck in any order and play up to 1 Character card with a cost of 2 from your hand rested.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your Leader's type includes \"Whitebeard Pirates\", look at 5 cards from the top of your deck; reveal up to 1 Character card with a cost of 2 and add it to your hand. Then, place the rest at the bottom of your deck in any order and play up to 1 Character card with a cost of 2 from your hand rested."
+    ],
+    "failedParts": [
+      "IF: If your Leader's type includes \"Whitebeard Pirates\", look at 5 cards from the top of your deck; reveal up to 1 Character card with a cost of 2 and add it to your hand"
+    ]
+  }
+}

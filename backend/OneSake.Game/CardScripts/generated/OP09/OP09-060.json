@@ -1,0 +1,16 @@
+{
+  "cardId": "OP09-060",
+  "status": "manual",
+  "sourceTextHash": "af3a3301af7f88a2bee06a16d3890953d96f0a426faf7cd7bfb7b7cb63e11028",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may place 2 cards from your hand at the bottom of your deck in any order and rest this Stage: If your Leader has the {Cross Guild} type, draw 2 cards.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may place 2 cards from your hand at the bottom of your deck in any order and rest this Stage: If your Leader has the {Cross Guild} type, draw 2 cards."
+    ],
+    "failedParts": [
+      "COST: You may place 2 cards from your hand at the bottom of your deck in any order and rest this Stage"
+    ]
+  }
+}

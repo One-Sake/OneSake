@@ -1,0 +1,16 @@
+{
+  "cardId": "ST08-013",
+  "status": "manual",
+  "sourceTextHash": "cbe7afb0a06de14bccfb7256da412066a404fa37aeadebbe8877d19699945df4",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] At the end of a battle in which this Character battles your opponent's Character, you may K.O. the opponent's Character you battled with. If you do, K.O. this Character.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] At the end of a battle in which this Character battles your opponent's Character, you may K.O. the opponent's Character you battled with. If you do, K.O. this Character."
+    ],
+    "failedParts": [
+      "At the end of a battle in which this Character battles your opponent's Character, you may K.O. the opponent's Character you battled with"
+    ]
+  }
+}

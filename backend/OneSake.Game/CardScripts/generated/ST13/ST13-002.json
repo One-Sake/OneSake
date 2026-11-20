@@ -1,0 +1,18 @@
+{
+  "cardId": "ST13-002",
+  "status": "manual",
+  "sourceTextHash": "d391ca4353009b878173c9980c92a70dd685c3a007bfda51bc2e6e74fe25f79d",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x2] [Activate: Main] [Once Per Turn] Look at 5 cards from the top of your deck and add up to 1 Character card with a cost of 5 to the top of your Life cards face-up. Then, place the rest at the bottom of your deck in any order. | [End of Your Turn] Trash all your face-up Life cards.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x2] [Activate: Main] [Once Per Turn] Look at 5 cards from the top of your deck and add up to 1 Character card with a cost of 5 to the top of your Life cards face-up. Then, place the rest at the bottom of your deck in any order.",
+      "[End of Your Turn] Trash all your face-up Life cards."
+    ],
+    "failedParts": [
+      "Look at 5 cards from the top of your deck and add up to 1 Character card with a cost of 5 to the top of your Life cards face-up",
+      "Trash all your face-up Life cards"
+    ]
+  }
+}

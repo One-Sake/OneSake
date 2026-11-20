@@ -1,0 +1,16 @@
+{
+  "cardId": "OP11-034",
+  "status": "manual",
+  "sourceTextHash": "9eb17ead477fec18664a070ed3e8e4928926fcdef268f772a3fc714a289833ee",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may rest this Character: If your Leader has the \"Fish-Man\" or {Merfolk} type, up to 1 of your opponent's Characters with a cost of 3 or less cannot be rested until the end of your opponent's next turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may rest this Character: If your Leader has the \"Fish-Man\" or {Merfolk} type, up to 1 of your opponent's Characters with a cost of 3 or less cannot be rested until the end of your opponent's next turn."
+    ],
+    "failedParts": [
+      "IF: If your Leader has the \"Fish-Man\" or {Merfolk} type, up to 1 of your opponent's Characters with a cost of 3 or less cannot be rested until the end of your opponent's next turn"
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "cardId": "OP03-047",
+  "status": "manual",
+  "sourceTextHash": "30ca69de5b97508c93709e7179afa431dee7e48c98a31ffa1218c39292606ae0",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] When this Character's attack deals damage to your opponent's Life, you may trash 7 cards from the top of your deck. | [On Play] Return up to 1 Character with a cost of 3 or less to the owner's hand, and you may trash 2 cards from the top of your deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] When this Character's attack deals damage to your opponent's Life, you may trash 7 cards from the top of your deck.",
+      "[On Play] Return up to 1 Character with a cost of 3 or less to the owner's hand, and you may trash 2 cards from the top of your deck."
+    ],
+    "failedParts": [
+      "When this Character's attack deals damage to your opponent's Life, you may trash 7 cards from the top of your deck",
+      "Return up to 1 Character with a cost of 3 or less to the owner's hand, and you may trash 2 cards from the top of your deck"
+    ]
+  }
+}

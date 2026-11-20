@@ -1,0 +1,16 @@
+{
+  "cardId": "OP13-061",
+  "status": "manual",
+  "sourceTextHash": "2ce5e32a9dbf1307fa38465547093951eb986c39048791c251b8f703f76bc036",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If you have any DON!! cards given, add up to 1 DON!! card from your DON!! deck and rest it. Then, K.O. up to 1 of your opponent's Characters with a cost of 1 or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If you have any DON!! cards given, add up to 1 DON!! card from your DON!! deck and rest it. Then, K.O. up to 1 of your opponent's Characters with a cost of 1 or less."
+    ],
+    "failedParts": [
+      "IF: If you have any DON!! cards given, add up to 1 DON!! card from your DON!! deck and rest it"
+    ]
+  }
+}

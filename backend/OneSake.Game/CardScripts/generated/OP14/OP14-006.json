@@ -1,0 +1,16 @@
+{
+  "cardId": "OP14-006",
+  "status": "manual",
+  "sourceTextHash": "ac9ef5017cf70e0f6eaef7a1a3e1e9fe315443c67eb7649acc744501744725cd",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking] If this Character has 5000 power or more, give up to 1 of your opponent's Characters 2000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[When Attacking] If this Character has 5000 power or more, give up to 1 of your opponent's Characters 2000 power during this turn."
+    ],
+    "failedParts": [
+      "IF: If this Character has 5000 power or more, give up to 1 of your opponent's Characters 2000 power during this turn"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP10-083",
+  "status": "manual",
+  "sourceTextHash": "1c19f3d09c5b5b8949a5ffa962d31f590e2250861a03eed9c9cc8386ad2aafc6",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may rest this Character and 1 of your {Dressrosa} type Leader or Stage cards: Give up to 1 of your opponent's Characters -2 cost during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may rest this Character and 1 of your {Dressrosa} type Leader or Stage cards: Give up to 1 of your opponent's Characters -2 cost during this turn."
+    ],
+    "failedParts": [
+      "COST: You may rest this Character and 1 of your {Dressrosa} type Leader or Stage cards"
+    ]
+  }
+}

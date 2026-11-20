@@ -1,0 +1,46 @@
+{
+  "cardId": "OP13-044",
+  "status": "manual",
+  "sourceTextHash": "4a6e25cca4292b4452c494709d9ff443c9963bd2a6f12a99ac15b8938ecd16ab",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking] Give up to 1 rested DON!! card to your Leader with a type including {Whitebeard Pirates} or 1 Character with a type including {Whitebeard Pirates}.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnKO",
+        "text": "[On K.O.] Draw 1 card.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Draw 1 card"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[When Attacking] Give up to 1 rested DON!! card to your Leader with a type including {Whitebeard Pirates} or 1 Character with a type including {Whitebeard Pirates}."
+    ],
+    "failedParts": [
+      "Give up to 1 rested DON!! card to your Leader with a type including {Whitebeard Pirates} or 1 Character with a type including {Whitebeard Pirates}"
+    ]
+  }
+}

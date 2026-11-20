@@ -1,0 +1,16 @@
+{
+  "cardId": "OP04-058",
+  "status": "manual",
+  "sourceTextHash": "ec82b29e1480e96029505d47bc8832b3071c140bb100ce04c4aeaa830de990e5",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Opponent's Turn] [Once Per Turn] When a DON!! card on your field is returned to your DON!! deck by your effect, add up to 1 DON!! card from your DON!! deck and set it as active.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Opponent's Turn] [Once Per Turn] When a DON!! card on your field is returned to your DON!! deck by your effect, add up to 1 DON!! card from your DON!! deck and set it as active."
+    ],
+    "failedParts": [
+      "When a DON!! card on your field is returned to your DON!! deck by your effect, add up to 1 DON!! card from your DON!! deck and set it as active"
+    ]
+  }
+}

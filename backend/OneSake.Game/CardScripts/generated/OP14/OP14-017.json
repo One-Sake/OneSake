@@ -1,0 +1,16 @@
+{
+  "cardId": "OP14-017",
+  "status": "manual",
+  "sourceTextHash": "073c29116c8b133bed5204746a72c455f3443a8474fb83c8d4c47e14c5108d43",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] Select 2 of your opponent's Characters with 9000 base power or less. Swap the base power of the selected Characters with each other during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Main] Select 2 of your opponent's Characters with 9000 base power or less. Swap the base power of the selected Characters with each other during this turn."
+    ],
+    "failedParts": [
+      "Swap the base power of the selected Characters with each other during this turn"
+    ]
+  }
+}

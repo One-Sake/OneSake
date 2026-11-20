@@ -1,0 +1,73 @@
+{
+  "cardId": "OP11-039",
+  "status": "manual",
+  "sourceTextHash": "7301e3be9254209f506bf50411d11f6800c7b5297414cbbc08fa50ff349548a5",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Counter] Up to 1 of your \"Fish-Man\" or {Merfolk} type Leader or Character cards gains +3000 power during this battle. Then, rest up to 1 of your opponent's Characters with a cost of 3 or less.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Rest up to 1 of your opponent's Characters with a cost of 4 or less.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Rest",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": true,
+              "all": false,
+              "self": false,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "Opponent",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "maxCost": 4,
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Rest up to 1 of your opponent's Characters with a cost of 4 or less"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Counter] Up to 1 of your \"Fish-Man\" or {Merfolk} type Leader or Character cards gains +3000 power during this battle. Then, rest up to 1 of your opponent's Characters with a cost of 3 or less."
+    ],
+    "failedParts": [
+      "Up to 1 of your \"Fish-Man\" or {Merfolk} type Leader or Character cards gains +3000 power during this battle"
+    ]
+  }
+}

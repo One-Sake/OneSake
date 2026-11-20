@@ -1,0 +1,16 @@
+{
+  "cardId": "OP03-093",
+  "status": "manual",
+  "sourceTextHash": "d2f1f5490a18184bb36d9d82c3ed841f9d94820f96412591ca81ab97124006f6",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] You may trash 1 card from your hand: If your Leader's type includes \"CP\", K.O. up to 1 of your opponent's Characters with a cost of 1 or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] You may trash 1 card from your hand: If your Leader's type includes \"CP\", K.O. up to 1 of your opponent's Characters with a cost of 1 or less."
+    ],
+    "failedParts": [
+      "IF: If your Leader's type includes \"CP\", K.O. up to 1 of your opponent's Characters with a cost of 1 or less"
+    ]
+  }
+}

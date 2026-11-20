@@ -1,0 +1,16 @@
+{
+  "cardId": "ST30-016",
+  "status": "manual",
+  "sourceTextHash": "61d4fb89494e10aa8ab0be013632ae4dbf7e4ee4bb8ce28b3af9eaa97637a5f2",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Counter] Up to 1 of your Leader or Character cards gains +3000 power during this battle. Then, if you have [Portgas.D.Ace] and [Monkey.D.Luffy] Characters with 6000 base power, draw 1 card.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Counter] Up to 1 of your Leader or Character cards gains +3000 power during this battle. Then, if you have [Portgas.D.Ace] and [Monkey.D.Luffy] Characters with 6000 base power, draw 1 card."
+    ],
+    "failedParts": [
+      "IF: If you have [Portgas.D.Ace] and [Monkey.D.Luffy] Characters with 6000 base power, draw 1 card"
+    ]
+  }
+}

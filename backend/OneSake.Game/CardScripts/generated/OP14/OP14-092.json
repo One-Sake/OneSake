@@ -1,0 +1,16 @@
+{
+  "cardId": "OP14-092",
+  "status": "manual",
+  "sourceTextHash": "3bea24f33a5636dc0357b60abce43dd1edc06d2ad4da98ced9257d0a230e81da",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Opponent's Turn] [Once Per Turn] If this Character would be K.O.'d, you may place 3 cards from your trash at the bottom of your deck in any order instead.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Opponent's Turn] [Once Per Turn] If this Character would be K.O.'d, you may place 3 cards from your trash at the bottom of your deck in any order instead."
+    ],
+    "failedParts": [
+      "IF: If this Character would be K.O.'d, you may place 3 cards from your trash at the bottom of your deck in any order instead"
+    ]
+  }
+}

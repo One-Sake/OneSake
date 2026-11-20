@@ -1,0 +1,16 @@
+{
+  "cardId": "ST30-009",
+  "status": "manual",
+  "sourceTextHash": "f99defb07d0e064baf20c3f754207c11fd20ba7e218002e52f4094946a94bff2",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If your Character with 6000 base power would be removed from the field by your opponent's effect, you may trash this Character and draw 1 card instead.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If your Character with 6000 base power would be removed from the field by your opponent's effect, you may trash this Character and draw 1 card instead."
+    ],
+    "failedParts": [
+      "IF: If your Character with 6000 base power would be removed from the field by your opponent's effect, you may trash this Character and draw 1 card instead"
+    ]
+  }
+}

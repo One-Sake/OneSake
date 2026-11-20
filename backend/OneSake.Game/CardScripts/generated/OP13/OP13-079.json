@@ -1,0 +1,18 @@
+{
+  "cardId": "OP13-079",
+  "status": "manual",
+  "sourceTextHash": "5e1af2ca79bdfbc6487a292a6f8386afc544691613f7f2aa56f8681cafbb7f98",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: Under the rules of this game, you cannot include Events with a cost of 2 or more in your deck and at the start of the game, play up to 1 {Mary Geoise} type Stage card from your deck. | [Activate: Main] [Once Per Turn] You may trash 1 of your {Celestial Dragons} type Characters or 1 card from your hand: Draw 1 card.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "Under the rules of this game, you cannot include Events with a cost of 2 or more in your deck and at the start of the game, play up to 1 {Mary Geoise} type Stage card from your deck.",
+      "[Activate: Main] [Once Per Turn] You may trash 1 of your {Celestial Dragons} type Characters or 1 card from your hand: Draw 1 card."
+    ],
+    "failedParts": [
+      "Under the rules of this game, you cannot include Events with a cost of 2 or more in your deck and at the start of the game, play up to 1 {Mary Geoise} type Stage card from your deck",
+      "COST: You may trash 1 of your {Celestial Dragons} type Characters or 1 card from your hand"
+    ]
+  }
+}

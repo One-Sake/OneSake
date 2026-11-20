@@ -1,0 +1,16 @@
+{
+  "cardId": "OP02-002",
+  "status": "manual",
+  "sourceTextHash": "dc6d827baaaeaa693eefddb72139c3aabb74b02119b8ff887668a42c13584f20",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] When this Leader or 1 of your Characters is given a DON!! card, give up to 1 of your opponent's Characters with a cost of 7 or less -1 cost during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] When this Leader or 1 of your Characters is given a DON!! card, give up to 1 of your opponent's Characters with a cost of 7 or less -1 cost during this turn."
+    ],
+    "failedParts": [
+      "When this Leader or 1 of your Characters is given a DON!! card, give up to 1 of your opponent's Characters with a cost of 7 or less -1 cost during this turn"
+    ]
+  }
+}

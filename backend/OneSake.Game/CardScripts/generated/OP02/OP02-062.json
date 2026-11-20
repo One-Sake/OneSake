@@ -1,0 +1,16 @@
+{
+  "cardId": "OP02-062",
+  "status": "manual",
+  "sourceTextHash": "3728b8bdc41999dd99c7c7de8b64132b7680a0bf8d2fa9d98cc4d1117b951f11",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] / [When Attacking] You may trash 2 cards from your hand: Return up to 1 Character with a cost of 4 or less to the owner's hand. Then, this Character gains [Double Attack] during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] / [When Attacking] You may trash 2 cards from your hand: Return up to 1 Character with a cost of 4 or less to the owner's hand. Then, this Character gains [Double Attack] during this turn."
+    ],
+    "failedParts": [
+      "COST: / [When Attacking] You may trash 2 cards from your hand"
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "cardId": "ST31-004",
+  "status": "manual",
+  "sourceTextHash": "1bd80a805022cfc3c37e6befcbdefec555c31aeb388c3125ab3e506535ea44ba",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If you have a total of 3 or more given DON!! cards, this Character gains [Rush]. | [On Play] For every {Straw Hat Crew} type card on your field, give up to 1 of your opponent's Characters 1000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If you have a total of 3 or more given DON!! cards, this Character gains [Rush].",
+      "[On Play] For every {Straw Hat Crew} type card on your field, give up to 1 of your opponent's Characters 1000 power during this turn."
+    ],
+    "failedParts": [
+      "IF: If you have a total of 3 or more given DON!! cards, this Character gains [Rush]",
+      "For every {Straw Hat Crew} type card on your field, give up to 1 of your opponent's Characters 1000 power during this turn"
+    ]
+  }
+}

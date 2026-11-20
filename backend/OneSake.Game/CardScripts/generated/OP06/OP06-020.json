@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-020",
+  "status": "manual",
+  "sourceTextHash": "509b9afe9167fcd7876b013878275f72b35efa90797283d7a4844783caffeb7b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may rest this Leader: Rest up to 1 of your opponent's DON!! cards or Characters with a cost of 3 or less. Then, you cannot add Life cards to your hand using your own effects during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may rest this Leader: Rest up to 1 of your opponent's DON!! cards or Characters with a cost of 3 or less. Then, you cannot add Life cards to your hand using your own effects during this turn."
+    ],
+    "failedParts": [
+      "Rest up to 1 of your opponent's DON!! cards or Characters with a cost of 3 or less"
+    ]
+  }
+}

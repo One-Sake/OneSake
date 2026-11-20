@@ -1,0 +1,16 @@
+{
+  "cardId": "OP10-106",
+  "status": "manual",
+  "sourceTextHash": "485f032b5a01b2d691185c1b66de58124f89c9d920d2bfd7018487f7f89bffe8",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On K.O.] If your Leader has the {Supernovas} type, look at 3 cards from the top of your deck; reveal up to 1 \"Supernovas\" or {Kid Pirates} type card and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On K.O.] If your Leader has the {Supernovas} type, look at 3 cards from the top of your deck; reveal up to 1 \"Supernovas\" or {Kid Pirates} type card and add it to your hand. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "Look at 3 cards from the top of your deck; reveal up to 1 \"Supernovas\" or {Kid Pirates} type card and add it to your hand"
+    ]
+  }
+}

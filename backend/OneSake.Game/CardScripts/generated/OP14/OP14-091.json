@@ -1,0 +1,60 @@
+{
+  "cardId": "OP14-091",
+  "status": "generated",
+  "sourceTextHash": "3bf59f325139e784e965c0e6583eae2610d9ac3c84c6ef9bdd6b117a04767dcf",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnKO",
+        "text": "[On K.O.] Play up to 1 Character card with a type including {Baroque Works} and a cost of 5 or less other than [Mr.2.Bon.Kurei.] from your hand or trash.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "PlayCard",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "filter": {
+              "owner": "You",
+              "allowLeader": false,
+              "allowCharacter": true,
+              "allowStage": true,
+              "category": "Character",
+              "maxCost": 5,
+              "useBaseValues": false,
+              "typeIncludes": "Baroque Works",
+              "name": "",
+              "nameNot": "Mr.2.Bon.Kurei.",
+              "color": "",
+              "attribute": "",
+              "keyword": "",
+              "excludeSource": false,
+              "requiresTrigger": false,
+              "nameOrType": false,
+              "maxCostFrom": ""
+            },
+            "zone": "HandOrTrash",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Play up to 1 Character card with a type including {Baroque Works} and a cost of 5 or less other than [Mr.2.Bon.Kurei.] from your hand or trash"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP12-099",
+  "status": "manual",
+  "sourceTextHash": "499f13d15226d258160070512b880d45ea66b20e1ae17ec16913a6b592f4e59d",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] When a card is removed from your or your opponent's Life cards, draw 1 card. Then, you cannot draw cards using your own effects during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] When a card is removed from your or your opponent's Life cards, draw 1 card. Then, you cannot draw cards using your own effects during this turn."
+    ],
+    "failedParts": [
+      "When a card is removed from your or your opponent's Life cards, draw 1 card"
+    ]
+  }
+}

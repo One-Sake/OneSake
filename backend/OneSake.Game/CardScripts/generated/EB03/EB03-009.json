@@ -1,0 +1,16 @@
+{
+  "cardId": "EB03-009",
+  "status": "manual",
+  "sourceTextHash": "11992c37266ea9d5dba58fc052201469eb75cb9c163499e94ecdf67d42c188af",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may rest this Character: Up to 1 of your Characters with no base effect gains +2000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may rest this Character: Up to 1 of your Characters with no base effect gains +2000 power during this turn."
+    ],
+    "failedParts": [
+      "Up to 1 of your Characters with no base effect gains +2000 power during this turn"
+    ]
+  }
+}

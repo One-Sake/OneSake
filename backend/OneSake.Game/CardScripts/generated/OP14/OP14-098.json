@@ -1,0 +1,72 @@
+{
+  "cardId": "OP14-098",
+  "status": "manual",
+  "sourceTextHash": "2fc4e39b2bea607e2446772cce92b1f1c36dc455fda7eed6c59adeeb5ba4807e",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] If there is a Character with a cost of 0 or with a cost of 8 or more, all of your Characters with a type including {Baroque Works} gain +3 cost until the end of your opponent's next End Phase.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "EventCounter",
+        "text": "[Counter] Your Leader gains +3000 power during this battle.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "PowerModifier",
+            "amount": 3000,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": false,
+              "yourLeader": true,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisBattle",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Your Leader gains +3000 power during this battle"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Main] If there is a Character with a cost of 0 or with a cost of 8 or more, all of your Characters with a type including {Baroque Works} gain +3 cost until the end of your opponent's next End Phase."
+    ],
+    "failedParts": [
+      "IF: If there is a Character with a cost of 0 or with a cost of 8 or more, all of your Characters with a type including {Baroque Works} gain +3 cost until the end of your opponent's next End Phase"
+    ]
+  }
+}

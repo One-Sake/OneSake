@@ -1,0 +1,16 @@
+{
+  "cardId": "OP14-064",
+  "status": "manual",
+  "sourceTextHash": "4fe13fb04d6a7be710d7830949d1b68f8219516aba5dbf6cbedd6ad305c25c44",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On K.O.] Add up to 1 DON!! card from your DON!! deck and rest it. Then, K.O. up to 1 of your opponent's Characters with a base power of 0.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On K.O.] Add up to 1 DON!! card from your DON!! deck and rest it. Then, K.O. up to 1 of your opponent's Characters with a base power of 0."
+    ],
+    "failedParts": [
+      "K.O. up to 1 of your opponent's Characters with a base power of 0"
+    ]
+  }
+}

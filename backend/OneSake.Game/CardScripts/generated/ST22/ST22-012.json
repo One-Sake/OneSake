@@ -1,0 +1,18 @@
+{
+  "cardId": "ST22-012",
+  "status": "manual",
+  "sourceTextHash": "ba96163e5c2789e3eb2ae371b1a7f6a7fc6806d94b205058442fdb81a8c1b952",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Once Per Turn] If this Character would be K.O.'d by your opponent's effect, you may trash 1 card from your hand instead. | [When Attacking] Reveal 1 card from the top of your deck. If that card's type includes \"Whitebeard Pirates\", this Character gains +1000 power until the end of your opponent's next turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Once Per Turn] If this Character would be K.O.'d by your opponent's effect, you may trash 1 card from your hand instead.",
+      "[When Attacking] Reveal 1 card from the top of your deck. If that card's type includes \"Whitebeard Pirates\", this Character gains +1000 power until the end of your opponent's next turn."
+    ],
+    "failedParts": [
+      "IF: If this Character would be K.O.'d by your opponent's effect, you may trash 1 card from your hand instead",
+      "Reveal 1 card from the top of your deck"
+    ]
+  }
+}

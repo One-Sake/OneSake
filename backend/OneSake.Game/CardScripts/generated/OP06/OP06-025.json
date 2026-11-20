@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-025",
+  "status": "manual",
+  "sourceTextHash": "4f8a1c128c6ede929b4372f844916621fa1f0b585ebb6a89eaafb076af72b367",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Look at 4 cards from the top of your deck; reveal up to 1 \"Fish-Man\" or {Merfolk} type card other than [Camie] and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Look at 4 cards from the top of your deck; reveal up to 1 \"Fish-Man\" or {Merfolk} type card other than [Camie] and add it to your hand. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "Look at 4 cards from the top of your deck; reveal up to 1 \"Fish-Man\" or {Merfolk} type card other than [Camie] and add it to your hand"
+    ]
+  }
+}

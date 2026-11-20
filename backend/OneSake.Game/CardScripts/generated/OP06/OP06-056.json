@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-056",
+  "status": "manual",
+  "sourceTextHash": "e84ff2e4a8f081f3a3282179429dd83785001b35d00d13e5f29e34c99ec5f8d0",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] Place up to 1 of your opponent's Characters with a cost of 2 or less and up to 1 of your opponent's Characters with a cost of 1 or less at the bottom of the owner's deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Main] Place up to 1 of your opponent's Characters with a cost of 2 or less and up to 1 of your opponent's Characters with a cost of 1 or less at the bottom of the owner's deck in any order."
+    ],
+    "failedParts": [
+      "Place up to 1 of your opponent's Characters with a cost of 2 or less and up to 1 of your opponent's Characters with a cost of 1 or less at the bottom of the owner's deck in any order"
+    ]
+  }
+}

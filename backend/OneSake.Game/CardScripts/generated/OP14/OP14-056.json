@@ -1,0 +1,16 @@
+{
+  "cardId": "OP14-056",
+  "status": "manual",
+  "sourceTextHash": "5f43de63341d3dc766fd0634deda97afb40193bd4a916358b5dc336acf08be30",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: This Character cannot attack. When a card is trashed from your hand by an effect, this Character's effect is negated during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "This Character cannot attack. When a card is trashed from your hand by an effect, this Character's effect is negated during this turn."
+    ],
+    "failedParts": [
+      "When a card is trashed from your hand by an effect, this Character's effect is negated during this turn"
+    ]
+  }
+}

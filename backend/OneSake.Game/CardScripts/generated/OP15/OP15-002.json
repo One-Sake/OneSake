@@ -1,0 +1,18 @@
+{
+  "cardId": "OP15-002",
+  "status": "manual",
+  "sourceTextHash": "dd75ee48fadc3b5bdb3b004c80cc269d50e3bcebe435dfa3e8ca6906f595b175",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking]/[On Your Opponent's Attack] You may trash any number of Event or Stage cards from your hand. This Leader gains +1000 power during this battle for every card trashed. | [Activate: Main] [Once Per Turn] If you have activated an Event with a base cost of 3 or more during this turn, draw 1 card.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[When Attacking]/[On Your Opponent's Attack] You may trash any number of Event or Stage cards from your hand. This Leader gains +1000 power during this battle for every card trashed.",
+      "[Activate: Main] [Once Per Turn] If you have activated an Event with a base cost of 3 or more during this turn, draw 1 card."
+    ],
+    "failedParts": [
+      "/[On Your Opponent's Attack] You may trash any number of Event or Stage cards from your hand",
+      "IF: If you have activated an Event with a base cost of 3 or more during this turn, draw 1 card"
+    ]
+  }
+}

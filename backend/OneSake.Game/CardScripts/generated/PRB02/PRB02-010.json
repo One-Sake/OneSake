@@ -1,0 +1,16 @@
+{
+  "cardId": "PRB02-010",
+  "status": "manual",
+  "sourceTextHash": "16adc7d949d11a516552d63c7636e3d4af997bb28ee1dd473bc227c3ddb039df",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] DON!! -2: If your Leader has the {Big Mom Pirates} type and your opponent has 6 or more DON!! cards on their field, draw 2 cards. Then, play up to 1 {Big Mom Pirates} type Character card with 6000 to 8000 power from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] DON!! -2: If your Leader has the {Big Mom Pirates} type and your opponent has 6 or more DON!! cards on their field, draw 2 cards. Then, play up to 1 {Big Mom Pirates} type Character card with 6000 to 8000 power from your hand."
+    ],
+    "failedParts": [
+      "Play up to 1 {Big Mom Pirates} type Character card with 6000 to 8000 power from your hand"
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "cardId": "OP04-019",
+  "status": "generated",
+  "sourceTextHash": "d0bc35ee9c37b0cc7dfa9bef0fc34ab45ddb650a5c3553fa665775f4b718a44c",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "EndOfYourTurn",
+        "text": "[End of Your Turn] Set up to 2 of your DON!! cards as active.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "SetDonActive",
+            "amount": 2,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Set up to 2 of your DON!! cards as active"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

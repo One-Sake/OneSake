@@ -1,0 +1,16 @@
+{
+  "cardId": "OP02-025",
+  "status": "manual",
+  "sourceTextHash": "d23eb6006140b8115dc622420e679a7f0d1489c72d4515ce6cf6531fed2ee9ed",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] If you have 1 or less Characters, the next time you play a {Land of Wano} type Character card with a cost of 3 or more from your hand during this turn, the cost will be reduced by 1.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] If you have 1 or less Characters, the next time you play a {Land of Wano} type Character card with a cost of 3 or more from your hand during this turn, the cost will be reduced by 1."
+    ],
+    "failedParts": [
+      "The next time you play a {Land of Wano} type Character card with a cost of 3 or more from your hand during this turn, the cost will be reduced by 1"
+    ]
+  }
+}

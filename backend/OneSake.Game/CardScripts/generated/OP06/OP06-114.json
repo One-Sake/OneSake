@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-114",
+  "status": "manual",
+  "sourceTextHash": "75a098db45132f05566cd4e021399d8cf0d1645b56786e533473ff51a27035a6",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] You may place 1 Stage with a cost of 1 at the bottom of the owner's deck: Look at 5 cards from the top of your deck; reveal up to 1 [Upper Yard] or {Shandian Warrior} type card and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] You may place 1 Stage with a cost of 1 at the bottom of the owner's deck: Look at 5 cards from the top of your deck; reveal up to 1 [Upper Yard] or {Shandian Warrior} type card and add it to your hand. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "COST: You may place 1 Stage with a cost of 1 at the bottom of the owner's deck"
+    ]
+  }
+}

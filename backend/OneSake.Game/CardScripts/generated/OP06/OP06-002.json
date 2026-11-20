@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-002",
+  "status": "manual",
+  "sourceTextHash": "93d536e669819c78eb3037c7c6341c1a36284708c414978a7c8d57159cfa7279",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If this Character has 7000 power or more, this Character gains [Banish].",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If this Character has 7000 power or more, this Character gains [Banish]."
+    ],
+    "failedParts": [
+      "IF: If this Character has 7000 power or more, this Character gains [Banish]"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP16-026",
+  "status": "manual",
+  "sourceTextHash": "6b7a7a95e5301867c3f0120fdb967a6577fa391cb528447dcadfccb97eaab626",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Look at 3 cards from the top of your deck; reveal up to 1 {Impel Down} type card, add it to your hand and place the rest at the bottom of your deck in any order. Then, play up to 1 Character card with a cost of 2 or less from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Look at 3 cards from the top of your deck; reveal up to 1 {Impel Down} type card, add it to your hand and place the rest at the bottom of your deck in any order. Then, play up to 1 Character card with a cost of 2 or less from your hand."
+    ],
+    "failedParts": [
+      "Look at 3 cards from the top of your deck; reveal up to 1 {Impel Down} type card, add it to your hand and place the rest at the bottom of your deck in any order"
+    ]
+  }
+}

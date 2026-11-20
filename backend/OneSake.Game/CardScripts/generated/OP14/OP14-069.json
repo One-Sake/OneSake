@@ -1,0 +1,16 @@
+{
+  "cardId": "OP14-069",
+  "status": "manual",
+  "sourceTextHash": "b41ff64f6bbbd0c00c8d590989ca52776b970e773b6672bb8cc780a369262392",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] DON!! -3: Choose one: .If your Leader has the {Donquixote Pirates} type, K.O. up to 1 of your opponent's Characters with a cost of 8 or less. .Up to 3 of your opponent's Characters with a cost of 7 or less cannot be rested until the end of your opponent's next End Phase.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] DON!! -3: Choose one: .If your Leader has the {Donquixote Pirates} type, K.O. up to 1 of your opponent's Characters with a cost of 8 or less. .Up to 3 of your opponent's Characters with a cost of 7 or less cannot be rested until the end of your opponent's next End Phase."
+    ],
+    "failedParts": [
+      "Choose one: .If your Leader has the {Donquixote Pirates} type, K.O. up to 1 of your opponent's Characters with a cost of 8 or less"
+    ]
+  }
+}

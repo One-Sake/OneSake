@@ -1,0 +1,16 @@
+{
+  "cardId": "ST23-004",
+  "status": "manual",
+  "sourceTextHash": "c35d488f3fa827f651ccab2bf7856a1d4f3a830b9313a2a99550891932baa75e",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may rest 1 of your DON!! cards and this Character: Give up to 1 of your opponent's Characters-1000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may rest 1 of your DON!! cards and this Character: Give up to 1 of your opponent's Characters-1000 power during this turn."
+    ],
+    "failedParts": [
+      "Give up to 1 of your opponent's Characters-1000 power during this turn"
+    ]
+  }
+}

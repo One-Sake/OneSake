@@ -1,0 +1,16 @@
+{
+  "cardId": "OP01-105",
+  "status": "manual",
+  "sourceTextHash": "a91b4bc96847ff0125e35b311cf9537d4f23758b0eb88fc11341840a10d11e56",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Choose 2 cards from your opponent's hand; your opponent reveals those cards.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Choose 2 cards from your opponent's hand; your opponent reveals those cards."
+    ],
+    "failedParts": [
+      "Choose 2 cards from your opponent's hand; your opponent reveals those cards"
+    ]
+  }
+}

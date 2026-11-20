@@ -1,0 +1,16 @@
+{
+  "cardId": "OP09-084",
+  "status": "manual",
+  "sourceTextHash": "06c0009c513dfb9e08e386354167b7bd6fcd8443a87da6abaffb323c9c7bfb3a",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] If your Leader has the {Blackbeard Pirates} type, this Character gains [Double Attack], [Banish] or [Blocker] until the end of your opponent's next turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] If your Leader has the {Blackbeard Pirates} type, this Character gains [Double Attack], [Banish] or [Blocker] until the end of your opponent's next turn."
+    ],
+    "failedParts": [
+      "This Character gains [Double Attack], [Banish] or [Blocker] until the end of your opponent's next turn"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP08-098",
+  "status": "manual",
+  "sourceTextHash": "c9bc4efd50ec6244b805d661eca8d4d6f42f2e54649576a4c3a0579cffe32e63",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] [When Attacking] Play up to 1 {Shandian Warrior} type Character card from your hand with a cost equal to or less than the number of DON!! cards on your field. If you do, add 1 card from the top of your Life cards to your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] [When Attacking] Play up to 1 {Shandian Warrior} type Character card from your hand with a cost equal to or less than the number of DON!! cards on your field. If you do, add 1 card from the top of your Life cards to your hand."
+    ],
+    "failedParts": [
+      "Play up to 1 {Shandian Warrior} type Character card from your hand with a cost equal to or less than the number of DON!! cards on your field"
+    ]
+  }
+}

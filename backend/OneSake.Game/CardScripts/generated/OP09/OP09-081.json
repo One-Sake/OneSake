@@ -1,0 +1,18 @@
+{
+  "cardId": "OP09-081",
+  "status": "manual",
+  "sourceTextHash": "5d798ec136bad81831f32451489f679335014460a8285261c242c58e31311f20",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: Your [On Play] effects are negated. | [Activate: Main] You may trash 1 card from your hand: Your opponent's [On Play] effects are negated until the end of your opponent's next turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "Your [On Play] effects are negated.",
+      "[Activate: Main] You may trash 1 card from your hand: Your opponent's [On Play] effects are negated until the end of your opponent's next turn."
+    ],
+    "failedParts": [
+      "Your [On Play] effects are negated",
+      "Your opponent's [On Play] effects are negated until the end of your opponent's next turn"
+    ]
+  }
+}

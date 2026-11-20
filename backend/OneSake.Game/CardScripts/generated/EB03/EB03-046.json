@@ -1,0 +1,46 @@
+{
+  "cardId": "EB03-046",
+  "status": "manual",
+  "sourceTextHash": "ecd9a1b1150386a0f3546d1de0471413bca05554b24a10de61fcebbacd46cf81",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If there is a Character with a cost of 0 or with a cost of 8 or more, draw 1 card.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnKO",
+        "text": "[On K.O.] Trash 2 cards from the top of your deck.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "TrashTopOfDeck",
+            "amount": 2,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Trash 2 cards from the top of your deck"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[On Play] If there is a Character with a cost of 0 or with a cost of 8 or more, draw 1 card."
+    ],
+    "failedParts": [
+      "IF: If there is a Character with a cost of 0 or with a cost of 8 or more, draw 1 card"
+    ]
+  }
+}

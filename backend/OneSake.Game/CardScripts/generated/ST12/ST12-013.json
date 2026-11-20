@@ -1,0 +1,46 @@
+{
+  "cardId": "ST12-013",
+  "status": "manual",
+  "sourceTextHash": "1a10eb1b2fd5f0c657f1873a561c1fd704bf82d16a01e0d5c2b9e31a602e2a9c",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking] Reveal 1 card from the top of your deck and play up to 1 Character card with a cost of 2 rested. Then, place the rest at the top or bottom of your deck.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] Look at 3 cards from the top of your deck and place them at the top or bottom of the deck in any order.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "LookAndArrange",
+            "amount": 3,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Look at 3 cards from the top of your deck and place them at the top or bottom of the deck in any order"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[When Attacking] Reveal 1 card from the top of your deck and play up to 1 Character card with a cost of 2 rested. Then, place the rest at the top or bottom of your deck."
+    ],
+    "failedParts": [
+      "Reveal 1 card from the top of your deck and play up to 1 Character card with a cost of 2 rested"
+    ]
+  }
+}

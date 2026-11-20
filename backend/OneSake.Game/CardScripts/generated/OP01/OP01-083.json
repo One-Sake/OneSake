@@ -1,0 +1,16 @@
+{
+  "cardId": "OP01-083",
+  "status": "manual",
+  "sourceTextHash": "e5f17bfb864ede6e1ba1e0cae10fd88f42a67b00dd4447604d950c23ea5312d0",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] [Your Turn] If your Leader has the {Baroque Works} type, this Character gains +1000 power for every 2 Events in your trash.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] [Your Turn] If your Leader has the {Baroque Works} type, this Character gains +1000 power for every 2 Events in your trash."
+    ],
+    "failedParts": [
+      "This Character gains +1000 power for every 2 Events in your trash"
+    ]
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "cardId": "OP03-090",
+  "status": "manual",
+  "sourceTextHash": "a2434be3711072969b9809994772d03e2535c0b8536bfbe01fcaa0dc4e37caf3",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] [This Character gains [Blocker].",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnKO",
+        "text": "[On K.O.] Play up to 1 Character card with a type including {CP} and a cost of 4 or less from your trash rested.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "PlayCard",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "filter": {
+              "owner": "You",
+              "allowLeader": false,
+              "allowCharacter": true,
+              "allowStage": true,
+              "category": "Character",
+              "maxCost": 4,
+              "useBaseValues": false,
+              "typeIncludes": "CP",
+              "name": "",
+              "nameNot": "",
+              "color": "",
+              "attribute": "",
+              "keyword": "",
+              "excludeSource": false,
+              "requiresTrigger": false,
+              "nameOrType": false,
+              "maxCostFrom": ""
+            },
+            "zone": "Trash",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": true,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Play up to 1 Character card with a type including {CP} and a cost of 4 or less from your trash rested"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[DON!! x1] [This Character gains [Blocker]."
+    ],
+    "failedParts": [
+      "[This Character gains [Blocker]"
+    ]
+  }
+}

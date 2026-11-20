@@ -1,0 +1,72 @@
+{
+  "cardId": "OP10-037",
+  "status": "manual",
+  "sourceTextHash": "3c521e6faa01603b601b44c12d37d7e72244b919328e0587143a3e14e5b74c3d",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Once Per Turn] If this Character would be removed from the field by your opponent's effect, you may rest 1 of your {ODYSSEY} type Characters instead.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "EndOfYourTurn",
+        "text": "[End of Your Turn] Set up to 1 of your {ODYSSEY} type Characters as active.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "SetActive",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": true,
+              "all": false,
+              "self": false,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "ODYSSEY",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Set up to 1 of your {ODYSSEY} type Characters as active"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Once Per Turn] If this Character would be removed from the field by your opponent's effect, you may rest 1 of your {ODYSSEY} type Characters instead."
+    ],
+    "failedParts": [
+      "IF: If this Character would be removed from the field by your opponent's effect, you may rest 1 of your {ODYSSEY} type Characters instead"
+    ]
+  }
+}

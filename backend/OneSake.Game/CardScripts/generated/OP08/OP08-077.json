@@ -1,0 +1,16 @@
+{
+  "cardId": "OP08-077",
+  "status": "manual",
+  "sourceTextHash": "283a4f85f91355922f5742da0b125a3c86dacdc4bf157a115f96c9c2586a21a3",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] DON!! 2: If your Leader has the [Animal Kingdom Pirates] or {Big Mom Pirates} type, K.O. up to 2 of your opponent's Characters with a cost of 6 or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Main] DON!! 2: If your Leader has the [Animal Kingdom Pirates] or {Big Mom Pirates} type, K.O. up to 2 of your opponent's Characters with a cost of 6 or less."
+    ],
+    "failedParts": [
+      "IF: If your Leader has the [Animal Kingdom Pirates] or {Big Mom Pirates} type, K.O. up to 2 of your opponent's Characters with a cost of 6 or less"
+    ]
+  }
+}

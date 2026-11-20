@@ -1,0 +1,16 @@
+{
+  "cardId": "EB02-009",
+  "status": "manual",
+  "sourceTextHash": "e421a5cce9706186b9b239f7adbb8bbc097ee5cd3443b66bfb312a4b208a5d03",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may rest this Stage: Give up to 1 of your currently given DON!! cards to 1 of your {Straw Hat Crew} type Characters.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may rest this Stage: Give up to 1 of your currently given DON!! cards to 1 of your {Straw Hat Crew} type Characters."
+    ],
+    "failedParts": [
+      "Give up to 1 of your currently given DON!! cards to 1 of your {Straw Hat Crew} type Characters"
+    ]
+  }
+}

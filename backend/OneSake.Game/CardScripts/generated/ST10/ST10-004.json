@@ -1,0 +1,16 @@
+{
+  "cardId": "ST10-004",
+  "status": "manual",
+  "sourceTextHash": "1aa56a8b8592ed5496efc72b4504205878883bcd847feac18567e7d2d92496eb",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your opponent has a Character with 5000 or more power, this Character gains [Rush] during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your opponent has a Character with 5000 or more power, this Character gains [Rush] during this turn."
+    ],
+    "failedParts": [
+      "IF: If your opponent has a Character with 5000 or more power, this Character gains [Rush] during this turn"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP11-021",
+  "status": "manual",
+  "sourceTextHash": "2051ae7392fc887319e332cc00ab99e151750a6b71ddfcb5297aaf85296407cf",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [End of Your Turn] If you have 6 or less cards in your hand, set up to 1 of your \"Fish-Man\" or {Merfolk} type Characters and up to 1 of your DON!! cards as active.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[End of Your Turn] If you have 6 or less cards in your hand, set up to 1 of your \"Fish-Man\" or {Merfolk} type Characters and up to 1 of your DON!! cards as active."
+    ],
+    "failedParts": [
+      "Set up to 1 of your \"Fish-Man\" or {Merfolk} type Characters and up to 1 of your DON!! cards as active"
+    ]
+  }
+}

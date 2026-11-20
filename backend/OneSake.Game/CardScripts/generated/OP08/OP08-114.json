@@ -1,0 +1,75 @@
+{
+  "cardId": "OP08-114",
+  "status": "manual",
+  "sourceTextHash": "f3f4f7a1d7d47be9a90e0088cb0787cb5b2d62e0775924f409ffdc583277d47a",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] If you have less Life cards than your opponent, this Character cannot be K.O.'d in battle by attribute cards and gains +2000 power.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] You may trash 1 card from your hand: If you have 2 or less Life cards, play this card.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [
+          {
+            "kind": "TrashFromHand",
+            "amount": 1,
+            "filter": {
+              "owner": "You",
+              "allowLeader": false,
+              "allowCharacter": true,
+              "allowStage": true,
+              "category": "",
+              "useBaseValues": false,
+              "typeIncludes": "",
+              "name": "",
+              "nameNot": "",
+              "color": "",
+              "attribute": "",
+              "keyword": "",
+              "excludeSource": false,
+              "requiresTrigger": false,
+              "nameOrType": false,
+              "maxCostFrom": ""
+            }
+          }
+        ],
+        "steps": [
+          {
+            "kind": "PlayThisCard",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [
+              {
+                "kind": "LifeAtMost",
+                "amount": 2,
+                "text": "you have 2 or less Life cards"
+              }
+            ],
+            "text": "Play this card"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[DON!! x1] If you have less Life cards than your opponent, this Character cannot be K.O.'d in battle by attribute cards and gains +2000 power."
+    ],
+    "failedParts": [
+      "This Character cannot be K.O.'d in battle by attribute cards and gains +2000 power"
+    ]
+  }
+}

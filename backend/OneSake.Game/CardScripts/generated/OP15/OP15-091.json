@@ -1,0 +1,16 @@
+{
+  "cardId": "OP15-091",
+  "status": "manual",
+  "sourceTextHash": "77730ea41ce03546a57e4178381164d094540748fe736194ccb39fbb176af221",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Place up to 1 card from your opponent's trash at the bottom of the owner's deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Place up to 1 card from your opponent's trash at the bottom of the owner's deck."
+    ],
+    "failedParts": [
+      "Place up to 1 card from your opponent's trash at the bottom of the owner's deck"
+    ]
+  }
+}

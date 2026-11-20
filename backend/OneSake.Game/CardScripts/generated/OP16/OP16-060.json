@@ -1,0 +1,16 @@
+{
+  "cardId": "OP16-060",
+  "status": "manual",
+  "sourceTextHash": "7eaa2acc3c8153554a024504495e021b5050e0b5432cb1c6c92b0cd1969ebd91",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may return 8 of your active DON!! cards to your DON!! deck: Play up to 3 {Admiral} type Character cards with different card names from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may return 8 of your active DON!! cards to your DON!! deck: Play up to 3 {Admiral} type Character cards with different card names from your hand."
+    ],
+    "failedParts": [
+      "COST: You may return 8 of your active DON!! cards to your DON!! deck"
+    ]
+  }
+}

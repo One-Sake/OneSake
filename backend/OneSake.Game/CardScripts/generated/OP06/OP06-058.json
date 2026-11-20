@@ -1,0 +1,73 @@
+{
+  "cardId": "OP06-058",
+  "status": "manual",
+  "sourceTextHash": "58e8ff9b9eba968a592e345a4e92f0e25f5c43ce6a535dd06db11e18e3ce1915",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] Place up to 2 Characters with a cost of 6 or less at the bottom of the owner's deck in any order.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Place up to 1 Character with a cost of 5 or less at the bottom of the owner's deck.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "BottomOfDeck",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": true,
+              "all": false,
+              "self": false,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "Any",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "maxCost": 5,
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Place up to 1 Character with a cost of 5 or less at the bottom of the owner's deck"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Main] Place up to 2 Characters with a cost of 6 or less at the bottom of the owner's deck in any order."
+    ],
+    "failedParts": [
+      "Place up to 2 Characters with a cost of 6 or less at the bottom of the owner's deck in any order"
+    ]
+  }
+}

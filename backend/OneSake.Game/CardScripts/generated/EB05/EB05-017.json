@@ -1,0 +1,16 @@
+{
+  "cardId": "EB05-017",
+  "status": "manual",
+  "sourceTextHash": "cc1e2f143d9ce2120b4b24338a1be9ead1069a98cc974100e338c4941d91a209",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Your Opponent's Attack] You may rest 1 of your DON!! cards and trash this Character: Your {Fish-Man} or {Merfolk} type Leader gains +4000 power during this battle.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Your Opponent's Attack] You may rest 1 of your DON!! cards and trash this Character: Your {Fish-Man} or {Merfolk} type Leader gains +4000 power during this battle."
+    ],
+    "failedParts": [
+      "Your {Fish-Man} or {Merfolk} type Leader gains +4000 power during this battle"
+    ]
+  }
+}

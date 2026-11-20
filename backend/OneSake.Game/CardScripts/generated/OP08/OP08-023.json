@@ -1,0 +1,16 @@
+{
+  "cardId": "OP08-023",
+  "status": "manual",
+  "sourceTextHash": "76943f4aff5e974cb15f9551f958c75febcacce6a63a008a2280c6acc3397385",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play]/[When Attacking] Up to 1 of your opponent's rested Characters with a cost of 7 or less will not become active in your opponent's next Refresh Phase.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play]/[When Attacking] Up to 1 of your opponent's rested Characters with a cost of 7 or less will not become active in your opponent's next Refresh Phase."
+    ],
+    "failedParts": [
+      "/[When Attacking] Up to 1 of your opponent's rested Characters with a cost of 7 or less will not become active in your opponent's next Refresh Phase"
+    ]
+  }
+}

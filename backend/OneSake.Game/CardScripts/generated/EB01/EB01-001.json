@@ -1,0 +1,97 @@
+{
+  "cardId": "EB01-001",
+  "status": "manual",
+  "sourceTextHash": "ab1ae3f25736c902505b04cb2b96a64a6d78f878a9b2046ec1f1f02f97082179",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: All of your {Land of Wano} type Character cards without a Counter have a +1000 Counter, according to the rules.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "WhenAttacking",
+        "text": "[DON!! x1] [When Attacking] If you have a {Land of Wano} type Character with a cost of 5 or more, this Leader gains +1000 power until the start of your next turn.",
+        "requiredDon": 1,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "PowerModifier",
+            "amount": 1000,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "UntilEndOfOpponentsNextTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [
+              {
+                "kind": "HasCard",
+                "amount": 1,
+                "text": "you have a {Land of Wano} type Character with a cost of 5 or more",
+                "filter": {
+                  "owner": "You",
+                  "allowLeader": false,
+                  "allowCharacter": true,
+                  "allowStage": true,
+                  "category": "",
+                  "minCost": 5,
+                  "useBaseValues": false,
+                  "typeIncludes": "Land of Wano",
+                  "name": "",
+                  "nameNot": "",
+                  "color": "",
+                  "attribute": "",
+                  "keyword": "",
+                  "excludeSource": false,
+                  "requiresTrigger": false,
+                  "nameOrType": false,
+                  "maxCostFrom": ""
+                }
+              }
+            ],
+            "text": "This Leader gains +1000 power until the start of your next turn"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "All of your {Land of Wano} type Character cards without a Counter have a +1000 Counter, according to the rules."
+    ],
+    "failedParts": [
+      "All of your {Land of Wano} type Character cards without a Counter have a +1000 Counter, according to the rules"
+    ]
+  }
+}

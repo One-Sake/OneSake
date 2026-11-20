@@ -1,0 +1,16 @@
+{
+  "cardId": "OP08-046",
+  "status": "manual",
+  "sourceTextHash": "57a76b84684f454d56de849fa1b0c47b832efa4d895f1633983b67eaff778e60",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] [Once Per Turn] When a Character is removed from the field by your effect, if your opponent has 5 or more cards in their hand, your opponent places 1 card from their hand at the bottom of their deck. Then, rest this Character.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] [Once Per Turn] When a Character is removed from the field by your effect, if your opponent has 5 or more cards in their hand, your opponent places 1 card from their hand at the bottom of their deck. Then, rest this Character."
+    ],
+    "failedParts": [
+      "When a Character is removed from the field by your effect, if your opponent has 5 or more cards in their hand, your opponent places 1 card from their hand at the bottom of their deck"
+    ]
+  }
+}

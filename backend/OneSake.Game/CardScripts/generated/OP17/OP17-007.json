@@ -1,0 +1,16 @@
+{
+  "cardId": "OP17-007",
+  "status": "manual",
+  "sourceTextHash": "0d325cf4039756903940d4a011fe5fc4e5f4bd239a8f751595935abf78c6b88c",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your Leader is [Edward.Newgate] or has the {Land of Wano} type, play up to 1 {Land of Wano} type Character card with a type including {Whitebeard Pirates} with 6000 power or less from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your Leader is [Edward.Newgate] or has the {Land of Wano} type, play up to 1 {Land of Wano} type Character card with a type including {Whitebeard Pirates} with 6000 power or less from your hand."
+    ],
+    "failedParts": [
+      "IF: If your Leader is [Edward.Newgate] or has the {Land of Wano} type, play up to 1 {Land of Wano} type Character card with a type including {Whitebeard Pirates} with 6000 power or less from your hand"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP11-006",
+  "status": "manual",
+  "sourceTextHash": "8dedc5a5dfe6203b5262e8e13868864ae486a01f9b1ebe96f3087ea7ba2597b6",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] [When Attacking] Give up to 1 of your opponent's attribute Characters 5000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] [When Attacking] Give up to 1 of your opponent's attribute Characters 5000 power during this turn."
+    ],
+    "failedParts": [
+      "Give up to 1 of your opponent's attribute Characters 5000 power during this turn"
+    ]
+  }
+}

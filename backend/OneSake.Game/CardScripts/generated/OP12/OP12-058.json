@@ -1,0 +1,46 @@
+{
+  "cardId": "OP12-058",
+  "status": "manual",
+  "sourceTextHash": "2b29d61662373ed59d45343da00ef24d745670b9e1a6bbf0431dd7c5b5f01155",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] If your Leader's type includes \"Whitebeard Pirates\", reveal 1 card from the top of your deck. If that card is a Character card with a type including {Whitebeard Pirates} and a cost of 9 or less, you may play that card. If you do, that Character gains [Rush] during this turn.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Draw 1 card.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Draw 1 card"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Main] If your Leader's type includes \"Whitebeard Pirates\", reveal 1 card from the top of your deck. If that card is a Character card with a type including {Whitebeard Pirates} and a cost of 9 or less, you may play that card. If you do, that Character gains [Rush] during this turn."
+    ],
+    "failedParts": [
+      "IF: If your Leader's type includes \"Whitebeard Pirates\", reveal 1 card from the top of your deck"
+    ]
+  }
+}

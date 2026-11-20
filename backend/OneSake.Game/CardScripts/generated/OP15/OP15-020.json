@@ -1,0 +1,16 @@
+{
+  "cardId": "OP15-020",
+  "status": "manual",
+  "sourceTextHash": "3dcdee95c5492fde7493c031df2a5020de37adac5d6be8823ba9354fe7ac7bba",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] Your Leader gains +3000 power during this turn and give up to 1 of your opponent's Characters -8000 power until the end of your opponent's next End Phase. Then, you may trash 2 cards from your hand. If you do, K.O. up to 1 of your opponent's Characters with 0 power or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Main] Your Leader gains +3000 power during this turn and give up to 1 of your opponent's Characters -8000 power until the end of your opponent's next End Phase. Then, you may trash 2 cards from your hand. If you do, K.O. up to 1 of your opponent's Characters with 0 power or less."
+    ],
+    "failedParts": [
+      "IF: If you do, K.O. up to 1 of your opponent's Characters with 0 power or less"
+    ]
+  }
+}

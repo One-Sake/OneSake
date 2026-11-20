@@ -1,0 +1,16 @@
+{
+  "cardId": "OP15-033",
+  "status": "manual",
+  "sourceTextHash": "101817513a5a23d9d702b3eda18f599984de36e09cd1d81633d339362b1f87d4",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Set your {Fish-Man} type Leader as active. Then, add 1 card from the top of your Life cards to your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Set your {Fish-Man} type Leader as active. Then, add 1 card from the top of your Life cards to your hand."
+    ],
+    "failedParts": [
+      "Set your {Fish-Man} type Leader as active"
+    ]
+  }
+}

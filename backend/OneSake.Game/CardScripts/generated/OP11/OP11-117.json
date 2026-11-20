@@ -1,0 +1,16 @@
+{
+  "cardId": "OP11-117",
+  "status": "manual",
+  "sourceTextHash": "3bfee7359f49a8111f72fc6dc1ca2d70532b3f7a9736b2667882cc9fca95cea7",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] If your Leader is [Shirahoshi], you may turn 1 card from the top of your Life cards face-up: Up to 1 of your \"Neptunian\", \"Fish-Man\", or {Merfolk} type Characters gains +1000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] If your Leader is [Shirahoshi], you may turn 1 card from the top of your Life cards face-up: Up to 1 of your \"Neptunian\", \"Fish-Man\", or {Merfolk} type Characters gains +1000 power during this turn."
+    ],
+    "failedParts": [
+      "COST: If your Leader is [Shirahoshi], you may turn 1 card from the top of your Life cards face-up"
+    ]
+  }
+}

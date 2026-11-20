@@ -1,0 +1,16 @@
+{
+  "cardId": "OP09-028",
+  "status": "manual",
+  "sourceTextHash": "09255d2a76c7c75ef4d6662f57803ccea936f598cb27a452b313df0502896a7a",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On K.O.] You may add 1 card from the top or bottom of your Life cards to your hand: Play up to 1 \"ODYSSEY\" or {Straw Hat Crew} type Character card with a cost of 4 or less from your trash rested.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On K.O.] You may add 1 card from the top or bottom of your Life cards to your hand: Play up to 1 \"ODYSSEY\" or {Straw Hat Crew} type Character card with a cost of 4 or less from your trash rested."
+    ],
+    "failedParts": [
+      "Play up to 1 \"ODYSSEY\" or {Straw Hat Crew} type Character card with a cost of 4 or less from your trash rested"
+    ]
+  }
+}

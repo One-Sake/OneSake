@@ -1,0 +1,16 @@
+{
+  "cardId": "EB05-035",
+  "status": "manual",
+  "sourceTextHash": "86008aab3d9b6db054596554f0bc9f39b2306e005c5b33cb205af05de9ae188b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] DON!! -1: Look at 5 cards from the top of your deck; reveal up to 2 {SMILE} type cards and add them to your hand, then place the rest at the bottom of your deck in any order. Then, play up to 2 {SMILE} type Character cards with 5000 power or less from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] DON!! -1: Look at 5 cards from the top of your deck; reveal up to 2 {SMILE} type cards and add them to your hand, then place the rest at the bottom of your deck in any order. Then, play up to 2 {SMILE} type Character cards with 5000 power or less from your hand."
+    ],
+    "failedParts": [
+      "Look at 5 cards from the top of your deck; reveal up to 2 {SMILE} type cards and add them to your hand, then place the rest at the bottom of your deck in any order"
+    ]
+  }
+}

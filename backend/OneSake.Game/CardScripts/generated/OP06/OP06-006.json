@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-006",
+  "status": "manual",
+  "sourceTextHash": "4e26dbadae5c1b469ea133288244d92ef666ed9288ababf7eb3955f9db574961",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] [When Attacking] This Character gains +1000 power until the start of your next turn. Then, trash 1 of your {FILM} type Characters at the end of this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] [When Attacking] This Character gains +1000 power until the start of your next turn. Then, trash 1 of your {FILM} type Characters at the end of this turn."
+    ],
+    "failedParts": [
+      "Trash 1 of your {FILM} type Characters at the end of this turn"
+    ]
+  }
+}

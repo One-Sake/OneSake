@@ -1,0 +1,70 @@
+{
+  "cardId": "OP14-054",
+  "status": "manual",
+  "sourceTextHash": "0e9f9df70e64688b95e546263580b84e2e958eef5f680368a45895d1cf9a2076",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [End of Your Turn] Trash cards from your hand until you have 5 cards in your hand.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] If your Leader has the {Fish-Man} type, draw 3 cards.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 3,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [
+              {
+                "kind": "LeaderHasType",
+                "amount": 0,
+                "text": "your Leader has the {Fish-Man} type",
+                "filter": {
+                  "owner": "You",
+                  "allowLeader": false,
+                  "allowCharacter": true,
+                  "allowStage": false,
+                  "category": "",
+                  "useBaseValues": false,
+                  "typeIncludes": "Fish-Man",
+                  "name": "",
+                  "nameNot": "",
+                  "color": "",
+                  "attribute": "",
+                  "keyword": "",
+                  "excludeSource": false,
+                  "requiresTrigger": false,
+                  "nameOrType": false,
+                  "maxCostFrom": ""
+                }
+              }
+            ],
+            "text": "Draw 3 cards"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[End of Your Turn] Trash cards from your hand until you have 5 cards in your hand."
+    ],
+    "failedParts": [
+      "Trash cards from your hand until you have 5 cards in your hand"
+    ]
+  }
+}

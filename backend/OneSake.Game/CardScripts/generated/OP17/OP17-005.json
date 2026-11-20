@@ -1,0 +1,18 @@
+{
+  "cardId": "OP17-005",
+  "status": "manual",
+  "sourceTextHash": "9c3c40ab45479dfe7cfb252f4f899dccd8a680534394ce554284dd88539dd91b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If your opponent has a Character with 10000 power or more, give this card in your hand -4 cost. | [On Play] Your monocolored Leader's base power becomes 8000 until the end of your opponent's next End Phase.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If your opponent has a Character with 10000 power or more, give this card in your hand -4 cost.",
+      "[On Play] Your monocolored Leader's base power becomes 8000 until the end of your opponent's next End Phase."
+    ],
+    "failedParts": [
+      "Give this card in your hand -4 cost",
+      "Your monocolored Leader's base power becomes 8000 until the end of your opponent's next End Phase"
+    ]
+  }
+}

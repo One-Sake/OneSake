@@ -1,0 +1,16 @@
+{
+  "cardId": "OP12-018",
+  "status": "manual",
+  "sourceTextHash": "006688694cd90569de533e2c3ab5e91c22302bf73d0ee845eaa6e8c9a377c54c",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Counter] Up to 1 of your Characters or [Silvers Rayleigh] gains +2000 power during this battle. Then, you may rest 1 of your DON!! cards. If you do, give your opponent's Leader and all of their Characters 1000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Counter] Up to 1 of your Characters or [Silvers Rayleigh] gains +2000 power during this battle. Then, you may rest 1 of your DON!! cards. If you do, give your opponent's Leader and all of their Characters 1000 power during this turn."
+    ],
+    "failedParts": [
+      "Up to 1 of your Characters or [Silvers Rayleigh] gains +2000 power during this battle"
+    ]
+  }
+}

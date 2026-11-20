@@ -1,0 +1,16 @@
+{
+  "cardId": "ST10-015",
+  "status": "manual",
+  "sourceTextHash": "006429d043132248ef48e2dbf960bae2cc11a60ea8c53bd96b88d4b932f55154",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Counter] Up to 1 of your Leader or Character cards gains +2000 power during this battle, and K.O. up to 1 of your opponent's Characters with 2000 power or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Counter] Up to 1 of your Leader or Character cards gains +2000 power during this battle, and K.O. up to 1 of your opponent's Characters with 2000 power or less."
+    ],
+    "failedParts": [
+      "Up to 1 of your Leader or Character cards gains +2000 power during this battle, and K.O. up to 1 of your opponent's Characters with 2000 power or less"
+    ]
+  }
+}

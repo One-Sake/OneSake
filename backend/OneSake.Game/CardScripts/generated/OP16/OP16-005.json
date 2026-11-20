@@ -1,0 +1,72 @@
+{
+  "cardId": "OP16-005",
+  "status": "manual",
+  "sourceTextHash": "374cd5a85e8de60e161567782ebb1085aa01ad8b7c5a4f85ae6b2a96d5fa3657",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If you have a Character with 8000 power or more and a type including {Whitebeard Pirates} give this card in your hand -3 cost.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Static",
+        "text": "[Blocker]",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "GainFlag",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "Permanent",
+            "flag": "Blocker",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "[Blocker]"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "If you have a Character with 8000 power or more and a type including {Whitebeard Pirates} give this card in your hand -3 cost."
+    ],
+    "failedParts": [
+      "If you have a Character with 8000 power or more and a type including {Whitebeard Pirates} give this card in your hand -3 cost"
+    ]
+  }
+}

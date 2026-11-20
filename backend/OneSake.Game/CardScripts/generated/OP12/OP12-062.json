@@ -1,0 +1,16 @@
+{
+  "cardId": "OP12-062",
+  "status": "manual",
+  "sourceTextHash": "1093a96ac242e6b0c840a13346286532fd8253e2730bf4561550bc108ad9ef65",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your Leader is [Sanji] and the number of DON!! cards on your field is equal to or less than the number on your opponent's field, add up to 1 DON!! card from your DON!! deck and rest it. Then, draw 1 card.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your Leader is [Sanji] and the number of DON!! cards on your field is equal to or less than the number on your opponent's field, add up to 1 DON!! card from your DON!! deck and rest it. Then, draw 1 card."
+    ],
+    "failedParts": [
+      "IF: If your Leader is [Sanji] and the number of DON!! cards on your field is equal to or less than the number on your opponent's field, add up to 1 DON!! card from your DON!! deck and rest it"
+    ]
+  }
+}

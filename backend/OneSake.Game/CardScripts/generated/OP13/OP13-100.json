@@ -1,0 +1,16 @@
+{
+  "cardId": "OP13-100",
+  "status": "manual",
+  "sourceTextHash": "7f326bec8cff20514d0a8a542d0c1972b6436a72665d5690dafae020c231b872",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] [Once Per Turn] This effect can be activated when you play a Character with a [Trigger]. Give up to 2 rested DON!! cards to 1 of your Leader or Character cards.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] [Once Per Turn] This effect can be activated when you play a Character with a [Trigger]. Give up to 2 rested DON!! cards to 1 of your Leader or Character cards."
+    ],
+    "failedParts": [
+      "This effect can be activated when you play a Character with a [Trigger]"
+    ]
+  }
+}

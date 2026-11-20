@@ -1,0 +1,16 @@
+{
+  "cardId": "OP17-104",
+  "status": "manual",
+  "sourceTextHash": "9ba55668917cb883ccc925369f9fc0f9b0795bad705fd869967e03b9ed5ddfd9",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] [On Play] You may rest 2 of your DON!! cards: If your Leader has the {Big Mom Pirates} type, add up to 1 card from the top of your deck to the top of your Life Cards. Trigger Play this card.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] [On Play] You may rest 2 of your DON!! cards: If your Leader has the {Big Mom Pirates} type, add up to 1 card from the top of your deck to the top of your Life Cards. Trigger Play this card."
+    ],
+    "failedParts": [
+      "Trigger Play this card"
+    ]
+  }
+}

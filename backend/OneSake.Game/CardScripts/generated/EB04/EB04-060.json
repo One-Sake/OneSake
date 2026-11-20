@@ -1,0 +1,80 @@
+{
+  "cardId": "EB04-060",
+  "status": "manual",
+  "sourceTextHash": "3752eca15137229bfb03b3aa568c0fa678d3f929971f24ac2ccd79b663eece2a",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] You may add 1 card from the top or bottom of your Life cards to your hand: Add up to 1 {Egghead} type Character card from your hand to the top of your Life cards face-up. Then, give up to 1 of your opponent's Characters -1000 power during this turn.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Draw 2 cards and trash 1 card from your hand.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 2,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Draw 2 cards and trash 1 card from your hand"
+          },
+          {
+            "kind": "TrashFromHand",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "filter": {
+              "owner": "You",
+              "allowLeader": false,
+              "allowCharacter": true,
+              "allowStage": false,
+              "category": "",
+              "useBaseValues": false,
+              "typeIncludes": "",
+              "name": "",
+              "nameNot": "",
+              "color": "",
+              "attribute": "",
+              "keyword": "",
+              "excludeSource": false,
+              "requiresTrigger": false,
+              "nameOrType": false,
+              "maxCostFrom": ""
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Draw 2 cards and trash 1 card from your hand"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Main] You may add 1 card from the top or bottom of your Life cards to your hand: Add up to 1 {Egghead} type Character card from your hand to the top of your Life cards face-up. Then, give up to 1 of your opponent's Characters -1000 power during this turn."
+    ],
+    "failedParts": [
+      "Add up to 1 {Egghead} type Character card from your hand to the top of your Life cards face-up"
+    ]
+  }
+}

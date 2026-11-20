@@ -1,0 +1,72 @@
+{
+  "cardId": "EB05-048",
+  "status": "manual",
+  "sourceTextHash": "21010a0b1633a6245f62bdc2f108bf8cd9482d80db173df2042c616a6ad626c8",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] You may rest 1 of your DON!! cards and K.O. 1 of your Characters with a type including {Baroque Works}: All of your opponent's Characters with a cost of 0 cannot activate [Blocker] during this turn.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "EventCounter",
+        "text": "[Counter] Your Leader gains +3000 power during this battle.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "PowerModifier",
+            "amount": 3000,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": false,
+              "yourLeader": true,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisBattle",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Your Leader gains +3000 power during this battle"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Main] You may rest 1 of your DON!! cards and K.O. 1 of your Characters with a type including {Baroque Works}: All of your opponent's Characters with a cost of 0 cannot activate [Blocker] during this turn."
+    ],
+    "failedParts": [
+      "Rest 1 of your DON!! cards and K.O. 1 of your Characters with a type including {Baroque Works}: All of your opponent's Characters with a cost of 0 cannot activate [Blocker] during this turn"
+    ]
+  }
+}

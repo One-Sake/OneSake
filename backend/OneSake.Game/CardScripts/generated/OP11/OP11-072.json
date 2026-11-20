@@ -1,0 +1,16 @@
+{
+  "cardId": "OP11-072",
+  "status": "manual",
+  "sourceTextHash": "fbf63d794c9333ca376864d3420ad77a2e438b99a0bc13ad2380a1ed922ca9d7",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] DON!! 1, You may rest this Character: Your opponent places 2 cards from their trash at the bottom of their deck in any order. Then, add 1 card from the top of your Life cards to your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] DON!! 1, You may rest this Character: Your opponent places 2 cards from their trash at the bottom of their deck in any order. Then, add 1 card from the top of your Life cards to your hand."
+    ],
+    "failedParts": [
+      "Your opponent places 2 cards from their trash at the bottom of their deck in any order"
+    ]
+  }
+}

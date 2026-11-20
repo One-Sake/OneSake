@@ -1,0 +1,16 @@
+{
+  "cardId": "OP15-036",
+  "status": "manual",
+  "sourceTextHash": "554271ae3db121a4ce77473a7a8828ec0d0e6e7235ac1f6a339cb5c8f45d70ab",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play]/[When Attacking] K.O. up to 1 of your opponent's rested Characters with a cost of 4 or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play]/[When Attacking] K.O. up to 1 of your opponent's rested Characters with a cost of 4 or less."
+    ],
+    "failedParts": [
+      "/[When Attacking] K.O. up to 1 of your opponent's rested Characters with a cost of 4 or less"
+    ]
+  }
+}

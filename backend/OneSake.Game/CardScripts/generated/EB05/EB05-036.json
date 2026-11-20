@@ -1,0 +1,16 @@
+{
+  "cardId": "EB05-036",
+  "status": "manual",
+  "sourceTextHash": "6ccef97943d271181f72a9b99f67223f2cb4d2eaf5189b599a30c4fcd507d52f",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your Leader has the {Navy} type, draw 1 card, and add up to 1 DON!! card as rested from your DON!! deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your Leader has the {Navy} type, draw 1 card, and add up to 1 DON!! card as rested from your DON!! deck."
+    ],
+    "failedParts": [
+      "Draw 1 card, and add up to 1 DON!! card as rested from your DON!! deck"
+    ]
+  }
+}

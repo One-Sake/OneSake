@@ -1,0 +1,16 @@
+{
+  "cardId": "ST14-007",
+  "status": "manual",
+  "sourceTextHash": "41ed0828c413f365c999f1b36535fcd18e310b56c5fee50006c79553fe3bca2a",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] / [When Attacking] If you have a Character with a cost of 8 or more, give up to 1 of your opponent's Characters -5 cost during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] / [When Attacking] If you have a Character with a cost of 8 or more, give up to 1 of your opponent's Characters -5 cost during this turn."
+    ],
+    "failedParts": [
+      "/ [When Attacking] If you have a Character with a cost of 8 or more, give up to 1 of your opponent's Characters -5 cost during this turn"
+    ]
+  }
+}

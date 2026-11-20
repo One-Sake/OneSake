@@ -1,0 +1,72 @@
+{
+  "cardId": "OP11-035",
+  "status": "manual",
+  "sourceTextHash": "a7274d6711218c51de20cf960833dde63ff8af66c639472b099a1de8afbfe195",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: When this Character is K.O.'d by your opponent's effect, you may rest 1 of your DON!! cards. If you do, play up to 1 \"Fish-Man\" or {Merfolk} type Character card with a cost of 4 or less from your hand.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] Rest up to 1 of your opponent's Characters.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Rest",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": true,
+              "all": false,
+              "self": false,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "Opponent",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Rest up to 1 of your opponent's Characters"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "When this Character is K.O.'d by your opponent's effect, you may rest 1 of your DON!! cards. If you do, play up to 1 \"Fish-Man\" or {Merfolk} type Character card with a cost of 4 or less from your hand."
+    ],
+    "failedParts": [
+      "When this Character is K.O.'d by your opponent's effect, you may rest 1 of your DON!! cards"
+    ]
+  }
+}

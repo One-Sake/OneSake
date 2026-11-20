@@ -1,0 +1,16 @@
+{
+  "cardId": "OP07-052",
+  "status": "manual",
+  "sourceTextHash": "c2d57347f3f402cdf02ed0920b489577dfe90b2a62eb5c1456baca5d2dbe859b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If you have 2 or more [Amazon Lily] or {Kuja Pirates} type Characters on your field, place up to 1 Character with a cost of 2 or less at the bottom of the owner's deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If you have 2 or more [Amazon Lily] or {Kuja Pirates} type Characters on your field, place up to 1 Character with a cost of 2 or less at the bottom of the owner's deck."
+    ],
+    "failedParts": [
+      "IF: If you have 2 or more [Amazon Lily] or {Kuja Pirates} type Characters on your field, place up to 1 Character with a cost of 2 or less at the bottom of the owner's deck"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP08-040",
+  "status": "manual",
+  "sourceTextHash": "bfabcb3f9dcdea3eda821dd01d3ac69b681e56ff8c1723f0d91639dcff882c76",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] You may reveal 2 cards with a type including {Whitebeard Piratess} from your hand: If your Leader's type includes \"Whitebeard Piratess\", return up to 1 of your opponent's Characters with a cost of 4 or less to the owner's hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] You may reveal 2 cards with a type including {Whitebeard Piratess} from your hand: If your Leader's type includes \"Whitebeard Piratess\", return up to 1 of your opponent's Characters with a cost of 4 or less to the owner's hand."
+    ],
+    "failedParts": [
+      "IF: If your Leader's type includes \"Whitebeard Piratess\", return up to 1 of your opponent's Characters with a cost of 4 or less to the owner's hand"
+    ]
+  }
+}

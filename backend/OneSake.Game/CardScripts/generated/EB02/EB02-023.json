@@ -1,0 +1,16 @@
+{
+  "cardId": "EB02-023",
+  "status": "manual",
+  "sourceTextHash": "a2e15e7b930f29d563807018dafa0e778837c1ce7f32604953d156aa59fb54b2",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] [Once Per Turn] When your opponent's Character is returned to the owner's hand by your effect, look at 3 cards from the top of your deck and place them at the top or bottom of the deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] [Once Per Turn] When your opponent's Character is returned to the owner's hand by your effect, look at 3 cards from the top of your deck and place them at the top or bottom of the deck in any order."
+    ],
+    "failedParts": [
+      "When your opponent's Character is returned to the owner's hand by your effect, look at 3 cards from the top of your deck and place them at the top or bottom of the deck in any order"
+    ]
+  }
+}

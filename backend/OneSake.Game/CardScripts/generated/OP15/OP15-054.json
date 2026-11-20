@@ -1,0 +1,16 @@
+{
+  "cardId": "OP15-054",
+  "status": "manual",
+  "sourceTextHash": "d42321455389563a0d7b1ad3aa417f45c6f22408c899b302a8f61e47fd54ebe3",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] If your Leader is [Lucy], choose one: . Draw 2 cards and trash 1 card from your hand. Then, play up to 1 {Dressrosa} type Character card with a cost of 4 or less from your hand. . Return up to 1 Stage to the owner's hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Main] If your Leader is [Lucy], choose one: . Draw 2 cards and trash 1 card from your hand. Then, play up to 1 {Dressrosa} type Character card with a cost of 4 or less from your hand. . Return up to 1 Stage to the owner's hand."
+    ],
+    "failedParts": [
+      "COST: If your Leader is [Lucy], choose one"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP01-099",
+  "status": "manual",
+  "sourceTextHash": "165be97bb834dabad90762e87a652c21dcd9960d2a13677d60c16b9cd46ac3c5",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: Kurozumi Clan type Characters other than your [Kurozumi Semimaru] cannot be K.O.'d in battle.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "Kurozumi Clan type Characters other than your [Kurozumi Semimaru] cannot be K.O.'d in battle."
+    ],
+    "failedParts": [
+      "Kurozumi Clan type Characters other than your [Kurozumi Semimaru] cannot be K.O.'d in battle"
+    ]
+  }
+}

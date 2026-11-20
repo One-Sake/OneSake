@@ -1,0 +1,16 @@
+{
+  "cardId": "OP07-065",
+  "status": "manual",
+  "sourceTextHash": "a90a871979a8a0d9f8a87d337060571aff460df3765281149bf8e5aaed9d2d1e",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your Leader has the {Foxy Pirates} type and the number of DON!! cards on your field is equal to or less than the number on your opponent's field, add up to 1 DON!! card from your DON!! deck and set it as active.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your Leader has the {Foxy Pirates} type and the number of DON!! cards on your field is equal to or less than the number on your opponent's field, add up to 1 DON!! card from your DON!! deck and set it as active."
+    ],
+    "failedParts": [
+      "IF: If your Leader has the {Foxy Pirates} type and the number of DON!! cards on your field is equal to or less than the number on your opponent's field, add up to 1 DON!! card from your DON!! deck and set it as active"
+    ]
+  }
+}

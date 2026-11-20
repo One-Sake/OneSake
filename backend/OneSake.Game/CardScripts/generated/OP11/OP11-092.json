@@ -1,0 +1,16 @@
+{
+  "cardId": "OP11-092",
+  "status": "manual",
+  "sourceTextHash": "bc3a6768975295225c85edc6d3d64d6494164b34ff14f8a785f5263a98faf68c",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] You may trash 1 card from your hand: Draw 1 card and play up to 1 {SWORD} type Character card with a cost of 8 or less other than [Helmeppo] from your trash. Then, place the 1 Character played by this effect at the bottom of the owner's deck at the end of this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] You may trash 1 card from your hand: Draw 1 card and play up to 1 {SWORD} type Character card with a cost of 8 or less other than [Helmeppo] from your trash. Then, place the 1 Character played by this effect at the bottom of the owner's deck at the end of this turn."
+    ],
+    "failedParts": [
+      "Place the 1 Character played by this effect at the bottom of the owner's deck at the end of this turn"
+    ]
+  }
+}

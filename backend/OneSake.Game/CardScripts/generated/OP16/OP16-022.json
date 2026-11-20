@@ -1,0 +1,16 @@
+{
+  "cardId": "OP16-022",
+  "status": "manual",
+  "sourceTextHash": "deb248e60449d08b0ee366439bddfb6be9779cfc5b7dafc4400b8a2370c5823b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] If the only Characters on your field are {Impel Down} type Characters, set up to 2 of your DON!! cards as active.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] If the only Characters on your field are {Impel Down} type Characters, set up to 2 of your DON!! cards as active."
+    ],
+    "failedParts": [
+      "IF: If the only Characters on your field are {Impel Down} type Characters, set up to 2 of your DON!! cards as active"
+    ]
+  }
+}

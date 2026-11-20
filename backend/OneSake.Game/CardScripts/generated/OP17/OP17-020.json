@@ -1,0 +1,16 @@
+{
+  "cardId": "OP17-020",
+  "status": "manual",
+  "sourceTextHash": "f8912cb3b8637ca2a56cfcd9defc0fb87311724a21ca1da3bd277628c4497e47",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] You may trash 1 card from your hand or rest 1 of your DON!! cards: Up to 1 of your opponent's rested Characters will not become active in your opponent's next Refresh Phase.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] You may trash 1 card from your hand or rest 1 of your DON!! cards: Up to 1 of your opponent's rested Characters will not become active in your opponent's next Refresh Phase."
+    ],
+    "failedParts": [
+      "COST: You may trash 1 card from your hand or rest 1 of your DON!! cards"
+    ]
+  }
+}

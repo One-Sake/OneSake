@@ -1,0 +1,16 @@
+{
+  "cardId": "OP09-044",
+  "status": "manual",
+  "sourceTextHash": "2778f1dba36822d198b1b59e4caeb9c4ed245b2e6cf14cb17397997134765383",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking] Look at 5 cards from the top of your deck; reveal up to 1 {Land of Wano} type card or card with a type including {Whitebeard Pirates} and add it to your hand. Then, place the rest at the bottom of your deck in any order and trash 1 card from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[When Attacking] Look at 5 cards from the top of your deck; reveal up to 1 {Land of Wano} type card or card with a type including {Whitebeard Pirates} and add it to your hand. Then, place the rest at the bottom of your deck in any order and trash 1 card from your hand."
+    ],
+    "failedParts": [
+      "Look at 5 cards from the top of your deck; reveal up to 1 {Land of Wano} type card or card with a type including {Whitebeard Pirates} and add it to your hand"
+    ]
+  }
+}

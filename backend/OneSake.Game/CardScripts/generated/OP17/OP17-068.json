@@ -1,0 +1,16 @@
+{
+  "cardId": "OP17-068",
+  "status": "manual",
+  "sourceTextHash": "d99b6e94948e1d068efa20f199112fbc8c50f96de642220022355eebd5566746",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking] You may trash 2 cards from your hand: If your Leader has the {Animal Kingdom Pirates} type, add up to 2 DON!! cards as rested from your DON!! deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[When Attacking] You may trash 2 cards from your hand: If your Leader has the {Animal Kingdom Pirates} type, add up to 2 DON!! cards as rested from your DON!! deck."
+    ],
+    "failedParts": [
+      "Add up to 2 DON!! cards as rested from your DON!! deck"
+    ]
+  }
+}

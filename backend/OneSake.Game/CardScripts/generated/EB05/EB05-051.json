@@ -1,0 +1,46 @@
+{
+  "cardId": "EB05-051",
+  "status": "manual",
+  "sourceTextHash": "cc5bddd7cf3f8c7b0f6a55251a4b749f8a2b52b5a77a1b68c79272e35f3ffbdf",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Rest up to 1 of your opponent's Characters with a cost equal to or less than the total of your and your opponent's Life cards.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Play this card.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "PlayThisCard",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Play this card"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[On Play] Rest up to 1 of your opponent's Characters with a cost equal to or less than the total of your and your opponent's Life cards."
+    ],
+    "failedParts": [
+      "Rest up to 1 of your opponent's Characters with a cost equal to or less than the total of your and your opponent's Life cards"
+    ]
+  }
+}

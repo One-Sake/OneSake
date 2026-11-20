@@ -1,0 +1,74 @@
+{
+  "cardId": "OP06-009",
+  "status": "manual",
+  "sourceTextHash": "a3739d74e30185361e0be9a232f42ce20a0152f143a8493ec16b70e5000a5448",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Blocker] [When Attacking] / [On Block] | [Once Per Turn] This Character's base power becomes the same as your opponent's Leader until the start of your next turn.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Static",
+        "text": "[Blocker]",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "GainFlag",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "Permanent",
+            "flag": "Blocker",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "[Blocker]"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Blocker] [When Attacking] / [On Block]",
+      "[Once Per Turn] This Character's base power becomes the same as your opponent's Leader until the start of your next turn."
+    ],
+    "failedParts": [
+      "/ [On Block]",
+      "This Character's base power becomes the same as your opponent's Leader until the start of your next turn"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP16-001",
+  "status": "manual",
+  "sourceTextHash": "38eebe60f59e2fde84f5e36a1edb4c5c412610c5689679ae79636e3926835feb",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] Up to 1 of your [Monkey.D.Luffy] Characters or up to 1 of your Characters with a type including {Whitebeard Pirates}, with 8000 power or more, gains [Rush] during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] Up to 1 of your [Monkey.D.Luffy] Characters or up to 1 of your Characters with a type including {Whitebeard Pirates}, with 8000 power or more, gains [Rush] during this turn."
+    ],
+    "failedParts": [
+      "Up to 1 of your [Monkey.D.Luffy] Characters or up to 1 of your Characters with a type including {Whitebeard Pirates}, with 8000 power or more, gains [Rush] during this turn"
+    ]
+  }
+}

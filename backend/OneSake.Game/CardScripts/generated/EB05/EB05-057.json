@@ -1,0 +1,18 @@
+{
+  "cardId": "EB05-057",
+  "status": "manual",
+  "sourceTextHash": "84765b4e40740bcd1ea5ca2b82946582330ef337d178276e1c877a6a4ca53e28",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] Give up to 1 rested DON!! card to 1 of your Leader or Character cards with the \"Special\" or \"Wisdom\" Attribute. | [Trigger] If your have 2 or less Life cards, play up to 1 Character card with 6000 power or less and a [Trigger] from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] Give up to 1 rested DON!! card to 1 of your Leader or Character cards with the \"Special\" or \"Wisdom\" Attribute.",
+      "[Trigger] If your have 2 or less Life cards, play up to 1 Character card with 6000 power or less and a [Trigger] from your hand."
+    ],
+    "failedParts": [
+      "Give up to 1 rested DON!! card to 1 of your Leader or Character cards with the \"Special\" or \"Wisdom\" Attribute",
+      "IF: If your have 2 or less Life cards, play up to 1 Character card with 6000 power or less and a [Trigger] from your hand"
+    ]
+  }
+}

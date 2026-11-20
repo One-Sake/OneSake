@@ -1,0 +1,47 @@
+{
+  "cardId": "OP17-047",
+  "status": "generated",
+  "sourceTextHash": "73ddd0ea6312a5fafd909a555804e904817f505049e37fbed5b77281fb5b1237",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "EndOfYourTurn",
+        "text": "[End of Your Turn] If you have 2 or less cards in your hand, your opponent places 1 card from their hand at the bottom of their deck.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "OpponentHandToDeckBottom",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [
+              {
+                "kind": "HandAtMost",
+                "amount": 2,
+                "text": "you have 2 or less cards in your hand"
+              }
+            ],
+            "text": "Your opponent places 1 card from their hand at the bottom of their deck"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

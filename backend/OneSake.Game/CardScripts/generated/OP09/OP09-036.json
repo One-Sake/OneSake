@@ -1,0 +1,16 @@
+{
+  "cardId": "OP09-036",
+  "status": "manual",
+  "sourceTextHash": "fd68ccc02116e138ec7c15577dc275967235def652d09eeb0dce1ee5a3ed1cc5",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If you have 2 or more rested Characters, rest up to 1 of your opponent's DON!! cards or Characters with a cost of 6 or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If you have 2 or more rested Characters, rest up to 1 of your opponent's DON!! cards or Characters with a cost of 6 or less."
+    ],
+    "failedParts": [
+      "Rest up to 1 of your opponent's DON!! cards or Characters with a cost of 6 or less"
+    ]
+  }
+}

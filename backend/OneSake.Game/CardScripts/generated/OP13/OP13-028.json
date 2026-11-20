@@ -1,0 +1,16 @@
+{
+  "cardId": "OP13-028",
+  "status": "manual",
+  "sourceTextHash": "3ada26c8429e3974d28c5167f3e56624b4bdf5350558df8f429bec22a05a3771",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Set all of your DON!! cards as active. Then, you cannot play cards from your hand during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Set all of your DON!! cards as active. Then, you cannot play cards from your hand during this turn."
+    ],
+    "failedParts": [
+      "Set all of your DON!! cards as active"
+    ]
+  }
+}

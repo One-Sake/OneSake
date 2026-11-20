@@ -1,0 +1,18 @@
+{
+  "cardId": "ST36-005",
+  "status": "manual",
+  "sourceTextHash": "ad2efd22fadc6f99d16b6fb08158b7305b0e2921a639f6cdc3d78814bd9bd8af",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Your Opponent's Attack] [Once Per Turn] You may turn 1 card from the top or bottom of your Life cards face-down: Change the target of the attack to your [Eustass\"Captain\"Kid] with 5000 base power or more. | [Activate: Main] [Once Per Turn] You may turn 1 card from the top or bottom of your Life cards face-up: Give up to 1 rested DON!! card to your Leader.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Your Opponent's Attack] [Once Per Turn] You may turn 1 card from the top or bottom of your Life cards face-down: Change the target of the attack to your [Eustass\"Captain\"Kid] with 5000 base power or more.",
+      "[Activate: Main] [Once Per Turn] You may turn 1 card from the top or bottom of your Life cards face-up: Give up to 1 rested DON!! card to your Leader."
+    ],
+    "failedParts": [
+      "COST: You may turn 1 card from the top or bottom of your Life cards face-down",
+      "COST: You may turn 1 card from the top or bottom of your Life cards face-up"
+    ]
+  }
+}

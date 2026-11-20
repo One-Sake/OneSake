@@ -1,0 +1,16 @@
+{
+  "cardId": "OP17-057",
+  "status": "manual",
+  "sourceTextHash": "3677d651ff3d1139673914ada248806c552547c94362691081ed504e8c43c68d",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Your Opponent's Attack] You may rest this Stage and trash 1 card from your hand: Up to 1 of your Leader with a type including {Rocks Pirates} or up to 1 of your Characters with a type including {Rocks Pirates} gains +1000 power during this battle.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Your Opponent's Attack] You may rest this Stage and trash 1 card from your hand: Up to 1 of your Leader with a type including {Rocks Pirates} or up to 1 of your Characters with a type including {Rocks Pirates} gains +1000 power during this battle."
+    ],
+    "failedParts": [
+      "Up to 1 of your Leader with a type including {Rocks Pirates} or up to 1 of your Characters with a type including {Rocks Pirates} gains +1000 power during this battle"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP09-086",
+  "status": "manual",
+  "sourceTextHash": "6d1fc9e27144e06972aa7334559af10d14d3f259e184dd87fcb03735ed994505",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: This Character cannot be K.O.'d by your opponent's effects. If your Leader has the {Blackbeard Pirates} type, this Character gains +1000 power for every 4 cards in your trash.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "This Character cannot be K.O.'d by your opponent's effects. If your Leader has the {Blackbeard Pirates} type, this Character gains +1000 power for every 4 cards in your trash."
+    ],
+    "failedParts": [
+      "This Character gains +1000 power for every 4 cards in your trash"
+    ]
+  }
+}

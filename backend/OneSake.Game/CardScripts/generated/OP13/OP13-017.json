@@ -1,0 +1,16 @@
+{
+  "cardId": "OP13-017",
+  "status": "manual",
+  "sourceTextHash": "edcb3bc0910e542d8d6512897089b977da4f4e7081baa393bbf8defd8b3f3e22",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Once Per Turn] If your {Revolutionary Army} type Character would be removed from the field by your opponent's effect, you may give this Character 2000 power during this turn instead.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Once Per Turn] If your {Revolutionary Army} type Character would be removed from the field by your opponent's effect, you may give this Character 2000 power during this turn instead."
+    ],
+    "failedParts": [
+      "IF: If your {Revolutionary Army} type Character would be removed from the field by your opponent's effect, you may give this Character 2000 power during this turn instead"
+    ]
+  }
+}

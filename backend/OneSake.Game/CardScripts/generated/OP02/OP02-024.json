@@ -1,0 +1,46 @@
+{
+  "cardId": "OP02-024",
+  "status": "manual",
+  "sourceTextHash": "e94101e2c059dfdc80a91acdd2f0de30292fbeb8784b0296bde7720885f081ac",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] If you have 1 or less Life cards, your [Edward.Newgate] and all your Characters with a type including {Whitebeard Pirates} gain +2000 power.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Play this card.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "PlayThisCard",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Play this card"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Your Turn] If you have 1 or less Life cards, your [Edward.Newgate] and all your Characters with a type including {Whitebeard Pirates} gain +2000 power."
+    ],
+    "failedParts": [
+      "Your [Edward.Newgate] and all your Characters with a type including {Whitebeard Pirates} gain +2000 power"
+    ]
+  }
+}

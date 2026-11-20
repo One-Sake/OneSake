@@ -1,0 +1,16 @@
+{
+  "cardId": "OP12-031",
+  "status": "manual",
+  "sourceTextHash": "f8d8d77274b0222336237bac54f571a9a4ac237ff7b64dd8e7ba04a8941a8365",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Rest up to 1 of your opponent's Characters with a base cost of 6 or less. Then, give up to 3 rested DON!! cards to your [Roronoa Zoro] Leader.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Rest up to 1 of your opponent's Characters with a base cost of 6 or less. Then, give up to 3 rested DON!! cards to your [Roronoa Zoro] Leader."
+    ],
+    "failedParts": [
+      "Give up to 3 rested DON!! cards to your [Roronoa Zoro] Leader"
+    ]
+  }
+}

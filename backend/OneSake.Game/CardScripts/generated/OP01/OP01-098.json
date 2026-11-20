@@ -1,0 +1,16 @@
+{
+  "cardId": "OP01-098",
+  "status": "manual",
+  "sourceTextHash": "bc913000b32be5f0d6f4b70824e3d059f059b4c1e662a569916c0958cbc5ca9a",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Reveal up to 1 [Artificial Devil Fruit SMILE] from your deck and add it to your hand. Then, shuffle your deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Reveal up to 1 [Artificial Devil Fruit SMILE] from your deck and add it to your hand. Then, shuffle your deck."
+    ],
+    "failedParts": [
+      "Reveal up to 1 [Artificial Devil Fruit SMILE] from your deck and add it to your hand"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "ST12-003",
+  "status": "manual",
+  "sourceTextHash": "e08170409f2db382467ccb8afed77f462cb6233b39b3505a1efcfac2b3a926a0",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If you have 2 or less Characters, play up to 1 {Muggy Kingdom} type or \"Slash\" attribute Character card with a cost of 4 or less other than [Dracule Mihawk] from your hand rested.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If you have 2 or less Characters, play up to 1 {Muggy Kingdom} type or \"Slash\" attribute Character card with a cost of 4 or less other than [Dracule Mihawk] from your hand rested."
+    ],
+    "failedParts": [
+      "Play up to 1 {Muggy Kingdom} type or \"Slash\" attribute Character card with a cost of 4 or less other than [Dracule Mihawk] from your hand rested"
+    ]
+  }
+}

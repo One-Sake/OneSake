@@ -1,0 +1,16 @@
+{
+  "cardId": "OP09-092",
+  "status": "manual",
+  "sourceTextHash": "6a886e674e89b1848e59e0644bf8cb2ecb1ec73936a87faafdad680c4f4de14a",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may rest this Character: If the number of cards in your hand is at least 3 less than the number in your opponent's hand, draw 2 cards and trash 1 card from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may rest this Character: If the number of cards in your hand is at least 3 less than the number in your opponent's hand, draw 2 cards and trash 1 card from your hand."
+    ],
+    "failedParts": [
+      "IF: If the number of cards in your hand is at least 3 less than the number in your opponent's hand, draw 2 cards and trash 1 card from your hand"
+    ]
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "cardId": "EB02-026",
+  "status": "generated",
+  "sourceTextHash": "369c0d90eaae37faeb14443a5cbf7bf2b1ede39aee522df49b32b87b058125df",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] If your Leader is multicolored and you have 5 or less cards in your hand, draw 2 cards.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 2,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [
+              {
+                "kind": "LeaderIsMulticolored",
+                "amount": 0,
+                "text": "your Leader is multicolored"
+              },
+              {
+                "kind": "HandAtMost",
+                "amount": 5,
+                "text": "you have 5 or less cards in your hand"
+              }
+            ],
+            "text": "Draw 2 cards"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

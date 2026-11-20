@@ -1,0 +1,73 @@
+{
+  "cardId": "OP11-051",
+  "status": "manual",
+  "sourceTextHash": "e7976c2ffeadd855c214e28d4727b54a1bd901896f569065b3bd149e1b08cc77",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: When this Character is K.O.'d by your opponent's effect, look at 5 cards from the top of your deck and play up to 1 {Straw Hat Crew} type Character card with a cost of 5 or less. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] Return up to 1 Character with 5000 base power or less to the owner's hand.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "ReturnToHand",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": true,
+              "all": false,
+              "self": false,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "Any",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "maxPower": 5000,
+                "useBaseValues": true,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Return up to 1 Character with 5000 base power or less to the owner's hand"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "When this Character is K.O.'d by your opponent's effect, look at 5 cards from the top of your deck and play up to 1 {Straw Hat Crew} type Character card with a cost of 5 or less. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "When this Character is K.O.'d by your opponent's effect, look at 5 cards from the top of your deck and play up to 1 {Straw Hat Crew} type Character card with a cost of 5 or less"
+    ]
+  }
+}

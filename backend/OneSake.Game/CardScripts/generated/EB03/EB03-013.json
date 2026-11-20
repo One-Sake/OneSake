@@ -1,0 +1,16 @@
+{
+  "cardId": "EB03-013",
+  "status": "manual",
+  "sourceTextHash": "1dec2e6666e061b89c4365abf71c18cfb78d328b385f727b328989f97be9a713",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] If this Character was played on this turn, K.O. up to 1 of your opponent's rested Characters with a cost of 5 or less. Then, play up to 1 [Zou] from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] If this Character was played on this turn, K.O. up to 1 of your opponent's rested Characters with a cost of 5 or less. Then, play up to 1 [Zou] from your hand."
+    ],
+    "failedParts": [
+      "IF: If this Character was played on this turn, K.O. up to 1 of your opponent's rested Characters with a cost of 5 or less"
+    ]
+  }
+}

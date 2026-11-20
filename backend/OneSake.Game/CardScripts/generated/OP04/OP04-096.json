@@ -1,0 +1,16 @@
+{
+  "cardId": "OP04-096",
+  "status": "manual",
+  "sourceTextHash": "d48fff6ade1165babbdea78cb212649ac31db6dd930dfcfa013b1ed3a3933d4d",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If your Leader has the {Dressrosa} type, your {Dressrosa} type Characters can attack Characters on the turn in which they are played.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If your Leader has the {Dressrosa} type, your {Dressrosa} type Characters can attack Characters on the turn in which they are played."
+    ],
+    "failedParts": [
+      "Your {Dressrosa} type Characters can attack Characters on the turn in which they are played"
+    ]
+  }
+}

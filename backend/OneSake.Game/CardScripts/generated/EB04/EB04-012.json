@@ -1,0 +1,16 @@
+{
+  "cardId": "EB04-012",
+  "status": "manual",
+  "sourceTextHash": "fdca6d274da312412b7b927a05ec7a6d414a357720ad65c5342bbb9845af55c8",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] If this Character has played on this turn, set your {Land of Wano} type Leader as active.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] If this Character has played on this turn, set your {Land of Wano} type Leader as active."
+    ],
+    "failedParts": [
+      "IF: If this Character has played on this turn, set your {Land of Wano} type Leader as active"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "EB02-053",
+  "status": "manual",
+  "sourceTextHash": "f4667740bdf66beb8eeae0ab393205b736469ec6c38325db8f9b7c157e0f8a07",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play]/[On K.O.] Look at up to 1 card from the top of your or your opponent's Life cards and place it at the top or bottom of the Life cards.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play]/[On K.O.] Look at up to 1 card from the top of your or your opponent's Life cards and place it at the top or bottom of the Life cards."
+    ],
+    "failedParts": [
+      "/[On K.O.] Look at up to 1 card from the top of your or your opponent's Life cards and place it at the top or bottom of the Life cards"
+    ]
+  }
+}

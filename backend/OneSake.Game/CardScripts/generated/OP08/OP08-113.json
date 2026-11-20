@@ -1,0 +1,16 @@
+{
+  "cardId": "OP08-113",
+  "status": "manual",
+  "sourceTextHash": "4ad94f0d41f6d5d28370f1c2247a3b4207f25bdc23802ac896e0842134b070cb",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Trigger] You may trash 1 card from your hand: If you have 2 or less Life cards, play this card and K.O. up to 1 of your opponent's Characters with a cost of 3 or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Trigger] You may trash 1 card from your hand: If you have 2 or less Life cards, play this card and K.O. up to 1 of your opponent's Characters with a cost of 3 or less."
+    ],
+    "failedParts": [
+      "Play this card and K.O. up to 1 of your opponent's Characters with a cost of 3 or less"
+    ]
+  }
+}

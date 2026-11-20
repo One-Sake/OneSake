@@ -1,0 +1,16 @@
+{
+  "cardId": "OP14-083",
+  "status": "manual",
+  "sourceTextHash": "7e25875195537d7199c46f0d4c9131059c5b64a42e279849c03ce7bab9669f42",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may trash this Character: Give up to 1 of your opponent's 0 cost Characters 3000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may trash this Character: Give up to 1 of your opponent's 0 cost Characters 3000 power during this turn."
+    ],
+    "failedParts": [
+      "Give up to 1 of your opponent's 0 cost Characters 3000 power during this turn"
+    ]
+  }
+}

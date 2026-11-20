@@ -1,0 +1,16 @@
+{
+  "cardId": "ST10-012",
+  "status": "manual",
+  "sourceTextHash": "ac0488f56548e4f8b522fa03eda9c611cdd330fa68b106667361d70687768a26",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] / [When Attacking] If your opponent has more DON!! cards on their field than you, add up to 1 DON!! card from your DON!! deck and rest it.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] / [When Attacking] If your opponent has more DON!! cards on their field than you, add up to 1 DON!! card from your DON!! deck and rest it."
+    ],
+    "failedParts": [
+      "/ [When Attacking] If your opponent has more DON!! cards on their field than you, add up to 1 DON!! card from your DON!! deck and rest it"
+    ]
+  }
+}

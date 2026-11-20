@@ -1,0 +1,16 @@
+{
+  "cardId": "OP12-101",
+  "status": "manual",
+  "sourceTextHash": "3fc7aaada9d4517ed170ab2f6c35a3078b0477da2da355e09bb9d0c5e9135b77",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may rest this Character: Your {Supernovas} type Leader gains +1000 power until the end of your opponent's next turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may rest this Character: Your {Supernovas} type Leader gains +1000 power until the end of your opponent's next turn."
+    ],
+    "failedParts": [
+      "Your {Supernovas} type Leader gains +1000 power until the end of your opponent's next turn"
+    ]
+  }
+}

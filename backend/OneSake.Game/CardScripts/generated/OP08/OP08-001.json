@@ -1,0 +1,16 @@
+{
+  "cardId": "OP08-001",
+  "status": "manual",
+  "sourceTextHash": "d6e4c5b9f07ffc9fc8460bf9fce8af9189f9eb1daf8d9f56fa0ea03dab79f3c4",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] Give up to 3 of your [Animal] or {Drum Kingdom} type Characters up to 1 rested DON!! card each.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] Give up to 3 of your [Animal] or {Drum Kingdom} type Characters up to 1 rested DON!! card each."
+    ],
+    "failedParts": [
+      "Give up to 3 of your [Animal] or {Drum Kingdom} type Characters up to 1 rested DON!! card each"
+    ]
+  }
+}

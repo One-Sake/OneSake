@@ -1,0 +1,16 @@
+{
+  "cardId": "PRB01-001",
+  "status": "manual",
+  "sourceTextHash": "3ee9774015a8d82baed7b4feb7befbce0aa36c2285ff44a5f7ee317cf3801bb3",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] Up to 1 of your Characters without an [On Play] effect and with a cost of 8 or less gains [Rush] during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] Up to 1 of your Characters without an [On Play] effect and with a cost of 8 or less gains [Rush] during this turn."
+    ],
+    "failedParts": [
+      "Up to 1 of your Characters without an [On Play] effect and with a cost of 8 or less gains [Rush] during this turn"
+    ]
+  }
+}

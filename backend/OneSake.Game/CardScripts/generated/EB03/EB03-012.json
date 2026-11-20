@@ -1,0 +1,16 @@
+{
+  "cardId": "EB03-012",
+  "status": "manual",
+  "sourceTextHash": "93b903069843cdb25579bfea654a599bae98818061a907c78b12227d377c38bc",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may rest this Character: Rest up to 1 of your opponent's DON!! cards or {Animal} or {SMILE} type Characters with a cost of 3 or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may rest this Character: Rest up to 1 of your opponent's DON!! cards or {Animal} or {SMILE} type Characters with a cost of 3 or less."
+    ],
+    "failedParts": [
+      "Rest up to 1 of your opponent's DON!! cards or {Animal} or {SMILE} type Characters with a cost of 3 or less"
+    ]
+  }
+}

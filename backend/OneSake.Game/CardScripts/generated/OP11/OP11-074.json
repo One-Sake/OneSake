@@ -1,0 +1,16 @@
+{
+  "cardId": "OP11-074",
+  "status": "manual",
+  "sourceTextHash": "5573da056aec59f5221965506428283517ff14efc2e50e1005ec5160440ff1d9",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] DON!! 1, You may rest this Character: Choose a cost and reveal 1 card from the top of your opponent's deck. If the revealed card has the chosen cost, rest up to 1 of your opponent's Characters with a cost of 4 or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] DON!! 1, You may rest this Character: Choose a cost and reveal 1 card from the top of your opponent's deck. If the revealed card has the chosen cost, rest up to 1 of your opponent's Characters with a cost of 4 or less."
+    ],
+    "failedParts": [
+      "Choose a cost and reveal 1 card from the top of your opponent's deck"
+    ]
+  }
+}

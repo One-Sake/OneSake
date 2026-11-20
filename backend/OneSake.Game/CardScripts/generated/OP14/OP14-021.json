@@ -1,0 +1,16 @@
+{
+  "cardId": "OP14-021",
+  "status": "manual",
+  "sourceTextHash": "85d5e8f33724fd2468d50f459e31c3f402fec474658c49cb206cbf94be22a0d3",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] When this Character becomes rested, you may add 1 card from the top of your Life cards to your hand. If you do, up to 1 of your opponent's rested Characters or Stages will not become active in your opponent's next Refresh Phase.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] When this Character becomes rested, you may add 1 card from the top of your Life cards to your hand. If you do, up to 1 of your opponent's rested Characters or Stages will not become active in your opponent's next Refresh Phase."
+    ],
+    "failedParts": [
+      "When this Character becomes rested, you may add 1 card from the top of your Life cards to your hand"
+    ]
+  }
+}

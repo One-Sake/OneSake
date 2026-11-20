@@ -1,0 +1,16 @@
+{
+  "cardId": "ST15-004",
+  "status": "manual",
+  "sourceTextHash": "751d8f03ac119949fcae06d4d63701020ad0aae516bf6b89cf09e7022026af42",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your Leader's type includes \"Whitebeard Pirates\", give up to 1 of your opponent's Characters 2000 power during this turn. Then, add 1 card from the top of your Life cards to your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your Leader's type includes \"Whitebeard Pirates\", give up to 1 of your opponent's Characters 2000 power during this turn. Then, add 1 card from the top of your Life cards to your hand."
+    ],
+    "failedParts": [
+      "IF: If your Leader's type includes \"Whitebeard Pirates\", give up to 1 of your opponent's Characters 2000 power during this turn"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "EB02-055",
+  "status": "manual",
+  "sourceTextHash": "778ac39f170474064c5bb770e90ae6ecd7d9de27c7aa02dd3aa9c9760dc1091e",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Trigger] If your Leader has the \"Fish-Man\" or {Merfolk} type and you have 2 or less Life cards, play this card.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Trigger] If your Leader has the \"Fish-Man\" or {Merfolk} type and you have 2 or less Life cards, play this card."
+    ],
+    "failedParts": [
+      "IF: If your Leader has the \"Fish-Man\" or {Merfolk} type and you have 2 or less Life cards, play this card"
+    ]
+  }
+}

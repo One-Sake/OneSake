@@ -1,0 +1,46 @@
+{
+  "cardId": "OP14-045",
+  "status": "manual",
+  "sourceTextHash": "5455aa8ddcecf2f7be0e801cbd31c2d4ce5475f62b74a2dc0a14757a8d5f11a6",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: When a card is trashed from your hand by an effect, this Character gains [Rush] during this turn.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnKO",
+        "text": "[On K.O.] Draw 1 card.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Draw 1 card"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "When a card is trashed from your hand by an effect, this Character gains [Rush] during this turn."
+    ],
+    "failedParts": [
+      "When a card is trashed from your hand by an effect, this Character gains [Rush] during this turn"
+    ]
+  }
+}

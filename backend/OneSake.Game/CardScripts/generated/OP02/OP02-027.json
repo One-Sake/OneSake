@@ -1,0 +1,16 @@
+{
+  "cardId": "OP02-027",
+  "status": "manual",
+  "sourceTextHash": "437cf1b414694b6f3e9b94aa7f436c15c12e2d3c74b149f5c054b47345143d2b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If all of your DON!! cards are rested, this Character cannot be removed from the field by your opponent's effects.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If all of your DON!! cards are rested, this Character cannot be removed from the field by your opponent's effects."
+    ],
+    "failedParts": [
+      "IF: If all of your DON!! cards are rested, this Character cannot be removed from the field by your opponent's effects"
+    ]
+  }
+}

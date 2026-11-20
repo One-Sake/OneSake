@@ -1,0 +1,65 @@
+{
+  "cardId": "OP11-070",
+  "status": "manual",
+  "sourceTextHash": "02aee69c212491f104839f20944d834bef9eb871d63655df0196eaaaf560b0fd",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] DON!! 1, You may rest this Character: Look at 1 card from the top of your opponent's deck.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] Look at 5 cards from the top of your deck; reveal up to 1 {Big Mom Pirates} type card with a cost of 2 or more and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "LookAndReveal",
+            "amount": 5,
+            "secondAmount": 1,
+            "optional": false,
+            "filter": {
+              "owner": "You",
+              "allowLeader": false,
+              "allowCharacter": true,
+              "allowStage": true,
+              "category": "",
+              "minCost": 2,
+              "useBaseValues": false,
+              "typeIncludes": "Big Mom Pirates",
+              "name": "",
+              "nameNot": "",
+              "color": "",
+              "attribute": "",
+              "keyword": "",
+              "excludeSource": false,
+              "requiresTrigger": false,
+              "nameOrType": false,
+              "maxCostFrom": ""
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Look at 5 cards from the top of your deck; reveal up to 1 {Big Mom Pirates} type card with a cost of 2 or more and add it to your hand"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Activate: Main] DON!! 1, You may rest this Character: Look at 1 card from the top of your opponent's deck."
+    ],
+    "failedParts": [
+      "Look at 1 card from the top of your opponent's deck"
+    ]
+  }
+}

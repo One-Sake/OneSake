@@ -1,0 +1,16 @@
+{
+  "cardId": "EB04-045",
+  "status": "manual",
+  "sourceTextHash": "e7b0b6c450382409f050b23a50c1e41f2b8c31affad5df595b6f09c330930d74",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may rest this Character: If there are 2 or more Characters with a cost of 8 or more, up to 1 of your {Revolutionary Army} type Leader or Character cards gains +1000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may rest this Character: If there are 2 or more Characters with a cost of 8 or more, up to 1 of your {Revolutionary Army} type Leader or Character cards gains +1000 power during this turn."
+    ],
+    "failedParts": [
+      "IF: If there are 2 or more Characters with a cost of 8 or more, up to 1 of your {Revolutionary Army} type Leader or Character cards gains +1000 power during this turn"
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "cardId": "OP12-061",
+  "status": "manual",
+  "sourceTextHash": "e6daa74e59e188e059acde8b8e6243b149ec0c01ef160086d9ae72668e0d0f2e",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Once Per Turn] If your [Trafalgar Law] would be K.O.'d, you may add 1 card from the top of your Life cards to your hand instead. | [Activate: Main] [Once Per Turn] DON!! 1: The next time you play [Trafalgar Law] with a cost of 4 or more from your hand during this turn, the cost will be reduced by 2.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Once Per Turn] If your [Trafalgar Law] would be K.O.'d, you may add 1 card from the top of your Life cards to your hand instead.",
+      "[Activate: Main] [Once Per Turn] DON!! 1: The next time you play [Trafalgar Law] with a cost of 4 or more from your hand during this turn, the cost will be reduced by 2."
+    ],
+    "failedParts": [
+      "IF: If your [Trafalgar Law] would be K.O.'d, you may add 1 card from the top of your Life cards to your hand instead",
+      "The next time you play [Trafalgar Law] with a cost of 4 or more from your hand during this turn, the cost will be reduced by 2"
+    ]
+  }
+}

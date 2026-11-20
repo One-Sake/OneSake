@@ -1,0 +1,16 @@
+{
+  "cardId": "OP14-084",
+  "status": "manual",
+  "sourceTextHash": "7e878a38fe562f63e109ee446836eedefd0e9ce5340b0d5a17d723e19659553b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your Leader's type includes \"Baroque Works\", play up to 1 Character card with a type including {Baroque Works} and a cost of 4 or less and up to 1 Character card with a type including {Baroque Works} and a cost of 1 from your trash.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your Leader's type includes \"Baroque Works\", play up to 1 Character card with a type including {Baroque Works} and a cost of 4 or less and up to 1 Character card with a type including {Baroque Works} and a cost of 1 from your trash."
+    ],
+    "failedParts": [
+      "IF: If your Leader's type includes \"Baroque Works\", play up to 1 Character card with a type including {Baroque Works} and a cost of 4 or less and up to 1 Character card with a type including {Baroque Works} and a cost of 1 from your trash"
+    ]
+  }
+}

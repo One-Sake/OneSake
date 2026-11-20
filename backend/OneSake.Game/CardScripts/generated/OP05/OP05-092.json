@@ -1,0 +1,16 @@
+{
+  "cardId": "OP05-092",
+  "status": "manual",
+  "sourceTextHash": "0752a77d89ae14f252487060d2869ed22b85d6522733e8264013ee20d8484edb",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] If the only Characters on your field are {Celestial Dragons} type Characters, give all of your opponent's Characters -6 cost.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] If the only Characters on your field are {Celestial Dragons} type Characters, give all of your opponent's Characters -6 cost."
+    ],
+    "failedParts": [
+      "IF: If the only Characters on your field are {Celestial Dragons} type Characters, give all of your opponent's Characters -6 cost"
+    ]
+  }
+}

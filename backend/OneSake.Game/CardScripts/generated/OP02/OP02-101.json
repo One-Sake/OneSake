@@ -1,0 +1,16 @@
+{
+  "cardId": "OP02-101",
+  "status": "manual",
+  "sourceTextHash": "de3a17d5c188c6a70f5060a5d09b160ad7ce94d3cb60f310b40e50ec1f68ad81",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking] If there is a Character with a cost of 0, your opponent cannot activate the [Blocker] of any Character with a cost of 5 or less during this battle.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[When Attacking] If there is a Character with a cost of 0, your opponent cannot activate the [Blocker] of any Character with a cost of 5 or less during this battle."
+    ],
+    "failedParts": [
+      "Your opponent cannot activate the [Blocker] of any Character with a cost of 5 or less during this battle"
+    ]
+  }
+}

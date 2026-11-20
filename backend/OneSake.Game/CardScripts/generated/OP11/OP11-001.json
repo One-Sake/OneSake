@@ -1,0 +1,18 @@
+{
+  "cardId": "OP11-001",
+  "status": "manual",
+  "sourceTextHash": "83f6d475e9455a7d59f90d01299df6b30ad52c3ece9278b823bf1ec6fbba036f",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: Your {SWORD} type Characters can attack Characters on the turn in which they are played. | [Once Per Turn] If your {Navy} type Character with 7000 base power or less would be removed from the field by your opponent's effect, you may place 3 cards from your trash at the bottom of your deck in any order instead.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "Your {SWORD} type Characters can attack Characters on the turn in which they are played.",
+      "[Once Per Turn] If your {Navy} type Character with 7000 base power or less would be removed from the field by your opponent's effect, you may place 3 cards from your trash at the bottom of your deck in any order instead."
+    ],
+    "failedParts": [
+      "Your {SWORD} type Characters can attack Characters on the turn in which they are played",
+      "IF: If your {Navy} type Character with 7000 base power or less would be removed from the field by your opponent's effect, you may place 3 cards from your trash at the bottom of your deck in any order instead"
+    ]
+  }
+}

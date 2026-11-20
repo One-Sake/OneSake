@@ -1,0 +1,16 @@
+{
+  "cardId": "ST04-001",
+  "status": "manual",
+  "sourceTextHash": "01de1cf5ba4e47dc6bf9d60cfb44502b6225ed0599bac2cab5584b18c2b306a2",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] DON!! -7: Trash up to 1 of your opponent's Life cards.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] DON!! -7: Trash up to 1 of your opponent's Life cards."
+    ],
+    "failedParts": [
+      "Trash up to 1 of your opponent's Life cards"
+    ]
+  }
+}

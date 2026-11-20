@@ -1,0 +1,16 @@
+{
+  "cardId": "OP05-056",
+  "status": "manual",
+  "sourceTextHash": "5474fe10b6a9ac2a819f9cca0aee7ab1404e99b1c1eb9004ff814ee08047a547",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] You may place 1 of your Characters other than this Character at the bottom of your deck: Draw 1 card.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] You may place 1 of your Characters other than this Character at the bottom of your deck: Draw 1 card."
+    ],
+    "failedParts": [
+      "COST: You may place 1 of your Characters other than this Character at the bottom of your deck"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP05-079",
+  "status": "manual",
+  "sourceTextHash": "eeb062d9d02f829e4ab360034efc7dc1d0bdc93d0583de97721372b97979376c",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Your opponent places 3 cards from their trash at the bottom of their deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Your opponent places 3 cards from their trash at the bottom of their deck in any order."
+    ],
+    "failedParts": [
+      "Your opponent places 3 cards from their trash at the bottom of their deck in any order"
+    ]
+  }
+}

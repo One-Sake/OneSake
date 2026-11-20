@@ -1,0 +1,59 @@
+{
+  "cardId": "OP08-015",
+  "status": "generated",
+  "sourceTextHash": "cadebb41a959aba908bcbd4fe07587db117cedfc2cfd2c489f1e6eee2d63d20c",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] Look at 4 cards from the top of your deck; reveal up to 1 [Tony Tony.Chopper] or {Drum Kingdom} type card other than [Dr.Kureha] and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "LookAndReveal",
+            "amount": 4,
+            "secondAmount": 1,
+            "optional": false,
+            "filter": {
+              "owner": "You",
+              "allowLeader": false,
+              "allowCharacter": true,
+              "allowStage": true,
+              "category": "",
+              "useBaseValues": false,
+              "typeIncludes": "Drum Kingdom",
+              "name": "Tony Tony.Chopper",
+              "nameNot": "Dr.Kureha",
+              "color": "",
+              "attribute": "",
+              "keyword": "",
+              "excludeSource": false,
+              "requiresTrigger": false,
+              "nameOrType": true,
+              "maxCostFrom": ""
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Look at 4 cards from the top of your deck; reveal up to 1 [Tony Tony.Chopper] or {Drum Kingdom} type card other than [Dr.Kureha] and add it to your hand"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

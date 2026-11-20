@@ -1,0 +1,16 @@
+{
+  "cardId": "OP16-018",
+  "status": "manual",
+  "sourceTextHash": "83c4bdc0b1fde130d716ef2e2e66060a875391f4c7e5cc1df8bf99912e87e459",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Once Per Turn] If your {Red-Haired Pirates} type Character would be K.O.'d, you may trash 1 Character card with 6000 power or more from your hand instead.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Once Per Turn] If your {Red-Haired Pirates} type Character would be K.O.'d, you may trash 1 Character card with 6000 power or more from your hand instead."
+    ],
+    "failedParts": [
+      "IF: If your {Red-Haired Pirates} type Character would be K.O.'d, you may trash 1 Character card with 6000 power or more from your hand instead"
+    ]
+  }
+}

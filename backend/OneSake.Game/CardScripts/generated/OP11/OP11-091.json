@@ -1,0 +1,16 @@
+{
+  "cardId": "OP11-091",
+  "status": "manual",
+  "sourceTextHash": "ea3510e132046c7b4f3993ae58b5604a0673a78667dd9800a995588c3b4e2624",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Your opponent places 3 Events from their trash at the bottom of their deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Your opponent places 3 Events from their trash at the bottom of their deck in any order."
+    ],
+    "failedParts": [
+      "Your opponent places 3 Events from their trash at the bottom of their deck in any order"
+    ]
+  }
+}

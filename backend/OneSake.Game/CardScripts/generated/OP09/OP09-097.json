@@ -1,0 +1,18 @@
+{
+  "cardId": "OP09-097",
+  "status": "manual",
+  "sourceTextHash": "886c2555bd667e170c2b5ff2407939f52686a2f4c4fa5936723e3fb0f2f06763",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Counter] Negate the effect of up to 1 of your opponent's Leader or Character cards and give that card 4000 power during this turn. | [Trigger] Negate the effect of up to 1 of your opponent's Leader or Character cards during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Counter] Negate the effect of up to 1 of your opponent's Leader or Character cards and give that card 4000 power during this turn.",
+      "[Trigger] Negate the effect of up to 1 of your opponent's Leader or Character cards during this turn."
+    ],
+    "failedParts": [
+      "Negate the effect of up to 1 of your opponent's Leader or Character cards and give that card 4000 power during this turn",
+      "Negate the effect of up to 1 of your opponent's Leader or Character cards during this turn"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "ST09-010",
+  "status": "manual",
+  "sourceTextHash": "ac16560677f7aca08ab736743d6f5cdc48db878fb5435749c40a1af7c34f266b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Once Per Turn] If this Character would be K.O.'d, you may trash 1 card from the top or bottom of your Life cards instead.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Once Per Turn] If this Character would be K.O.'d, you may trash 1 card from the top or bottom of your Life cards instead."
+    ],
+    "failedParts": [
+      "IF: If this Character would be K.O.'d, you may trash 1 card from the top or bottom of your Life cards instead"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP13-001",
+  "status": "manual",
+  "sourceTextHash": "453be982e130b5905c82b111faf72cc2fcd66b85c09c05bce61966b567394e5b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] [On Your Opponent's Attack] If you have 5 or less active DON!! cards, you may rest any number of your DON!! cards. For every DON!! card rested this way, this Leader or up to 1 of your {Straw Hat Crew} type Characters gains +2000 power during this battle.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] [On Your Opponent's Attack] If you have 5 or less active DON!! cards, you may rest any number of your DON!! cards. For every DON!! card rested this way, this Leader or up to 1 of your {Straw Hat Crew} type Characters gains +2000 power during this battle."
+    ],
+    "failedParts": [
+      "IF: If you have 5 or less active DON!! cards, you may rest any number of your DON!! cards"
+    ]
+  }
+}

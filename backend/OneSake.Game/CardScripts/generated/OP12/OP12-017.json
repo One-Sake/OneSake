@@ -1,0 +1,16 @@
+{
+  "cardId": "OP12-017",
+  "status": "manual",
+  "sourceTextHash": "e66fb93931c6a02b404535a598e980d3c8920eb86a5e72d68397b0aa23211c96",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] You may give 1 active DON!! card to 1 of your [Silvers Rayleigh]: Look at 4 cards from the top of your deck; reveal up to 1 red Event or up to 1 Character card with a cost of 3 or more and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Main] You may give 1 active DON!! card to 1 of your [Silvers Rayleigh]: Look at 4 cards from the top of your deck; reveal up to 1 red Event or up to 1 Character card with a cost of 3 or more and add it to your hand. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "COST: You may give 1 active DON!! card to 1 of your [Silvers Rayleigh]"
+    ]
+  }
+}

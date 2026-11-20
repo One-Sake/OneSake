@@ -1,0 +1,18 @@
+{
+  "cardId": "OP15-008",
+  "status": "manual",
+  "sourceTextHash": "9e19027ff8fda283f2d7d277d6e9f40740c55428ffef98808f6bf6577a234edc",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Give up to 3 of your opponent's rested DON!! cards to 1 of your opponent's Characters. Then, this Character gains [Rush] during this turn. | [Activate: Main] [Once Per Turn] If this Character was played on this turn, give all of your opponent's Characters -1000 power during this turn for every DON!! card given to that Character.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Give up to 3 of your opponent's rested DON!! cards to 1 of your opponent's Characters. Then, this Character gains [Rush] during this turn.",
+      "[Activate: Main] [Once Per Turn] If this Character was played on this turn, give all of your opponent's Characters -1000 power during this turn for every DON!! card given to that Character."
+    ],
+    "failedParts": [
+      "Give up to 3 of your opponent's rested DON!! cards to 1 of your opponent's Characters",
+      "IF: If this Character was played on this turn, give all of your opponent's Characters -1000 power during this turn for every DON!! card given to that Character"
+    ]
+  }
+}

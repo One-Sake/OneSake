@@ -1,0 +1,46 @@
+{
+  "cardId": "OP04-038",
+  "status": "manual",
+  "sourceTextHash": "1f3b5b281750cb8e8e5d1d764a888b51d5b1dc91d3adad0c46b9f69395640f8c",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] / [Counter] Rest up to 1 of your opponent's Leader or Character cards. Then, K.O. up to 1 of your opponent's rested Characters with a cost of 6 or less.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Set up to 5 of your DON!! cards as active.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "SetDonActive",
+            "amount": 5,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Set up to 5 of your DON!! cards as active"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Main] / [Counter] Rest up to 1 of your opponent's Leader or Character cards. Then, K.O. up to 1 of your opponent's rested Characters with a cost of 6 or less."
+    ],
+    "failedParts": [
+      "/ [Counter] Rest up to 1 of your opponent's Leader or Character cards"
+    ]
+  }
+}

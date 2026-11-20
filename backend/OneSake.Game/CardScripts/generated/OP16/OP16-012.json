@@ -1,0 +1,72 @@
+{
+  "cardId": "OP16-012",
+  "status": "manual",
+  "sourceTextHash": "e78a7322f183a38561d8aaf8905929b83aab0ddd4d19829c7d19cbe8133d9d4f",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Blocker] [On Play] You may rest 1 of your DON!! cards: If your Leader has the {Red-Haired Pirates} type and have 10 DON!! cards on your field, play up to 1 [Shanks] from your hand.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Static",
+        "text": "[Blocker]",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "GainFlag",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "Permanent",
+            "flag": "Blocker",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "[Blocker]"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Blocker] [On Play] You may rest 1 of your DON!! cards: If your Leader has the {Red-Haired Pirates} type and have 10 DON!! cards on your field, play up to 1 [Shanks] from your hand."
+    ],
+    "failedParts": [
+      "IF: If your Leader has the {Red-Haired Pirates} type and have 10 DON!! cards on your field, play up to 1 [Shanks] from your hand"
+    ]
+  }
+}

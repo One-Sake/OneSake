@@ -1,0 +1,16 @@
+{
+  "cardId": "OP09-073",
+  "status": "manual",
+  "sourceTextHash": "e738df7592c6864866efb79fe0a42324ffe67e67473213bae125c0f9722de928",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking] You may return 1 or more DON!! cards from your field to your DON!! deck: Give up to 2 of your opponent's Characters 2000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[When Attacking] You may return 1 or more DON!! cards from your field to your DON!! deck: Give up to 2 of your opponent's Characters 2000 power during this turn."
+    ],
+    "failedParts": [
+      "COST: You may return 1 or more DON!! cards from your field to your DON!! deck"
+    ]
+  }
+}

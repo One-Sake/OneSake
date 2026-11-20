@@ -1,0 +1,46 @@
+{
+  "cardId": "OP16-055",
+  "status": "manual",
+  "sourceTextHash": "b239f635831f96522d4f2ec9d7de4dfccc8773f556b61ed9ef5fd195868c51d5",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] [When Attacking] This Character's base power becomes the same as your opponent's Leader's power during this turn.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] Draw 1 card.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Draw 1 card"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[DON!! x1] [When Attacking] This Character's base power becomes the same as your opponent's Leader's power during this turn."
+    ],
+    "failedParts": [
+      "This Character's base power becomes the same as your opponent's Leader's power during this turn"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "ST24-004",
+  "status": "manual",
+  "sourceTextHash": "efdf19739523fde33b8bd7bf3f6ccfaa60e444b2df88a70fb951b212627c117f",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Rest up to 1 of your opponent's Characters and that Character will not become active in your opponent's next Refresh Phase. Then, if your opponent has 2 or more rested Characters, your Leader gains +2000 power until the end of your opponent's next End Phase.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Rest up to 1 of your opponent's Characters and that Character will not become active in your opponent's next Refresh Phase. Then, if your opponent has 2 or more rested Characters, your Leader gains +2000 power until the end of your opponent's next End Phase."
+    ],
+    "failedParts": [
+      "Rest up to 1 of your opponent's Characters and that Character will not become active in your opponent's next Refresh Phase"
+    ]
+  }
+}

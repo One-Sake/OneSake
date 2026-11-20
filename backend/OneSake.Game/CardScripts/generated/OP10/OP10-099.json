@@ -1,0 +1,16 @@
+{
+  "cardId": "OP10-099",
+  "status": "manual",
+  "sourceTextHash": "715b5d5fe23e1a4d75a9978ac9995d8bf01ee757c851ab789e22f5511b17d1b0",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [End of Your Turn] You may turn 1 card from the top of your Life cards face-up: Set up to 1 of your {Supernovas} type Characters with a cost of 3 to 8 as active. That Character gains [Blocker] until the end of your opponent's next turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[End of Your Turn] You may turn 1 card from the top of your Life cards face-up: Set up to 1 of your {Supernovas} type Characters with a cost of 3 to 8 as active. That Character gains [Blocker] until the end of your opponent's next turn."
+    ],
+    "failedParts": [
+      "Set up to 1 of your {Supernovas} type Characters with a cost of 3 to 8 as active"
+    ]
+  }
+}

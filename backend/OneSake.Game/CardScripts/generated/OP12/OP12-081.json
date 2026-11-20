@@ -1,0 +1,18 @@
+{
+  "cardId": "OP12-081",
+  "status": "manual",
+  "sourceTextHash": "376e3361f991a29346ddb1ac56294e188ed1f4b768b30514cc3bb76a4e695dea",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: When this Leader attacks your opponent's Leader, if you have 2 or more Characters with a cost of 8 or more, draw 1 card. | [Once Per Turn] This effect can be activated when your opponent plays a Character with a base cost of 8 or more, or when your opponent plays a Character using a Character's effect. Your opponent adds 1 card from the top of their Life cards to their hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "When this Leader attacks your opponent's Leader, if you have 2 or more Characters with a cost of 8 or more, draw 1 card.",
+      "[Once Per Turn] This effect can be activated when your opponent plays a Character with a base cost of 8 or more, or when your opponent plays a Character using a Character's effect. Your opponent adds 1 card from the top of their Life cards to their hand."
+    ],
+    "failedParts": [
+      "When this Leader attacks your opponent's Leader, if you have 2 or more Characters with a cost of 8 or more, draw 1 card",
+      "This effect can be activated when your opponent plays a Character with a base cost of 8 or more, or when your opponent plays a Character using a Character's effect"
+    ]
+  }
+}

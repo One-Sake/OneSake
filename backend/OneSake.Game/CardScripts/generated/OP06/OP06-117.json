@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-117",
+  "status": "manual",
+  "sourceTextHash": "ab921ce5578e88e520fa413e8495d61d61c0307bd5dac4ff667ede941ba3469e",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] You may rest this card and 1 of your [Enel] cards: K.O. all of your opponent's Characters with a cost of 2 or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] You may rest this card and 1 of your [Enel] cards: K.O. all of your opponent's Characters with a cost of 2 or less."
+    ],
+    "failedParts": [
+      "COST: You may rest this card and 1 of your [Enel] cards"
+    ]
+  }
+}

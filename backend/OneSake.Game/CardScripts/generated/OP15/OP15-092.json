@@ -1,0 +1,16 @@
+{
+  "cardId": "OP15-092",
+  "status": "manual",
+  "sourceTextHash": "03fdc6bfd95e47d40c9af631ff2a1f537546dc1e972dd74cd1aa2f22e0f6c77f",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: Apply each of the following effects based on the number of cards in your trash: . If there are 10 or more cards, this Character's base power becomes 9000 and it gains +10 cost. . If you have 20 or more cards, during your opponent's turn, your Leader's base power becomes 7000. . If you have 30 or more cards, this Character gains +1000 power.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "Apply each of the following effects based on the number of cards in your trash: . If there are 10 or more cards, this Character's base power becomes 9000 and it gains +10 cost. . If you have 20 or more cards, during your opponent's turn, your Leader's base power becomes 7000. . If you have 30 or more cards, this Character gains +1000 power."
+    ],
+    "failedParts": [
+      "COST: Apply each of the following effects based on the number of cards in your trash"
+    ]
+  }
+}

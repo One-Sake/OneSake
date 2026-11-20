@@ -1,0 +1,16 @@
+{
+  "cardId": "OP02-049",
+  "status": "manual",
+  "sourceTextHash": "0d19b86a808b247b3d50bcaeea5762133983ddd25ed4b4b00cbe771b0e0f2c01",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [End of Your Turn] If you have 0 cards in your hand, draw 2 cards.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[End of Your Turn] If you have 0 cards in your hand, draw 2 cards."
+    ],
+    "failedParts": [
+      "IF: If you have 0 cards in your hand, draw 2 cards"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP04-044",
+  "status": "manual",
+  "sourceTextHash": "272698b7ab28cb79b6f0e5aab2d2814a99b00ec4716ecb1868b71564bd55e081",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Return up to 1 Character with a cost of 8 or less and up to 1 Character with a cost of 3 or less to the owner's hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Return up to 1 Character with a cost of 8 or less and up to 1 Character with a cost of 3 or less to the owner's hand."
+    ],
+    "failedParts": [
+      "Return up to 1 Character with a cost of 8 or less and up to 1 Character with a cost of 3 or less to the owner's hand"
+    ]
+  }
+}

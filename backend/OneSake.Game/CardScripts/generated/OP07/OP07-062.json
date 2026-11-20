@@ -1,0 +1,75 @@
+{
+  "cardId": "OP07-062",
+  "status": "generated",
+  "sourceTextHash": "4c46832b6b4e16795c6001b6fdcd27cce72ec4cb641a1f1fbea5213e88eafc30",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] If the number of DON!! cards on your field is equal to or less than the number on your opponent's field, return up to 1 of your {The Vinsmoke Family} type Characters with a cost of 1 to the owner's hand.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "ReturnToHand",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": true,
+              "all": false,
+              "self": false,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "maxCost": 1,
+                "minCost": 1,
+                "useBaseValues": false,
+                "typeIncludes": "The Vinsmoke Family",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [
+              {
+                "kind": "DonNotMoreThanOpponent",
+                "amount": 0,
+                "text": "the number of DON!! cards on your field is equal to or less than the number on your opponent's field"
+              }
+            ],
+            "text": "Return up to 1 of your {The Vinsmoke Family} type Characters with a cost of 1 to the owner's hand"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

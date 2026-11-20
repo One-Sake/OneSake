@@ -1,0 +1,16 @@
+{
+  "cardId": "OP14-002",
+  "status": "manual",
+  "sourceTextHash": "fb129c2e7e93a7cd5fef26782e3d2018e7910786dbdeceaea9611ab081b0b1cb",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking] If this Character has 5000 power or more, draw 1 card and K.O. up to 1 of your opponent's Characters with 3000 base power or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[When Attacking] If this Character has 5000 power or more, draw 1 card and K.O. up to 1 of your opponent's Characters with 3000 base power or less."
+    ],
+    "failedParts": [
+      "IF: If this Character has 5000 power or more, draw 1 card and K.O. up to 1 of your opponent's Characters with 3000 base power or less"
+    ]
+  }
+}

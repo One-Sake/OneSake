@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-003",
+  "status": "manual",
+  "sourceTextHash": "952670021d1f4ad8152af19676a7f7f734ea23ca96cfe622e5db07b0ed588594",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Look at 3 cards from the top of your deck and play up to 1 {Revolutionary Army} type Character card with 5000 power or less. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Look at 3 cards from the top of your deck and play up to 1 {Revolutionary Army} type Character card with 5000 power or less. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "Look at 3 cards from the top of your deck and play up to 1 {Revolutionary Army} type Character card with 5000 power or less"
+    ]
+  }
+}

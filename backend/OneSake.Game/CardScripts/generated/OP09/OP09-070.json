@@ -1,0 +1,16 @@
+{
+  "cardId": "OP09-070",
+  "status": "manual",
+  "sourceTextHash": "08d34e36ddd0ecd5827d9762d008060d4c4dcb1d4301e87a5545c8aad8ec283a",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] You may return 1 or more DON!! cards from your field to your DON!! deck: Give up to 2 rested DON!! cards to your Leader or 1 of your Characters.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] You may return 1 or more DON!! cards from your field to your DON!! deck: Give up to 2 rested DON!! cards to your Leader or 1 of your Characters."
+    ],
+    "failedParts": [
+      "COST: You may return 1 or more DON!! cards from your field to your DON!! deck"
+    ]
+  }
+}
