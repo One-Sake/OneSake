@@ -5,10 +5,12 @@ on:
     branches:
       - dev
       - main
+      - logic
   push:
     branches:
       - dev
       - main
+      - logic
 
 jobs:
   backend:
