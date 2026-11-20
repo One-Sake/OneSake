@@ -1,4 +1,5 @@
 using OneSake.Game.Effects;
+using OneSake.Game.Rules;
 using OneSake.Game.State;
 
 namespace OneSake.Game.Actions;
@@ -7,7 +8,7 @@ namespace OneSake.Game.Actions;
 // That Character becomes the new target of the attack.
 public sealed class BlockAction
 {
-    public CardInstance Execute(BattleState battle, PlayerState defender, string? blockerInstanceId)
+    public CardInstance Execute(BattleState battle, PlayerState defender, string? blockerInstanceId, GameEventBus? events = null)
     {
         if (battle.Step != BattleStep.Block || battle.BlockerUsed)
         {
@@ -27,6 +28,8 @@ public sealed class BlockAction
         blocker.IsRested = true;
         battle.Target = blocker;
         battle.BlockerUsed = true;
+        events?.Publish(new CardRested(blocker, defender.PlayerId));
+        events?.Publish(new BlockerDeclared(blocker, defender.PlayerId));
         return blocker;
     }
 

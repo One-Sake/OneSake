@@ -1,5 +1,7 @@
 using OneSake.Game.State;
 
+using OneSake.Game.Rules;
+
 namespace OneSake.Game.Effects;
 
 // A question the engine asks a player while an effect resolves.
@@ -1191,7 +1193,15 @@ public sealed class EffectEngine
             return false;
         }
 
-        // [On K.O.] abilities are checked while the card is still on the field (DON!! requirement, conditions).
+        // Rule 10-2-17-1: [On K.O.] is checked while the card is still on the field, then it is trashed.
+        if (context.Events is { } events)
+        {
+            events.Publish(new CharacterKOd(card, owner.PlayerId, byEffect));
+            owner.TrashCharacter(card);
+            return true;
+        }
+
+        // Without an event bus: queue the abilities here (DON!! requirement, conditions).
         var onKoAbilities = card.Script.WithTiming(EffectTiming.OnKO)
             .Where(ability => EffectQueries.AbilityIsActive(ability, card, owner.PlayerId, context))
             .ToList();
@@ -1243,6 +1253,12 @@ public sealed class EffectEngine
         }
 
         context.Log("EFFECT_PLAY", $"{player.DisplayName} played {card.Name}{(rested ? " rested" : string.Empty)}.");
+
+        if (context.Events is { } events)
+        {
+            events.Publish(new CardPlayed(card, player.PlayerId, ByEffect: true));
+            return;
+        }
 
         foreach (var ability in card.Script.WithTiming(EffectTiming.OnPlay))
         {

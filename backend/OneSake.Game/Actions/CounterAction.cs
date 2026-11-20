@@ -1,4 +1,5 @@
 using OneSake.Game.Effects;
+using OneSake.Game.Rules;
 using OneSake.Game.State;
 
 namespace OneSake.Game.Actions;
@@ -7,7 +8,7 @@ namespace OneSake.Game.Actions;
 // their hand. The target gains that much power during this battle.
 public sealed class CounterAction
 {
-    public CardInstance Execute(BattleState battle, PlayerState defender, string? counterCardInstanceId)
+    public CardInstance Execute(BattleState battle, PlayerState defender, string? counterCardInstanceId, GameEventBus? events = null)
     {
         if (battle.Step != BattleStep.Counter)
         {
@@ -27,6 +28,7 @@ public sealed class CounterAction
         defender.Hand.Remove(card);
         defender.TrashCards.Add(card);
         battle.CounterBonus += card.Counter;
+        events?.Publish(new CounterUsed(card, defender.PlayerId, IsEvent: false));
         return card;
     }
 

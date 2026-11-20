@@ -1,5 +1,6 @@
 using OneSake.Domain;
 using OneSake.Game.Effects;
+using OneSake.Game.Rules;
 using OneSake.Game.State;
 
 namespace OneSake.Game.Actions;
@@ -15,7 +16,8 @@ public sealed class AttackAction
         string activePlayerId,
         string? attackerInstanceId,
         string? targetInstanceId,
-        int turnNumber)
+        int turnNumber,
+        GameEventBus? events = null)
     {
         ActionGuard.EnsureMainPhase(phase);
         ActionGuard.EnsureActivePlayer(attacker, activePlayerId);
@@ -52,7 +54,7 @@ public sealed class AttackAction
 
         attackingCard.IsRested = true;
 
-        return new BattleState
+        var battle = new BattleState
         {
             AttackerPlayerId = attacker.PlayerId,
             DefenderPlayerId = opponent.PlayerId,
@@ -60,6 +62,10 @@ public sealed class AttackAction
             Target = targetCard,
             Step = BattleStep.Block
         };
+
+        events?.Publish(new CardRested(attackingCard, attacker.PlayerId));
+        events?.Publish(new AttackDeclared(attackingCard, targetCard, attacker.PlayerId, opponent.PlayerId));
+        return battle;
     }
 
     // Rule 6-5-6-1: no battles on your own first turn.

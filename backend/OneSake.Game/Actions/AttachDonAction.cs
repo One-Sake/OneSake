@@ -1,4 +1,5 @@
 using OneSake.Domain;
+using OneSake.Game.Rules;
 using OneSake.Game.State;
 
 namespace OneSake.Game.Actions;
@@ -10,7 +11,8 @@ public sealed class AttachDonAction
         PlayerState player,
         MatchPhase phase,
         string activePlayerId,
-        string? targetInstanceId)
+        string? targetInstanceId,
+        GameEventBus? events = null)
     {
         ActionGuard.EnsureMainPhase(phase);
         ActionGuard.EnsureActivePlayer(player, activePlayerId);
@@ -29,6 +31,7 @@ public sealed class AttachDonAction
 
         player.ActiveDon -= 1;
         target.AttachedDon += 1;
+        events?.Publish(new DonAttached(target, player.PlayerId, 1));
         return target;
     }
 }

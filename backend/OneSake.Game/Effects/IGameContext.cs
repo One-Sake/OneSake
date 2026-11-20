@@ -1,3 +1,4 @@
+using OneSake.Game.Rules;
 using OneSake.Game.State;
 
 namespace OneSake.Game.Effects;
@@ -16,6 +17,10 @@ public interface IGameContext
     void RequestManualEffect(CardInstance card, string controllerId, EffectTiming timing)
     {
     }
+
+    // The event bus of the match. Without one (engine-only tests) the engine queues triggered
+    // abilities itself like before; with one, it only reports events (see Rules/TriggerCollector).
+    GameEventBus? Events => null;
 }
 
 public static class GameContextExtensions

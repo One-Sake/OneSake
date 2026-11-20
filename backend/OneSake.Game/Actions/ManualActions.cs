@@ -1,5 +1,6 @@
 using OneSake.Domain;
 using OneSake.Game.Effects;
+using OneSake.Game.Rules;
 using OneSake.Game.State;
 
 namespace OneSake.Game.Actions;
@@ -67,15 +68,15 @@ public sealed class ManualActions
             ManualActionKinds.Draw => Draw(actor, action),
             ManualActionKinds.MoveCard => MoveCard(actor, action, context),
             ManualActionKinds.KoCard => KnockOut(actor, opponent, action, context),
-            ManualActionKinds.ReturnToHand => ReturnToHand(actor, opponent, action),
-            ManualActionKinds.ReturnToDeck => ReturnToDeck(actor, opponent, action),
-            ManualActionKinds.SetRest => SetRested(actor, opponent, action, rested: true),
-            ManualActionKinds.SetActive => SetRested(actor, opponent, action, rested: false),
+            ManualActionKinds.ReturnToHand => ReturnToHand(actor, opponent, action, context),
+            ManualActionKinds.ReturnToDeck => ReturnToDeck(actor, opponent, action, context),
+            ManualActionKinds.SetRest => SetRested(actor, opponent, action, context, rested: true),
+            ManualActionKinds.SetActive => SetRested(actor, opponent, action, context, rested: false),
             ManualActionKinds.ModifyPower => Modify(actor, opponent, action, context, isPower: true),
             ManualActionKinds.ModifyCost => Modify(actor, opponent, action, context, isPower: false),
             ManualActionKinds.DonAdd => DonAdd(actor, action),
             ManualActionKinds.DonReturn => DonReturn(actor, action),
-            ManualActionKinds.DonAttach => DonAttach(actor, action),
+            ManualActionKinds.DonAttach => DonAttach(actor, action, context),
             ManualActionKinds.DonSetRest => DonSetState(actor, action, rested: true),
             ManualActionKinds.DonSetActive => DonSetState(actor, action, rested: false),
             ManualActionKinds.LookTop => LookTop(actor, action),
@@ -83,8 +84,8 @@ public sealed class ManualActions
             ManualActionKinds.CloseView => CloseView(actor),
             ManualActionKinds.ShuffleDeck => ShuffleDeck(actor),
             ManualActionKinds.RevealCard => RevealCard(actor, action),
-            ManualActionKinds.TrashFromHand => TrashFromHand(actor, action),
-            ManualActionKinds.LifeToHand => LifeToHand(actor),
+            ManualActionKinds.TrashFromHand => TrashFromHand(actor, action, context),
+            ManualActionKinds.LifeToHand => LifeToHand(actor, context),
             _ => throw new InvalidOperationException($"Unknown manual action '{action.Kind}'.")
         };
 
@@ -161,6 +162,8 @@ public sealed class ManualActions
 
         RemoveFromZone(actor, card, from);
         var position = PlaceInZone(actor, card, to, action.ToPosition, context);
+        // Manual moves are never "played" or "K.O.'d": no [On Play] / [On K.O.].
+        context.Events?.Publish(new CardMovedZone(card, actor.PlayerId, from, to));
 
         // Hidden zones (hand, deck, life) on both sides: the opponent only learns that a card moved.
         var isPublic = IsPublicZone(from) || IsPublicZone(to);
@@ -180,27 +183,29 @@ public sealed class ManualActions
         return $"K.O. für {CardLabel(card, owner, actor)}";
     }
 
-    private static string ReturnToHand(PlayerState actor, PlayerState opponent, ManualActionDto action)
+    private static string ReturnToHand(PlayerState actor, PlayerState opponent, ManualActionDto action, IGameContext context)
     {
         var (card, owner) = FindFieldCard(actor, opponent, action.CardInstanceId);
         EnsureNotLeader(card);
 
         owner.RemoveFromField(card);
         owner.Hand.Add(card);
+        context.Events?.Publish(new CardMovedZone(card, owner.PlayerId, Zones.Character, Zones.Hand));
         return $"{CardLabel(card, owner, actor)} → Hand";
     }
 
-    private static string ReturnToDeck(PlayerState actor, PlayerState opponent, ManualActionDto action)
+    private static string ReturnToDeck(PlayerState actor, PlayerState opponent, ManualActionDto action, IGameContext context)
     {
         var (card, owner) = FindFieldCard(actor, opponent, action.CardInstanceId);
         EnsureNotLeader(card);
 
         owner.RemoveFromField(card);
         var position = InsertAt(owner.DrawDeck, card, action.ToPosition, defaultTop: false, topIsEnd: false);
+        context.Events?.Publish(new CardMovedZone(card, owner.PlayerId, Zones.Character, Zones.Deck));
         return $"{CardLabel(card, owner, actor)} → {ZoneName(Zones.Deck, position)}";
     }
 
-    private static string SetRested(PlayerState actor, PlayerState opponent, ManualActionDto action, bool rested)
+    private static string SetRested(PlayerState actor, PlayerState opponent, ManualActionDto action, IGameContext context, bool rested)
     {
         var (card, owner) = FindFieldCard(actor, opponent, action.CardInstanceId);
         if (card.IsRested == rested)
@@ -209,6 +214,11 @@ public sealed class ManualActions
         }
 
         card.IsRested = rested;
+        if (rested)
+        {
+            context.Events?.Publish(new CardRested(card, owner.PlayerId));
+        }
+
         return $"{CardLabel(card, owner, actor)} → {(rested ? "rest" : "aktiv")}";
     }
 
@@ -254,17 +264,18 @@ public sealed class ManualActions
         return $"zeigt {card.Name} ({card.CardId}) aus der Hand";
     }
 
-    private static string TrashFromHand(PlayerState actor, ManualActionDto action)
+    private static string TrashFromHand(PlayerState actor, ManualActionDto action, IGameContext context)
     {
         var card = actor.FindHandCard(action.CardInstanceId)
             ?? throw new InvalidOperationException("Choose a card from your hand.");
         actor.Hand.Remove(card);
         actor.TrashCards.Add(card);
+        context.Events?.Publish(new CardMovedZone(card, actor.PlayerId, Zones.Hand, Zones.Trash));
         return $"{card.Name}: Hand → Trash";
     }
 
     // Not damage: 0 Life after this does not end the game.
-    private static string LifeToHand(PlayerState actor)
+    private static string LifeToHand(PlayerState actor, IGameContext context)
     {
         if (actor.LifeCards.Count == 0)
         {
@@ -274,6 +285,7 @@ public sealed class ManualActions
         var card = actor.LifeCards[^1];
         actor.LifeCards.RemoveAt(actor.LifeCards.Count - 1);
         actor.Hand.Add(card);
+        context.Events?.Publish(new LifeCardAdded(card, actor.PlayerId, FromDamage: false));
         return $"nimmt die oberste Life-Karte auf die Hand ({actor.LifeCount} Life übrig)";
     }
 
@@ -330,7 +342,7 @@ public sealed class ManualActions
         return $"legt {amount} DON!! zurück ins DON!!-Deck";
     }
 
-    private static string DonAttach(PlayerState actor, ManualActionDto action)
+    private static string DonAttach(PlayerState actor, ManualActionDto action, IGameContext context)
     {
         var card = actor.FindFieldCard(action.CardInstanceId)
             ?? throw new InvalidOperationException("Choose your Leader or one of your Characters.");
@@ -352,6 +364,7 @@ public sealed class ManualActions
         }
 
         card.AttachedDon += amount;
+        context.Events?.Publish(new DonAttached(card, actor.PlayerId, amount));
         return $"gibt {amount} DON!! an {card.Name}";
     }
 
