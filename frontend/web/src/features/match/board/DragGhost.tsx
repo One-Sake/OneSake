@@ -2,6 +2,7 @@ import { forwardRef } from 'react';
 import type { CSSProperties } from 'react';
 import { createPortal } from 'react-dom';
 
+import { cardArtStyle } from './cardArt';
 import type { DragView } from './useHandDrag';
 import { MatchCardView } from './MatchCardView';
 
@@ -32,6 +33,7 @@ export const DragGhost = forwardRef<HTMLDivElement, DragGhostProps>(function Dra
     .filter(Boolean)
     .join(' ');
   const style = {
+    ...cardArtStyle,
     width: `${width}px`,
     '--card-w': `${width}px`,
     '--card-radius': `${width * 0.07}px`,

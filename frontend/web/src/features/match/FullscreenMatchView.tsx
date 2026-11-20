@@ -15,6 +15,7 @@ import { ConnectionStatusBadge } from './ConnectionStatusBadge';
 import { CollapsedFeed, FeedSplitter } from './FeedSplitter';
 import { clampFeedWidth, getFeedMaxWidth, loadFeedWidth, saveFeedWidth } from './feedWidth';
 import { MatchFeed } from './MatchFeed';
+import { cardArtStyle } from './board/cardArt';
 import { MatchBoard } from './board/MatchBoard';
 import { MatchCardPreview } from './board/MatchCardPreview';
 import { DiceRoll } from './dice/DiceRoll';
@@ -161,7 +162,7 @@ export function FullscreenMatchView({
   }
 
   return (
-    <section className="match-fullscreen" aria-label="Fullscreen match board">
+    <section className="match-fullscreen" aria-label="Fullscreen match board" style={cardArtStyle}>
       <header className="match-fullscreen__topbar">
         <div className="match-fullscreen__meta">
           <span>Room</span>

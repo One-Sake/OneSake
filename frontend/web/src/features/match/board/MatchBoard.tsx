@@ -10,6 +10,7 @@ import type {
 import { boardZones, CHARACTER_SLOT_COUNT } from './boardLayout';
 import { BoardSlot, CardStack } from './BoardSlot';
 import type { BoardSide, BoardZoneDefinition } from './boardTypes';
+import { cardArtStyle } from './cardArt';
 import { CardInspectOverlay } from './CardInspectOverlay';
 import { DragGhost } from './DragGhost';
 import type { CardPile } from './CardInspectOverlay';
@@ -685,12 +686,15 @@ export function MatchBoard({
   const hint = dragNotice || getHint();
   const showActions = isMainAction || isBlockStep || isCounterStep || mode.kind === 'replace';
 
-  const frameStyle = metrics
-    ? ({
-        '--board-card-w': `${metrics.cardWidth}px`,
-        '--board-card-h': `${(metrics.cardWidth * 88) / 63}px`,
-      } as CSSProperties)
-    : undefined;
+  const frameStyle = {
+    ...cardArtStyle,
+    ...(metrics
+      ? {
+          '--board-card-w': `${metrics.cardWidth}px`,
+          '--board-card-h': `${(metrics.cardWidth * 88) / 63}px`,
+        }
+      : null),
+  } as CSSProperties;
   const frameClassName =
     metrics && metrics.cardWidth < SMALL_CARD_W ? 'match-board-frame is-small-cards' : 'match-board-frame';
 
