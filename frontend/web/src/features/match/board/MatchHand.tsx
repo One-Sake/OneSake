@@ -1,11 +1,24 @@
 import { useEffect, useRef, useState } from 'react';
-import type { CSSProperties } from 'react';
+import type { CSSProperties, PointerEvent } from 'react';
 
 import type { CardInstanceDto } from '../../../types/realtime';
 import { MatchCardView } from './MatchCardView';
 
+// Connects the hand to useHandDrag (drag & drop is an extra way to play; clicking still works).
+export interface HandDragControls {
+  getSourceProps: (card: CardInstanceDto) => { onPointerDown: (event: PointerEvent<HTMLElement>) => void };
+  // Card that is being dragged right now (shown half transparent in the hand).
+  sourceId: string;
+  // True while a card follows the pointer: the hand lowers so the board is free.
+  isActive: boolean;
+  isDragging: () => boolean;
+  cancelPress: () => void;
+  shouldSuppressClick: () => boolean;
+}
+
 interface MatchHandProps {
   cards: CardInstanceDto[];
+  drag?: HandDragControls;
   getAriaLabel: (card: CardInstanceDto) => string;
   getStateClassName: (card: CardInstanceDto) => string;
   onCardClick: (card: CardInstanceDto) => void;
@@ -21,6 +34,7 @@ function isTouchDevice(): boolean {
 // Mouse: hover raises the hand, click plays. Touch: first tap selects, second tap plays.
 export function MatchHand({
   cards,
+  drag,
   getAriaLabel,
   getStateClassName,
   onCardClick,
@@ -51,6 +65,10 @@ export function MatchHand({
   }
 
   function handleClick(card: CardInstanceDto): void {
+    if (drag?.shouldSuppressClick()) {
+      return;
+    }
+
     if (isTouchDevice() && focusedCardId !== card.instanceId) {
       setFocusedCardId(card.instanceId);
       return;
@@ -63,13 +81,22 @@ export function MatchHand({
   const center = (cards.length - 1) / 2;
   const angleStep = Math.min(5, 28 / cards.length);
 
+  function handleInspect(card: CardInstanceDto): void {
+    // A long press during a drag does nothing; a long press without moving opens the overlay.
+    if (drag?.isDragging()) {
+      return;
+    }
+
+    drag?.cancelPress();
+    onInspect(card);
+  }
+
+  const handClassName = ['match-hand', focusedCardId && !drag?.isActive ? 'is-raised' : '', drag?.isActive ? 'is-dragging' : '']
+    .filter(Boolean)
+    .join(' ');
+
   return (
-    <div
-      ref={handRef}
-      aria-label={`Your hand, ${cards.length} cards`}
-      className={focusedCardId ? 'match-hand is-raised' : 'match-hand'}
-      role="group"
-    >
+    <div ref={handRef} aria-label={`Your hand, ${cards.length} cards`} className={handClassName} role="group">
       {cards.map((card, index) => {
         const offset = index - center;
         const style = {
@@ -81,15 +108,22 @@ export function MatchHand({
         return (
           <div
             key={card.instanceId}
-            className={focusedCardId === card.instanceId ? 'match-hand__card is-focused' : 'match-hand__card'}
+            className={[
+              'match-hand__card',
+              focusedCardId === card.instanceId && !drag?.isActive ? 'is-focused' : '',
+              drag?.sourceId === card.instanceId ? 'is-drag-source' : '',
+            ]
+              .filter(Boolean)
+              .join(' ')}
             style={style}
+            {...drag?.getSourceProps(card)}
           >
             <MatchCardView
               ariaLabel={getAriaLabel(card)}
               card={card}
               clickable
               onClick={() => handleClick(card)}
-              onInspect={() => onInspect(card)}
+              onInspect={() => handleInspect(card)}
               onPreview={onPreview}
               size="hand"
               stateClassName={getStateClassName(card)}

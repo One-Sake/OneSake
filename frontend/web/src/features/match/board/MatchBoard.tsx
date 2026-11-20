@@ -10,16 +10,25 @@ import type {
 import { boardZones, CHARACTER_SLOT_COUNT } from './boardLayout';
 import { BoardSlot, CardStack } from './BoardSlot';
 import type { BoardSide, BoardZoneDefinition } from './boardTypes';
+import { cardArtStyle } from './cardArt';
 import { CardInspectOverlay } from './CardInspectOverlay';
+import { DragGhost } from './DragGhost';
 import type { CardPile } from './CardInspectOverlay';
 import { EFFECT_PROMPT_KINDS } from '../choiceOptions';
+import { getLeaderColors } from '../leaderColors';
 import { EffectChoiceOverlay } from './EffectChoiceOverlay';
 import { MatchCardView } from './MatchCardView';
 import { MatchHand } from './MatchHand';
+import { useBoardMetrics } from './useBoardMetrics';
+import { useHandDrag } from './useHandDrag';
+import type { DragItem, DropTarget } from './useHandDrag';
 
 const MAX_CHARACTERS = CHARACTER_SLOT_COUNT;
 const PREVIEW_DELAY_MS = 350;
 const MAX_OPPONENT_HAND_BACKS = 12;
+// Below this card width the stack badges only show the number (no "DECK" / "LIFE" text).
+const SMALL_CARD_W = 60;
+const DRAG_NOTICE_MS = 2600;
 
 // What the player is doing right now on the board.
 type BoardMode =
@@ -51,6 +60,26 @@ function getVisiblePlayers(gameState: GameStateDto | null): Record<BoardSide, Pl
   return {
     player: viewerPlayer,
     opponent: opponentPlayer,
+  };
+}
+
+// The leader color is used as an accent on the player name plates.
+function getPlateStyle(player: PlayerStateDto | null): CSSProperties | undefined {
+  return player?.leader?.color
+    ? ({ '--leader-accent': getLeaderColors(player.leader.color).primary } as CSSProperties)
+    : undefined;
+}
+
+function isSameTarget(a: DropTarget | null | undefined, b: DropTarget): boolean {
+  return a?.zone === b.zone && a?.slotIndex === b.slotIndex && a?.cardId === b.cardId;
+}
+
+// The data attributes useHandDrag reads with document.elementFromPoint.
+function getDropAttributes(target: DropTarget) {
+  return {
+    'data-drop-zone': target.zone,
+    'data-slot-index': target.slotIndex,
+    'data-card-id': target.cardId,
   };
 }
 
@@ -96,6 +125,10 @@ export function MatchBoard({
   const [selectedCardId, setSelectedCardId] = useState('');
   const [mode, setMode] = useState<BoardMode>({ kind: 'idle' });
   const previewTimer = useRef<number>();
+  const frameRef = useRef<HTMLDivElement>(null);
+  const [dragNotice, setDragNotice] = useState('');
+  const dragNoticeTimer = useRef<number>();
+  const metrics = useBoardMetrics(frameRef);
 
   const visiblePlayers = getVisiblePlayers(gameState);
   const localPlayer = visiblePlayers.player;
@@ -125,7 +158,13 @@ export function MatchBoard({
     setMode({ kind: 'idle' });
   }, [currentPrompt?.choiceId]);
 
-  useEffect(() => () => window.clearTimeout(previewTimer.current), []);
+  useEffect(
+    () => () => {
+      window.clearTimeout(previewTimer.current);
+      window.clearTimeout(dragNoticeTimer.current);
+    },
+    [],
+  );
 
   function submit(option: string, selectedId?: string, targetId?: string): void {
     setSelectedCardId('');
@@ -239,6 +278,121 @@ export function MatchBoard({
     }
 
     setInspectedCard(card);
+  }
+
+  // ---------- Drag & drop (an extra way to call the click handlers above) ----------
+
+  const isCharacterAreaFull = (localPlayer?.boardCards.length ?? 0) >= MAX_CHARACTERS;
+  const canDragDon =
+    isMainAction && hasOption(myPrompt, 'ATTACH_DON') && (localPlayer?.activeDonCount ?? 0) > 0;
+
+  // Valid drop targets follow the same checks as the click controls (canPlayFromHand, canCounterWith, ...).
+  function canDropOn(item: DragItem, target: DropTarget): boolean {
+    if (item.kind === 'don') {
+      return canDragDon && (target.zone === 'leader' || target.zone === 'character') && Boolean(target.cardId);
+    }
+
+    const card = item.card;
+    if (canCounterWith(card)) {
+      return target.zone === 'field';
+    }
+
+    if (!canPlayFromHand(card)) {
+      return false;
+    }
+
+    switch (card.category) {
+      case 'Character':
+        // A full Character area: drop on the Character that should be replaced.
+        return target.zone === 'character' && (isCharacterAreaFull ? Boolean(target.cardId) : !target.cardId);
+      case 'Stage':
+        return target.zone === 'stage';
+      case 'Event':
+        return target.zone === 'field';
+      default:
+        return false;
+    }
+  }
+
+  function hasAnyDropTarget(card: CardInstanceDto): boolean {
+    return (
+      canCounterWith(card) ||
+      (canPlayFromHand(card) && ['Character', 'Stage', 'Event'].includes(card.category ?? ''))
+    );
+  }
+
+  // Sends exactly what the click controls send for the same move.
+  function handleDrop(item: DragItem, target: DropTarget): void {
+    if (item.kind === 'don') {
+      if (target.cardId) {
+        submit('ATTACH_DON', target.cardId);
+      }
+      return;
+    }
+
+    const card = item.card;
+    if (canCounterWith(card)) {
+      submit('COUNTER', card.instanceId);
+      return;
+    }
+
+    if (card.category === 'Character' && isCharacterAreaFull) {
+      submit('PLAY_CARD', card.instanceId, target.cardId);
+      return;
+    }
+
+    submit('PLAY_CARD', card.instanceId);
+  }
+
+  function getUnplayableReason(card: CardInstanceDto): string {
+    if (isCounterStep) {
+      return `${card.name} cannot be used as a Counter right now.`;
+    }
+
+    if (!isMainAction) {
+      return gameState?.activePlayerId !== localPlayer?.playerId
+        ? 'Wait for your turn to play cards.'
+        : 'Cards can only be played in your Main Phase.';
+    }
+
+    const activeDon = localPlayer?.activeDonCount ?? 0;
+    if ((card.cost ?? 0) > activeDon) {
+      return `Not enough DON!!: ${card.name} costs ${card.cost ?? 0}, you have ${activeDon} active.`;
+    }
+
+    return '';
+  }
+
+  function showDragNotice(text: string): void {
+    window.clearTimeout(dragNoticeTimer.current);
+    setDragNotice(text);
+    dragNoticeTimer.current = window.setTimeout(() => setDragNotice(''), DRAG_NOTICE_MS);
+  }
+
+  const handDrag = useHandDrag({
+    canDrop: canDropOn,
+    onDrop: handleDrop,
+    onMiss: (item) => {
+      if (item.kind === 'hand' && !hasAnyDropTarget(item.card)) {
+        const reason = getUnplayableReason(item.card);
+        if (reason) {
+          showDragNotice(reason);
+        }
+      }
+    },
+    isConfirmed: (item) =>
+      item.kind === 'don' || !localHandCards.some((card) => card.instanceId === item.card.instanceId),
+    pending,
+  });
+
+  const draggedItem = handDrag.view?.phase === 'drag' ? handDrag.view.item : null;
+
+  function getDropClassName(target: DropTarget): string {
+    if (!draggedItem || !canDropOn(draggedItem, target)) {
+      return '';
+    }
+
+    return isSameTarget(handDrag.view?.hover, target) ? ' is-drop-target is-drop-hover' : ' is-drop-target';
   }
 
   // ---------- Visual state per card ----------
@@ -386,6 +540,7 @@ export function MatchBoard({
     const active = player?.activeDonCount ?? 0;
     const rested = player?.restedDonCount ?? 0;
     const canClickDon = side === 'player' && canGiveDon;
+    const donDragProps = side === 'player' && canDragDon ? handDrag.getSourceProps({ kind: 'don' }) : null;
 
     return (
       <div className="match-don-area" aria-label={`${active} active and ${rested} rested DON!!`}>
@@ -399,12 +554,17 @@ export function MatchBoard({
                 {canClickDon && !isRested ? (
                   <button
                     aria-label={`Give DON!! to ${selectedCard?.name ?? 'selected card'}`}
-                    className={`${className} is-targetable`}
-                    onClick={giveDon}
+                    className={`${className} is-targetable is-draggable`}
+                    onClick={() => !handDrag.shouldSuppressClick() && giveDon()}
                     type="button"
+                    {...donDragProps}
                   />
                 ) : (
-                  <span aria-hidden="true" className={className} />
+                  <span
+                    aria-hidden="true"
+                    className={donDragProps && !isRested ? `${className} is-draggable` : className}
+                    {...(isRested ? null : donDragProps)}
+                  />
                 )}
               </span>
             );
@@ -429,8 +589,14 @@ export function MatchBoard({
           <div className="board-zone__slots">
             {Array.from({ length: CHARACTER_SLOT_COUNT }, (_, index) => {
               const card = player?.boardCards?.[index];
+              const target: DropTarget = { zone: 'character', slotIndex: index, cardId: card?.instanceId };
+              const isOwn = side === 'player';
               return (
-                <div key={card?.instanceId ?? `empty-${index}`} className="board-card-slot">
+                <div
+                  key={card?.instanceId ?? `empty-${index}`}
+                  className={`board-card-slot${isOwn ? getDropClassName(target) : ''}`}
+                  {...(isOwn ? getDropAttributes(target) : null)}
+                >
                   {card && renderFieldCard(card, side)}
                 </div>
               );
@@ -467,6 +633,19 @@ export function MatchBoard({
     }
   }
 
+  // Leader (for DON!!) and Stage are drop targets on the own half.
+  function getZoneDropTarget(zone: BoardZoneDefinition, player: PlayerStateDto | null): DropTarget | null {
+    if (zone.kind === 'leader' && player?.leader) {
+      return { zone: 'leader', cardId: player.leader.instanceId };
+    }
+
+    if (zone.kind === 'stage') {
+      return { zone: 'stage', cardId: player?.stage?.instanceId };
+    }
+
+    return null;
+  }
+
   function renderSide(side: BoardSide) {
     const player = visiblePlayers[side];
 
@@ -476,26 +655,56 @@ export function MatchBoard({
           player && player.playerId === activePlayerId ? ' is-active' : ''
         }`}
       >
-        {boardZones.map((zone) => (
-          <BoardSlot key={zone.kind} filled={isZoneFilled(zone, player)} side={side} zone={zone}>
-            {renderZoneContent(zone, side)}
-          </BoardSlot>
-        ))}
+        {boardZones.map((zone) => {
+          const target = side === 'player' ? getZoneDropTarget(zone, player) : null;
+          return (
+            <BoardSlot
+              key={zone.kind}
+              dropClassName={target ? getDropClassName(target) : ''}
+              dropTarget={target}
+              filled={isZoneFilled(zone, player)}
+              side={side}
+              zone={zone}
+            >
+              {renderZoneContent(zone, side)}
+            </BoardSlot>
+          );
+        })}
+        {side === 'player' && draggedItem && canDropOn(draggedItem, { zone: 'field' }) && (
+          <div
+            className={`match-drop-field${getDropClassName({ zone: 'field' })}`}
+            {...getDropAttributes({ zone: 'field' })}
+          >
+            <span>{isCounterStep ? 'Use Counter' : 'Activate Event'}</span>
+          </div>
+        )}
       </div>
     );
   }
 
   const opponentHandCount = opponent?.handCount ?? 0;
-  const hint = getHint();
+  const hint = dragNotice || getHint();
   const showActions = isMainAction || isBlockStep || isCounterStep || mode.kind === 'replace';
 
+  const frameStyle = {
+    ...cardArtStyle,
+    ...(metrics
+      ? {
+          '--board-card-w': `${metrics.cardWidth}px`,
+          '--board-card-h': `${(metrics.cardWidth * 88) / 63}px`,
+        }
+      : null),
+  } as CSSProperties;
+  const frameClassName =
+    metrics && metrics.cardWidth < SMALL_CARD_W ? 'match-board-frame is-small-cards' : 'match-board-frame';
+
   return (
-    <div className="match-board-frame">
+    <div ref={frameRef} className={frameClassName} style={frameStyle}>
       <div className="match-board" aria-label="OneSake match board">
         <div
           className={`match-board__opponent-bar${opponent?.playerId === activePlayerId ? ' is-active' : ''}`}
         >
-          <div className="match-player-plate">
+          <div className="match-player-plate" style={getPlateStyle(opponent)}>
             <span>Opponent</span>
             <strong>{opponent?.displayName || 'Waiting...'}</strong>
           </div>
@@ -590,6 +799,7 @@ export function MatchBoard({
         className={`match-player-plate match-player-plate--self${
           localPlayer?.playerId === activePlayerId ? ' is-active' : ''
         }`}
+        style={getPlateStyle(localPlayer)}
       >
         <span>You</span>
         <strong>{localPlayer?.displayName || 'Player'}</strong>
@@ -603,6 +813,14 @@ export function MatchBoard({
 
       <MatchHand
         cards={localHandCards}
+        drag={{
+          getSourceProps: (card) => handDrag.getSourceProps({ kind: 'hand', card }),
+          sourceId: handDrag.view?.item.kind === 'hand' ? handDrag.view.item.card.instanceId : '',
+          isActive: handDrag.view?.phase === 'drag',
+          isDragging: handDrag.isDragging,
+          cancelPress: handDrag.cancelPress,
+          shouldSuppressClick: handDrag.shouldSuppressClick,
+        }}
         getAriaLabel={getHandCardAriaLabel}
         getStateClassName={getHandCardStateClassName}
         onCardClick={handleHandCardClick}
@@ -615,6 +833,8 @@ export function MatchBoard({
           {gameState?.winnerPlayerId ? (didWin ? 'Victory!' : 'Defeat') : 'Game Over'}
         </div>
       )}
+
+      <DragGhost ref={handDrag.ghostRef} cardWidth={metrics?.cardWidth ?? 80} view={handDrag.view} />
 
       <CardInspectOverlay
         card={inspectedCard}

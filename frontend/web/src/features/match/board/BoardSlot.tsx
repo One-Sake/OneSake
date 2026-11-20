@@ -2,12 +2,16 @@ import type { CSSProperties, ReactNode } from 'react';
 
 import type { CardInstanceDto } from '../../../types/realtime';
 import type { BoardSide, BoardZoneDefinition } from './boardTypes';
+import type { DropTarget } from './useHandDrag';
 
 interface BoardSlotProps {
   side: BoardSide;
   zone: BoardZoneDefinition;
   // Hides the zone label when a card or stack covers the zone.
   filled?: boolean;
+  // Drag & drop: makes the zone a drop target (Leader for DON!!, Stage for Stage cards).
+  dropTarget?: DropTarget | null;
+  dropClassName?: string;
   children?: ReactNode;
 }
 
@@ -16,11 +20,13 @@ function toClassName(kind: string): string {
 }
 
 // One zone of a player half (Character, Leader, Life, ...), placed by the CSS grid.
-export function BoardSlot({ children, filled = false, side, zone }: BoardSlotProps) {
+export function BoardSlot({ children, dropClassName = '', dropTarget, filled = false, side, zone }: BoardSlotProps) {
   return (
     <div
       aria-label={`${side === 'player' ? 'Your' : 'Opponent'} ${zone.label}`}
-      className={`board-zone board-zone--${toClassName(zone.kind)}${filled ? ' is-filled' : ''}`}
+      className={`board-zone board-zone--${toClassName(zone.kind)}${filled ? ' is-filled' : ''}${dropClassName}`}
+      data-card-id={dropTarget?.cardId}
+      data-drop-zone={dropTarget?.zone}
       role="group"
     >
       <span className="board-zone__label" aria-hidden="true">

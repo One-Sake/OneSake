@@ -1,6 +1,7 @@
 import type { RoomSummaryDto } from '../../types/realtime';
 import { RefreshIcon } from '../../components/ui/Icons';
 import { RoomTile } from './RoomTile';
+import { cardArtStyle } from './board/cardArt';
 
 interface ServerBrowserProps {
   rooms: RoomSummaryDto[];
@@ -44,7 +45,7 @@ export function ServerBrowser({
 
       {rooms.length === 0 ? (
         <div className="lobby-tables__empty">
-          <div className="card-back-stack" aria-hidden="true">
+          <div className="card-back-stack" aria-hidden="true" style={cardArtStyle}>
             <span />
             <span />
             <span />
