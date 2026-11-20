@@ -1223,8 +1223,6 @@ public sealed class EffectEngine
             InsertNext(new EffectFrame(ability, card, owner.PlayerId));
         }
 
-        context.RequestManualEffect(card, owner.PlayerId, EffectTiming.OnKO);
-
         return true;
     }
 
@@ -1277,8 +1275,6 @@ public sealed class EffectEngine
                 InsertNext(new EffectFrame(ability, card, player.PlayerId));
             }
         }
-
-        context.RequestManualEffect(card, player.PlayerId, EffectTiming.OnPlay);
     }
 
     private static void ReturnDon(PlayerState player, int amount)

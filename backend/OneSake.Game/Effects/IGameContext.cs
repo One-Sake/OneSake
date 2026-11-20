@@ -12,12 +12,6 @@ public interface IGameContext
     BattleState? Battle { get; }
     void Log(string type, string text);
 
-    // The card has effect text for this timing that the engine cannot automate.
-    // MatchRoom asks the player to resolve it by hand. Does nothing by default (tests).
-    void RequestManualEffect(CardInstance card, string controllerId, EffectTiming timing)
-    {
-    }
-
     // The event bus of the match. Without one (engine-only tests) the engine queues triggered
     // abilities itself like before; with one, it only reports events (see Rules/TriggerCollector).
     GameEventBus? Events => null;

@@ -198,6 +198,17 @@ public record ChoicePromptDto
     public IReadOnlyList<CardInstanceDto> Cards { get; init; } = [];
     public string SourceName { get; init; } = string.Empty;
     public string EffectText { get; init; } = string.Empty;
+    // ORDER_TRIGGERS: the effects to put in order.
+    public IReadOnlyList<TriggerOptionDto> Triggers { get; init; } = [];
+}
+
+public record TriggerOptionDto
+{
+    public string Id { get; init; } = string.Empty;
+    public string CardInstanceId { get; init; } = string.Empty;
+    public string CardName { get; init; } = string.Empty;
+    public string Timing { get; init; } = string.Empty;
+    public string Text { get; init; } = string.Empty;
 }
 
 public record ChoiceSubmissionDto
@@ -209,6 +220,8 @@ public record ChoiceSubmissionDto
     public string? SelectedCardInstanceId { get; init; }
     // The second card of an action (attack target, Character to replace...).
     public string? TargetCardInstanceId { get; init; }
+    // ORDER_TRIGGERS: all effect IDs, first = resolved first.
+    public IReadOnlyList<string>? OrderedIds { get; init; }
 }
 
 public record ChatMessageDto
