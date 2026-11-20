@@ -65,7 +65,9 @@ builder.Services.AddSingleton(_ => fixedDiceRolls is { Length: > 0 }
     ? new MatchRoomManager(() => new FixedDiceRoller(fixedDiceRolls))
     : new MatchRoomManager());
 // Speichert beendete Matches (Fehler werden nur geloggt, das Spiel laeuft weiter)
+builder.Services.AddSingleton<MatchRecordingService>();
 builder.Services.AddSingleton<MatchResultService>();
+builder.Services.AddHostedService<MatchRecordingRetentionService>();
 // Warteschlange fuer Quick Match
 builder.Services.AddSingleton<MatchmakingQueue>();
 // Loescht leere Rooms automatisch nach 5 Minuten

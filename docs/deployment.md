@@ -60,6 +60,22 @@ dotnet ef database update --project OneSake.Persistence --startup-project OneSak
 | `InitialCardDatabase` | Tabelle `Cards` |
 | `AddMatchResults` | Tabelle `MatchResults` (Ergebnisse für die Profil-Statistik), Indizes auf `WinnerGuestId` und `LoserGuestId` |
 | `AddRankingAndTurnOrder` | Neue Spalten in `MatchResults` (`IsRanked`, `FirstPlayerGuestId`, `WinnerWentFirst`, Rating vorher/nachher für Gewinner und Verlierer), Index auf `EndedAtUtc`, neue Tabelle `PlayerRatings` (ELO/Kopfgeld pro Gast-ID) |
+| `AddMatchRecordings` | Tabellen `MatchRecordings` (Aufzeichnung jedes Matches als gzip-JSON, Bezug auf `MatchResults`, Index auf `CreatedAtUtc`) und `BugReports` („Fehler melden“, Bezug auf die Aufzeichnung) |
+
+## Match-Aufzeichnungen und Fehlermeldungen
+
+Nach jedem Match speichert das Backend die Aufzeichnung (Seed, Decks, alle Entscheidungen) in
+`MatchRecordings`. Ohne die Migration `AddMatchRecordings` läuft das Spiel normal weiter, nur das
+Speichern schlägt fehl (Warnung im Log). Aufzeichnungen älter als 30 Tage löscht der Server
+automatisch (`MatchRecordingRetentionService`, alle 6 Stunden), außer eine Fehlermeldung verweist darauf.
+
+Die Admin-Liste `GET /bugreports` ist nur aktiv, wenn ein Token gesetzt ist (Header `X-Admin-Token`):
+
+```bash
+BugReports__AdminToken=<langer zufälliger Wert>
+```
+
+Ablauf Meldung → Test: siehe [bug-reports.md](bug-reports.md).
 
 ## Meta-Daten (externer Anbieter)
 

@@ -145,8 +145,16 @@ public sealed class MatchBot
     }
 
     // Remembers the newest prompt per player and each player's own view.
+    // Recordings delivered with an update (exactly one per finished match).
+    public List<OneSake.Game.Replay.MatchRecording> DeliveredRecordings { get; } = [];
+
     private void Apply(MatchUpdate update)
     {
+        if (update.Recording is not null)
+        {
+            DeliveredRecordings.Add(update.Recording);
+        }
+
         foreach (var (playerId, view) in update.StateSnapshots)
         {
             _views[playerId] = view;

@@ -10,12 +10,15 @@ public class MatchHub : Hub
     private readonly MatchRoomManager _roomManager;
     private readonly MatchResultService _matchResultService;
     private readonly MatchmakingQueue _matchmakingQueue;
+    private readonly MatchRecordingService _matchRecordingService;
 
     public MatchHub(
         MatchRoomManager roomManager,
         MatchResultService matchResultService,
-        MatchmakingQueue matchmakingQueue)
+        MatchmakingQueue matchmakingQueue,
+        MatchRecordingService matchRecordingService)
     {
+        _matchRecordingService = matchRecordingService;
         _roomManager = roomManager;
         _matchResultService = matchResultService;
         _matchmakingQueue = matchmakingQueue;
@@ -274,7 +277,12 @@ public class MatchHub : Hub
         // Every update passes through here, so a finished match is saved exactly once.
         if (update.MatchResult is not null)
         {
-            _matchResultService.SaveInBackground(update.MatchResult);
+            _matchResultService.SaveInBackground(update.MatchResult, update.Recording);
+        }
+        else if (update.Recording is not null)
+        {
+            // A match without a result (both players lost): only the recording is stored.
+            _matchRecordingService.SaveInBackground(update.Recording);
         }
 
         if (update.StateSnapshots.Count > 0)

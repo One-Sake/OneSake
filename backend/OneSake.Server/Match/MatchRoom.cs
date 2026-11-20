@@ -88,6 +88,9 @@ public sealed class MatchRoom
     private ulong _seed;
     // Prompt IDs are numbered, so they are the same when a match is played again.
     private int _choiceSeq;
+    // Every decision of the running (or last) match, see docs/bug-reports.md.
+    private MatchRecorder? _recorder;
+    private MatchRecording? _pendingRecording;
     private readonly List<TurnOrderRoundDto> _turnOrderRounds = [];
     private string _turnOrderWinnerId = string.Empty;
     private string? _turnOrderDecision;
@@ -170,6 +173,11 @@ public sealed class MatchRoom
             }
 
             var wasMatchRunning = _phase != MatchPhase.Lobby && _phase != MatchPhase.GameOver;
+            if (wasMatchRunning)
+            {
+                Record(player, RecordedInputKinds.Leave, new { endReason });
+            }
+
             var remainingPlayer = _players.FirstOrDefault(entry => entry.PlayerId != connectionId);
             if (wasMatchRunning && remainingPlayer is not null)
             {
@@ -300,6 +308,19 @@ public sealed class MatchRoom
             _seed = _fixedSeed ?? Pcg32.CreateSeed();
             _diceRoller = _customDiceRoller ?? new SeededDiceRoller(Pcg32.FromSeed(_seed, "dice"));
             _choiceSeq = 0;
+            _pendingRecording = null;
+            _recorder = new MatchRecorder(
+                _seed,
+                _roomCode,
+                IsQuickMatch,
+                _players.Select((player, index) => new RecordedPlayer
+                {
+                    Seat = index + 1,
+                    DisplayName = player.DisplayName,
+                    GuestId = player.GuestId,
+                    Deck = player.DeckSubmission ?? new PlayerDeckSubmissionDto()
+                }).ToArray(),
+                _matchStartedAtUtc.ToUnixTimeMilliseconds());
 
             for (var index = 0; index < _players.Count; index += 1)
             {
@@ -455,6 +476,8 @@ public sealed class MatchRoom
                     throw new InvalidOperationException($"Unsupported choice kind '{prompt.Kind}'.");
             }
 
+            // Only valid decisions are recorded (invalid ones throw above and change nothing).
+            Record(player, RecordedInputKinds.Choice, submission with { PlayerId = string.Empty });
             return CreateUpdate();
         }
     }
@@ -474,6 +497,7 @@ public sealed class MatchRoom
             CreateLogEvent("MANUAL", $"✋ {player.DisplayName} (manuell): {text}");
             AfterManualAction(effectWasRunning);
 
+            Record(player, RecordedInputKinds.Manual, action with { TargetPlayerId = null });
             return CreateUpdate();
         }
     }
@@ -518,6 +542,8 @@ public sealed class MatchRoom
         {
             var firstValue = _diceRoller.Roll();
             var secondValue = _diceRoller.Roll();
+            _recorder?.AddDie(firstValue);
+            _recorder?.AddDie(secondValue);
 
             _turnOrderRounds.Add(new TurnOrderRoundDto
             {
@@ -1468,6 +1494,12 @@ public sealed class MatchRoom
     {
         _lastActivityUtc = DateTimeOffset.UtcNow;
 
+        // The match is over (won, or aborted because a player left): the recording is complete.
+        if (_recorder is { IsFinished: false } && _phase is MatchPhase.GameOver or MatchPhase.Lobby)
+        {
+            _pendingRecording = _recorder.Finish(ComputeStateHash());
+        }
+
         var update = new MatchUpdate
         {
             StateSnapshot = CreateStateSnapshot(),
@@ -1475,12 +1507,14 @@ public sealed class MatchRoom
                 .ToDictionary(player => player.PlayerId, player => CreateStateSnapshot(player.PlayerId), StringComparer.Ordinal),
             LogEvents = _pendingLogEvents.ToArray(),
             ChoicePrompts = _pendingChoicePrompts.ToArray(),
-            MatchResult = _pendingResult
+            MatchResult = _pendingResult,
+            Recording = _pendingRecording
         };
 
         _pendingLogEvents.Clear();
         _pendingChoicePrompts.Clear();
         _pendingResult = null;
+        _pendingRecording = null;
 
         return update;
     }
@@ -1599,6 +1633,37 @@ public sealed class MatchRoom
     #endregion
 
     #region UTILITIES
+
+    private void Record(PlayerState player, string kind, object payload)
+    {
+        _recorder?.Add(
+            _players.IndexOf(player) + 1,
+            kind,
+            MatchRecordingJson.ToPayload(payload),
+            ComputeStateHash(),
+            DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
+    }
+
+    // The recording of the running or last match (for bug reports). Never sent to clients.
+    public MatchRecording? CreateRecordingSnapshot()
+    {
+        lock (_sync)
+        {
+            return _recorder?.Snapshot();
+        }
+    }
+
+    // Number of recorded decisions so far ("atSeq" of a bug report).
+    public int RecordedInputCount
+    {
+        get
+        {
+            lock (_sync)
+            {
+                return _recorder?.InputCount ?? 0;
+            }
+        }
+    }
 
     // Fingerprint of the complete game state (for determinism and replay checks).
     public string ComputeStateHash()
@@ -1754,4 +1819,7 @@ public sealed record MatchUpdate
 
     // Set exactly once, in the update where the match ended.
     public MatchResultData? MatchResult { get; init; }
+
+    // Set exactly once, when the match is over: seed, decks and every decision (secret until then).
+    public MatchRecording? Recording { get; init; }
 }
