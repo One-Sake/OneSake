@@ -117,6 +117,23 @@ public class ManualActionTests
     }
 
     [Fact]
+    public void KoCard_TriggersTheOnKOEffectOfTheCard()
+    {
+        // Real card with a script file: OP04-049 Jack "[On K.O.] Draw 1 card." (verified).
+        var (room, update) = StartMainPhase(name: "Jack", text: "[On K.O.] Draw 1 card.", cardId: "OP04-049");
+        update = Submit(room, GetPrompt(update, "p1"), "END_TURN");
+        var jack = Me(update, "p2").HandCards[0].InstanceId;
+        update = Submit(room, GetPrompt(update, "p2"), "PLAY_CARD", jack);
+        update = Submit(room, GetPrompt(update, "p2"), "END_TURN");
+        var handBefore = Me(update, "p2").HandCount;
+
+        update = Manual(room, "p1", "KO_CARD", jack);
+
+        Assert.Empty(Me(update, "p2").BoardCards);
+        Assert.Equal(handBefore + 1, Me(update, "p2").HandCount);
+    }
+
+    [Fact]
     public void ReturnToHand_And_ReturnToDeck_WorkOnOpponentCharacters()
     {
         var (room, update, opponentCard) = StartWithOpponentCharacter();
@@ -429,13 +446,14 @@ public class ManualActionTests
         int cost = 1,
         string category = "Character",
         string name = "Test Character",
-        string text = "")
+        string text = "",
+        string cardId = "OP01-016")
     {
         var room = new MatchRoom("ABCD", diceRoller: new FixedDiceRoller([6, 1]));
         room.JoinPlayer("p1", "Alice");
         room.JoinPlayer("p2", "Bob");
-        room.SetPlayerDeck("p1", CreateDeck(cost, category, name, text));
-        room.SetPlayerDeck("p2", CreateDeck(cost, category, name, text));
+        room.SetPlayerDeck("p1", CreateDeck(cost, category, name, text, cardId));
+        room.SetPlayerDeck("p2", CreateDeck(cost, category, name, text, cardId));
 
         var turnOrder = Assert.Single(room.StartMatch().ChoicePrompts);
         var update = Submit(room, turnOrder, "GO_FIRST");
@@ -516,7 +534,7 @@ public class ManualActionTests
         return state.Players.Single(player => player.PlayerId == playerId);
     }
 
-    private static PlayerDeckSubmissionDto CreateDeck(int cost, string category, string name, string text)
+    private static PlayerDeckSubmissionDto CreateDeck(int cost, string category, string name, string text, string cardId)
     {
         return new PlayerDeckSubmissionDto
         {
@@ -530,7 +548,7 @@ public class ManualActionTests
             [
                 new PlayerDeckCardDto
                 {
-                    CardId = "OP01-016",
+                    CardId = cardId,
                     Name = name,
                     Quantity = 50,
                     Category = category,

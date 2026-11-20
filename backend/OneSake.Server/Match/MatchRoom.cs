@@ -436,10 +436,12 @@ public sealed class MatchRoom
             var player = GetPlayerSlot(playerId);
             EnsureCanUseManualActions(player, action);
             var opponent = GetPlayerSlot(GetOtherPlayerId(player.PlayerId));
+            // Checked before the action: a K.O. queues [On K.O.] abilities, that is not "busy".
+            var effectWasRunning = _effects.IsBusy || _afterEffects is not null;
 
             var text = _manualActions.Execute(action, player, opponent, _context);
             CreateLogEvent("MANUAL", $"✋ {player.DisplayName} (manuell): {text}");
-            AfterManualAction();
+            AfterManualAction(effectWasRunning);
 
             return CreateUpdate();
         }
@@ -1290,7 +1292,7 @@ public sealed class MatchRoom
     }
 
     // Same follow-up as after an automated effect: static effects, deck-out, triggered abilities.
-    private void AfterManualAction()
+    private void AfterManualAction(bool effectWasRunning)
     {
         StaticEffects.Recalculate(_context);
 
@@ -1299,8 +1301,9 @@ public sealed class MatchRoom
             return;
         }
 
-        // A running effect or an open "resolve manually" prompt continues later on its own.
-        if (_effects.IsBusy || _afterEffects is not null)
+        // A running effect or an open "resolve manually" prompt continues later on its own
+        // (and then also runs abilities this action queued, e.g. [On K.O.]).
+        if (effectWasRunning)
         {
             return;
         }
