@@ -2848,3 +2848,204 @@ body.is-dragging-card * {
   padding-left: 6px;
   color: #f3dfa6;
 }
+
+
+/* ---------- Bug report ("Fehler melden", BugReportDialog.tsx) ---------- */
+
+.match-actions button.match-actions__bug {
+  min-height: clamp(28px, calc(var(--card-w) * 0.32), 40px);
+  border-color: rgb(255 140 120 / 45%);
+  color: #ffc9bd;
+  font-size: max(11px, min(calc(var(--card-w) * 0.11), 14px));
+}
+
+.match-board-game-over__bug {
+  display: block;
+  margin: 10px auto 0;
+  border: 1px solid rgb(255 140 120 / 55%);
+  border-radius: 9px;
+  padding: 6px 14px;
+  color: #ffc9bd;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 800;
+  background: rgb(30 10 10 / 80%);
+  cursor: pointer;
+}
+
+.bug-report {
+  position: fixed;
+  inset: 0;
+  z-index: 97;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgb(0 0 0 / 55%);
+}
+
+.bug-report__dialog {
+  --card-w: 58px;
+  --card-radius: 4px;
+  display: grid;
+  gap: 10px;
+  width: min(94vw, 560px);
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  border: 1px solid rgb(255 140 120 / 55%);
+  border-radius: 14px;
+  padding: 14px;
+  color: #eef3f6;
+  background: rgb(14 10 12 / 97%);
+}
+
+.bug-report__dialog form {
+  display: grid;
+  gap: 10px;
+}
+
+.bug-report__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bug-report__header h2 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.bug-report__header button {
+  border: 0;
+  color: #b9c6cc;
+  font: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+
+.bug-report__categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+.bug-report__categories legend {
+  margin-bottom: 4px;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.bug-report__categories label {
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.bug-report__categories label.is-selected {
+  border-color: #ff9c86;
+  color: #1a0b08;
+  background: #ff9c86;
+}
+
+.bug-report__categories input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.bug-report__description {
+  display: grid;
+  gap: 4px;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.bug-report__description small {
+  color: #8d9ba3;
+  font-weight: 600;
+}
+
+.bug-report__description textarea {
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 8px;
+  padding: 8px;
+  color: #ffffff;
+  font: inherit;
+  font-weight: 400;
+  background: rgb(255 255 255 / 6%);
+  resize: vertical;
+}
+
+.bug-report__cards p {
+  margin: 0 0 4px;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.bug-report__card-list {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 4px 2px;
+}
+
+.bug-report__card-list .match-card-view {
+  flex: 0 0 var(--card-w);
+  width: var(--card-w);
+}
+
+.bug-report__note {
+  margin: 0;
+  color: #8d9ba3;
+  font-size: 0.75rem;
+}
+
+.bug-report__error {
+  margin: 0;
+  color: #ff9c86;
+  font-size: 0.85rem;
+}
+
+.bug-report__actions,
+.bug-report__done {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.bug-report__done p {
+  flex: 1;
+  margin: 0;
+  font-weight: 800;
+}
+
+.bug-report__actions button,
+.bug-report__done button {
+  min-height: 34px;
+  border: 1px solid rgb(255 140 120 / 55%);
+  border-radius: 9px;
+  padding: 6px 14px;
+  color: #ffc9bd;
+  font: inherit;
+  font-weight: 900;
+  background: transparent;
+  cursor: pointer;
+}
+
+.bug-report__actions button.is-primary,
+.bug-report__done button.is-primary {
+  border-color: transparent;
+  color: #1a0b08;
+  background: #ff9c86;
+}
+
+.bug-report__actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

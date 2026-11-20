@@ -10,6 +10,7 @@ import type {
 } from '../../../types/realtime';
 import { boardZones, CHARACTER_SLOT_COUNT } from './boardLayout';
 import { BoardSlot, CardStack, ManualDotsButton } from './BoardSlot';
+import { BugReportDialog } from './BugReportDialog';
 import type { BoardSide, BoardZoneDefinition } from './boardTypes';
 import { cardArtStyle } from './cardArt';
 import { CardInspectOverlay } from './CardInspectOverlay';
@@ -134,6 +135,7 @@ export function MatchBoard({
   canSubmitChoice,
   currentPrompt,
   gameState,
+  joinedRoomCode = '',
   midlineContent,
   onManualAction,
   onPreviewCard,
@@ -152,6 +154,7 @@ export function MatchBoard({
   const [manualMode, setManualMode] = useState(false);
   const [manualMenu, setManualMenu] = useState<ManualMenuState | null>(null);
   const [confirmMove, setConfirmMove] = useState<{ text: string; action: ManualActionDto } | null>(null);
+  const [bugReportOpen, setBugReportOpen] = useState(false);
   const dragNoticeTimer = useRef<number>();
   const metrics = useBoardMetrics(frameRef);
 
@@ -854,7 +857,10 @@ export function MatchBoard({
   const opponentHandCount = opponent?.handCount ?? 0;
   const hint = dragNotice || getHint();
   const canToggleManual = isRunning && Boolean(onManualAction);
-  const showActions = isMainAction || isBlockStep || isCounterStep || mode.kind === 'replace' || canToggleManual;
+  // "Fehler melden" during the match and on the game over screen.
+  const canReportBug = Boolean(joinedRoomCode) && (isRunning || isGameOver);
+  const showActions =
+    isMainAction || isBlockStep || isCounterStep || mode.kind === 'replace' || canToggleManual || (canReportBug && !isGameOver);
 
   const frameStyle = {
     ...cardArtStyle,
@@ -912,6 +918,16 @@ export function MatchBoard({
 
           {showActions && (
             <div className="match-actions" aria-label="Match actions" role="group">
+              {canReportBug && (
+                <button
+                  className="match-actions__bug"
+                  onClick={() => setBugReportOpen(true)}
+                  title="Fehler melden: der Spielverlauf wird mitgeschickt"
+                  type="button"
+                >
+                  🐞 Fehler melden
+                </button>
+              )}
               {canToggleManual && (
                 <button
                   aria-pressed={manualMode}
@@ -1019,6 +1035,11 @@ export function MatchBoard({
       {isGameOver && (
         <div className="match-board-game-over" role="status">
           {gameState?.winnerPlayerId ? (didWin ? 'Victory!' : 'Defeat') : 'Game Over'}
+          {canReportBug && (
+            <button className="match-board-game-over__bug" onClick={() => setBugReportOpen(true)} type="button">
+              🐞 Fehler melden
+            </button>
+          )}
         </div>
       )}
 
@@ -1062,6 +1083,14 @@ export function MatchBoard({
         menu={manualMenu}
         onAction={runManualAction}
         onClose={() => setManualMenu(null)}
+      />
+
+      <BugReportDialog
+        atSeq={gameState?.recordedInputs ?? 0}
+        cards={[...localHandCards, ...localFieldCards, ...opponentFieldCards, ...(localPlayer?.trashCards ?? []), ...(opponent?.trashCards ?? [])]}
+        onClose={() => setBugReportOpen(false)}
+        open={bugReportOpen}
+        roomCode={joinedRoomCode}
       />
 
       <ManualConfirm

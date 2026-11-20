@@ -138,6 +138,8 @@ export interface GameStateDto {
   turnOrderRoll?: TurnOrderRollDto | null;
   // Quick Match rooms are ranked (they change the bounty), private tables are casual.
   isRanked?: boolean;
+  // Number of recorded decisions in this match (sent with a bug report).
+  recordedInputs?: number;
 }
 
 export interface DiceRollDto {
