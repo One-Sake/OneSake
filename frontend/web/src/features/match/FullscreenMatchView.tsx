@@ -1,4 +1,5 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
+import type { CSSProperties } from 'react';
 
 import type { ConnectionStatus } from '../../api/signalrClient';
 import type {
@@ -11,6 +12,8 @@ import type {
 import { BountyChangeBanner } from './BountyChangeBanner';
 import { ChoiceBar } from './ChoiceBar';
 import { ConnectionStatusBadge } from './ConnectionStatusBadge';
+import { CollapsedFeed, FeedSplitter } from './FeedSplitter';
+import { clampFeedWidth, getFeedMaxWidth, loadFeedWidth, saveFeedWidth } from './feedWidth';
 import { MatchFeed } from './MatchFeed';
 import { MatchBoard } from './board/MatchBoard';
 import { MatchCardPreview } from './board/MatchCardPreview';
@@ -19,6 +22,35 @@ import { formatPhase } from './matchFormatters';
 
 // These prompts are answered directly on the board (click cards / action bar).
 const BOARD_HANDLED_PROMPT_KINDS = ['MAIN_ACTION', 'BLOCK_STEP', 'COUNTER_STEP'];
+
+// From this width on the feed is a resizable column; below it is a slide-in overlay.
+const DESKTOP_QUERY = '(min-width: 1024px)';
+
+function useMediaQuery(query: string): boolean {
+  const [matches, setMatches] = useState(() => window.matchMedia(query).matches);
+
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    const update = () => setMatches(media.matches);
+    update();
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, [query]);
+
+  return matches;
+}
+
+function useViewportWidth(): number {
+  const [width, setWidth] = useState(() => window.innerWidth);
+
+  useEffect(() => {
+    const update = () => setWidth(window.innerWidth);
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+
+  return width;
+}
 
 interface FullscreenMatchViewProps {
   activePlayerDisplay: string;
@@ -61,8 +93,19 @@ export function FullscreenMatchView({
   onSubmitChoice,
   pending,
 }: FullscreenMatchViewProps) {
-  // Only used below 1200px; on desktop the log/chat feed is always visible.
+  // Only used below 1024px, where the feed is a slide-in overlay.
   const [feedOpen, setFeedOpen] = useState(false);
+  // Desktop: the feed is a resizable column that can be collapsed to a thin strip.
+  const [feedCollapsed, setFeedCollapsed] = useState(false);
+  const [feedWidth, setFeedWidth] = useState(loadFeedWidth);
+  const [seenChatCount, setSeenChatCount] = useState(chatMessages.length);
+  const stageRef = useRef<HTMLElement>(null);
+  const isDesktop = useMediaQuery(DESKTOP_QUERY);
+  const viewportWidth = useViewportWidth();
+  const feedMaxWidth = getFeedMaxWidth(viewportWidth);
+  const clampedFeedWidth = clampFeedWidth(feedWidth, viewportWidth);
+  const isFeedVisible = isDesktop ? !feedCollapsed : feedOpen;
+  const unreadChatCount = isFeedVisible ? 0 : Math.max(0, chatMessages.length - seenChatCount);
   const [previewCard, setPreviewCard] = useState<CardInstanceDto | null>(null);
   const phaseLabel = gameState ? formatPhase(gameState.phase) : 'Lobby';
   const isLobbyPhase = phaseLabel === 'Lobby';
@@ -72,6 +115,34 @@ export function FullscreenMatchView({
     players.find((player) => player.playerId === gameState?.viewerPlayerId) ?? players[0] ?? null;
   const hasOpponent = players.some((player) => player.playerId !== viewerPlayer?.playerId);
   const statusMessages: string[] = [];
+
+  // Everything in the feed counts as read while it is visible.
+  useEffect(() => {
+    if (isFeedVisible) {
+      setSeenChatCount(chatMessages.length);
+    }
+  }, [chatMessages.length, isFeedVisible]);
+
+  // While dragging, only the CSS variable changes (no re-render); the state is set on release.
+  function handleFeedResize(width: number, live: boolean): void {
+    if (live) {
+      stageRef.current?.style.setProperty('--feed-w', `${width}px`);
+      return;
+    }
+
+    setFeedWidth(width);
+    saveFeedWidth(width);
+  }
+
+  const stageStyle =
+    isDesktop && !feedCollapsed ? ({ '--feed-w': `${clampedFeedWidth}px` } as CSSProperties) : undefined;
+  const stageClassName = [
+    'match-fullscreen__stage',
+    isDesktop ? 'is-desktop' : '',
+    isDesktop && feedCollapsed ? 'is-feed-collapsed' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   if (!gameState) {
     statusMessages.push('Waiting for match state...');
@@ -132,6 +203,7 @@ export function FullscreenMatchView({
           type="button"
         >
           {feedOpen ? 'Hide' : 'Log / Chat'}
+          {!feedOpen && unreadChatCount > 0 && <span className="match-unread-badge">{unreadChatCount}</span>}
         </button>
         <button className="match-fullscreen__exit" onClick={onExitBoard} type="button">
           Exit Board
@@ -147,20 +219,33 @@ export function FullscreenMatchView({
 
       {error && <p className="match-fullscreen__error" role="alert">{error}</p>}
 
-      <main className="match-fullscreen__stage">
-        <aside className={feedOpen ? 'match-fullscreen__feed is-open' : 'match-fullscreen__feed'}>
-          <MatchFeed
-            canSendChat={canSubmitChoice}
-            chatInput={chatInput}
-            chatMessages={chatMessages}
-            joinedRoomCode={joinedRoomCode}
-            logEvents={logEvents}
-            onChatInputChange={onChatInputChange}
-            onSendChat={onSendChat}
-            pending={pending}
-            players={players}
+      <main ref={stageRef} className={stageClassName} style={stageStyle}>
+        {isDesktop && feedCollapsed ? (
+          <CollapsedFeed onExpand={() => setFeedCollapsed(false)} unreadCount={unreadChatCount} />
+        ) : (
+          <aside className={feedOpen ? 'match-fullscreen__feed is-open' : 'match-fullscreen__feed'}>
+            <MatchFeed
+              canSendChat={canSubmitChoice}
+              chatInput={chatInput}
+              chatMessages={chatMessages}
+              joinedRoomCode={joinedRoomCode}
+              logEvents={logEvents}
+              onChatInputChange={onChatInputChange}
+              onSendChat={onSendChat}
+              pending={pending}
+              players={players}
+            />
+          </aside>
+        )}
+
+        {isDesktop && !feedCollapsed && (
+          <FeedSplitter
+            maxWidth={feedMaxWidth}
+            onCollapse={() => setFeedCollapsed(true)}
+            onResize={handleFeedResize}
+            width={clampedFeedWidth}
           />
-        </aside>
+        )}
 
         <div className="match-fullscreen__board">
           {statusMessages.length > 0 && (

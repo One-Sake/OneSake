@@ -1284,14 +1284,15 @@ button.match-card-view,
   background: rgb(234 111 99 / 12%);
 }
 
-/* Desktop: [log/chat] [board] [card preview]. */
+/* Desktop: [log/chat] [splitter] [board] [card preview]. --feed-w is set by FullscreenMatchView. */
 .match-fullscreen__stage {
-  --feed-w: clamp(260px, 20vw, 320px);
+  --feed-w: 300px;
+  --splitter-w: 10px;
   --preview-w: clamp(240px, 20vw, 380px);
   position: relative;
   display: grid;
-  grid-template-columns: var(--feed-w) minmax(0, 1fr) var(--preview-w);
-  gap: 8px;
+  grid-template-columns: var(--feed-w) var(--splitter-w) minmax(0, 1fr) var(--preview-w);
+  gap: 0;
   flex: 1 1 auto;
   width: 100%;
   min-height: 0;
@@ -1338,9 +1339,158 @@ button.match-card-view,
   min-height: 0;
 }
 
-/* The toggle is only needed below 1200px, where the feed is collapsible. */
+/* The toggle is only needed below 1024px, where the feed is a slide-in overlay. */
 .match-fullscreen__feed-toggle {
   display: none;
+}
+
+.match-card-preview {
+  margin-left: 8px;
+}
+
+/* Collapsed feed: a thin strip with a chat icon and the unread badge. */
+.match-fullscreen__stage.is-feed-collapsed {
+  --feed-w: 40px;
+  grid-template-columns: var(--feed-w) minmax(0, 1fr) var(--preview-w);
+}
+
+.match-feed-rail {
+  position: relative;
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  min-height: 0;
+  margin-right: 8px;
+  border: 1px solid rgb(148 187 194 / 18%);
+  border-radius: 10px;
+  padding: 10px 0;
+  color: #c9dbe0;
+  background: rgb(4 11 18 / 86%);
+  cursor: pointer;
+}
+
+.match-feed-rail:hover,
+.match-feed-rail:focus-visible {
+  border-color: rgb(240 191 56 / 70%);
+  color: #ffe39b;
+  outline: none;
+}
+
+.match-chat-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.match-unread-badge {
+  display: inline-grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  margin-top: 6px;
+  border-radius: 999px;
+  padding: 0 5px;
+  color: #1a1207;
+  font-size: 0.7rem;
+  font-weight: 900;
+  line-height: 1;
+  background: #f0bf38;
+}
+
+.match-fullscreen__feed-toggle .match-unread-badge {
+  margin: 0 0 0 6px;
+}
+
+/* Splitter between feed and board: a thin line with grip dots, gold on hover/drag. */
+.match-feed-splitter {
+  position: relative;
+  min-height: 0;
+}
+
+.match-feed-splitter__handle {
+  position: absolute;
+  inset: 0;
+  cursor: col-resize;
+  touch-action: none;
+}
+
+.match-feed-splitter__handle::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 50%;
+  width: 1px;
+  translate: -50% 0;
+  background: rgb(148 187 194 / 20%);
+  transition: background 120ms ease;
+}
+
+.match-feed-splitter__handle::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 26px;
+  translate: -50% -50%;
+  border-radius: 2px;
+  background: radial-gradient(circle, rgb(185 207 214 / 65%) 1.2px, transparent 1.6px) 0 0 / 4px 6px;
+  transition: background 120ms ease;
+}
+
+.match-feed-splitter__handle:hover::before,
+.match-feed-splitter__handle:focus-visible::before,
+.is-resizing-feed .match-feed-splitter__handle::before {
+  width: 2px;
+  background: #f0bf38;
+}
+
+.match-feed-splitter__handle:hover::after,
+.match-feed-splitter__handle:focus-visible::after,
+.is-resizing-feed .match-feed-splitter__handle::after {
+  background: radial-gradient(circle, #ffe39b 1.2px, transparent 1.6px) 0 0 / 4px 6px;
+}
+
+.match-feed-splitter__handle:focus-visible {
+  outline: none;
+}
+
+.match-feed-splitter__collapse {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 28px;
+  translate: -50% 0;
+  border: 1px solid rgb(148 187 194 / 28%);
+  border-radius: 6px;
+  padding: 0;
+  color: #c9dbe0;
+  font-size: 1rem;
+  font-weight: 900;
+  line-height: 1;
+  background: rgb(4 11 18 / 95%);
+  cursor: pointer;
+}
+
+.match-feed-splitter__collapse:hover,
+.match-feed-splitter__collapse:focus-visible {
+  border-color: #f0bf38;
+  color: #ffe39b;
+  outline: none;
+}
+
+/* While dragging: no text selection, no transitions. */
+body.is-resizing-feed {
+  cursor: col-resize;
+  user-select: none;
+}
+
+body.is-resizing-feed * {
+  transition: none !important;
 }
 
 .match-feed {
@@ -1459,9 +1609,31 @@ button.match-card-view,
   animation: match-fade-in 150ms ease;
 }
 
-/* Smaller screens: the board gets the full width; feed and preview float above it. */
+/* Medium screens: the card preview floats above the board instead of taking a column. */
 @media (max-width: 1199px) {
   .match-fullscreen__stage {
+    grid-template-columns: var(--feed-w) var(--splitter-w) minmax(0, 1fr);
+  }
+
+  .match-fullscreen__stage.is-feed-collapsed {
+    grid-template-columns: var(--feed-w) minmax(0, 1fr);
+  }
+
+  .match-card-preview {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    z-index: 45;
+    width: clamp(160px, 26vw, 280px);
+    margin-left: 0;
+    transform: translateY(-50%);
+  }
+}
+
+/* Small screens: the board gets the full width; the feed slides in above it. */
+@media (max-width: 1023px) {
+  .match-fullscreen__stage,
+  .match-fullscreen__stage.is-feed-collapsed {
     grid-template-columns: minmax(0, 1fr);
   }
 
@@ -1492,15 +1664,6 @@ button.match-card-view,
 
   .match-fullscreen__feed .match-feed {
     background: rgb(4 11 18 / 96%);
-  }
-
-  .match-card-preview {
-    position: absolute;
-    top: 50%;
-    right: 8px;
-    z-index: 45;
-    width: clamp(160px, 26vw, 280px);
-    transform: translateY(-50%);
   }
 }
 
