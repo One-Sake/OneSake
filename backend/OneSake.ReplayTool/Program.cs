@@ -9,6 +9,8 @@ using OneSake.Server.Match;
 //     -> writes backend/OneSake.Tests/Replays/bug-123.json (names and guest IDs are removed)
 //   dotnet run --project backend/OneSake.ReplayTool -- run <file> [--until 47] [--print]
 //     -> plays the recording, prints every input, the state and (with --print) the match log
+//   dotnet run --project backend/OneSake.ReplayTool -- import <sim-failures/....json> [--out <folder>]
+//     -> turns a simulator failure into backend/OneSake.Tests/Replays/sim-<seed>.json
 
 if (args.Length == 0)
 {
@@ -21,6 +23,7 @@ try
     {
         "export" => await ExportAsync(args[1..]),
         "run" => Run(args[1..]),
+        "import" => Import(args[1..]),
         _ => Usage()
     };
 }
@@ -35,6 +38,7 @@ static int Usage()
     Console.WriteLine("Usage:");
     Console.WriteLine("  export --report <id> --connection \"<connection string>\" [--out <folder>]");
     Console.WriteLine("  run <file> [--until <seq>] [--print]");
+    Console.WriteLine("  import <simulator failure file> [--out <folder>]");
     return 1;
 }
 
@@ -125,6 +129,42 @@ static int Run(string[] args)
         }
     }
 
+    return 0;
+}
+
+// A simulator failure file (sim-failures/<date>-<seed>.json) as a regression replay.
+static int Import(string[] args)
+{
+    if (args.Length == 0)
+    {
+        return Usage();
+    }
+
+    using var document = System.Text.Json.JsonDocument.Parse(File.ReadAllText(args[0]));
+    var root = document.RootElement;
+    var simulation = root.GetProperty("simulation");
+    var recording = System.Text.Json.JsonSerializer.Deserialize<MatchRecording>(root.GetProperty("recording"), MatchRecordingJson.Options)
+        ?? throw new ArgumentException("The file has no recording.");
+    var seed = simulation.GetProperty("seed").GetUInt64();
+    var invariant = simulation.GetProperty("invariants").EnumerateArray().Select(entry => entry.GetString()).FirstOrDefault() ?? "simulation";
+
+    var file = new ReplayFile
+    {
+        Report = new BugReportInfo
+        {
+            Category = "SIMULATION",
+            Description = invariant.Length > 1000 ? invariant[..1000] : invariant,
+            AtSeq = simulation.TryGetProperty("failedAtSeq", out var seq) && seq.ValueKind == System.Text.Json.JsonValueKind.Number ? seq.GetInt32() : recording.Inputs.Count,
+            CreatedAtUtc = DateTime.UtcNow
+        },
+        Recording = recording
+    };
+
+    var folder = Option(args, "--out") ?? FindReplaysFolder();
+    Directory.CreateDirectory(folder);
+    var path = Path.Combine(folder, $"sim-{seed}.json");
+    File.WriteAllText(path, file.ToJson());
+    Console.WriteLine($"Simulator failure (seed {seed}, {invariant}) -> {path}");
     return 0;
 }
 
