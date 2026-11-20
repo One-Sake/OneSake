@@ -28,7 +28,9 @@ public class SimulatorTests
             var seed = 1000UL + (ulong)index;
             Func<IRandom, IBotPlayer> first = index % 2 == 0 ? Random : Greedy;
             Func<IRandom, IBotPlayer> second = index % 3 == 0 ? Greedy : Random;
-            var result = MatchSimulator.Play(seed, MatchBot.Deck(), MatchBot.Deck(), first, second);
+            // Meta decks from OneSake.Tests/Decks with the checked-in card fixture.
+            var decks = SimulationDeckTests.MetaDecks;
+            var result = MatchSimulator.Play(seed, decks[index % decks.Count], decks[(index * 7 + 3) % decks.Count], first, second);
 
             finished += result.Finished ? 1 : 0;
             if (result.Failed)

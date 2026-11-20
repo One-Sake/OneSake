@@ -994,13 +994,17 @@ public sealed class EffectEngine
     {
         var player = context.GetPlayer(frame.ControllerId);
 
+        // Rule 11-3-2: the cards stay in the deck while they are looked at. They leave it only
+        // when the effect places them (below), so no card is in "no area" during the choice.
         if (!frame.Scratch.Looked)
         {
             frame.Scratch.Looked = true;
             frame.Scratch.LookedCards = player.DrawDeck.Take(step.Amount).ToList();
-            player.DrawDeck.RemoveRange(0, frame.Scratch.LookedCards.Count);
         }
 
+        // A card that left the deck in the meantime (e.g. a manual action) is no longer part of it.
+        frame.Scratch.LookedCards.RemoveAll(card => !player.DrawDeck.Contains(card));
+        frame.Scratch.Chosen.RemoveAll(card => !player.DrawDeck.Contains(card));
         var looked = frame.Scratch.LookedCards;
         var matching = looked
             .Where(card => !frame.Scratch.Chosen.Contains(card))
@@ -1025,6 +1029,11 @@ public sealed class EffectEngine
             var names = string.Join(", ", looked.Select(card => card.Name));
             return Ask(frame, context, $"{frame.Source.Name}: you look at {names}. Choose up to {step.SecondAmount - frame.Scratch.Chosen.Count} card(s) to reveal.",
                 [EffectChoiceRequest.Select, EffectChoiceRequest.Done], matching);
+        }
+
+        foreach (var card in looked)
+        {
+            player.DrawDeck.Remove(card);
         }
 
         foreach (var card in frame.Scratch.Chosen)
