@@ -78,6 +78,8 @@ export interface CardInstanceDto {
   isCounterEvent?: boolean;
   // 'auto' = all effects automated, 'partial', 'manual' = resolve by hand, '' = no effect text.
   effectStatus?: '' | 'auto' | 'partial' | 'manual';
+  // Card script file: 'verified' (tested), 'generated' (not checked by hand), 'manual' or ''.
+  scriptStatus?: '' | 'verified' | 'generated' | 'manual';
   // Effect texts the server does not automate.
   manualEffects?: string[];
 }

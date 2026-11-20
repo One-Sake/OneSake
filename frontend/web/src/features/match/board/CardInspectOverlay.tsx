@@ -134,7 +134,11 @@ export function CardInspectOverlay({
         </dl>
         {card.text && <p className="card-inspect-overlay__text">{card.text}</p>}
         {card.effectStatus === 'auto' && (
-          <p className="card-inspect-overlay__effect-status is-auto">Effects are automated.</p>
+          <p className="card-inspect-overlay__effect-status is-auto">
+            Effects are automated.
+            {card.scriptStatus === 'verified' && <small> Geprüft.</small>}
+            {card.scriptStatus === 'generated' && <small> Ungeprüft (vom Parser erzeugt).</small>}
+          </p>
         )}
         {(card.effectStatus === 'partial' || card.effectStatus === 'manual') && (
           <div className="card-inspect-overlay__effect-status is-manual">

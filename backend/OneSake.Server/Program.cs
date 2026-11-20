@@ -97,6 +97,10 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+// Card scripts: missing files and changed card texts (errata) are logged once per card.
+var cardScriptLogger = app.Services.GetRequiredService<ILoggerFactory>().CreateLogger("CardScripts");
+OneSake.Game.Effects.CardScriptRegistry.Warning = message => cardScriptLogger.LogWarning("{Message}", message);
+
 // =========================
 // MIDDLEWARE PIPELINE
 // =========================

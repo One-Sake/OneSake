@@ -95,6 +95,8 @@ public record CardInstanceDto
     public bool IsCounterEvent { get; init; }
     // "auto" (all effects automated), "partial", "manual" (resolve by hand) or "" (no effect text).
     public string EffectStatus { get; init; } = string.Empty;
+    // Card script file status: "verified" (tested), "generated" (not checked by hand), "manual" or "".
+    public string ScriptStatus { get; init; } = string.Empty;
     // Effect texts the server does not automate. The players resolve them manually.
     public IReadOnlyList<string> ManualEffects { get; init; } = [];
 }

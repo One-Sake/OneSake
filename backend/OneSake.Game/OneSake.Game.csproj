@@ -11,6 +11,13 @@
     <Folder Include="Rules\" />
   </ItemGroup>
 
+  <!-- Card scripts (see docs/card-scripts.md). CardScriptRegistry loads them once. -->
+  <ItemGroup>
+    <EmbeddedResource Include="CardScripts\generated\**\*.json" LogicalName="CardScripts/generated/%(RecursiveDir)%(Filename)%(Extension)" />
+    <EmbeddedResource Include="CardScripts\overrides\**\*.json" LogicalName="CardScripts/overrides/%(RecursiveDir)%(Filename)%(Extension)" />
+    <EmbeddedResource Include="CardScripts\coverage-baseline.json" LogicalName="CardScripts/coverage-baseline.json" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\OneSake.Domain\OneSake.Domain.csproj" />
   </ItemGroup>

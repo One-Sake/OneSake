@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace OneSake.Game.Effects;
 
 // ---------------------------------------------------------------------------------------------
@@ -43,6 +45,7 @@ public sealed class CardScript
     // For the coverage report: the sentence of each unsupported ability that failed.
     public List<string> FailedParts { get; } = [];
 
+    [JsonIgnore]
     public bool IsFullySupported => UnsupportedTexts.Count == 0;
 
     public IEnumerable<Ability> WithTiming(EffectTiming timing) =>

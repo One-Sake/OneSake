@@ -1616,10 +1616,7 @@ public sealed class MatchRoom
     private CardInstanceDto ToCardInstanceDto(CardInstance card, PlayerState owner)
     {
         var isOwnersTurn = owner.PlayerId == _activePlayerId;
-        var script = card.Script;
-        var effectStatus = EffectParser.Clean(card.Text).Length == 0
-            ? string.Empty
-            : script.IsFullySupported ? "auto" : script.Abilities.Count > 0 ? "partial" : "manual";
+        var effects = CardEffectStatus.For(card);
 
         return new CardInstanceDto
         {
@@ -1645,8 +1642,9 @@ public sealed class MatchRoom
             Keywords = card.Keywords,
             CanActivate = owner.FieldCards().Contains(card) && CanActivateAny(card, owner),
             IsCounterEvent = IsCounterEvent(card),
-            EffectStatus = effectStatus,
-            ManualEffects = script.UnsupportedTexts.ToArray()
+            EffectStatus = effects.EffectStatus,
+            ScriptStatus = effects.ScriptStatus,
+            ManualEffects = effects.ManualEffects
         };
     }
     #endregion

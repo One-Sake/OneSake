@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://onesake.local/card-script.schema.json",
+  "title": "OneSake card script",
+  "description": "One card effect script. See docs/card-scripts.md. The C# model is OneSake.Game/Effects/EffectModel.cs (enums as strings, camelCase).",
+  "type": "object",
+  "required": ["cardId", "status", "sourceTextHash", "parserVersion", "script"],
+  "properties": {
+    "cardId": { "type": "string", "pattern": "^[A-Z0-9]+-[0-9A-Z]+$" },
+    "status": { "enum": ["verified", "generated", "manual"] },
+    "sourceTextHash": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "SHA-256 of the cleaned card text (EffectParser.Clean)." },
+    "parserVersion": { "type": "string", "minLength": 1 },
+    "notes": { "type": ["string", "null"] },
+    "script": { "$ref": "#/$defs/cardScript" }
+  },
+  "$defs": {
+    "cardScript": {
+      "type": "object",
+      "properties": {
+        "abilities": { "type": "array", "items": { "$ref": "#/$defs/ability" } },
+        "unsupportedTexts": { "type": "array", "items": { "type": "string" }, "description": "Texts the players resolve manually." },
+        "failedParts": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "ability": {
+      "type": "object",
+      "required": ["timing"],
+      "properties": {
+        "timing": {
+          "enum": ["Static", "OnPlay", "WhenAttacking", "OnBlock", "OnKO", "OnOpponentsAttack", "EndOfYourTurn", "EndOfOpponentsTurn", "ActivateMain", "EventMain", "EventCounter", "Trigger"]
+        },
+        "text": { "type": "string" },
+        "requiredDon": { "type": "integer", "minimum": 0 },
+        "oncePerTurn": { "type": "boolean" },
+        "onlyYourTurn": { "type": "boolean" },
+        "onlyOpponentsTurn": { "type": "boolean" },
+        "conditions": { "type": "array", "items": { "$ref": "#/$defs/condition" } },
+        "costs": { "type": "array", "items": { "$ref": "#/$defs/cost" } },
+        "steps": { "type": "array", "items": { "$ref": "#/$defs/step" } },
+        "index": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "cost": {
+      "type": "object",
+      "required": ["kind"],
+      "properties": {
+        "kind": { "type": "string", "description": "CostKind in EffectModel.cs" },
+        "amount": { "type": "integer" },
+        "filter": { "$ref": "#/$defs/filter" }
+      }
+    },
+    "condition": {
+      "type": "object",
+      "required": ["kind"],
+      "properties": {
+        "kind": { "type": "string", "description": "ConditionKind in EffectModel.cs" },
+        "amount": { "type": "integer" },
+        "text": { "type": "string" },
+        "filter": { "$ref": "#/$defs/filter" }
+      }
+    },
+    "step": {
+      "type": "object",
+      "required": ["kind"],
+      "properties": {
+        "kind": { "type": "string", "description": "StepKind in EffectModel.cs" },
+        "amount": { "type": "integer" },
+        "secondAmount": { "type": "integer" },
+        "optional": { "type": "boolean" },
+        "target": { "$ref": "#/$defs/target" },
+        "filter": { "$ref": "#/$defs/filter" },
+        "zone": { "enum": ["Field", "Hand", "Trash", "Deck", "Life", "HandOrTrash"] },
+        "duration": { "enum": ["Permanent", "ThisTurn", "ThisBattle", "UntilEndOfOpponentsNextTurn"] },
+        "flag": { "type": "string" },
+        "rested": { "type": "boolean" },
+        "restDestination": { "type": "string" },
+        "playRevealed": { "type": "boolean" },
+        "position": { "type": "string" },
+        "side": { "enum": ["You", "Opponent", "Any"] },
+        "conditions": { "type": "array", "items": { "$ref": "#/$defs/condition" } },
+        "text": { "type": "string" }
+      }
+    },
+    "target": {
+      "type": "object",
+      "properties": {
+        "count": { "type": "integer" },
+        "upTo": { "type": "boolean" },
+        "all": { "type": "boolean" },
+        "self": { "type": "boolean" },
+        "yourLeader": { "type": "boolean" },
+        "previous": { "type": "boolean" },
+        "filter": { "$ref": "#/$defs/filter" }
+      }
+    },
+    "filter": {
+      "type": "object",
+      "properties": {
+        "owner": { "enum": ["You", "Opponent", "Any"] },
+        "allowLeader": { "type": "boolean" },
+        "allowCharacter": { "type": "boolean" },
+        "allowStage": { "type": "boolean" },
+        "category": { "type": "string" },
+        "maxCost": { "type": ["integer", "null"] },
+        "minCost": { "type": ["integer", "null"] },
+        "maxPower": { "type": ["integer", "null"] },
+        "minPower": { "type": ["integer", "null"] },
+        "useBaseValues": { "type": "boolean" },
+        "rested": { "type": ["boolean", "null"] },
+        "typeIncludes": { "type": "string" },
+        "name": { "type": "string" },
+        "nameNot": { "type": "string" },
+        "color": { "type": "string" },
+        "attribute": { "type": "string" },
+        "keyword": { "type": "string" },
+        "excludeSource": { "type": "boolean" },
+        "requiresTrigger": { "type": "boolean" },
+        "nameOrType": { "type": "boolean" },
+        "maxCostFrom": { "type": "string" }
+      }
+    }
+  }
+}

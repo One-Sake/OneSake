@@ -58,7 +58,9 @@ public sealed class CardInstance
     public bool IsEvent => Category == EventCategory;
     public bool IsStage => Category == StageCategory;
 
-    public CardScript Script => EffectParser.ParseCached(Text, Category);
+    // The checked script file for this card ID (CardScripts/), or the parsed text when there is none.
+    public ResolvedCardScript ScriptInfo => CardScriptRegistry.Resolve(CardId, Text, Category);
+    public CardScript Script => ScriptInfo.Script;
 
     public IReadOnlyList<string> Keywords
     {
