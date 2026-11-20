@@ -173,7 +173,7 @@ export function BugReportDialog({ atSeq, cards, onClose, open, roomCode }: BugRe
             )}
 
             <p className="bug-report__note">
-              Der aktuelle Spielverlauf (Zug {atSeq}) wird automatisch mitgeschickt und nur auf unserem Server gespeichert.
+              Der Spielverlauf bis jetzt (Schritt {atSeq}) wird automatisch mitgeschickt und nur auf unserem Server gespeichert.
             </p>
             {error && (
               <p className="bug-report__error" role="alert">
