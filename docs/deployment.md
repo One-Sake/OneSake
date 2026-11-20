@@ -69,20 +69,24 @@ Meta-Auswertung aus OneSake-Matches. Das Backend lädt die Daten (der Browser ru
 Anbieter nie direkt auf), cached sie 6 Stunden und liefert bei Ausfall den letzten Snapshot
 mit `isStale` aus.
 
-> **Meta-Daten erst aktivieren, wenn die schriftliche Erlaubnis von Card Kaizoku vorliegt.**
+Meta ist in **Production aktiv** (`appsettings.Production.json`: `"Meta": { "Enabled": true }`).
+`appsettings.json` (Standard) lässt es aus, `appsettings.Development.json` schaltet es lokal ein.
 
-Die Nutzung dieser Daten ist nicht offiziell dokumentiert. Darum ist Meta in
-`appsettings.json` und `appsettings.Production.json` **deaktiviert** (`"Meta": { "Enabled": false }`).
-Nur `appsettings.Development.json` schaltet es für die lokale Entwicklung ein.
-Solange Meta aus ist, antworten alle `/meta/...`-Endpunkte mit `200` und `enabled: false`,
-das Frontend zeigt „Meta-Daten sind noch nicht verfügbar.“ (die Bounty-Rangliste funktioniert trotzdem).
+> **Hinweis:** Card Kaizoku hat für den Feed keine Nutzungsbedingungen oder Lizenz veröffentlicht.
+> Die Nutzung ist nicht offiziell freigegeben. Bittet der Anbieter darum, Meta sofort wieder abschalten.
 
-Aktivieren nach Erlaubnis (z. B. als Umgebungsvariable auf dem Server):
+Ist der Anbieter nicht erreichbar oder der Snapshot ungültig, zeigt der Meta-Reiter einen
+Fehler bzw. den letzten Snapshot mit `isStale`. Die Bounty-Rangliste funktioniert immer.
+
+Abschalten oder Format ändern ohne neuen Build (Umgebungsvariable auf dem Server, dann Backend neu starten):
 
 ```bash
-Meta__Enabled=true
+Meta__Enabled=false
 # optional: Meta__Format=eb05_lw_p_top20  (Teil des Dateinamens stats_<Format>_<YYYYMMDD>.json)
 ```
+
+Wenn ein neues Set erscheint, ändert sich der Format-Teil im Dateinamen. Liefert der Meta-Reiter
+„kein Snapshot gefunden“, im Log nach `No meta snapshot found` suchen und `Meta:Format` anpassen.
 
 Quellenangabe: Unter jeder Meta-Ansicht steht „Daten: Card Kaizoku · Snapshot <Datum>“.
 
