@@ -1536,7 +1536,8 @@ public sealed class MatchRoom
                     .Select(player => CreatePlayerStateSnapshot(player, viewerPlayerId))
                     .ToArray(),
                 TurnOrderRoll = CreateTurnOrderSnapshot(),
-                IsRanked = IsQuickMatch
+                IsRanked = IsQuickMatch,
+                RecordedInputs = _recorder?.InputCount ?? 0
             };
         }
     }

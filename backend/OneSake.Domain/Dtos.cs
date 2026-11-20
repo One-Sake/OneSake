@@ -162,6 +162,9 @@ public record GameStateDto
 
     // Quick Match rooms are ranked (they change the bounty), private tables are casual.
     public bool IsRanked { get; init; }
+
+    // Number of recorded decisions in this match ("atSeq" of a bug report). Not the seed.
+    public int RecordedInputs { get; init; }
 }
 
 public record DiceRollDto

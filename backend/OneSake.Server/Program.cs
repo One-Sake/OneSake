@@ -66,6 +66,8 @@ builder.Services.AddSingleton(_ => fixedDiceRolls is { Length: > 0 }
     : new MatchRoomManager());
 // Speichert beendete Matches (Fehler werden nur geloggt, das Spiel laeuft weiter)
 builder.Services.AddSingleton<MatchRecordingService>();
+builder.Services.AddSingleton<IBugReportStore, EfBugReportStore>();
+builder.Services.AddSingleton<BugReportService>();
 builder.Services.AddSingleton<MatchResultService>();
 builder.Services.AddHostedService<MatchRecordingRetentionService>();
 // Warteschlange fuer Quick Match
