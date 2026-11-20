@@ -12,6 +12,8 @@ interface BoardSlotProps {
   // Drag & drop: makes the zone a drop target (Leader for DON!!, Stage for Stage cards).
   dropTarget?: DropTarget | null;
   dropClassName?: string;
+  // Manual mode: right click or the "⋯" button opens the context menu of this zone (Deck, Life, DON!!).
+  onMenu?: (x: number, y: number) => void;
   children?: ReactNode;
 }
 
@@ -20,20 +22,48 @@ function toClassName(kind: string): string {
 }
 
 // One zone of a player half (Character, Leader, Life, ...), placed by the CSS grid.
-export function BoardSlot({ children, dropClassName = '', dropTarget, filled = false, side, zone }: BoardSlotProps) {
+export function BoardSlot({ children, dropClassName = '', dropTarget, filled = false, onMenu, side, zone }: BoardSlotProps) {
   return (
     <div
       aria-label={`${side === 'player' ? 'Your' : 'Opponent'} ${zone.label}`}
       className={`board-zone board-zone--${toClassName(zone.kind)}${filled ? ' is-filled' : ''}${dropClassName}`}
       data-card-id={dropTarget?.cardId}
       data-drop-zone={dropTarget?.zone}
+      onContextMenu={
+        onMenu
+          ? (event) => {
+              event.preventDefault();
+              onMenu(event.clientX, event.clientY);
+            }
+          : undefined
+      }
       role="group"
     >
       <span className="board-zone__label" aria-hidden="true">
         {zone.label}
       </span>
       {children}
+      {onMenu && <ManualDotsButton label={`${zone.label}: manuelle Aktionen`} onMenu={onMenu} />}
     </div>
+  );
+}
+
+// Small "⋯" button that opens the manual actions menu. Visible on hover, or always in manual mode.
+export function ManualDotsButton({ label, onMenu }: { label: string; onMenu: (x: number, y: number) => void }) {
+  return (
+    <button
+      aria-label={label}
+      className="match-manual-dots"
+      onClick={(event) => {
+        event.stopPropagation();
+        const rect = event.currentTarget.getBoundingClientRect();
+        onMenu(rect.right, rect.bottom);
+      }}
+      onPointerDown={(event) => event.stopPropagation()}
+      type="button"
+    >
+      ⋯
+    </button>
   );
 }
 

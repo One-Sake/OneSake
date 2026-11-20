@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 
-import type { CardInstanceDto } from '../../../types/realtime';
+import type { CardInstanceDto, ManualActionDto } from '../../../types/realtime';
+import type { ManualItem } from './manualItems';
+import { ManualActionList } from './ManualMenu';
 import { MatchCardView } from './MatchCardView';
 
 export interface CardPile {
@@ -14,9 +16,21 @@ interface CardInspectOverlayProps {
   pile?: CardPile | null;
   onClose: () => void;
   onSelectCard?: (card: CardInstanceDto) => void;
+  // Manual mode: actions that fit the shown card right now (empty when none are allowed).
+  manualItems?: ManualItem[];
+  manualDisabled?: boolean;
+  onManualAction?: (action: ManualActionDto) => void;
 }
 
-export function CardInspectOverlay({ card, onClose, onSelectCard, pile = null }: CardInspectOverlayProps) {
+export function CardInspectOverlay({
+  card,
+  manualDisabled = false,
+  manualItems = [],
+  onClose,
+  onManualAction,
+  onSelectCard,
+  pile = null,
+}: CardInspectOverlayProps) {
   const isOpen = Boolean(card || pile);
 
   useEffect(() => {
@@ -130,6 +144,14 @@ export function CardInspectOverlay({ card, onClose, onSelectCard, pile = null }:
                 <li key={text}>{text}</li>
               ))}
             </ul>
+          </div>
+        )}
+        {manualItems.length > 0 && onManualAction && (
+          <div className="card-inspect-overlay__manual">
+            <strong>
+              <span aria-hidden="true">✋</span> Manuelle Aktionen
+            </strong>
+            <ManualActionList disabled={manualDisabled} items={manualItems} onAction={onManualAction} />
           </div>
         )}
       </section>

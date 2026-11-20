@@ -31,6 +31,29 @@ export interface PlayerStateDto {
   handCards: CardInstanceDto[];
   boardCards: CardInstanceDto[];
   trashCards: CardInstanceDto[];
+  // Manual mode: deck cards only this player sees right now (null for the opponent).
+  manualView?: ManualViewDto | null;
+}
+
+export interface ManualViewDto {
+  // 'LOOK' = top N cards of the deck, 'SEARCH' = the whole deck.
+  kind: 'LOOK' | 'SEARCH';
+  cards: CardInstanceDto[];
+}
+
+// Manual mode: resolve a card effect by hand. The server checks every action.
+export interface ManualActionDto {
+  kind: string;
+  cardInstanceId?: string;
+  // hand, character, stage, leader, trash, deck, life (DON!!: active, rested)
+  fromZone?: string;
+  toZone?: string;
+  // 'top', 'bottom' or an index
+  toPosition?: string;
+  amount?: number;
+  targetPlayerId?: string;
+  // MODIFY_POWER / MODIFY_COST: 'turn' or 'battle'
+  duration?: 'turn' | 'battle';
 }
 
 export interface CardInstanceDto {

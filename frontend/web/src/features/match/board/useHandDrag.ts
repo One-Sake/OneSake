@@ -12,7 +12,11 @@ import type { CardInstanceDto } from '../../../types/realtime';
 // The board decides with canDrop() which targets are valid and with onDrop() what is sent,
 // using the same handlers as the click controls.
 
-export type DragItem = { kind: 'hand'; card: CardInstanceDto } | { kind: 'don' };
+// 'field': manual mode only - a Character from the own field to the trash, hand or deck.
+export type DragItem =
+  | { kind: 'hand'; card: CardInstanceDto }
+  | { kind: 'field'; card: CardInstanceDto }
+  | { kind: 'don' };
 
 export interface DropTarget {
   zone: string;
@@ -34,7 +38,8 @@ export interface DragView {
 
 interface HandDragOptions {
   canDrop: (item: DragItem, target: DropTarget) => boolean;
-  onDrop: (item: DragItem, target: DropTarget) => void;
+  // Returning false sends the card back (e.g. the move still has to be confirmed first).
+  onDrop: (item: DragItem, target: DropTarget) => boolean | void;
   // Released somewhere without a valid target.
   onMiss: (item: DragItem) => void;
   // True once the game state shows that the move happened (e.g. the card left the hand).
@@ -228,7 +233,11 @@ export function useHandDrag(options: HandDragOptions) {
       }
 
       sawPending.current = false;
-      optionsRef.current.onDrop(current.item, hit.target);
+      if (optionsRef.current.onDrop(current.item, hit.target) === false) {
+        returnToHand();
+        return;
+      }
+
       document.body.classList.remove('is-dragging-card');
 
       if (prefersReducedMotion()) {

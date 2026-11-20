@@ -8,6 +8,7 @@ import type {
   ChoicePromptDto,
   GameStateDto,
   LogEventDto,
+  ManualActionDto,
 } from '../../types/realtime';
 import { BountyChangeBanner } from './BountyChangeBanner';
 import { ChoiceBar } from './ChoiceBar';
@@ -22,7 +23,7 @@ import { DiceRoll } from './dice/DiceRoll';
 import { formatPhase } from './matchFormatters';
 
 // These prompts are answered directly on the board (click cards / action bar).
-const BOARD_HANDLED_PROMPT_KINDS = ['MAIN_ACTION', 'BLOCK_STEP', 'COUNTER_STEP'];
+const BOARD_HANDLED_PROMPT_KINDS = ['MAIN_ACTION', 'BLOCK_STEP', 'COUNTER_STEP', 'MANUAL_EFFECT'];
 
 // From this width on the feed is a resizable column; below it is a slide-in overlay.
 const DESKTOP_QUERY = '(min-width: 1024px)';
@@ -68,6 +69,7 @@ interface FullscreenMatchViewProps {
   onChatInputChange: (value: string) => void;
   onExitBoard: () => void;
   onLeaveRoom: () => void;
+  onManualAction: (action: ManualActionDto) => Promise<boolean>;
   onSendChat: (event: FormEvent) => void;
   onStartMatch: () => void;
   onSubmitChoice: (option: string, selectedCardInstanceId?: string, targetCardInstanceId?: string) => void;
@@ -89,6 +91,7 @@ export function FullscreenMatchView({
   onChatInputChange,
   onExitBoard,
   onLeaveRoom,
+  onManualAction,
   onSendChat,
   onStartMatch,
   onSubmitChoice,
@@ -271,6 +274,7 @@ export function FullscreenMatchView({
                 pending={pending}
               />
             }
+            onManualAction={onManualAction}
             onPreviewCard={setPreviewCard}
             onSubmitChoice={onSubmitChoice}
             pending={pending}
