@@ -38,10 +38,6 @@ public sealed class EffectResolver
     public TriggerQueue Queue { get; } = new();
     public TriggerCollector Collector { get; }
 
-    // Called after every effect step and before the next effect: rule processing (defeat
-    // judgment, static effects). Returns true when the game is over.
-    public Func<bool>? RuleProcessing { get; set; }
-
     public bool IsBusy => Engine.IsBusy || !Queue.IsEmpty || _manualEffect is not null || _orderPending;
 
     // Effects the player starts on purpose (Event [Main]/[Counter], [Trigger]).
@@ -62,7 +58,7 @@ public sealed class EffectResolver
         for (var guard = 0; guard < MaxStepsPerRun; guard += 1)
         {
             // Rule 9-1-2: rule processing happens before anything else goes on.
-            if (RuleProcessing?.Invoke() == true)
+            if (_context.ProcessRules())
             {
                 Clear();
                 return null;
@@ -114,7 +110,7 @@ public sealed class EffectResolver
             Engine.Enqueue(trigger.Ability, trigger.Source, trigger.ControllerId, alreadyChosen: trigger.StartedByPlayer);
             if (Engine.Run(_context) is { } request)
             {
-                return RuleProcessing?.Invoke() == true ? Stop() : new EffectChoiceNeeded(request);
+                return _context.ProcessRules() ? Stop() : new EffectChoiceNeeded(request);
             }
         }
 
@@ -127,7 +123,7 @@ public sealed class EffectResolver
     {
         if (Engine.Answer(_context, option, cardInstanceId) is { } request)
         {
-            return RuleProcessing?.Invoke() == true ? Stop() : new EffectChoiceNeeded(request);
+            return _context.ProcessRules() ? Stop() : new EffectChoiceNeeded(request);
         }
 
         return Run();

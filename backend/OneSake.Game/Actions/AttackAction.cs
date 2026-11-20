@@ -77,7 +77,8 @@ public sealed class AttackAction
     // Active Leader, or active Character that was not played this turn (unless it has [Rush]).
     public static bool CanAttack(CardInstance card, PlayerState owner, int turnNumber)
     {
-        if (card.IsRested || !CanBattleThisTurn(owner) || card.HasFlag(EffectFlags.CannotAttack))
+        // Rule 1-3-3: "cannot attack" always wins over effects that allow attacking.
+        if (card.IsRested || !CanBattleThisTurn(owner) || !Prohibitions.CanAttack(card))
         {
             return false;
         }

@@ -262,6 +262,15 @@ public sealed class EffectEngine
 
                     frame.StepIndex += 1;
                     frame.Scratch.Clear();
+
+                    // Rule 9-1-2: rule processing after every step. A finished game stops the effect.
+                    if (context.ProcessRules())
+                    {
+                        frame.Finished = true;
+                        _queue.Clear();
+                        return null;
+                    }
+
                     break;
                 }
             }
@@ -853,8 +862,8 @@ public sealed class EffectEngine
 
         return step.Kind switch
         {
-            StepKind.KO => !(byOpponent && card.HasFlag(EffectFlags.CannotBeKOdByEffects)) && !card.IsLeader,
-            StepKind.Rest => !(byOpponent && card.HasFlag(EffectFlags.CannotBeRestedByEffects)),
+            StepKind.KO => Prohibitions.CanBeKOd(card, byEffect: true, byOpponent),
+            StepKind.Rest => Prohibitions.CanBeRested(card, byOpponent),
             StepKind.ReturnToHand or StepKind.BottomOfDeck or StepKind.TopOfDeck or StepKind.TrashCard => !card.IsLeader,
             StepKind.GiveRestedDon => !card.IsStage,
             _ => true
@@ -1188,7 +1197,8 @@ public sealed class EffectEngine
             return false;
         }
 
-        if (!byEffect && card.HasFlag(EffectFlags.CannotBeKOdInBattle))
+        // Rule 1-3-3 / 10-2-1-3: "cannot be K.O.'d in battle" wins.
+        if (!byEffect && !Prohibitions.CanBeKOd(card, byEffect: false, byOpponent: true))
         {
             return false;
         }

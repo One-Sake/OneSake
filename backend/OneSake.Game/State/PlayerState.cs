@@ -49,6 +49,10 @@ public sealed class PlayerState
     // "Set up to 2 of your DON!! cards as active at the end of this turn"
     public int DonToActivateAtEndOfTurn { get; set; }
 
+    // Rule 1-2-1-1-1 / 9-2-1-1: the Leader took damage while the player had 0 Life cards.
+    // Rule processing makes this player lose.
+    public bool LeaderDamagedAtZeroLife { get; set; }
+
     // Manual mode: deck cards only this player sees right now ("LOOK" or "SEARCH", empty when closed).
     public string ManualViewKind { get; set; } = string.Empty;
     public List<CardInstance> ManualViewCards { get; } = [];
