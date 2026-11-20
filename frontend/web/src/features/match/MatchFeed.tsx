@@ -28,7 +28,12 @@ function isManualEvent(event: LogEventDto): boolean {
 }
 
 function getLogClassName(event: LogEventDto): string {
-  return isManualEvent(event) ? 'match-feed__log match-feed__log--manual' : 'match-feed__log';
+  if (isManualEvent(event)) {
+    return 'match-feed__log match-feed__log--manual';
+  }
+
+  // "1/3: Zoro [On Play] ..." - the order in which simultaneous effects are resolved.
+  return event.type === 'EFFECT_ORDER' ? 'match-feed__log match-feed__log--order' : 'match-feed__log';
 }
 
 // How close (in px) to the bottom still counts as "at the bottom".

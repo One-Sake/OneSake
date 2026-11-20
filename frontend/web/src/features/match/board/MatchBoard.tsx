@@ -26,6 +26,7 @@ import type { ManualMenuState } from './ManualMenu';
 import { getManualItems, MANUAL_DECISION_KINDS, RUNNING_PHASES } from './manualItems';
 import type { ManualContext, ManualItem, ManualTarget } from './manualItems';
 import { ManualViewDialog } from './ManualViewDialog';
+import { TriggerOrderOverlay } from './TriggerOrderOverlay';
 import { useBoardMetrics } from './useBoardMetrics';
 import { useHandDrag } from './useHandDrag';
 import type { DragItem, DropTarget } from './useHandDrag';
@@ -57,6 +58,8 @@ interface MatchBoardProps {
   onPreviewCard?: (card: CardInstanceDto | null) => void;
   // Manual mode: resolve card effects by hand. Resolves to false when the server rejected the action.
   onManualAction?: (action: ManualActionDto) => Promise<boolean>;
+  // ORDER_TRIGGERS: the chosen order of simultaneous effects.
+  onSubmitOrder?: (orderedIds: string[]) => void;
 }
 
 // Drag & drop from the field in manual mode: where the card goes.
@@ -134,6 +137,7 @@ export function MatchBoard({
   midlineContent,
   onManualAction,
   onPreviewCard,
+  onSubmitOrder,
   onSubmitChoice,
   pending,
 }: MatchBoardProps) {
@@ -589,6 +593,10 @@ export function MatchBoard({
       return 'Resolve the card effect.';
     }
 
+    if (myPrompt?.kind === 'ORDER_TRIGGERS') {
+      return 'Several effects at the same time: choose their order.';
+    }
+
     if (manualPrompt) {
       return 'Resolve the effect by hand (right click or ⋯), then press Done.';
     }
@@ -1029,6 +1037,12 @@ export function MatchBoard({
         }}
         onSelectCard={setInspectedCard}
         pile={inspectedPile}
+      />
+
+      <TriggerOrderOverlay
+        disabled={pending || !canSubmitChoice}
+        onSubmit={(orderedIds) => onSubmitOrder?.(orderedIds)}
+        prompt={myPrompt?.kind === 'ORDER_TRIGGERS' ? myPrompt : null}
       />
 
       <ManualEffectBanner

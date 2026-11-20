@@ -70,6 +70,7 @@ interface FullscreenMatchViewProps {
   onExitBoard: () => void;
   onLeaveRoom: () => void;
   onManualAction: (action: ManualActionDto) => Promise<boolean>;
+  onSubmitOrder: (orderedIds: string[]) => void;
   onSendChat: (event: FormEvent) => void;
   onStartMatch: () => void;
   onSubmitChoice: (option: string, selectedCardInstanceId?: string, targetCardInstanceId?: string) => void;
@@ -92,6 +93,7 @@ export function FullscreenMatchView({
   onExitBoard,
   onLeaveRoom,
   onManualAction,
+  onSubmitOrder,
   onSendChat,
   onStartMatch,
   onSubmitChoice,
@@ -275,6 +277,7 @@ export function FullscreenMatchView({
               />
             }
             onManualAction={onManualAction}
+            onSubmitOrder={onSubmitOrder}
             onPreviewCard={setPreviewCard}
             onSubmitChoice={onSubmitChoice}
             pending={pending}

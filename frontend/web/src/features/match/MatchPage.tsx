@@ -571,6 +571,7 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
     option: string,
     selectedCardInstanceId?: string,
     targetCardInstanceId?: string,
+    orderedIds?: string[],
   ): Promise<void> => {
     if (!currentPrompt || !joinedRoomCode || !isConnected || !signalRClient) {
       return;
@@ -582,6 +583,7 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
       selectedOption: option,
       selectedCardInstanceId,
       targetCardInstanceId,
+      orderedIds,
     };
 
     setPending(true);
@@ -659,6 +661,7 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
         onExitBoard={exitBoardMode}
         onLeaveRoom={() => void leaveRoom()}
         onManualAction={sendManualAction}
+        onSubmitOrder={(orderedIds) => void submitChoice('ORDER', undefined, undefined, orderedIds)}
         onSendChat={sendChat}
         onStartMatch={() => void startMatch()}
         onSubmitChoice={(option, selectedCardInstanceId, targetCardInstanceId) =>

@@ -2756,3 +2756,95 @@ body.is-dragging-card * {
 .match-feed__log--manual span {
   color: #a98ad8;
 }
+
+/* ---------- Order of simultaneous effects (TriggerOrderOverlay.tsx) ---------- */
+
+.trigger-order {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.trigger-order__item {
+  display: grid;
+  grid-template-columns: auto auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgb(240 191 56 / 30%);
+  border-radius: 10px;
+  padding: 6px 8px;
+  background: rgb(255 255 255 / 4%);
+  cursor: grab;
+}
+
+.trigger-order__item.is-dragging {
+  opacity: 0.45;
+}
+
+.trigger-order__number {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  color: #10221b;
+  font-weight: 900;
+  background: var(--color-gold, #f0bf38);
+}
+
+.trigger-order__card {
+  --card-w: 46px;
+  --card-radius: 4px;
+  width: 46px;
+}
+
+.trigger-order__card .match-card-view {
+  width: 46px;
+}
+
+.trigger-order__text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.trigger-order__text strong {
+  color: #ffffff;
+  font-size: 0.9rem;
+}
+
+.trigger-order__text small {
+  overflow-wrap: anywhere;
+  color: #b9c6cc;
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.trigger-order__buttons {
+  display: grid;
+  gap: 4px;
+}
+
+.trigger-order__buttons button {
+  min-width: 34px;
+  min-height: 28px;
+  border: 1px solid rgb(240 191 56 / 45%);
+  border-radius: 7px;
+  color: #f8da84;
+  font: inherit;
+  background: rgb(10 18 26 / 92%);
+  cursor: pointer;
+}
+
+.trigger-order__buttons button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.match-feed__list .match-feed__log--order {
+  border-left: 2px solid rgb(240 191 56 / 70%);
+  padding-left: 6px;
+  color: #f3dfa6;
+}

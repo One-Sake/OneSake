@@ -168,6 +168,16 @@ export interface ChoicePromptDto {
   cards?: CardInstanceDto[];
   sourceName?: string;
   effectText?: string;
+  // ORDER_TRIGGERS: the effects to put in order.
+  triggers?: TriggerOptionDto[];
+}
+
+export interface TriggerOptionDto {
+  id: string;
+  cardInstanceId: string;
+  cardName: string;
+  timing: string;
+  text: string;
 }
 
 export interface ChoiceSubmissionDto {
@@ -176,6 +186,8 @@ export interface ChoiceSubmissionDto {
   selectedOption: string;
   selectedCardInstanceId?: string;
   targetCardInstanceId?: string;
+  // ORDER_TRIGGERS: all effect ids, first = resolved first.
+  orderedIds?: string[];
 }
 
 export interface ChatMessageDto {

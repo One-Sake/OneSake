@@ -148,7 +148,7 @@ export function MatchCardView({
           {size === 'hand' && typeof card.cost === 'number' && card.category !== 'Leader' && (
             <span className="match-card-stat match-card-stat--cost">{card.cost}</span>
           )}
-          {hasPower(card) && power > 0 && (
+          {hasPower(card) && power !== 0 && (
             <span className={powerBoosted ? 'match-card-stat match-card-stat--power is-boosted' : 'match-card-stat match-card-stat--power'}>
               {power}
             </span>
