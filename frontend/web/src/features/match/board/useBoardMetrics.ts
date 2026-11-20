@@ -30,7 +30,7 @@ const COMPACT = {
   columns: 10,
   cardRows: 4,
   gapRows: 2,
-  extraRows: 0.3 + 0.24 + 0.4,
+  extraRows: 0.3 + 0.24 + 0.64,
   bottomPx: 26,
 };
 

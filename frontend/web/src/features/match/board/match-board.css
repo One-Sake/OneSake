@@ -1050,7 +1050,9 @@ button.match-card-view,
   /* Must match COMPACT in useBoardMetrics.ts. */
   .match-board-frame > * {
     --card-w: var(--board-card-w, clamp(20px, min(13cqh - 5px, 6.2cqw), 90px));
-    --hand-peek: calc(var(--card-h) * 0.4);
+    /* Smaller resting hand on short screens, with its full height kept free. */
+    --hand-scale: 0.55;
+    --hand-peek: calc(var(--card-h) * 0.64);
     --bottom-extra: 26px;
   }
 
