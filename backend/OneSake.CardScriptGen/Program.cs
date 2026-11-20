@@ -144,7 +144,7 @@ sealed record GeneratorOptions(IReadOnlyList<string> CardSources, string? Set, b
     }
 }
 
-sealed record CardData(string CardId, string Text, string Category);
+sealed record CardData(string CardId, string Text, string Category, bool IsBasePrint);
 
 static class CardSource
 {
@@ -165,12 +165,20 @@ static class CardSource
             {
                 var id = Read(element, "card_set_id").Trim().ToUpperInvariant();
                 var text = Read(element, "card_text");
-                if (id.Length == 0 || (cards.TryGetValue(id, out var known) && known.Text.Length > 0))
+                if (id.Length == 0)
                 {
                     continue;
                 }
 
-                cards[id] = new CardData(id, text, NormalizeCategory(Read(element, "card_type")));
+                // Prints can have different texts (errata, reprints). The game uses the base print
+                // (card_image_id == card ID, see pickBasePrint in matchDeckMapper.ts), so that one wins.
+                var isBasePrint = string.Equals(Read(element, "card_image_id").Trim(), id, StringComparison.OrdinalIgnoreCase);
+                if (cards.TryGetValue(id, out var known) && (known.IsBasePrint || (!isBasePrint && known.Text.Length > 0)))
+                {
+                    continue;
+                }
+
+                cards[id] = new CardData(id, text, NormalizeCategory(Read(element, "card_type")), isBasePrint);
             }
         }
 
