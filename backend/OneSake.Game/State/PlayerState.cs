@@ -49,6 +49,16 @@ public sealed class PlayerState
     // "Set up to 2 of your DON!! cards as active at the end of this turn"
     public int DonToActivateAtEndOfTurn { get; set; }
 
+    // Manual mode: deck cards only this player sees right now ("LOOK" or "SEARCH", empty when closed).
+    public string ManualViewKind { get; set; } = string.Empty;
+    public List<CardInstance> ManualViewCards { get; } = [];
+
+    public void CloseManualView()
+    {
+        ManualViewKind = string.Empty;
+        ManualViewCards.Clear();
+    }
+
     // All DON!! on the field: cost area (active + rested) and given to the Leader/Characters.
     public int DonOnField => ActiveDon + RestedDon + FieldCards().Sum(card => card.AttachedDon);
 

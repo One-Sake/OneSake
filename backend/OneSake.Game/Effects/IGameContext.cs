@@ -10,6 +10,12 @@ public interface IGameContext
     string ActivePlayerId { get; }
     BattleState? Battle { get; }
     void Log(string type, string text);
+
+    // The card has effect text for this timing that the engine cannot automate.
+    // MatchRoom asks the player to resolve it by hand. Does nothing by default (tests).
+    void RequestManualEffect(CardInstance card, string controllerId, EffectTiming timing)
+    {
+    }
 }
 
 public static class GameContextExtensions

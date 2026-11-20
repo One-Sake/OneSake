@@ -159,6 +159,20 @@ public class MatchHub : Hub
         await PublishMatchUpdate(normalizedRoomCode, update);
     }
 
+    // Manual mode: move cards, K.O., +power... to resolve card effects by hand.
+    public async Task ManualAction(string roomCode, ManualActionDto action)
+    {
+        var normalizedRoomCode = NormalizeRoomCode(roomCode);
+        var room = GetExistingRoom(normalizedRoomCode);
+        if (action is null)
+        {
+            throw new HubException("A manual action is required.");
+        }
+
+        var update = RunRoomAction(() => room.ManualAction(Context.ConnectionId, action));
+        await PublishMatchUpdate(normalizedRoomCode, update);
+    }
+
     public async Task SendChat(string roomCode, string text)
     {
         var normalizedRoomCode = NormalizeRoomCode(roomCode);
