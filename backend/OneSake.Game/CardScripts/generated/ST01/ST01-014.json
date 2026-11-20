@@ -1,7 +1,7 @@
 {
   "cardId": "ST01-014",
   "status": "verified",
-  "sourceTextHash": "ad834f409a229d39e50dee1f6c02c32a9ddc67d59dae810ce18b22037456bd57",
+  "sourceTextHash": "a6485a9e18a3c3007bc71158ead71e6f6eb09ecd6426abc2d5046d4638fceac9",
   "parserVersion": "cardscriptgen-1",
   "script": {
     "abilities": [

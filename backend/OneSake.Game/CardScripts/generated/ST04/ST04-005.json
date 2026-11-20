@@ -1,7 +1,7 @@
 {
   "cardId": "ST04-005",
   "status": "generated",
-  "sourceTextHash": "0a2c43545836b8e19ceadc6c760f03f621f0b9cde6dcdf4fbbc46e1699f508a4",
+  "sourceTextHash": "1f35ed4e30b74b96f2b6fa43ab5a2471607cb82c43fc4fbd599c652c9e12c029",
   "parserVersion": "cardscriptgen-1",
   "script": {
     "abilities": [
@@ -62,7 +62,7 @@
       },
       {
         "timing": "OnPlay",
-        "text": "[Blocker] [On Play] DON!! 1: Draw 2 cards and trash 1 card from your hand.",
+        "text": "[Blocker] [On Play] DON!! -1: Draw 2 cards and trash 1 card from your hand.",
         "requiredDon": 0,
         "oncePerTurn": false,
         "onlyYourTurn": false,

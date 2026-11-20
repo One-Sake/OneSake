@@ -1,13 +1,13 @@
 {
   "cardId": "ST02-007",
   "status": "generated",
-  "sourceTextHash": "5521f7d65d668428b68f302d5dce4310e05d3ba22b3f1562540325bfbaa268aa",
+  "sourceTextHash": "96f95800a11f96a5ca446e27123caf9f606fb641db62ce5d60c2b64d78dc6eb3",
   "parserVersion": "cardscriptgen-1",
   "script": {
     "abilities": [
       {
         "timing": "ActivateMain",
-        "text": "[Activate: Main] RESTDON1 You may rest this Character: Look at 5 cards from the top of your deck; reveal up to 1 {Supernovas} type card and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+        "text": "[Activate: Main] RESTDON1 You may rest this card: Look at 5 cards from the top of your deck; reveal up to 1 {Supernovas} type card and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
         "requiredDon": 0,
         "oncePerTurn": false,
         "onlyYourTurn": false,

@@ -1,13 +1,13 @@
 {
   "cardId": "ST06-006",
   "status": "generated",
-  "sourceTextHash": "c512eff295bb8b5ccb8cba1c2958b729fdcee836f0a446ea0f128d34ebd11ca4",
+  "sourceTextHash": "7485e02b6ab197273514f22b58bdd33866ebc2a72b8794ac4b86a97d96025cd2",
   "parserVersion": "cardscriptgen-1",
   "script": {
     "abilities": [
       {
         "timing": "ActivateMain",
-        "text": "[Activate: Main] You may rest this Character: Give up to 1 of your opponent's Characters 2 cost during this turn.",
+        "text": "[Activate: Main] You may rest this Character: Give up to 1 of your opponent's Characters -2 cost during this turn.",
         "requiredDon": 0,
         "oncePerTurn": false,
         "onlyYourTurn": false,
@@ -60,7 +60,7 @@
             "position": "top",
             "side": "You",
             "conditions": [],
-            "text": "Give up to 1 of your opponent's Characters 2 cost during this turn"
+            "text": "Give up to 1 of your opponent's Characters -2 cost during this turn"
           }
         ],
         "index": 0

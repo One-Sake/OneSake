@@ -73,7 +73,7 @@
   },
   {
     "card_set_id": "ST01-014",
-    "card_name": "Guard Point (Jolly Roger Foil)",
+    "card_name": "Guard Point",
     "card_type": "Event",
     "card_color": "Red",
     "card_cost": "1",
@@ -81,7 +81,7 @@
     "counter_amount": null,
     "sub_types": "Animal Straw Hat Crew",
     "attribute": null,
-    "card_text": "[Counter] Up to 1 of your Leader or Character cards gains +3000 power during this battle.[Trigger] Up to 1 of your Leader or Character cards gains +1000 power during this turn."
+    "card_text": "[Counter] Up to 1 of your Leader or Character cards gains +3000 power during this battle. [Trigger] Up to 1 of your Leader or Character cards gains +1000 power during this turn."
   },
   {
     "card_set_id": "ST01-013",

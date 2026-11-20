@@ -1,7 +1,7 @@
 {
   "cardId": "ST14-017",
   "status": "generated",
-  "sourceTextHash": "a949074036cce70a31354e932a77caa5077ad4f2369b8f5556dfb2aa380c9394",
+  "sourceTextHash": "405c996ceaed4bc235f04f91b941e4a50de201136bca9fbafa5bd7b72b0ef8cc",
   "parserVersion": "cardscriptgen-1",
   "script": {
     "abilities": [

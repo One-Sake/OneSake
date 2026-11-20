@@ -1,60 +1,16 @@
 {
   "cardId": "ST03-004",
-  "status": "generated",
-  "sourceTextHash": "3a79d0b513c7432bed10ebb169006cdeebc8316f9186a60b3c45880099839ed2",
+  "status": "manual",
+  "sourceTextHash": "60c2351244fc1eb629bad3e1bdec8f548cb6446d71d3140c6633eaed3e5893cb",
   "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Add up to 1 \"The Seven Warlords of the Sea\" or {Thriller Bark Pirates} type Character with a cost of 4 or less than [Gecko Moria] from your trash to your hand.",
   "script": {
-    "abilities": [
-      {
-        "timing": "OnPlay",
-        "text": "[On Play] Add up to 1 [The Seven Warlords of the Sea] or {Thriller Bark Pirates} type Character with a cost of 4 or less other than [Gecko Moria] from your trash to your hand.",
-        "requiredDon": 0,
-        "oncePerTurn": false,
-        "onlyYourTurn": false,
-        "onlyOpponentsTurn": false,
-        "conditions": [],
-        "costs": [],
-        "steps": [
-          {
-            "kind": "TrashToHand",
-            "amount": 1,
-            "secondAmount": 0,
-            "optional": false,
-            "filter": {
-              "owner": "You",
-              "allowLeader": false,
-              "allowCharacter": true,
-              "allowStage": true,
-              "category": "Character",
-              "maxCost": 4,
-              "useBaseValues": false,
-              "typeIncludes": "Thriller Bark Pirates",
-              "name": "The Seven Warlords of the Sea",
-              "nameNot": "Gecko Moria",
-              "color": "",
-              "attribute": "",
-              "keyword": "",
-              "excludeSource": false,
-              "requiresTrigger": false,
-              "nameOrType": true,
-              "maxCostFrom": ""
-            },
-            "zone": "Trash",
-            "duration": "ThisTurn",
-            "flag": "",
-            "rested": false,
-            "restDestination": "bottom",
-            "playRevealed": false,
-            "position": "top",
-            "side": "You",
-            "conditions": [],
-            "text": "Add up to 1 [The Seven Warlords of the Sea] or {Thriller Bark Pirates} type Character with a cost of 4 or less other than [Gecko Moria] from your trash to your hand"
-          }
-        ],
-        "index": 0
-      }
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Add up to 1 \"The Seven Warlords of the Sea\" or {Thriller Bark Pirates} type Character with a cost of 4 or less than [Gecko Moria] from your trash to your hand."
     ],
-    "unsupportedTexts": [],
-    "failedParts": []
+    "failedParts": [
+      "Add up to 1 \"The Seven Warlords of the Sea\" or {Thriller Bark Pirates} type Character with a cost of 4 or less than [Gecko Moria] from your trash to your hand"
+    ]
   }
 }

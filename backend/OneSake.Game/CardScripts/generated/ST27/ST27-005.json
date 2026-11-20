@@ -1,7 +1,7 @@
 {
   "cardId": "ST27-005",
   "status": "generated",
-  "sourceTextHash": "f010dd0eb1d63adca136e396fd7c7ee79ee464fb6343163a5816d23e8fd4daf2",
+  "sourceTextHash": "c8d5fda235cf93da784bbf8fca95e64e5745bda88351e467bb9cbe35c85af2e2",
   "parserVersion": "cardscriptgen-1",
   "script": {
     "abilities": [

@@ -1,13 +1,13 @@
 {
   "cardId": "EB01-056",
   "status": "generated",
-  "sourceTextHash": "dce573196c9be77347044a1b29b1823e93ce0c15d18f734f62fae653e8358f8a",
+  "sourceTextHash": "d13d053264228e16bee5b7144aa9876ab54232b81f7531c77c4f7ebc72012447",
   "parserVersion": "cardscriptgen-1",
   "script": {
     "abilities": [
       {
         "timing": "OnPlay",
-        "text": "[On Play] You may add 1 card from the top or bottom of your Life cards to your hand: Draw 1 card.",
+        "text": "[On Play]You may add 1 card from the top or bottom of your Life cards to your hand: Draw 1 card.",
         "requiredDon": 0,
         "oncePerTurn": false,
         "onlyYourTurn": false,

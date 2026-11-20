@@ -1,7 +1,7 @@
 {
   "cardId": "EB04-052",
   "status": "manual",
-  "sourceTextHash": "5812a8ebccac6c3f8fe18b8c9e106b62aea1dc2ca6c042f6fe88a78786881d83",
+  "sourceTextHash": "292410266ff7f1db3b6f7e061a10ca3bc12ecc19041224ae460231d462c60e85",
   "parserVersion": "cardscriptgen-1",
   "notes": "Not automated: [When Attacking] This Character's base power becomes the same as your opponent's Leader during this turn.",
   "script": {

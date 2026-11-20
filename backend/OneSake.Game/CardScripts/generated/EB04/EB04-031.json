@@ -1,18 +1,18 @@
 {
   "cardId": "EB04-031",
   "status": "manual",
-  "sourceTextHash": "c984536dc0acd035ac5ae2072af4ae2f6cc0584fb158ace35f08b424b9a1224a",
+  "sourceTextHash": "ff7d7876422568daf2b62bb3a01f50535482ef89a60a93c7b290e4cbdbe580a9",
   "parserVersion": "cardscriptgen-1",
-  "notes": "Not automated: If this Character would be K.O.'d, you may return 1 DON!! card from your field to your DON!! deck instead. | [Activate: Main] [Once Per Turn] If your Leader has the {Animal Kingdom Pirates} type and you have no other [King] Characters, add up to 1 DON!! card from your, DON!! deck and set it as active, and add up to 1 additional DON!! card and rest it.",
+  "notes": "Not automated: If this Character would be K.O.'d, you may return 1 DON!! card from your field to your DON!! deck instead. | [Activate: Main] [Once Per Turn] If your Leader has the {Animal Kingdom Pirates} type and you have no other [King] Characters, add up to 1 DON!! card from your DON!! deck and set it as active, and add up to 1 additional DON!! card and rest it.",
   "script": {
     "abilities": [],
     "unsupportedTexts": [
       "If this Character would be K.O.'d, you may return 1 DON!! card from your field to your DON!! deck instead.",
-      "[Activate: Main] [Once Per Turn] If your Leader has the {Animal Kingdom Pirates} type and you have no other [King] Characters, add up to 1 DON!! card from your, DON!! deck and set it as active, and add up to 1 additional DON!! card and rest it."
+      "[Activate: Main] [Once Per Turn] If your Leader has the {Animal Kingdom Pirates} type and you have no other [King] Characters, add up to 1 DON!! card from your DON!! deck and set it as active, and add up to 1 additional DON!! card and rest it."
     ],
     "failedParts": [
       "IF: If this Character would be K.O.'d, you may return 1 DON!! card from your field to your DON!! deck instead",
-      "IF: If your Leader has the {Animal Kingdom Pirates} type and you have no other [King] Characters, add up to 1 DON!! card from your, DON!! deck and set it as active, and add up to 1 additional DON!! card and rest it"
+      "IF: If your Leader has the {Animal Kingdom Pirates} type and you have no other [King] Characters, add up to 1 DON!! card from your DON!! deck and set it as active, and add up to 1 additional DON!! card and rest it"
     ]
   }
 }

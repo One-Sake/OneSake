@@ -1,7 +1,7 @@
 {
   "cardId": "ST13-019",
   "status": "manual",
-  "sourceTextHash": "74b9487ab78ea00800555dbc667fc58c5073df0816654a0e1094c097ed2ee18d",
+  "sourceTextHash": "55643c21ac833186cac1dd6c156696db36266e60e2141e3574e612686e7a80b0",
   "parserVersion": "cardscriptgen-1",
   "notes": "Not automated: [Main] Look at 5 cards from the top of your deck; reveal up to 1 [Sabo], [Portgas.D.Ace], or [Monkey.D.Luffy] with a cost of 5 or less and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
   "script": {

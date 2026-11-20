@@ -1,7 +1,7 @@
 {
   "cardId": "ST06-014",
   "status": "generated",
-  "sourceTextHash": "8be71b98230d204ce38c9e1e6c18abdf1780292fbefd9017c7d9d22aa7585112",
+  "sourceTextHash": "d1110801af6b14708edd605fd931a4187e8f84e55a079dd9228c0c8626e57520",
   "parserVersion": "cardscriptgen-1",
   "script": {
     "abilities": [
