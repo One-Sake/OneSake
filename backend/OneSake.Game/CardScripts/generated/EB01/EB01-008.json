@@ -1,0 +1,16 @@
+{
+  "cardId": "EB01-008",
+  "status": "manual",
+  "sourceTextHash": "a4b611d04e3db1b7d7bafbc3855195c35b48d7b6147378eb65784447107bdb35",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Once Per Turn] If this Character would be K.O.'d by an effect, you may trash 1 Event or Stage card from your hand instead.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Once Per Turn] If this Character would be K.O.'d by an effect, you may trash 1 Event or Stage card from your hand instead."
+    ],
+    "failedParts": [
+      "IF: If this Character would be K.O.'d by an effect, you may trash 1 Event or Stage card from your hand instead"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP11-030",
+  "status": "manual",
+  "sourceTextHash": "300588db754c0c5f4a6a2d41da84e8c982bfa838f8133641238b8f9f5e365b1c",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may rest 1 of your DON!! cards and this Character: Look at 5 cards from the top of your deck; reveal up to 1 \"Neptunian\" or {Fish-Man Island} type card and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may rest 1 of your DON!! cards and this Character: Look at 5 cards from the top of your deck; reveal up to 1 \"Neptunian\" or {Fish-Man Island} type card and add it to your hand. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "Look at 5 cards from the top of your deck; reveal up to 1 \"Neptunian\" or {Fish-Man Island} type card and add it to your hand"
+    ]
+  }
+}

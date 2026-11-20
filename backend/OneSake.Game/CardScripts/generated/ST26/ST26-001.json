@@ -1,0 +1,18 @@
+{
+  "cardId": "ST26-001",
+  "status": "manual",
+  "sourceTextHash": "71b17efffb0ca4a2b9ee843dbf91301f5cb94b603a43e278a3d8631039725627",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If you have a [San-Gorou] or [Sanji] Character with 7000 base power or more, give this card in your hand -5 cost. | [On Play] Return all of your [San-Gorou] and [Sanji] Characters to the owner's hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If you have a [San-Gorou] or [Sanji] Character with 7000 base power or more, give this card in your hand -5 cost.",
+      "[On Play] Return all of your [San-Gorou] and [Sanji] Characters to the owner's hand."
+    ],
+    "failedParts": [
+      "IF: If you have a [San-Gorou] or [Sanji] Character with 7000 base power or more, give this card in your hand -5 cost",
+      "Return all of your [San-Gorou] and [Sanji] Characters to the owner's hand"
+    ]
+  }
+}

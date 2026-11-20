@@ -1,0 +1,18 @@
+{
+  "cardId": "EB05-008",
+  "status": "manual",
+  "sourceTextHash": "99d0f47248e4cb61c3f190dc143039d0f70dfb115400b9d2823da7494c0c4d64",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] You may give 1 active DON!! card to 1 of your Leader and reveal 2 red Event cards from your hand: Give up to 1 of your opponent's rested Characters -7000 power during this turn. | [Counter] If you have no Characters with a cost of 5 or more, up to 1 of your Leader or up to 1 of your Characters gains +4000 power during this battle.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Main] You may give 1 active DON!! card to 1 of your Leader and reveal 2 red Event cards from your hand: Give up to 1 of your opponent's rested Characters -7000 power during this turn.",
+      "[Counter] If you have no Characters with a cost of 5 or more, up to 1 of your Leader or up to 1 of your Characters gains +4000 power during this battle."
+    ],
+    "failedParts": [
+      "COST: You may give 1 active DON!! card to 1 of your Leader and reveal 2 red Event cards from your hand",
+      "IF: If you have no Characters with a cost of 5 or more, up to 1 of your Leader or up to 1 of your Characters gains +4000 power during this battle"
+    ]
+  }
+}

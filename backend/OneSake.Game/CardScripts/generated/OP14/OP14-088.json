@@ -1,0 +1,16 @@
+{
+  "cardId": "OP14-088",
+  "status": "manual",
+  "sourceTextHash": "c5871e6603570245ad71f1181590eca620279a37efbb51f25eaec96b7b0d8415",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On K.O.] If your Leader's type includes \"Baroque Works\", draw 1 card and K.O. up to 1 of your opponent's Stages with a cost of 1.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On K.O.] If your Leader's type includes \"Baroque Works\", draw 1 card and K.O. up to 1 of your opponent's Stages with a cost of 1."
+    ],
+    "failedParts": [
+      "IF: If your Leader's type includes \"Baroque Works\", draw 1 card and K.O. up to 1 of your opponent's Stages with a cost of 1"
+    ]
+  }
+}

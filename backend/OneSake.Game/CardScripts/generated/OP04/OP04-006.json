@@ -1,0 +1,16 @@
+{
+  "cardId": "OP04-006",
+  "status": "manual",
+  "sourceTextHash": "000fd68a4938f58b55af55f14962a755682ceaab12be18bebcc1900fceff13b3",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking] You may give your 1 active Leader -5000 power during this turn: This Character gains +2000 power until the start of your next turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[When Attacking] You may give your 1 active Leader -5000 power during this turn: This Character gains +2000 power until the start of your next turn."
+    ],
+    "failedParts": [
+      "COST: You may give your 1 active Leader -5000 power during this turn"
+    ]
+  }
+}

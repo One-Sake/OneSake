@@ -1,0 +1,16 @@
+{
+  "cardId": "OP15-052",
+  "status": "manual",
+  "sourceTextHash": "8fff75bf2b8fcb035edcd13c2a6158b152a86cb88afd37429e56538562cf5234",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If your Character with 7000 base power or less would be removed from the field by your opponent's effect, you may place 1 of your Characters at the bottom of the owner's deck instead.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If your Character with 7000 base power or less would be removed from the field by your opponent's effect, you may place 1 of your Characters at the bottom of the owner's deck instead."
+    ],
+    "failedParts": [
+      "IF: If your Character with 7000 base power or less would be removed from the field by your opponent's effect, you may place 1 of your Characters at the bottom of the owner's deck instead"
+    ]
+  }
+}

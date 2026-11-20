@@ -1,0 +1,16 @@
+{
+  "cardId": "ST22-015",
+  "status": "manual",
+  "sourceTextHash": "691ec2a375d8572a4e6d33d6233d6b9400fd7b199e892ad4a7149987dced8817",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] If your Leader's type includes \"Whitebeard Pirates\", play up to 1 [Edward.Newgate] from your hand. Then, you may add 1 card from the top or bottom of your Life cards to your hand. If you do, up to 1 of your Leader gains +2000 power until the end of your opponent's next turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Main] If your Leader's type includes \"Whitebeard Pirates\", play up to 1 [Edward.Newgate] from your hand. Then, you may add 1 card from the top or bottom of your Life cards to your hand. If you do, up to 1 of your Leader gains +2000 power until the end of your opponent's next turn."
+    ],
+    "failedParts": [
+      "IF: If your Leader's type includes \"Whitebeard Pirates\", play up to 1 [Edward.Newgate] from your hand"
+    ]
+  }
+}

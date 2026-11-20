@@ -1,0 +1,16 @@
+{
+  "cardId": "OP10-088",
+  "status": "manual",
+  "sourceTextHash": "c2ad33a35dd9318626e3024d0a093a26a8d29241627c953de3d56a2e7cd7c3ae",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may rest this Character and 1 of your {Dressrosa} type Leader or Stage cards: Draw 1 card. Then, trash 2 cards from the top of your deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may rest this Character and 1 of your {Dressrosa} type Leader or Stage cards: Draw 1 card. Then, trash 2 cards from the top of your deck."
+    ],
+    "failedParts": [
+      "COST: You may rest this Character and 1 of your {Dressrosa} type Leader or Stage cards"
+    ]
+  }
+}

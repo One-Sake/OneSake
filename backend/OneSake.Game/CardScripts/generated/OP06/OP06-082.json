@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-082",
+  "status": "manual",
+  "sourceTextHash": "e3c37aba443e00be9214a2f5d496aa5e7e30285b491fffe375568d66452931a4",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] / [On K.O.] If your Leader has the {Thriller Bark Pirates} type, draw 2 cards and trash 2 cards from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] / [On K.O.] If your Leader has the {Thriller Bark Pirates} type, draw 2 cards and trash 2 cards from your hand."
+    ],
+    "failedParts": [
+      "/ [On K.O.] If your Leader has the {Thriller Bark Pirates} type, draw 2 cards and trash 2 cards from your hand"
+    ]
+  }
+}

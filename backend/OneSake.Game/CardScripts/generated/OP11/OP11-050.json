@@ -1,0 +1,16 @@
+{
+  "cardId": "OP11-050",
+  "status": "manual",
+  "sourceTextHash": "dc8d0aed05562876e75a1d929a226063ce244ea2598106a4f3ca03a213fcfe21",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking] You may trash 1 {Firetank Pirates} type card from your hand: Return up to 1 Character with a cost of 1 or less to the owner's hand or place it at the bottom of their deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[When Attacking] You may trash 1 {Firetank Pirates} type card from your hand: Return up to 1 Character with a cost of 1 or less to the owner's hand or place it at the bottom of their deck."
+    ],
+    "failedParts": [
+      "Return up to 1 Character with a cost of 1 or less to the owner's hand or place it at the bottom of their deck"
+    ]
+  }
+}

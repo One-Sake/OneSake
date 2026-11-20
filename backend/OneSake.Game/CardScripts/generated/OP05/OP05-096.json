@@ -1,0 +1,18 @@
+{
+  "cardId": "OP05-096",
+  "status": "manual",
+  "sourceTextHash": "3fb48e4c2e3e2350a9ec18ae81d9dbd9a098a4e5ec866dff8a4fa903f498057c",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] Choose one: . K.O. up to 1 of your opponent's Characters with a cost of 1 or less. . Return up to 1 of your opponent's Characters with a cost of 1 or less to the owner's hand. . Place up to 1 of your opponent's Characters with a cost of 1 or less at the top or bottom of their Life cards face-up. Then, if you have a {Celestial Dragons} type Character, draw 1 card. | [Trigger] K.O. up to 1 of your opponent's Characters with a cost of 6 or less, or return it to the owner's hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Main] Choose one: . K.O. up to 1 of your opponent's Characters with a cost of 1 or less. . Return up to 1 of your opponent's Characters with a cost of 1 or less to the owner's hand. . Place up to 1 of your opponent's Characters with a cost of 1 or less at the top or bottom of their Life cards face-up. Then, if you have a {Celestial Dragons} type Character, draw 1 card.",
+      "[Trigger] K.O. up to 1 of your opponent's Characters with a cost of 6 or less, or return it to the owner's hand."
+    ],
+    "failedParts": [
+      "COST: Choose one",
+      "K.O. up to 1 of your opponent's Characters with a cost of 6 or less, or return it to the owner's hand"
+    ]
+  }
+}

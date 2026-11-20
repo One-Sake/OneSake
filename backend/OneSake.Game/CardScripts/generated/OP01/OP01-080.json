@@ -1,0 +1,16 @@
+{
+  "cardId": "OP01-080",
+  "status": "manual",
+  "sourceTextHash": "adda2e7ff9277162ff44d9762542b13c4517742a803bd2d56e86064fcd694d51",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On K.O.] Draw a card.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On K.O.] Draw a card."
+    ],
+    "failedParts": [
+      "Draw a card"
+    ]
+  }
+}

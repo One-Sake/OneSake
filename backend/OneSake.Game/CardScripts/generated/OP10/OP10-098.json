@@ -1,0 +1,18 @@
+{
+  "cardId": "OP10-098",
+  "status": "manual",
+  "sourceTextHash": "5498deabb2980e5a74258fb4d2887017d687890bfb1cea31bb51e73400ed8f77",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] If the number of your Characters is at least 2 less than the number of your opponent's Characters, K.O. up to 1 of your opponent's Characters with a base cost of 6 or less and up to 1 of your opponent's Characters with a base cost of 4 or less. | [Trigger] Negate the effect of up to 1 of each of your opponent's Leader and Character cards during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Main] If the number of your Characters is at least 2 less than the number of your opponent's Characters, K.O. up to 1 of your opponent's Characters with a base cost of 6 or less and up to 1 of your opponent's Characters with a base cost of 4 or less.",
+      "[Trigger] Negate the effect of up to 1 of each of your opponent's Leader and Character cards during this turn."
+    ],
+    "failedParts": [
+      "IF: If the number of your Characters is at least 2 less than the number of your opponent's Characters, K.O. up to 1 of your opponent's Characters with a base cost of 6 or less and up to 1 of your opponent's Characters with a base cost of 4 or less",
+      "Negate the effect of up to 1 of each of your opponent's Leader and Character cards during this turn"
+    ]
+  }
+}

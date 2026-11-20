@@ -1,0 +1,16 @@
+{
+  "cardId": "OP16-077",
+  "status": "manual",
+  "sourceTextHash": "e1515b551e860ebbabc8ec203111914bbe9fa6f7a2b09939a10c0e151970dc79",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] Look at 5 cards from the top of your deck; reveal up to 2 {Navy} type cards, add them to your hand and place the rest at the bottom of your deck in any order. Then, trash 1 card from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Main] Look at 5 cards from the top of your deck; reveal up to 2 {Navy} type cards, add them to your hand and place the rest at the bottom of your deck in any order. Then, trash 1 card from your hand."
+    ],
+    "failedParts": [
+      "Look at 5 cards from the top of your deck; reveal up to 2 {Navy} type cards, add them to your hand and place the rest at the bottom of your deck in any order"
+    ]
+  }
+}

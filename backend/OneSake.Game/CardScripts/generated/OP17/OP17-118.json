@@ -1,0 +1,18 @@
+{
+  "cardId": "OP17-118",
+  "status": "manual",
+  "sourceTextHash": "1c837d240bffacef519506587b67d2ff6978aa9f1c2b6eb7aaa5c224694bf83b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If you only have Characters without a Counter, this card in your hand has a +2000 Counter. | [On Play] Draw 1 card and play up to 2 {Rocks Pirates} type cards with different card names and a total cost of 9 or less from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If you only have Characters without a Counter, this card in your hand has a +2000 Counter.",
+      "[On Play] Draw 1 card and play up to 2 {Rocks Pirates} type cards with different card names and a total cost of 9 or less from your hand."
+    ],
+    "failedParts": [
+      "IF: If you only have Characters without a Counter, this card in your hand has a +2000 Counter",
+      "Draw 1 card and play up to 2 {Rocks Pirates} type cards with different card names and a total cost of 9 or less from your hand"
+    ]
+  }
+}

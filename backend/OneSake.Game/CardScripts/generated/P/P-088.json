@@ -1,0 +1,16 @@
+{
+  "cardId": "P-088",
+  "status": "manual",
+  "sourceTextHash": "344d74b12d673028e739cad3f602d57f98899814a3eb11b82abfdb3d6a6335c6",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Trigger] If your Leader has the {Supernovas} type and you and your opponent have a total of 5 or less Life cards, play this card.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Trigger] If your Leader has the {Supernovas} type and you and your opponent have a total of 5 or less Life cards, play this card."
+    ],
+    "failedParts": [
+      "IF: If your Leader has the {Supernovas} type and you and your opponent have a total of 5 or less Life cards, play this card"
+    ]
+  }
+}

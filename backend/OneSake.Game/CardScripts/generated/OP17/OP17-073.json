@@ -1,0 +1,16 @@
+{
+  "cardId": "OP17-073",
+  "status": "manual",
+  "sourceTextHash": "53f590b457ee65652f806825e2512ca71ccba09de98810397132aa3ec288a729",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] You may trash 1 card from your hand: If your Leader has the {Animal Kingdom Pirates} type, add up to 1 DON!! card as active from your DON!! deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] You may trash 1 card from your hand: If your Leader has the {Animal Kingdom Pirates} type, add up to 1 DON!! card as active from your DON!! deck."
+    ],
+    "failedParts": [
+      "Add up to 1 DON!! card as active from your DON!! deck"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "ST29-002",
+  "status": "manual",
+  "sourceTextHash": "d7ffcaf56010f7f6758c6f9bdf2b1a0df876fa2e05d0b6c9dba2b566a102d6eb",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] / [When Attacking] Rest up to 1 of your opponent's Characters with a cost equal to or less than the number of your opponent's Life cards.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] / [When Attacking] Rest up to 1 of your opponent's Characters with a cost equal to or less than the number of your opponent's Life cards."
+    ],
+    "failedParts": [
+      "/ [When Attacking] Rest up to 1 of your opponent's Characters with a cost equal to or less than the number of your opponent's Life cards"
+    ]
+  }
+}

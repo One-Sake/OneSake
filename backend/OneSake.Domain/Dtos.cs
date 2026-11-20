@@ -40,6 +40,35 @@ public record PlayerStateDto
     // BoardCards are the Characters in the Character area (max 5).
     public IReadOnlyList<CardInstanceDto> BoardCards { get; init; } = [];
     public IReadOnlyList<CardInstanceDto> TrashCards { get; init; } = [];
+    // Manual mode: cards only this player may see right now (top of the deck, deck search).
+    // Only filled in the snapshot for this player, null for the opponent.
+    public ManualViewDto? ManualView { get; init; }
+}
+
+public record ManualViewDto
+{
+    // "LOOK" (top N cards of the deck) or "SEARCH" (the whole deck).
+    public string Kind { get; init; } = string.Empty;
+    public IReadOnlyList<CardInstanceDto> Cards { get; init; } = [];
+}
+
+// Manual mode: a player resolves a card effect by hand (move a card, K.O., +power...).
+public record ManualActionDto
+{
+    // DRAW, MOVE_CARD, KO_CARD, RETURN_TO_HAND, RETURN_TO_DECK, SET_REST, SET_ACTIVE, MODIFY_POWER,
+    // MODIFY_COST, DON_ADD, DON_RETURN, DON_ATTACH, DON_SET_REST, DON_SET_ACTIVE, LOOK_TOP, SEARCH_DECK,
+    // CLOSE_VIEW, SHUFFLE_DECK, REVEAL_CARD, TRASH_FROM_HAND, LIFE_TO_HAND
+    public string Kind { get; init; } = string.Empty;
+    public string? CardInstanceId { get; init; }
+    // Zones: hand, character, stage, leader, trash, deck, life. For DON!!: active, rested.
+    public string? FromZone { get; init; }
+    public string? ToZone { get; init; }
+    // "top", "bottom" or an index.
+    public string? ToPosition { get; init; }
+    public int? Amount { get; init; }
+    public string? TargetPlayerId { get; init; }
+    // MODIFY_POWER / MODIFY_COST: "turn" (default) or "battle".
+    public string? Duration { get; init; }
 }
 
 public record CardInstanceDto
@@ -59,6 +88,8 @@ public record CardInstanceDto
     public bool IsRested { get; init; }
     public int AttachedDon { get; init; }
     public bool CanAttack { get; init; }
+    // [Rush: Character] in the turn it was played: it may attack Characters, but not the Leader.
+    public bool CanAttackOnlyCharacters { get; init; }
     public IReadOnlyList<string> Keywords { get; init; } = [];
     // True when the card has an [Activate: Main] ability that can be used right now.
     public bool CanActivate { get; init; }
@@ -66,6 +97,8 @@ public record CardInstanceDto
     public bool IsCounterEvent { get; init; }
     // "auto" (all effects automated), "partial", "manual" (resolve by hand) or "" (no effect text).
     public string EffectStatus { get; init; } = string.Empty;
+    // Card script file status: "verified" (tested), "generated" (not checked by hand), "manual" or "".
+    public string ScriptStatus { get; init; } = string.Empty;
     // Effect texts the server does not automate. The players resolve them manually.
     public IReadOnlyList<string> ManualEffects { get; init; } = [];
 }
@@ -131,6 +164,9 @@ public record GameStateDto
 
     // Quick Match rooms are ranked (they change the bounty), private tables are casual.
     public bool IsRanked { get; init; }
+
+    // Number of recorded decisions in this match ("atSeq" of a bug report). Not the seed.
+    public int RecordedInputs { get; init; }
 }
 
 public record DiceRollDto
@@ -167,6 +203,17 @@ public record ChoicePromptDto
     public IReadOnlyList<CardInstanceDto> Cards { get; init; } = [];
     public string SourceName { get; init; } = string.Empty;
     public string EffectText { get; init; } = string.Empty;
+    // ORDER_TRIGGERS: the effects to put in order.
+    public IReadOnlyList<TriggerOptionDto> Triggers { get; init; } = [];
+}
+
+public record TriggerOptionDto
+{
+    public string Id { get; init; } = string.Empty;
+    public string CardInstanceId { get; init; } = string.Empty;
+    public string CardName { get; init; } = string.Empty;
+    public string Timing { get; init; } = string.Empty;
+    public string Text { get; init; } = string.Empty;
 }
 
 public record ChoiceSubmissionDto
@@ -178,6 +225,8 @@ public record ChoiceSubmissionDto
     public string? SelectedCardInstanceId { get; init; }
     // The second card of an action (attack target, Character to replace...).
     public string? TargetCardInstanceId { get; init; }
+    // ORDER_TRIGGERS: all effect IDs, first = resolved first.
+    public IReadOnlyList<string>? OrderedIds { get; init; }
 }
 
 public record ChatMessageDto

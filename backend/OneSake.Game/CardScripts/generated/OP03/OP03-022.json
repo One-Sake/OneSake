@@ -1,0 +1,16 @@
+{
+  "cardId": "OP03-022",
+  "status": "manual",
+  "sourceTextHash": "5e4a94e827140dedb431c30aeadf3669b5fdc55cd744a8a6be0bf415cc860883",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x2] [When Attacking RESTDON1: Play up to 1 Character card with a cost of 4 or less and a [Trigger] from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x2] [When Attacking RESTDON1: Play up to 1 Character card with a cost of 4 or less and a [Trigger] from your hand."
+    ],
+    "failedParts": [
+      "[When Attacking RESTDON1: Play up to 1 Character card with a cost of 4 or less and a [Trigger] from your hand"
+    ]
+  }
+}

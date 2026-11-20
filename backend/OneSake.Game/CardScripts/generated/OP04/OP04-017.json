@@ -1,0 +1,16 @@
+{
+  "cardId": "OP04-017",
+  "status": "manual",
+  "sourceTextHash": "dcb290aca41039f172eb38f06f4348e5c583666ed55953b84b683c9ec8eb1c5d",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Counter] Give up to 1 of your opponent's Leader or Character cards -2000 power during this turn. Then, if your Leader is active, give up to 1 of your opponent's Leader or Character cards -1000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Counter] Give up to 1 of your opponent's Leader or Character cards -2000 power during this turn. Then, if your Leader is active, give up to 1 of your opponent's Leader or Character cards -1000 power during this turn."
+    ],
+    "failedParts": [
+      "IF: If your Leader is active, give up to 1 of your opponent's Leader or Character cards -1000 power during this turn"
+    ]
+  }
+}

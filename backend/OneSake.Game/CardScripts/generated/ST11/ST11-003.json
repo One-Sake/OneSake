@@ -1,0 +1,16 @@
+{
+  "cardId": "ST11-003",
+  "status": "manual",
+  "sourceTextHash": "ae530539252fa28eaa87effe298d1f815df7b1e8e5199f4e6e83cd070282a664",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] If your Leader is [Uta], choose one: . Rest up to 1 of your opponent's Characters with a cost of 5 or less. . K.O. up to 1 of your opponent's rested Characters with a cost of 5 or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Main] If your Leader is [Uta], choose one: . Rest up to 1 of your opponent's Characters with a cost of 5 or less. . K.O. up to 1 of your opponent's rested Characters with a cost of 5 or less."
+    ],
+    "failedParts": [
+      "COST: If your Leader is [Uta], choose one"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "EB02-033",
+  "status": "manual",
+  "sourceTextHash": "90655667bacce2ba7f0611d0116fcc592771c9e036ad7e04812a7b52a3979105",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If you have [Merry Go] on your field, this Character gains [Blocker].",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If you have [Merry Go] on your field, this Character gains [Blocker]."
+    ],
+    "failedParts": [
+      "IF: If you have [Merry Go] on your field, this Character gains [Blocker]"
+    ]
+  }
+}

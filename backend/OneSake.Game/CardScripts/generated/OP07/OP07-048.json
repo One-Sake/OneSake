@@ -1,0 +1,16 @@
+{
+  "cardId": "OP07-048",
+  "status": "manual",
+  "sourceTextHash": "15cc73037dee5b8b8e0c831f76f6271da77cf154008990375a733c2f41146b17",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] RESTDON2: Reveal 1 card from the top of your deck. If that card is a {The Seven Warlords of the Sea} type Character card with a cost of 4 or less, you may play that card rested. Then, place the rest at the bottom of your deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] RESTDON2: Reveal 1 card from the top of your deck. If that card is a {The Seven Warlords of the Sea} type Character card with a cost of 4 or less, you may play that card rested. Then, place the rest at the bottom of your deck."
+    ],
+    "failedParts": [
+      "Reveal 1 card from the top of your deck"
+    ]
+  }
+}

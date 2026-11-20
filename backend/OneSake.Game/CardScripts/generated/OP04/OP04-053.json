@@ -1,0 +1,16 @@
+{
+  "cardId": "OP04-053",
+  "status": "manual",
+  "sourceTextHash": "edfa807eabdd42757e66c4f47f61012c3810a3bc9e783e7444f7f14eed73b990",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] [Once Per Turn] When you activate an Event, draw 1 card. Then, place 1 card from your hand at the bottom of your deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] [Once Per Turn] When you activate an Event, draw 1 card. Then, place 1 card from your hand at the bottom of your deck."
+    ],
+    "failedParts": [
+      "When you activate an Event, draw 1 card"
+    ]
+  }
+}

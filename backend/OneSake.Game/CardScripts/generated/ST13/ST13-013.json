@@ -1,0 +1,16 @@
+{
+  "cardId": "ST13-013",
+  "status": "manual",
+  "sourceTextHash": "1f51761dc75fdcfa3cc0e1d109296c78830f9899340ea52ce3ec2af724e50085",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Look at 5 cards from the top of your deck; reveal up to 1 [Sabo], [Portgas.D.Ace], or [Monkey.D.Luffy] with a cost of 5 or less and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Look at 5 cards from the top of your deck; reveal up to 1 [Sabo], [Portgas.D.Ace], or [Monkey.D.Luffy] with a cost of 5 or less and add it to your hand. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "Look at 5 cards from the top of your deck; reveal up to 1 [Sabo], [Portgas.D.Ace], or [Monkey.D.Luffy] with a cost of 5 or less and add it to your hand"
+    ]
+  }
+}

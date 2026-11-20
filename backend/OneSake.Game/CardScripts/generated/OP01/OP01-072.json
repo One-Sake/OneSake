@@ -1,0 +1,16 @@
+{
+  "cardId": "OP01-072",
+  "status": "manual",
+  "sourceTextHash": "2ca2117ba848dfad438e9f1dce2c4d190fe4f81d0c6a89a572135a8e9ecf2545",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] [Your Turn] This Character gains +1000 power for every card in your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] [Your Turn] This Character gains +1000 power for every card in your hand."
+    ],
+    "failedParts": [
+      "This Character gains +1000 power for every card in your hand"
+    ]
+  }
+}

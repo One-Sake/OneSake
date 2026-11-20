@@ -1,0 +1,16 @@
+{
+  "cardId": "OP09-119",
+  "status": "manual",
+  "sourceTextHash": "865d4b1a7b1b0486cd653f6a95cd9a365aa6aeb4d147e10b100935c5186fb25b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] You may return 1 or more DON!! cards from your field to your DON!! deck: Draw 1 card and this Character gains [Rush] during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] You may return 1 or more DON!! cards from your field to your DON!! deck: Draw 1 card and this Character gains [Rush] during this turn."
+    ],
+    "failedParts": [
+      "COST: You may return 1 or more DON!! cards from your field to your DON!! deck"
+    ]
+  }
+}

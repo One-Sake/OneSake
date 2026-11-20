@@ -1,0 +1,16 @@
+{
+  "cardId": "OP12-070",
+  "status": "manual",
+  "sourceTextHash": "1ef868e7e4ed44eca717a251562ca3c4cd4515d711d29ed869b6ee9e260dda63",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: This Character gains +1000 power for every 5 Events in your trash. If this Character would be removed from the field by your opponent's effect, you may return 1 DON!! card from your field to your DON!! deck instead.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "This Character gains +1000 power for every 5 Events in your trash. If this Character would be removed from the field by your opponent's effect, you may return 1 DON!! card from your field to your DON!! deck instead."
+    ],
+    "failedParts": [
+      "This Character gains +1000 power for every 5 Events in your trash"
+    ]
+  }
+}

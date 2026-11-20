@@ -1,0 +1,16 @@
+{
+  "cardId": "OP07-001",
+  "status": "manual",
+  "sourceTextHash": "41caa0a4b2a029a210c8a37b6a99867e867f131519b8a70f8b9476c818449800",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn]Give up to 2 total of your currently given DON!! cards to 1 of your Characters.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn]Give up to 2 total of your currently given DON!! cards to 1 of your Characters."
+    ],
+    "failedParts": [
+      "Give up to 2 total of your currently given DON!! cards to 1 of your Characters"
+    ]
+  }
+}

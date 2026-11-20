@@ -1,0 +1,16 @@
+{
+  "cardId": "OP15-065",
+  "status": "manual",
+  "sourceTextHash": "b2417b7255b31cd7e9445f923ac18e3b369873079e22ce9ac05493c0a667beca",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Reveal 1 card from the top of your deck. If the revealed card has a cost of 2 or less, add up to 1 DON!! card from your DON!! deck and rest it.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Reveal 1 card from the top of your deck. If the revealed card has a cost of 2 or less, add up to 1 DON!! card from your DON!! deck and rest it."
+    ],
+    "failedParts": [
+      "Reveal 1 card from the top of your deck"
+    ]
+  }
+}

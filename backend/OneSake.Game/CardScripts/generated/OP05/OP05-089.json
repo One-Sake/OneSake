@@ -1,0 +1,16 @@
+{
+  "cardId": "OP05-089",
+  "status": "manual",
+  "sourceTextHash": "ba40bc793b1b0f887895fe746bdf7f2cfb29f3898f9fed0c611bc21f52268f97",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] RESTDON1 You may rest this Character and 1 of your Characters: Add up to 1 black Character card with a cost of 1 from your trash to your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] RESTDON1 You may rest this Character and 1 of your Characters: Add up to 1 black Character card with a cost of 1 from your trash to your hand."
+    ],
+    "failedParts": [
+      "COST: RESTDON1 You may rest this Character and 1 of your Characters"
+    ]
+  }
+}

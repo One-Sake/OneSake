@@ -1,0 +1,16 @@
+{
+  "cardId": "OP03-028",
+  "status": "manual",
+  "sourceTextHash": "d4668355a93ac516bdbf8d65c0505f7434a8666a895bf5fd165249a9e1a064c4",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Choose one: . Set up to 1 of your {East Blue} type Leader or Character cards with a cost of 6 or less as active. . Rest this Character and up to 1 of your opponent's Characters.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Choose one: . Set up to 1 of your {East Blue} type Leader or Character cards with a cost of 6 or less as active. . Rest this Character and up to 1 of your opponent's Characters."
+    ],
+    "failedParts": [
+      "COST: Choose one"
+    ]
+  }
+}

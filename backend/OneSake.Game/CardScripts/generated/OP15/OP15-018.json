@@ -1,0 +1,16 @@
+{
+  "cardId": "OP15-018",
+  "status": "manual",
+  "sourceTextHash": "cdab852775e6300da52825a9afb4301ed57ac4487411900562452ca9b68b4516",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking] K.O. up to 1 of your opponent's Characters with 3000 power or less with a DON!! card given.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[When Attacking] K.O. up to 1 of your opponent's Characters with 3000 power or less with a DON!! card given."
+    ],
+    "failedParts": [
+      "K.O. up to 1 of your opponent's Characters with 3000 power or less with a DON!! card given"
+    ]
+  }
+}

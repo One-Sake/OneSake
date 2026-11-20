@@ -1,0 +1,16 @@
+{
+  "cardId": "OP09-033",
+  "status": "manual",
+  "sourceTextHash": "4f09e2d52b45810c5ae38c91c068de63ee5841eab148c28f2036622bde96b1d4",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If you have 2 or more rested Characters, none of your \"ODYSSEY\" or {Straw Hat Crew} type Characters can be K.O.'d by effects until the end of your opponent's next turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If you have 2 or more rested Characters, none of your \"ODYSSEY\" or {Straw Hat Crew} type Characters can be K.O.'d by effects until the end of your opponent's next turn."
+    ],
+    "failedParts": [
+      "None of your \"ODYSSEY\" or {Straw Hat Crew} type Characters can be K.O.'d by effects until the end of your opponent's next turn"
+    ]
+  }
+}

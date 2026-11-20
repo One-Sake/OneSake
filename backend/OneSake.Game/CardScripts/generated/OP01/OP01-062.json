@@ -1,0 +1,16 @@
+{
+  "cardId": "OP01-062",
+  "status": "manual",
+  "sourceTextHash": "938265e9729c6318a515583e76f6db970fef459817b6fdd287a94f8e9cbba438",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] When you activate an Event, you may draw 1 card if you have 4 or less cards in your hand and haven't drawn a card using this Leader's effect during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] When you activate an Event, you may draw 1 card if you have 4 or less cards in your hand and haven't drawn a card using this Leader's effect during this turn."
+    ],
+    "failedParts": [
+      "When you activate an Event, you may draw 1 card if you have 4 or less cards in your hand and haven't drawn a card using this Leader's effect during this turn"
+    ]
+  }
+}

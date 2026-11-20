@@ -1,0 +1,16 @@
+{
+  "cardId": "OP07-026",
+  "status": "manual",
+  "sourceTextHash": "f269320df18cb77c8a1bd5cf40f6b4f9441d5efc2da926f6ee805d50c80aeabb",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Up to 1 of your opponent's rested Character or DON!! cards will not become active in your opponent's next Refresh Phase.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Up to 1 of your opponent's rested Character or DON!! cards will not become active in your opponent's next Refresh Phase."
+    ],
+    "failedParts": [
+      "Up to 1 of your opponent's rested Character or DON!! cards will not become active in your opponent's next Refresh Phase"
+    ]
+  }
+}

@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 
-import type { CardInstanceDto } from '../../../types/realtime';
+import type { CardInstanceDto, ManualActionDto } from '../../../types/realtime';
+import type { ManualItem } from './manualItems';
+import { ManualActionList } from './ManualMenu';
 import { MatchCardView } from './MatchCardView';
 
 export interface CardPile {
@@ -14,9 +16,21 @@ interface CardInspectOverlayProps {
   pile?: CardPile | null;
   onClose: () => void;
   onSelectCard?: (card: CardInstanceDto) => void;
+  // Manual mode: actions that fit the shown card right now (empty when none are allowed).
+  manualItems?: ManualItem[];
+  manualDisabled?: boolean;
+  onManualAction?: (action: ManualActionDto) => void;
 }
 
-export function CardInspectOverlay({ card, onClose, onSelectCard, pile = null }: CardInspectOverlayProps) {
+export function CardInspectOverlay({
+  card,
+  manualDisabled = false,
+  manualItems = [],
+  onClose,
+  onManualAction,
+  onSelectCard,
+  pile = null,
+}: CardInspectOverlayProps) {
   const isOpen = Boolean(card || pile);
 
   useEffect(() => {
@@ -120,7 +134,11 @@ export function CardInspectOverlay({ card, onClose, onSelectCard, pile = null }:
         </dl>
         {card.text && <p className="card-inspect-overlay__text">{card.text}</p>}
         {card.effectStatus === 'auto' && (
-          <p className="card-inspect-overlay__effect-status is-auto">Effects are automated.</p>
+          <p className="card-inspect-overlay__effect-status is-auto">
+            Effects are automated.
+            {card.scriptStatus === 'verified' && <small> Geprüft.</small>}
+            {card.scriptStatus === 'generated' && <small> Ungeprüft (vom Parser erzeugt).</small>}
+          </p>
         )}
         {(card.effectStatus === 'partial' || card.effectStatus === 'manual') && (
           <div className="card-inspect-overlay__effect-status is-manual">
@@ -130,6 +148,14 @@ export function CardInspectOverlay({ card, onClose, onSelectCard, pile = null }:
                 <li key={text}>{text}</li>
               ))}
             </ul>
+          </div>
+        )}
+        {manualItems.length > 0 && onManualAction && (
+          <div className="card-inspect-overlay__manual">
+            <strong>
+              <span aria-hidden="true">✋</span> Manuelle Aktionen
+            </strong>
+            <ManualActionList disabled={manualDisabled} items={manualItems} onAction={onManualAction} />
           </div>
         )}
       </section>

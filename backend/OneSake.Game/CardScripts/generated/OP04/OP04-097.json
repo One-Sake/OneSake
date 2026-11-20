@@ -1,0 +1,16 @@
+{
+  "cardId": "OP04-097",
+  "status": "manual",
+  "sourceTextHash": "aa3542d2db4cfb8a1f9281b8a195fc680108b6643ea03a08fc333b0aeecbefea",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Add up to 1 of your opponent's [Animal] or {SMILE} type Characters with a cost of 3 or less to the top of your opponent's Life cards face-up.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Add up to 1 of your opponent's [Animal] or {SMILE} type Characters with a cost of 3 or less to the top of your opponent's Life cards face-up."
+    ],
+    "failedParts": [
+      "Add up to 1 of your opponent's [Animal] or {SMILE} type Characters with a cost of 3 or less to the top of your opponent's Life cards face-up"
+    ]
+  }
+}

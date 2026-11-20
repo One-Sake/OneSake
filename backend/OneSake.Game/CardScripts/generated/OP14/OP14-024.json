@@ -1,0 +1,72 @@
+{
+  "cardId": "OP14-024",
+  "status": "manual",
+  "sourceTextHash": "228ce09a6a084d76ea42d9e55bd5c0fe090f81822e1d05e03f001fb564120bc9",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Set up to 3 of your DON!! cards as active. Then, you cannot play Character cards during this turn.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnKO",
+        "text": "[On K.O.] Rest up to 1 of your opponent's cards.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Rest",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": true,
+              "all": false,
+              "self": false,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "Opponent",
+                "allowLeader": true,
+                "allowCharacter": true,
+                "allowStage": true,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Rest up to 1 of your opponent's cards"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[On Play] Set up to 3 of your DON!! cards as active. Then, you cannot play Character cards during this turn."
+    ],
+    "failedParts": [
+      "You cannot play Character cards during this turn"
+    ]
+  }
+}

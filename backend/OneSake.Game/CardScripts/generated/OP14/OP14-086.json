@@ -1,0 +1,16 @@
+{
+  "cardId": "OP14-086",
+  "status": "manual",
+  "sourceTextHash": "58a3c4965ff2201e1e3994d5e430218f2b89a1755d2f7d5bf6aed5fbf07ee774",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If you have 7 or more cards in your trash, this Character gains +1000 power, and all of your Characters with a type including {Baroque Works} gain +2 cost.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If you have 7 or more cards in your trash, this Character gains +1000 power, and all of your Characters with a type including {Baroque Works} gain +2 cost."
+    ],
+    "failedParts": [
+      "This Character gains +1000 power, and all of your Characters with a type including {Baroque Works} gain +2 cost"
+    ]
+  }
+}

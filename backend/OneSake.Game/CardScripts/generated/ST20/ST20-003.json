@@ -1,0 +1,16 @@
+{
+  "cardId": "ST20-003",
+  "status": "manual",
+  "sourceTextHash": "b833149bd45c2c907892109cd3d295629783a2fbee36ec04d63e7de5ff2985fe",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Trigger] Look at up to 1 card from the top of your or your opponent's Life cards, and place it at the top or bottom of the Life cards. Then, add this card to your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Trigger] Look at up to 1 card from the top of your or your opponent's Life cards, and place it at the top or bottom of the Life cards. Then, add this card to your hand."
+    ],
+    "failedParts": [
+      "Look at up to 1 card from the top of your or your opponent's Life cards, and place it at the top or bottom of the Life cards"
+    ]
+  }
+}

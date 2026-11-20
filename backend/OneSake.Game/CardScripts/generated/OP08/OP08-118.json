@@ -1,0 +1,16 @@
+{
+  "cardId": "OP08-118",
+  "status": "manual",
+  "sourceTextHash": "7d53af6b18849d4082e2aa14588b7cbd19cf2b2aed5c98c59e68e519a81b3c4b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Select up to 2 of your opponent's Characters, and give 1 Character 3000 power and the other 2000 power until the end of your opponent's next turn. Then, K.O. up to 1 of your opponent's Characters with 3000 power or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Select up to 2 of your opponent's Characters, and give 1 Character 3000 power and the other 2000 power until the end of your opponent's next turn. Then, K.O. up to 1 of your opponent's Characters with 3000 power or less."
+    ],
+    "failedParts": [
+      "Select up to 2 of your opponent's Characters, and give 1 Character 3000 power and the other 2000 power until the end of your opponent's next turn"
+    ]
+  }
+}

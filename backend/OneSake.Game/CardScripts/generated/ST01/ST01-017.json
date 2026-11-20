@@ -1,0 +1,16 @@
+{
+  "cardId": "ST01-017",
+  "status": "manual",
+  "sourceTextHash": "65b256a515576ebb71b194b8372f21f269a41104c4a113c29ef05e3411f376ec",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may rest this Stage: Up to 1 {Straw Hat Crew} type Leader or Character card on your field gains +1000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may rest this Stage: Up to 1 {Straw Hat Crew} type Leader or Character card on your field gains +1000 power during this turn."
+    ],
+    "failedParts": [
+      "Up to 1 {Straw Hat Crew} type Leader or Character card on your field gains +1000 power during this turn"
+    ]
+  }
+}

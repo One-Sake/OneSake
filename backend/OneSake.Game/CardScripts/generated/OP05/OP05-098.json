@@ -1,0 +1,16 @@
+{
+  "cardId": "OP05-098",
+  "status": "manual",
+  "sourceTextHash": "4a96c712934c2e68b4870ab8dba438a40b71f0b32f41b4a27fcec09ab91fa895",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Opponent's Turn] [Once Per Turn] When your number of Life cards becomes 0, add 1 card from the top of your deck to the top of your Life cards. Then, trash 1 card from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Opponent's Turn] [Once Per Turn] When your number of Life cards becomes 0, add 1 card from the top of your deck to the top of your Life cards. Then, trash 1 card from your hand."
+    ],
+    "failedParts": [
+      "When your number of Life cards becomes 0, add 1 card from the top of your deck to the top of your Life cards"
+    ]
+  }
+}

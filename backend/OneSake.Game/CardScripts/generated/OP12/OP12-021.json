@@ -1,0 +1,72 @@
+{
+  "cardId": "OP12-021",
+  "status": "manual",
+  "sourceTextHash": "7f99ce171349bec4b86ca6a1a503d9663a0a59de1e4df25107beb26b02a3b008",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If your Leader has the attribute and you have 6 or more rested DON!! cards, this Character cannot be rested by your opponent's effects.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Static",
+        "text": "[Blocker]",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "GainFlag",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "Permanent",
+            "flag": "Blocker",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "[Blocker]"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "If your Leader has the attribute and you have 6 or more rested DON!! cards, this Character cannot be rested by your opponent's effects."
+    ],
+    "failedParts": [
+      "IF: If your Leader has the attribute and you have 6 or more rested DON!! cards, this Character cannot be rested by your opponent's effects"
+    ]
+  }
+}

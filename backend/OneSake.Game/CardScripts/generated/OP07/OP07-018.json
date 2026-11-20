@@ -1,0 +1,46 @@
+{
+  "cardId": "OP07-018",
+  "status": "manual",
+  "sourceTextHash": "d1f98cde8b6200cb314690800ab3ee4a34759d6e51bcb2e86c39303c1d6bb82f",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Counter] Up to 1 of your {Revolutionary Army} type Characters gains +2000 power until the end of your next turn.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Activate this card's [Counter] effect.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "ActivateOwnAbility",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "Counter",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Activate this card's [Counter] effect"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Counter] Up to 1 of your {Revolutionary Army} type Characters gains +2000 power until the end of your next turn."
+    ],
+    "failedParts": [
+      "Up to 1 of your {Revolutionary Army} type Characters gains +2000 power until the end of your next turn"
+    ]
+  }
+}

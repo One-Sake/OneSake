@@ -1,0 +1,16 @@
+{
+  "cardId": "EB02-022",
+  "status": "manual",
+  "sourceTextHash": "34866e8241e04fee927e81bdd983d16ca50f4ef50302286ba6c6395e3f8a7114",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If you have 2 or less Characters with 5000 power or more, play up to 1 Character card with 6000 power or less and no base effect from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If you have 2 or less Characters with 5000 power or more, play up to 1 Character card with 6000 power or less and no base effect from your hand."
+    ],
+    "failedParts": [
+      "Play up to 1 Character card with 6000 power or less and no base effect from your hand"
+    ]
+  }
+}

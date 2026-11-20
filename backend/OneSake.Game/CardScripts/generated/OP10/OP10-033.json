@@ -1,0 +1,16 @@
+{
+  "cardId": "OP10-033",
+  "status": "manual",
+  "sourceTextHash": "3564853215f4e6e88360c2a9069627ae0b7dcb75861b7a5eb4b139abf953e876",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If you have 2 or more rested {ODYSSEY} type Characters, up to 1 of your opponent's rested DON!! cards will not become active in your opponent's next Refresh Phase.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If you have 2 or more rested {ODYSSEY} type Characters, up to 1 of your opponent's rested DON!! cards will not become active in your opponent's next Refresh Phase."
+    ],
+    "failedParts": [
+      "Up to 1 of your opponent's rested DON!! cards will not become active in your opponent's next Refresh Phase"
+    ]
+  }
+}

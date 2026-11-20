@@ -1,0 +1,72 @@
+{
+  "cardId": "OP12-063",
+  "status": "manual",
+  "sourceTextHash": "010f15f00e002bbe3e11649201d640f4d432c5de2a5c9382b917f7e3a3a21e73",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If you have 4 or more Events in your trash, this Character gains +2000 power and +5 cost.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Static",
+        "text": "[Blocker]",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "GainFlag",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "Permanent",
+            "flag": "Blocker",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "[Blocker]"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "If you have 4 or more Events in your trash, this Character gains +2000 power and +5 cost."
+    ],
+    "failedParts": [
+      "IF: If you have 4 or more Events in your trash, this Character gains +2000 power and +5 cost"
+    ]
+  }
+}

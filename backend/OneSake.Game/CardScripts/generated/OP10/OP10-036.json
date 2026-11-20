@@ -1,0 +1,16 @@
+{
+  "cardId": "OP10-036",
+  "status": "manual",
+  "sourceTextHash": "e4024e567c9ff37b6126bd1a4ad610b64d490aa51b95ccaf838c880c5243b372",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] [Once Per Turn] If a Character is rested by your effect, set up to 1 of your DON!! cards as active.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] [Once Per Turn] If a Character is rested by your effect, set up to 1 of your DON!! cards as active."
+    ],
+    "failedParts": [
+      "IF: If a Character is rested by your effect, set up to 1 of your DON!! cards as active"
+    ]
+  }
+}

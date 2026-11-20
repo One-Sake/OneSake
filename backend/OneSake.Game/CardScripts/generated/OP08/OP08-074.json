@@ -1,0 +1,16 @@
+{
+  "cardId": "OP08-074",
+  "status": "manual",
+  "sourceTextHash": "336a3a2e6f11a1f7051bfa39832b74bdde73f8a78f3496e5c8f530e67a95a300",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] If you have no other [Black Maria] Characters, add up to 5 DON!! cards from your DON!! deck and rest them. Then, at the end of this turn, return DON!! cards from your field to your DON!! deck until you have the same number of DON!! cards on your field as your opponent.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] If you have no other [Black Maria] Characters, add up to 5 DON!! cards from your DON!! deck and rest them. Then, at the end of this turn, return DON!! cards from your field to your DON!! deck until you have the same number of DON!! cards on your field as your opponent."
+    ],
+    "failedParts": [
+      "IF: If you have no other [Black Maria] Characters, add up to 5 DON!! cards from your DON!! deck and rest them"
+    ]
+  }
+}

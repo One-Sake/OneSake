@@ -1,0 +1,46 @@
+{
+  "cardId": "EB02-030",
+  "status": "manual",
+  "sourceTextHash": "247bca4d7c34a03a5343a11f6eb4f737500c0ea8ad61676fe5f76f29035ec21d",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Counter] If any of your Characters would be K.O.'d in battle during this turn, you may trash 1 card from your hand instead.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Draw 1 card.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Draw 1 card"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Counter] If any of your Characters would be K.O.'d in battle during this turn, you may trash 1 card from your hand instead."
+    ],
+    "failedParts": [
+      "IF: If any of your Characters would be K.O.'d in battle during this turn, you may trash 1 card from your hand instead"
+    ]
+  }
+}

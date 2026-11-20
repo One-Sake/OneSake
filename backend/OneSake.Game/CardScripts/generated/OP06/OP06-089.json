@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-089",
+  "status": "manual",
+  "sourceTextHash": "f5617b44196ab1888047ce01d7dd20a7a3e4556409bccea6e742da765057d057",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] / [On K.O.] Trash 3 cards from the top of your deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] / [On K.O.] Trash 3 cards from the top of your deck."
+    ],
+    "failedParts": [
+      "/ [On K.O.] Trash 3 cards from the top of your deck"
+    ]
+  }
+}

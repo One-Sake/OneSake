@@ -1,0 +1,16 @@
+{
+  "cardId": "OP15-093",
+  "status": "manual",
+  "sourceTextHash": "1fbe36dd46a642898795e6bff77b5aad5b9c7a33a9a6ac894e65191041c69db3",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may trash this Character: If you have 15 or more cards in your trash, up to 1 of your [Monkey.D.Luffy] Characters gains [Rush: Character] and the \"Slash\" attribute during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may trash this Character: If you have 15 or more cards in your trash, up to 1 of your [Monkey.D.Luffy] Characters gains [Rush: Character] and the \"Slash\" attribute during this turn."
+    ],
+    "failedParts": [
+      "Up to 1 of your [Monkey.D.Luffy] Characters gains [Rush: Character] and the \"Slash\" attribute during this turn"
+    ]
+  }
+}

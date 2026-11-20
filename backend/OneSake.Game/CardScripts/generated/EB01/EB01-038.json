@@ -1,0 +1,51 @@
+{
+  "cardId": "EB01-038",
+  "status": "manual",
+  "sourceTextHash": "0ab36960092c1b1ca4934165fa9b5c2bf075d1570ab91447f05e095d7929c579",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Counter] DON!! -1: If your Leader's type includes \"Baroque Works\", select 1 of your Characters. Change the attack target to the selected Character.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] DON!! -1: Draw 2 cards.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [
+          {
+            "kind": "ReturnDon",
+            "amount": 1
+          }
+        ],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 2,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Draw 2 cards"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Counter] DON!! -1: If your Leader's type includes \"Baroque Works\", select 1 of your Characters. Change the attack target to the selected Character."
+    ],
+    "failedParts": [
+      "IF: If your Leader's type includes \"Baroque Works\", select 1 of your Characters"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "ST02-009",
+  "status": "manual",
+  "sourceTextHash": "116f60f28ac5e5da12fa4e87c9ee30203667aeeea092eb84353da27d411cb721",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Set up to 1 of your \"Supernovas\" or {Heart Pirates} type rested Characters with a cost of 5 or less as active.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Set up to 1 of your \"Supernovas\" or {Heart Pirates} type rested Characters with a cost of 5 or less as active."
+    ],
+    "failedParts": [
+      "Set up to 1 of your \"Supernovas\" or {Heart Pirates} type rested Characters with a cost of 5 or less as active"
+    ]
+  }
+}

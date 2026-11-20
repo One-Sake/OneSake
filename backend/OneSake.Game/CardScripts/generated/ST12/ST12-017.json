@@ -1,0 +1,16 @@
+{
+  "cardId": "ST12-017",
+  "status": "manual",
+  "sourceTextHash": "3b92448eeb5e51ef16974ecfe34b2bea5a468a765ce8438517a08b3fc5c196a9",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Counter] Up to 1 of your Leader or Character cards gains +2000 power during this battle. Then, reveal 1 card from the top of your deck, play up to 1 Character card with a cost of 2, and place the rest at the top or bottom of your deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Counter] Up to 1 of your Leader or Character cards gains +2000 power during this battle. Then, reveal 1 card from the top of your deck, play up to 1 Character card with a cost of 2, and place the rest at the top or bottom of your deck."
+    ],
+    "failedParts": [
+      "Reveal 1 card from the top of your deck, play up to 1 Character card with a cost of 2, and place the rest at the top or bottom of your deck"
+    ]
+  }
+}

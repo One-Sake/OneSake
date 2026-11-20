@@ -1,0 +1,16 @@
+{
+  "cardId": "ST07-008",
+  "status": "manual",
+  "sourceTextHash": "3c01c391befe2e2d0600f17ae6c96841487fce534c47b3084d57897a4f486705",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Look at up to 1 card from the top of your or your opponent's Life cards, and place it at the top or bottom of the Life cards.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Look at up to 1 card from the top of your or your opponent's Life cards, and place it at the top or bottom of the Life cards."
+    ],
+    "failedParts": [
+      "Look at up to 1 card from the top of your or your opponent's Life cards, and place it at the top or bottom of the Life cards"
+    ]
+  }
+}

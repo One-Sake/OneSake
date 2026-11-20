@@ -58,7 +58,9 @@ public sealed class CardInstance
     public bool IsEvent => Category == EventCategory;
     public bool IsStage => Category == StageCategory;
 
-    public CardScript Script => EffectParser.ParseCached(Text, Category);
+    // The checked script file for this card ID (CardScripts/), or the parsed text when there is none.
+    public ResolvedCardScript ScriptInfo => CardScriptRegistry.Resolve(CardId, Text, Category);
+    public CardScript Script => ScriptInfo.Script;
 
     public IReadOnlyList<string> Keywords
     {
@@ -94,14 +96,13 @@ public sealed class CardInstance
     }
 
     // Rule 6-5-5-2: each given DON!! adds 1000 power, but only during the owner's turn.
-    // Effect modifiers always count. Power cannot go below 0.
+    // Effect modifiers always count. Rule 1-3-6-1: power can become negative.
     public int GetPower(bool isOwnersTurn)
     {
-        var power = BasePower
+        return BasePower
             + (isOwnersTurn ? AttachedDon * 1000 : 0)
             + StaticPower
             + Modifiers.Sum(modifier => modifier.Power);
-        return Math.Max(0, power);
     }
 
     // Cost including effect modifiers ("-1 cost"). Cannot go below 0.

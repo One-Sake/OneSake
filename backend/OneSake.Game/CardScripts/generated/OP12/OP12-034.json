@@ -1,0 +1,16 @@
+{
+  "cardId": "OP12-034",
+  "status": "manual",
+  "sourceTextHash": "0827d85bb886192cb76dbac3775406d212c7dd0af4f53c0a44afb38f937dd9b9",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your Leader has the attribute, look at 5 cards from the top of your deck; reveal up to 1 attribute card or green Event and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your Leader has the attribute, look at 5 cards from the top of your deck; reveal up to 1 attribute card or green Event and add it to your hand. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "IF: If your Leader has the attribute, look at 5 cards from the top of your deck; reveal up to 1 attribute card or green Event and add it to your hand"
+    ]
+  }
+}

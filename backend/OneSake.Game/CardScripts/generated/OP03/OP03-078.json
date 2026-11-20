@@ -1,0 +1,72 @@
+{
+  "cardId": "OP03-078",
+  "status": "manual",
+  "sourceTextHash": "d4d05dc638c4f69d9d4d2ad21e60f3ad34bf2562193c9423b0660200e9697163",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your opponent has 6 or more cards in their hand, trash 2 cards from your opponent's hand.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Static",
+        "text": "[DON!! x1] [Your Turn] Give all of your opponent's Characters -3 cost.",
+        "requiredDon": 1,
+        "oncePerTurn": false,
+        "onlyYourTurn": true,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "CostModifier",
+            "amount": -3,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 2147483647,
+              "upTo": true,
+              "all": true,
+              "self": false,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "Opponent",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "Permanent",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Give all of your opponent's Characters -3 cost"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[On Play] If your opponent has 6 or more cards in their hand, trash 2 cards from your opponent's hand."
+    ],
+    "failedParts": [
+      "Trash 2 cards from your opponent's hand"
+    ]
+  }
+}

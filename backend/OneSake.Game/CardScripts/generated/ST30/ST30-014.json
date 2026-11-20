@@ -1,0 +1,16 @@
+{
+  "cardId": "ST30-014",
+  "status": "manual",
+  "sourceTextHash": "512648265bf24453fb4e8f90b7b1175c01f3eb063015bd1073d18aa86f5b5556",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may rest this Character: Give up to 2 of your Characters with 6000 base power up to 2 rested DON!! cards each.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may rest this Character: Give up to 2 of your Characters with 6000 base power up to 2 rested DON!! cards each."
+    ],
+    "failedParts": [
+      "Give up to 2 of your Characters with 6000 base power up to 2 rested DON!! cards each"
+    ]
+  }
+}

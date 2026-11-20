@@ -1,0 +1,16 @@
+{
+  "cardId": "ST03-007",
+  "status": "manual",
+  "sourceTextHash": "409e34322c22a5278f7bddf87e74caf6d1feb8f0a0f35b81bd1121c428be2b1e",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] [Activate: Main] [Once Per Turn] RESTDON2: Play up to 1 [Pacifista] with a cost of 4 or less from your deck, then shuffle your deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] [Activate: Main] [Once Per Turn] RESTDON2: Play up to 1 [Pacifista] with a cost of 4 or less from your deck, then shuffle your deck."
+    ],
+    "failedParts": [
+      "Play up to 1 [Pacifista] with a cost of 4 or less from your deck, then shuffle your deck"
+    ]
+  }
+}

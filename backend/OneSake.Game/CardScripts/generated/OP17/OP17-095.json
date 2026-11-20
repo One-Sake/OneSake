@@ -1,0 +1,16 @@
+{
+  "cardId": "OP17-095",
+  "status": "manual",
+  "sourceTextHash": "ac9579566af524bc1e6cef2a0d8a6559c27f1ebdf74b70cb7db681a34ca617e6",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If there is a Character with a cost of 12 or more, this Character gains +3000 power. If one of your Characters would be removed from the field by your opponent's effect, you may place 3 cards from your trash at the bottom of your deck in any order instead.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If there is a Character with a cost of 12 or more, this Character gains +3000 power. If one of your Characters would be removed from the field by your opponent's effect, you may place 3 cards from your trash at the bottom of your deck in any order instead."
+    ],
+    "failedParts": [
+      "IF: If one of your Characters would be removed from the field by your opponent's effect, you may place 3 cards from your trash at the bottom of your deck in any order instead"
+    ]
+  }
+}

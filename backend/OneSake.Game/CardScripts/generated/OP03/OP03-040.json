@@ -1,0 +1,18 @@
+{
+  "cardId": "OP03-040",
+  "status": "manual",
+  "sourceTextHash": "f57293fe5753bf4eca1104bac4efd32e99a695c41d9bb7b49e22051f8bc47197",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: When your deck is reduced to 0, you win the game instead of losing, according to the rules. | [DON!! x1] When this Leader's attack deals damage to your opponent's Life, you may trash 1 card from the top of your deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "When your deck is reduced to 0, you win the game instead of losing, according to the rules.",
+      "[DON!! x1] When this Leader's attack deals damage to your opponent's Life, you may trash 1 card from the top of your deck."
+    ],
+    "failedParts": [
+      "When your deck is reduced to 0, you win the game instead of losing, according to the rules",
+      "When this Leader's attack deals damage to your opponent's Life, you may trash 1 card from the top of your deck"
+    ]
+  }
+}

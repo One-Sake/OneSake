@@ -1,0 +1,16 @@
+{
+  "cardId": "OP15-004",
+  "status": "manual",
+  "sourceTextHash": "6e0c55e871bfb5e8e267df8285a250bfb305c9e23ed86195f63104064c77fc78",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your Leader has 0 power or less, give up to 1 of your opponent's Characters -3000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your Leader has 0 power or less, give up to 1 of your opponent's Characters -3000 power during this turn."
+    ],
+    "failedParts": [
+      "IF: If your Leader has 0 power or less, give up to 1 of your opponent's Characters -3000 power during this turn"
+    ]
+  }
+}

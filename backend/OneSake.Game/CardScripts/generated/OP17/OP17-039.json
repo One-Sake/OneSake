@@ -1,0 +1,16 @@
+{
+  "cardId": "OP17-039",
+  "status": "manual",
+  "sourceTextHash": "f4dfb45779ac688d8838b79f3787d3a28ad99528e71e876a41d6d5983a000ba8",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking] You may trash 1 card from your hand: Reveal 1 card from the top of your deck. If the revealed card's type includes \"Rocks Pirates\", draw 2 cards.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[When Attacking] You may trash 1 card from your hand: Reveal 1 card from the top of your deck. If the revealed card's type includes \"Rocks Pirates\", draw 2 cards."
+    ],
+    "failedParts": [
+      "Reveal 1 card from the top of your deck"
+    ]
+  }
+}

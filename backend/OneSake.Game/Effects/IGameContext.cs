@@ -1,3 +1,4 @@
+using OneSake.Game.Rules;
 using OneSake.Game.State;
 
 namespace OneSake.Game.Effects;
@@ -10,6 +11,14 @@ public interface IGameContext
     string ActivePlayerId { get; }
     BattleState? Battle { get; }
     void Log(string type, string text);
+
+    // The event bus of the match. Without one (engine-only tests) the engine queues triggered
+    // abilities itself like before; with one, it only reports events (see Rules/TriggerCollector).
+    GameEventBus? Events => null;
+
+    // Rule 9: rule processing (defeat judgment, static effects). Returns true when the game is over.
+    // Engine-only tests have no rule processing.
+    bool ProcessRules() => false;
 }
 
 public static class GameContextExtensions

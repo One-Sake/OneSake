@@ -1,0 +1,16 @@
+{
+  "cardId": "OP01-002",
+  "status": "manual",
+  "sourceTextHash": "8ebd881ac3749c47ce2b9d65f8239e5f55d38d711ffa81fe4cc1405ca38d522f",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] RESTDON2: If you have 5 Characters, return 1 of your Characters to your hand. Then, play up to 1 Character with a cost of 5 or less from your hand that is a different color than the returned Character.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] RESTDON2: If you have 5 Characters, return 1 of your Characters to your hand. Then, play up to 1 Character with a cost of 5 or less from your hand that is a different color than the returned Character."
+    ],
+    "failedParts": [
+      "IF: If you have 5 Characters, return 1 of your Characters to your hand"
+    ]
+  }
+}

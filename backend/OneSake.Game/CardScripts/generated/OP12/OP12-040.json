@@ -1,0 +1,16 @@
+{
+  "cardId": "OP12-040",
+  "status": "manual",
+  "sourceTextHash": "064cb33e92116767777aacf6d78b7f936c7c73a914cf8af408f0e0ed867bb0c1",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: When a card is trashed from your hand by your {Navy} type card's effect, draw cards equal to the number of cards trashed.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "When a card is trashed from your hand by your {Navy} type card's effect, draw cards equal to the number of cards trashed."
+    ],
+    "failedParts": [
+      "When a card is trashed from your hand by your {Navy} type card's effect, draw cards equal to the number of cards trashed"
+    ]
+  }
+}

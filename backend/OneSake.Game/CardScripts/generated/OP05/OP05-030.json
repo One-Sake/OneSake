@@ -1,0 +1,72 @@
+{
+  "cardId": "OP05-030",
+  "status": "manual",
+  "sourceTextHash": "4a363e85ee473bbe61c58aea86e179ca60a85eae5693ac5bcc830b3bf84f7fc3",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Blocker] [Opponent's Turn] If your rested Character would be K.O.'d, you may trash this Character instead.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Static",
+        "text": "[Blocker]",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "GainFlag",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "Permanent",
+            "flag": "Blocker",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "[Blocker]"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Blocker] [Opponent's Turn] If your rested Character would be K.O.'d, you may trash this Character instead."
+    ],
+    "failedParts": [
+      "IF: If your rested Character would be K.O.'d, you may trash this Character instead"
+    ]
+  }
+}

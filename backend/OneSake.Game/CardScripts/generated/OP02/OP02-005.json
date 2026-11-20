@@ -1,0 +1,16 @@
+{
+  "cardId": "OP02-005",
+  "status": "manual",
+  "sourceTextHash": "1abb6823b9667bf26fa74b842ff7d527714618fabf3030a2712e87b26d4ddbc9",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Look at up to 5 cards from the top of your deck; reveal up to 1 red Character with a cost of 1 and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Look at up to 5 cards from the top of your deck; reveal up to 1 red Character with a cost of 1 and add it to your hand. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "Look at up to 5 cards from the top of your deck; reveal up to 1 red Character with a cost of 1 and add it to your hand"
+    ]
+  }
+}

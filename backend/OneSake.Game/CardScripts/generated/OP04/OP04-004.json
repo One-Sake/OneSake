@@ -1,0 +1,16 @@
+{
+  "cardId": "OP04-004",
+  "status": "manual",
+  "sourceTextHash": "408bba8d8ff95451a53c3f466ed20ec3daa3cf66b3f134f6599583e3ca6fe97c",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may rest this Character: Give up to 1 rested DON!! card to each of your {Alabasta} type Characters.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may rest this Character: Give up to 1 rested DON!! card to each of your {Alabasta} type Characters."
+    ],
+    "failedParts": [
+      "Give up to 1 rested DON!! card to each of your {Alabasta} type Characters"
+    ]
+  }
+}

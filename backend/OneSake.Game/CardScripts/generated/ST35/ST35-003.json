@@ -1,0 +1,52 @@
+{
+  "cardId": "ST35-003",
+  "status": "generated",
+  "sourceTextHash": "c54c834697a2a465035baed87c07260a86f3c440e3bbc52a24ea46d28144ca4c",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "WhenAttacking",
+        "text": "[When Attacking] You may trash 2 cards from the top of your deck: If your opponent has 7 or more cards in their hand, your opponent trashes 1 card from their hand.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [
+          {
+            "kind": "TrashTopOfDeck",
+            "amount": 2
+          }
+        ],
+        "steps": [
+          {
+            "kind": "OpponentTrashesFromHand",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [
+              {
+                "kind": "OpponentHandAtLeast",
+                "amount": 7,
+                "text": "your opponent has 7 or more cards in their hand"
+              }
+            ],
+            "text": "Your opponent trashes 1 card from their hand"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

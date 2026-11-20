@@ -1,0 +1,16 @@
+{
+  "cardId": "OP13-051",
+  "status": "manual",
+  "sourceTextHash": "5d44e8ef831df313e4a519b8fb9da2d25e7dfa17e8d1718c06332100a2444abb",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On K.O.] If your Leader is [Boa Hancock] or multicolored, draw 2 cards.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On K.O.] If your Leader is [Boa Hancock] or multicolored, draw 2 cards."
+    ],
+    "failedParts": [
+      "IF: If your Leader is [Boa Hancock] or multicolored, draw 2 cards"
+    ]
+  }
+}

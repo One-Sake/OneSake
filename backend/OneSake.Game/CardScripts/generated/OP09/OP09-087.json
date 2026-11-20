@@ -1,0 +1,47 @@
+{
+  "cardId": "OP09-087",
+  "status": "generated",
+  "sourceTextHash": "8869a94ae8a2e66397a9e5d590d68d7583e3208f4dd69d64cdccfa390ad5eb8f",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] If your opponent has 5 or more cards in their hand, your opponent trashes 1 card from their hand.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "OpponentTrashesFromHand",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [
+              {
+                "kind": "OpponentHandAtLeast",
+                "amount": 5,
+                "text": "your opponent has 5 or more cards in their hand"
+              }
+            ],
+            "text": "Your opponent trashes 1 card from their hand"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

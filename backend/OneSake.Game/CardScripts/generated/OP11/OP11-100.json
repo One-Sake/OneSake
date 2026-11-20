@@ -1,0 +1,16 @@
+{
+  "cardId": "OP11-100",
+  "status": "manual",
+  "sourceTextHash": "cbe256fdbaea6b1824f0a6af4018d7061d23a00eb1dcbb3d820d547620280096",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your Leader is [Shirahoshi], you may turn 1 card from the top of your Life cards face-down: Draw 1 card.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your Leader is [Shirahoshi], you may turn 1 card from the top of your Life cards face-down: Draw 1 card."
+    ],
+    "failedParts": [
+      "COST: If your Leader is [Shirahoshi], you may turn 1 card from the top of your Life cards face-down"
+    ]
+  }
+}

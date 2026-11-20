@@ -1,0 +1,46 @@
+{
+  "cardId": "OP06-039",
+  "status": "manual",
+  "sourceTextHash": "8707d067c96c720205ade10ca1af287c5ec0630f8c55aa604868181c59c62193",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] Choose one: . Rest up to 1 of your opponent's Characters with a cost of 6 or less. . K.O. up to 1 of your opponent's rested Characters with a cost of 6 or less.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Activate this card's [Main] effect.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "ActivateOwnAbility",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "Main",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Activate this card's [Main] effect"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Main] Choose one: . Rest up to 1 of your opponent's Characters with a cost of 6 or less. . K.O. up to 1 of your opponent's rested Characters with a cost of 6 or less."
+    ],
+    "failedParts": [
+      "COST: Choose one"
+    ]
+  }
+}

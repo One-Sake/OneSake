@@ -1,0 +1,65 @@
+{
+  "cardId": "P-084",
+  "status": "manual",
+  "sourceTextHash": "1418abf7a35558513e16c49dc2335034ee59d4a6c67c65bd819aad55d06750d3",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: This Character cannot attack.If your Leader is [Buggy], all Characters with a cost of 3 or 4 cannot attack.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] Play up to 1 {Cross Guild} type Character card with a cost of 6 or less from your hand.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "PlayCard",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "filter": {
+              "owner": "You",
+              "allowLeader": false,
+              "allowCharacter": true,
+              "allowStage": true,
+              "category": "Character",
+              "maxCost": 6,
+              "useBaseValues": false,
+              "typeIncludes": "Cross Guild",
+              "name": "",
+              "nameNot": "",
+              "color": "",
+              "attribute": "",
+              "keyword": "",
+              "excludeSource": false,
+              "requiresTrigger": false,
+              "nameOrType": false,
+              "maxCostFrom": ""
+            },
+            "zone": "Hand",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Play up to 1 {Cross Guild} type Character card with a cost of 6 or less from your hand"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "This Character cannot attack.If your Leader is [Buggy], all Characters with a cost of 3 or 4 cannot attack."
+    ],
+    "failedParts": [
+      "This Character cannot attack.If your Leader is [Buggy], all Characters with a cost of 3 or 4 cannot attack"
+    ]
+  }
+}

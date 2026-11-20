@@ -1,0 +1,16 @@
+{
+  "cardId": "OP07-075",
+  "status": "manual",
+  "sourceTextHash": "09df1607ef5de5459a59fd43e673622e4e7001d42e375cf0f5dea886782b2042",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Counter] DON!! -1: Give up to 1 each of your opponent's Leader and Character cards -2000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Counter] DON!! -1: Give up to 1 each of your opponent's Leader and Character cards -2000 power during this turn."
+    ],
+    "failedParts": [
+      "Give up to 1 each of your opponent's Leader and Character cards -2000 power during this turn"
+    ]
+  }
+}

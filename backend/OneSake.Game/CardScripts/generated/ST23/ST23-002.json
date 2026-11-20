@@ -1,0 +1,18 @@
+{
+  "cardId": "ST23-002",
+  "status": "manual",
+  "sourceTextHash": "7375a2dec3b8533dab0677483b17617d59bfbafa6cd41a1190162a42d9272600",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If your opponent has a Character with 8000 base power or more, give this card in your hand -3 cost. | [On Play] If your Leader has the {Red-Haired Pirates} type or is [Uta], your Leader gains +2000 power until the end of your opponent's next End Phase.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If your opponent has a Character with 8000 base power or more, give this card in your hand -3 cost.",
+      "[On Play] If your Leader has the {Red-Haired Pirates} type or is [Uta], your Leader gains +2000 power until the end of your opponent's next End Phase."
+    ],
+    "failedParts": [
+      "Give this card in your hand -3 cost",
+      "IF: If your Leader has the {Red-Haired Pirates} type or is [Uta], your Leader gains +2000 power until the end of your opponent's next End Phase"
+    ]
+  }
+}

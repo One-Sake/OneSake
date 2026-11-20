@@ -1,0 +1,18 @@
+{
+  "cardId": "OP17-058",
+  "status": "manual",
+  "sourceTextHash": "7645b575ec09005f5d00af40d8f96120f3c95090a1b358a8db086d5e3041e61a",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking]/ [On Your Opponent's Attack] | [Once Per Turn] DON!! -1: Give up to 1 of your opponent's Characters -2000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[When Attacking]/ [On Your Opponent's Attack]",
+      "[Once Per Turn] DON!! -1: Give up to 1 of your opponent's Characters -2000 power during this turn."
+    ],
+    "failedParts": [
+      "/ [On Your Opponent's Attack]",
+      "STATIC: DON!! -1: Give up to 1 of your opponent's Characters -2000 power during this turn."
+    ]
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "cardId": "OP04-073",
+  "status": "manual",
+  "sourceTextHash": "1f5b288475bc730e58318b8ef2054673bc1c69fe49cb458da6cddde8eb887132",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may trash this Character and 1 of your Characters with a type including {Baroque Works}: Add up to 1 DON!! card from your DON!! deck and set it as active.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Play this card.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "PlayThisCard",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Play this card"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Activate: Main] You may trash this Character and 1 of your Characters with a type including {Baroque Works}: Add up to 1 DON!! card from your DON!! deck and set it as active."
+    ],
+    "failedParts": [
+      "COST: You may trash this Character and 1 of your Characters with a type including {Baroque Works}"
+    ]
+  }
+}

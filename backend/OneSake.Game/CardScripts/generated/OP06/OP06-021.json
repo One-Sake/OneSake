@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-021",
+  "status": "manual",
+  "sourceTextHash": "3de111a0e8819be2b1e5ab43276376cdab7c731b60e3cf53832f637c8f499df2",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] Choose one: . Rest up to 1 of your opponent's Characters with a cost of 4 or less. . Give up to 1 of your opponent's Characters -1 cost tot your opponent's during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] Choose one: . Rest up to 1 of your opponent's Characters with a cost of 4 or less. . Give up to 1 of your opponent's Characters -1 cost tot your opponent's during this turn."
+    ],
+    "failedParts": [
+      "COST: Choose one"
+    ]
+  }
+}

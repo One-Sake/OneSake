@@ -1,0 +1,16 @@
+{
+  "cardId": "OP05-087",
+  "status": "manual",
+  "sourceTextHash": "d1fa31b1538924cfbe74d36fcd9d3037bf62eb57d277171dfd38f0fecc29aa26",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] [When Attacking] You may K.O. 1 of your Characters other than this Character: Give up to 1 of your opponent's Characters -5 cost during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] [When Attacking] You may K.O. 1 of your Characters other than this Character: Give up to 1 of your opponent's Characters -5 cost during this turn."
+    ],
+    "failedParts": [
+      "K.O. 1 of your Characters other than this Character: Give up to 1 of your opponent's Characters -5 cost during this turn"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP09-065",
+  "status": "manual",
+  "sourceTextHash": "7d1efb40e938f5f4ee2494a25c4f9cc065ce88cc389430939ad08a42c8ae5e75",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] You may return 1 or more DON!! cards from your field to your DON!! deck: This Character gains [Rush] during this turn. Then, rest up to 1 of your opponent's Characters with a cost of 6 or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] You may return 1 or more DON!! cards from your field to your DON!! deck: This Character gains [Rush] during this turn. Then, rest up to 1 of your opponent's Characters with a cost of 6 or less."
+    ],
+    "failedParts": [
+      "COST: You may return 1 or more DON!! cards from your field to your DON!! deck"
+    ]
+  }
+}

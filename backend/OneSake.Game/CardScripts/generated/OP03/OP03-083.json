@@ -1,0 +1,16 @@
+{
+  "cardId": "OP03-083",
+  "status": "manual",
+  "sourceTextHash": "668c47f60901ac626c26bb7b850654e067d9778a5614dfcec96d5ca5d2242e81",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Look at 5 cards from the top of your deck and trash up to 2 cards. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Look at 5 cards from the top of your deck and trash up to 2 cards. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "Look at 5 cards from the top of your deck and trash up to 2 cards"
+    ]
+  }
+}

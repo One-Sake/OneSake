@@ -1,0 +1,16 @@
+{
+  "cardId": "OP14-060",
+  "status": "manual",
+  "sourceTextHash": "5d511d4e8acd207a76606847cf32d9246e87d920b9183c88734cc5a3ee30725a",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Your Opponent's Attack] [Once Per Turn] DON!! -1: Select your Leader or 1 of your {Donquixote Pirates} type Characters. Change the attack target to the selected card.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Your Opponent's Attack] [Once Per Turn] DON!! -1: Select your Leader or 1 of your {Donquixote Pirates} type Characters. Change the attack target to the selected card."
+    ],
+    "failedParts": [
+      "Select your Leader or 1 of your {Donquixote Pirates} type Characters"
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "cardId": "OP11-062",
+  "status": "manual",
+  "sourceTextHash": "ecbb4b093ae89964351d5c57551f49efbbff316ad966b2bddcc431b47ae84f66",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking]/[On Your Opponent's Attack] | [Once Per Turn] DON!! 1: Look at 1 card from the top of your opponent's deck. Then, this Leader gains +1000 power during this battle.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[When Attacking]/[On Your Opponent's Attack]",
+      "[Once Per Turn] DON!! 1: Look at 1 card from the top of your opponent's deck. Then, this Leader gains +1000 power during this battle."
+    ],
+    "failedParts": [
+      "/[On Your Opponent's Attack]",
+      "Look at 1 card from the top of your opponent's deck"
+    ]
+  }
+}

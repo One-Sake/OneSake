@@ -1,0 +1,16 @@
+{
+  "cardId": "OP14-062",
+  "status": "manual",
+  "sourceTextHash": "f48a9f76768a67a5170dc7c7703a350c2f29693c74dbd2d6dd123a463dd3406e",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On K.O.] DON!! 1: K.O. or rest up to 1 of your opponent's Characters with a base power of 6000 or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On K.O.] DON!! 1: K.O. or rest up to 1 of your opponent's Characters with a base power of 6000 or less."
+    ],
+    "failedParts": [
+      "K.O. or rest up to 1 of your opponent's Characters with a base power of 6000 or less"
+    ]
+  }
+}

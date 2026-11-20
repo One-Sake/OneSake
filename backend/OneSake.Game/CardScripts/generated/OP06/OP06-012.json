@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-012",
+  "status": "manual",
+  "sourceTextHash": "6b7c41c8ff6dbbf3d794c0932f3ff9700473d0f18df20c03754887fae2827a76",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If your opponent has a Leader or Character with a base power of 6000 or more, this Character cannot be K.O.'d in battle.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If your opponent has a Leader or Character with a base power of 6000 or more, this Character cannot be K.O.'d in battle."
+    ],
+    "failedParts": [
+      "IF: If your opponent has a Leader or Character with a base power of 6000 or more, this Character cannot be K.O.'d in battle"
+    ]
+  }
+}

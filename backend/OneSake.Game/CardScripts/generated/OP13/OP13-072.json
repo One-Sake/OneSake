@@ -1,0 +1,16 @@
+{
+  "cardId": "OP13-072",
+  "status": "manual",
+  "sourceTextHash": "dced8d236722953a382098bf35f4fcb1a2131aed2fb5985d2aa18356e14efa42",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your Leader's type includes \"Roger Pirates\" and you have any DON!! cards given, add up to 1 DON!! card from your DON!! deck and rest it.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your Leader's type includes \"Roger Pirates\" and you have any DON!! cards given, add up to 1 DON!! card from your DON!! deck and rest it."
+    ],
+    "failedParts": [
+      "IF: If your Leader's type includes \"Roger Pirates\" and you have any DON!! cards given, add up to 1 DON!! card from your DON!! deck and rest it"
+    ]
+  }
+}

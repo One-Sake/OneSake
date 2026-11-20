@@ -1,0 +1,72 @@
+{
+  "cardId": "OP01-120",
+  "status": "manual",
+  "sourceTextHash": "e1818eb7b9b7d3ffe10d54e5251dd87c415ac66241d660e86c59977a6bbb634e",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Rush] [When Attacking] Your opponent cannot activate a [Blocker] Character that has 2000 or less power during this battle.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Static",
+        "text": "[Rush]",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "GainFlag",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "Permanent",
+            "flag": "Rush",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "[Rush]"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Rush] [When Attacking] Your opponent cannot activate a [Blocker] Character that has 2000 or less power during this battle."
+    ],
+    "failedParts": [
+      "Your opponent cannot activate a [Blocker] Character that has 2000 or less power during this battle"
+    ]
+  }
+}

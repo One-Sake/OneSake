@@ -65,7 +65,11 @@ builder.Services.AddSingleton(_ => fixedDiceRolls is { Length: > 0 }
     ? new MatchRoomManager(() => new FixedDiceRoller(fixedDiceRolls))
     : new MatchRoomManager());
 // Speichert beendete Matches (Fehler werden nur geloggt, das Spiel laeuft weiter)
+builder.Services.AddSingleton<MatchRecordingService>();
+builder.Services.AddSingleton<IBugReportStore, EfBugReportStore>();
+builder.Services.AddSingleton<BugReportService>();
 builder.Services.AddSingleton<MatchResultService>();
+builder.Services.AddHostedService<MatchRecordingRetentionService>();
 // Warteschlange fuer Quick Match
 builder.Services.AddSingleton<MatchmakingQueue>();
 // Loescht leere Rooms automatisch nach 5 Minuten
@@ -96,6 +100,10 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+// Card scripts: missing files and changed card texts (errata) are logged once per card.
+var cardScriptLogger = app.Services.GetRequiredService<ILoggerFactory>().CreateLogger("CardScripts");
+OneSake.Game.Effects.CardScriptRegistry.Warning = message => cardScriptLogger.LogWarning("{Message}", message);
 
 // =========================
 // MIDDLEWARE PIPELINE

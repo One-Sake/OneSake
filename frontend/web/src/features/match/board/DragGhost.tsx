@@ -42,7 +42,7 @@ export const DragGhost = forwardRef<HTMLDivElement, DragGhostProps>(function Dra
 
   return createPortal(
     <div ref={ref} aria-hidden="true" className={className} style={style}>
-      {view.item.kind === 'hand' ? (
+      {view.item.kind !== 'don' ? (
         <MatchCardView card={{ ...view.item.card, isRested: false }} size="slot" />
       ) : (
         <span className="match-don-card match-drag-ghost__don" />

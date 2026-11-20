@@ -1,0 +1,16 @@
+{
+  "cardId": "OP11-077",
+  "status": "manual",
+  "sourceTextHash": "9a3b0f3f2f96bfff9a7fc9b4dbd1cb8875126496f9161e30c1922a0ec2ab8fa0",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] [Once Per Turn] When a DON!! card on your field is returned to your DON!! deck, up to 1 of your {Big Mom Pirates} type Characters gains +2 cost until the end of your opponent's next turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] [Once Per Turn] When a DON!! card on your field is returned to your DON!! deck, up to 1 of your {Big Mom Pirates} type Characters gains +2 cost until the end of your opponent's next turn."
+    ],
+    "failedParts": [
+      "When a DON!! card on your field is returned to your DON!! deck, up to 1 of your {Big Mom Pirates} type Characters gains +2 cost until the end of your opponent's next turn"
+    ]
+  }
+}

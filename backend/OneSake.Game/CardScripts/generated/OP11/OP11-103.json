@@ -1,0 +1,16 @@
+{
+  "cardId": "OP11-103",
+  "status": "manual",
+  "sourceTextHash": "724e30039046e6c66372aa55e290bf130cc4a42ed46a8fcb9696ed9a1585311d",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] If your Leader is [Shirahoshi], you may rest this Character and turn 1 card from the top of your Life cards face-down: K.O. up to 1 of your opponent's Characters with a cost of 3 or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] If your Leader is [Shirahoshi], you may rest this Character and turn 1 card from the top of your Life cards face-down: K.O. up to 1 of your opponent's Characters with a cost of 3 or less."
+    ],
+    "failedParts": [
+      "COST: If your Leader is [Shirahoshi], you may rest this Character and turn 1 card from the top of your Life cards face-down"
+    ]
+  }
+}

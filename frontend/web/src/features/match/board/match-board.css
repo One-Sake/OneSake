@@ -2230,3 +2230,822 @@ body.is-dragging-card * {
     0 0 0 3px #ffe39b,
     0 0 28px rgb(255 214 120 / 80%);
 }
+
+/* ---------- Manual mode (ManualMenu.tsx, ManualViewDialog.tsx, ManualEffectBanner.tsx) ---------- */
+
+/* Violet marks everything manual, so it is never mixed up with the gold game controls. */
+.match-board-frame,
+.manual-menu,
+.manual-confirm,
+.manual-view,
+.card-inspect-overlay__manual {
+  --manual-accent: #c39bff;
+}
+
+.board-card-slot {
+  position: relative;
+}
+
+.match-manual-dots {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  width: max(22px, calc(var(--card-w, 60px) * 0.3));
+  height: max(18px, calc(var(--card-w, 60px) * 0.22));
+  border: 1px solid rgb(195 155 255 / 70%);
+  border-radius: 6px;
+  padding: 0;
+  color: #f1e6ff;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1;
+  background: rgb(28 16 46 / 88%);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+}
+
+/* Hover shows the button, the "Manuell" toggle shows it all the time (touch devices). */
+.board-zone:hover > .match-manual-dots,
+.board-card-slot:hover > .match-manual-dots,
+.match-hand__card:hover > .match-manual-dots,
+.match-manual-dots:focus-visible,
+.is-manual-mode .match-manual-dots {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.is-manual-mode .board-card-slot {
+  touch-action: none;
+}
+
+.match-actions button.match-actions__manual {
+  min-height: clamp(28px, calc(var(--card-w) * 0.32), 40px);
+  border-color: rgb(195 155 255 / 45%);
+  color: #dccbff;
+  font-size: max(11px, min(calc(var(--card-w) * 0.11), 14px));
+}
+
+.match-actions button.match-actions__manual.is-active {
+  border-color: var(--manual-accent);
+  color: #1b0f2c;
+  background: var(--manual-accent);
+}
+
+/* Context menu */
+.manual-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 95;
+  width: min(260px, calc(100vw - 16px));
+  max-height: min(70vh, 520px);
+  overflow-y: auto;
+  border: 1px solid rgb(195 155 255 / 55%);
+  border-radius: 12px;
+  padding: 6px;
+  color: #eef3f6;
+  background: rgb(14 10 24 / 97%);
+  box-shadow: 0 18px 48px rgb(0 0 0 / 60%);
+}
+
+.manual-menu__title {
+  overflow: hidden;
+  padding: 4px 8px 6px;
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 900;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.manual-actions {
+  display: grid;
+  gap: 2px;
+}
+
+.manual-actions__heading {
+  margin: 6px 0 2px;
+  padding: 0 8px;
+  color: var(--manual-accent);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.manual-actions__item {
+  border: 0;
+  border-radius: 7px;
+  padding: 7px 8px;
+  color: inherit;
+  font: inherit;
+  font-size: 0.85rem;
+  text-align: left;
+  background: transparent;
+  cursor: pointer;
+}
+
+.manual-actions__item:hover:not(:disabled),
+.manual-actions__item:focus-visible {
+  outline: none;
+  background: rgb(195 155 255 / 18%);
+}
+
+.manual-actions__item:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.manual-actions__number {
+  display: flex;
+  align-items: end;
+  gap: 6px;
+  padding: 4px 8px;
+}
+
+.manual-actions__number label {
+  display: grid;
+  flex: 1;
+  gap: 2px;
+  font-size: 0.78rem;
+}
+
+.manual-actions__number input {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid rgb(195 155 255 / 35%);
+  border-radius: 6px;
+  padding: 4px 6px;
+  color: inherit;
+  font: inherit;
+  background: rgb(255 255 255 / 6%);
+}
+
+.manual-actions__number button {
+  border: 1px solid rgb(195 155 255 / 55%);
+  border-radius: 6px;
+  padding: 5px 10px;
+  color: #eadcff;
+  font: inherit;
+  font-weight: 800;
+  background: transparent;
+  cursor: pointer;
+}
+
+.manual-actions__number button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.card-inspect-overlay__manual {
+  border: 1px solid rgb(195 155 255 / 35%);
+  border-radius: 8px;
+  padding: 6px;
+  color: #eef3f6;
+  font-size: 0.8rem;
+}
+
+.card-inspect-overlay__manual > strong {
+  display: block;
+  padding: 2px 6px;
+  color: #dccbff;
+}
+
+.card-inspect-overlay__manual .manual-actions {
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+}
+
+.card-inspect-overlay__manual .manual-actions__heading,
+.card-inspect-overlay__manual .manual-actions__number {
+  grid-column: 1 / -1;
+}
+
+/* Confirmation for manual drag & drop */
+.manual-confirm {
+  position: fixed;
+  inset: 0;
+  z-index: 96;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgb(0 0 0 / 45%);
+}
+
+.manual-confirm__dialog {
+  display: grid;
+  gap: 8px;
+  width: min(92vw, 380px);
+  border: 1px solid rgb(195 155 255 / 55%);
+  border-radius: 12px;
+  padding: 14px;
+  color: #eef3f6;
+  background: rgb(14 10 24 / 97%);
+}
+
+.manual-confirm__dialog p {
+  margin: 0;
+}
+
+.manual-confirm__kicker {
+  color: var(--manual-accent);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.manual-confirm__actions,
+.manual-view__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.manual-confirm__actions button,
+.manual-view__actions button,
+.manual-effect-banner button,
+.manual-view__card-actions button {
+  min-height: 34px;
+  border: 1px solid rgb(195 155 255 / 55%);
+  border-radius: 9px;
+  padding: 6px 14px;
+  color: #eadcff;
+  font: inherit;
+  font-weight: 900;
+  background: rgb(20 12 34 / 92%);
+  cursor: pointer;
+}
+
+.manual-confirm__actions button.is-primary,
+.manual-view__actions button.is-primary,
+.manual-effect-banner button.is-primary {
+  border-color: transparent;
+  color: #1b0f2c;
+  background: #c39bff;
+}
+
+.manual-confirm__actions button:disabled,
+.manual-view__actions button:disabled,
+.manual-effect-banner button:disabled,
+.manual-view__card-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* "Resolve manually" prompt: not a modal, the board stays usable. */
+.manual-effect-banner {
+  position: absolute;
+  top: calc(var(--card-h, 80px) * 0.5);
+  left: 50%;
+  z-index: 40;
+  display: grid;
+  gap: 6px;
+  width: min(92%, 520px);
+  max-height: 45%;
+  overflow-y: auto;
+  border: 1px solid rgb(195 155 255 / 70%);
+  border-radius: 12px;
+  padding: 10px 12px;
+  color: #eef3f6;
+  background: rgb(14 10 24 / 94%);
+  box-shadow:
+    0 0 32px rgb(195 155 255 / 22%),
+    0 16px 40px rgb(0 0 0 / 55%);
+  translate: -50% 0;
+}
+
+.manual-effect-banner h2 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 1rem;
+}
+
+.manual-effect-banner p {
+  margin: 0;
+}
+
+.manual-effect-banner__kicker {
+  color: var(--manual-accent);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.manual-effect-banner__text {
+  border-left: 3px solid rgb(195 155 255 / 60%);
+  padding: 2px 8px;
+  color: #d8e2e7;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.manual-effect-banner__hint {
+  color: #93a8b1;
+  font-size: 0.75rem;
+}
+
+.manual-effect-banner > button {
+  justify-self: end;
+}
+
+.manual-effect-banner__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.manual-effect-banner button.manual-effect-banner__toggle {
+  min-height: 0;
+  border-color: rgb(195 155 255 / 35%);
+  padding: 2px 10px;
+  font-size: 0.85rem;
+}
+
+.manual-effect-banner.is-collapsed {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: auto;
+  max-width: 92%;
+  padding: 6px 8px;
+}
+
+.manual-effect-banner.is-collapsed .manual-effect-banner__toggle {
+  overflow: hidden;
+  border: 0;
+  color: #eadcff;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  background: transparent;
+}
+
+/* Global form styles make inputs tall on phones; the menu needs compact ones. */
+.manual-actions__number label span {
+  color: #cfd9de;
+}
+
+.manual-actions .manual-actions__number input {
+  height: 30px;
+  min-height: 0;
+  color: #ffffff;
+  -webkit-text-fill-color: #ffffff;
+  font-size: 14px;
+  background: rgb(255 255 255 / 9%);
+}
+
+.manual-actions__number button {
+  min-height: 0;
+  height: 30px;
+}
+
+/* Look at the top cards / search the deck */
+.manual-view {
+  position: fixed;
+  inset: 0;
+  z-index: 77;
+  display: grid;
+  place-items: center;
+  padding: max(12px, env(safe-area-inset-top)) 16px max(12px, env(safe-area-inset-bottom));
+  background: rgb(0 0 0 / 55%);
+  backdrop-filter: blur(3px);
+}
+
+.manual-view__dialog {
+  --card-w: 78px;
+  --card-radius: 5px;
+  display: grid;
+  gap: 8px;
+  width: min(96vw, 860px);
+  max-height: calc(100dvh - 24px);
+  overflow-y: auto;
+  border: 1px solid rgb(195 155 255 / 55%);
+  border-radius: 14px;
+  padding: 14px;
+  color: #eef3f6;
+  background: rgb(10 8 18 / 97%);
+}
+
+.manual-view__header span {
+  color: var(--manual-accent);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.manual-view__header h2 {
+  margin: 2px 0 0;
+  color: #ffffff;
+  font-size: 1.05rem;
+}
+
+.manual-view__row {
+  display: grid;
+  gap: 4px;
+  border: 1px dashed rgb(195 155 255 / 30%);
+  border-radius: 10px;
+  padding: 6px 8px;
+}
+
+.manual-view__row--top,
+.manual-view__row--bottom {
+  background: rgb(195 155 255 / 5%);
+}
+
+.manual-view__row-label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+  color: #dccbff;
+  font-size: 0.8rem;
+  font-weight: 900;
+}
+
+.manual-view__row-label small {
+  color: #8d9ba3;
+  font-weight: 600;
+}
+
+.manual-view__cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: calc(var(--card-w) * 0.5);
+}
+
+.manual-view__card {
+  display: grid;
+  gap: 4px;
+  width: var(--card-w);
+  cursor: grab;
+}
+
+.manual-view__card.is-dragging {
+  opacity: 0.4;
+}
+
+.manual-view__card .match-card-view {
+  width: var(--card-w);
+}
+
+.manual-view__card-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+}
+
+.manual-view__card-actions button {
+  min-height: 22px;
+  border-radius: 5px;
+  padding: 1px 2px;
+  font-size: 0.66rem;
+}
+
+.manual-view__empty {
+  align-self: center;
+  color: #6f7f88;
+  font-size: 0.75rem;
+}
+
+.manual-view__search {
+  border: 1px solid rgb(195 155 255 / 35%);
+  border-radius: 8px;
+  padding: 7px 10px;
+  color: inherit;
+  font: inherit;
+  background: rgb(255 255 255 / 6%);
+}
+
+.manual-view__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--card-w), 1fr));
+  gap: 8px;
+  max-height: 55dvh;
+  overflow-y: auto;
+  padding: 2px;
+}
+
+.manual-view__grid .match-card-view {
+  width: 100%;
+}
+
+@media (max-width: 560px) {
+  .manual-view__dialog {
+    --card-w: 64px;
+  }
+}
+
+/* Feed: manual actions in violet, so the opponent sees them at once. */
+.match-feed__list .match-feed__log--manual {
+  margin: 2px 0;
+  border-left: 3px solid #c39bff;
+  border-radius: 4px;
+  padding: 2px 6px;
+  color: #e6d8ff;
+  background: rgb(195 155 255 / 10%);
+}
+
+.match-feed__log--manual span {
+  color: #a98ad8;
+}
+
+/* ---------- Order of simultaneous effects (TriggerOrderOverlay.tsx) ---------- */
+
+.trigger-order {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.trigger-order__item {
+  display: grid;
+  grid-template-columns: auto auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgb(240 191 56 / 30%);
+  border-radius: 10px;
+  padding: 6px 8px;
+  background: rgb(255 255 255 / 4%);
+  cursor: grab;
+}
+
+.trigger-order__item.is-dragging {
+  opacity: 0.45;
+}
+
+.trigger-order__number {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  color: #10221b;
+  font-weight: 900;
+  background: var(--color-gold, #f0bf38);
+}
+
+.trigger-order__card {
+  --card-w: 46px;
+  --card-radius: 4px;
+  width: 46px;
+}
+
+.trigger-order__card .match-card-view {
+  width: 46px;
+}
+
+.trigger-order__text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.trigger-order__text strong {
+  color: #ffffff;
+  font-size: 0.9rem;
+}
+
+.trigger-order__text small {
+  overflow-wrap: anywhere;
+  color: #b9c6cc;
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.trigger-order__buttons {
+  display: grid;
+  gap: 4px;
+}
+
+.trigger-order__buttons button {
+  min-width: 34px;
+  min-height: 28px;
+  border: 1px solid rgb(240 191 56 / 45%);
+  border-radius: 7px;
+  color: #f8da84;
+  font: inherit;
+  background: rgb(10 18 26 / 92%);
+  cursor: pointer;
+}
+
+.trigger-order__buttons button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.match-feed__list .match-feed__log--order {
+  border-left: 2px solid rgb(240 191 56 / 70%);
+  padding-left: 6px;
+  color: #f3dfa6;
+}
+
+
+/* ---------- Bug report ("Fehler melden", BugReportDialog.tsx) ---------- */
+
+.match-actions button.match-actions__bug {
+  min-height: clamp(28px, calc(var(--card-w) * 0.32), 40px);
+  border-color: rgb(255 140 120 / 45%);
+  color: #ffc9bd;
+  font-size: max(11px, min(calc(var(--card-w) * 0.11), 14px));
+}
+
+.match-board-game-over__bug {
+  display: block;
+  margin: 10px auto 0;
+  border: 1px solid rgb(255 140 120 / 55%);
+  border-radius: 9px;
+  padding: 6px 14px;
+  color: #ffc9bd;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 800;
+  background: rgb(30 10 10 / 80%);
+  cursor: pointer;
+}
+
+.bug-report {
+  position: fixed;
+  inset: 0;
+  z-index: 97;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgb(0 0 0 / 55%);
+}
+
+.bug-report__dialog {
+  --card-w: 58px;
+  --card-radius: 4px;
+  display: grid;
+  gap: 10px;
+  width: min(94vw, 560px);
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  border: 1px solid rgb(255 140 120 / 55%);
+  border-radius: 14px;
+  padding: 14px;
+  color: #eef3f6;
+  background: rgb(14 10 12 / 97%);
+}
+
+.bug-report__dialog form {
+  display: grid;
+  gap: 10px;
+}
+
+.bug-report__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bug-report__header h2 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.bug-report__header button {
+  border: 0;
+  color: #b9c6cc;
+  font: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+
+.bug-report__categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+.bug-report__categories legend {
+  margin-bottom: 4px;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.bug-report__categories label {
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.bug-report__categories label.is-selected {
+  border-color: #ff9c86;
+  color: #1a0b08;
+  background: #ff9c86;
+}
+
+.bug-report__categories input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.bug-report__description {
+  display: grid;
+  gap: 4px;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.bug-report__description small {
+  color: #8d9ba3;
+  font-weight: 600;
+}
+
+.bug-report__description textarea {
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 8px;
+  padding: 8px;
+  color: #ffffff;
+  font: inherit;
+  font-weight: 400;
+  background: rgb(255 255 255 / 6%);
+  resize: vertical;
+}
+
+.bug-report__cards p {
+  margin: 0 0 4px;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.bug-report__card-list {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 4px 2px;
+}
+
+.bug-report__card-list .match-card-view {
+  flex: 0 0 var(--card-w);
+  width: var(--card-w);
+}
+
+.bug-report__note {
+  margin: 0;
+  color: #8d9ba3;
+  font-size: 0.75rem;
+}
+
+.bug-report__error {
+  margin: 0;
+  color: #ff9c86;
+  font-size: 0.85rem;
+}
+
+.bug-report__actions,
+.bug-report__done {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.bug-report__done p {
+  flex: 1;
+  margin: 0;
+  font-weight: 800;
+}
+
+.bug-report__actions button,
+.bug-report__done button {
+  min-height: 34px;
+  border: 1px solid rgb(255 140 120 / 55%);
+  border-radius: 9px;
+  padding: 6px 14px;
+  color: #ffc9bd;
+  font: inherit;
+  font-weight: 900;
+  background: transparent;
+  cursor: pointer;
+}
+
+.bug-report__actions button.is-primary,
+.bug-report__done button.is-primary {
+  border-color: transparent;
+  color: #1a0b08;
+  background: #ff9c86;
+}
+
+.bug-report__actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

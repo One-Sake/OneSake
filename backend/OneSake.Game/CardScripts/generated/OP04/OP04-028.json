@@ -1,0 +1,72 @@
+{
+  "cardId": "OP04-028",
+  "status": "manual",
+  "sourceTextHash": "5bfcb5e96bbb4c289b9ef432d80945aec8fc5bfe97c922a97bcc4036710dc89d",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Blocker] [DON!! x1] [End of Your Turn] If you have 2 or more active DON!! cards, set this Character as active.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Static",
+        "text": "[Blocker]",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "GainFlag",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "Permanent",
+            "flag": "Blocker",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "[Blocker]"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Blocker] [DON!! x1] [End of Your Turn] If you have 2 or more active DON!! cards, set this Character as active."
+    ],
+    "failedParts": [
+      "IF: If you have 2 or more active DON!! cards, set this Character as active"
+    ]
+  }
+}

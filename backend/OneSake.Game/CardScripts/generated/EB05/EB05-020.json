@@ -1,0 +1,16 @@
+{
+  "cardId": "EB05-020",
+  "status": "manual",
+  "sourceTextHash": "9b413d6d69c5b8291e02c529ee0839d14aa6a865644cc6a3395d9805fdae58aa",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] You may rest your Leader [Shirahoshi]: Draw 2 cards.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Main] You may rest your Leader [Shirahoshi]: Draw 2 cards."
+    ],
+    "failedParts": [
+      "COST: You may rest your Leader [Shirahoshi]"
+    ]
+  }
+}

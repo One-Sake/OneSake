@@ -1,0 +1,16 @@
+# Buggy (OP09-042) - Rang 3 im Meta-Reiter (7735 Spiele, Card Kaizoku 2026-11-19)
+# Automatisch zusammengestellt (Leader-Farben, gleicher Typ zuerst, Kostenkurve) - keine echte Turnierliste.
+1xOP09-042
+4xOP09-054
+4xOP09-056
+4xPRB02-009
+4xEB01-026
+4xST25-002
+4xST25-005
+4xEB03-021
+4xOP12-042
+4xOP09-045
+4xOP09-053
+4xEB05-021
+4xOP09-057
+2xEB01-028

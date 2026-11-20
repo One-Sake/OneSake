@@ -1,0 +1,16 @@
+{
+  "cardId": "OP15-006",
+  "status": "manual",
+  "sourceTextHash": "8a2b344a7f02de0fbc433d406184e0d89dae56984a7cad6f6157162b217562ef",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If you have 4 or more Events in your trash, this Character gains +2000 power.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If you have 4 or more Events in your trash, this Character gains +2000 power."
+    ],
+    "failedParts": [
+      "IF: If you have 4 or more Events in your trash, this Character gains +2000 power"
+    ]
+  }
+}

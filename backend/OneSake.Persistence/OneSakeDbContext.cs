@@ -13,6 +13,8 @@ public class OneSakeDbContext : DbContext
     public DbSet<Card> Cards => Set<Card>();
     public DbSet<MatchResult> MatchResults => Set<MatchResult>();
     public DbSet<PlayerRating> PlayerRatings => Set<PlayerRating>();
+    public DbSet<MatchRecordingEntity> MatchRecordings => Set<MatchRecordingEntity>();
+    public DbSet<BugReport> BugReports => Set<BugReport>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -60,6 +62,30 @@ public class OneSakeDbContext : DbContext
             entity.Property(r => r.FirstPlayerGuestId).HasMaxLength(36);
             // The leaderboard and the "same pair in 24 h" rule look at the newest matches.
             entity.HasIndex(r => r.EndedAtUtc);
+        });
+
+        modelBuilder.Entity<MatchRecordingEntity>(entity =>
+        {
+            entity.ToTable("MatchRecordings");
+            entity.HasKey(r => r.Id);
+            entity.HasIndex(r => r.MatchResultId);
+            // The retention job deletes old recordings.
+            entity.HasIndex(r => r.CreatedAtUtc);
+            entity.Property(r => r.RoomCode).HasMaxLength(12).IsRequired();
+            entity.Property(r => r.Data).IsRequired();
+        });
+
+        modelBuilder.Entity<BugReport>(entity =>
+        {
+            entity.HasKey(r => r.Id);
+            entity.HasIndex(r => r.CreatedAtUtc);
+            entity.HasIndex(r => r.GuestId);
+            entity.HasIndex(r => r.RecordingId);
+            entity.Property(r => r.RoomCode).HasMaxLength(12).IsRequired();
+            entity.Property(r => r.GuestId).HasMaxLength(36);
+            entity.Property(r => r.Description).HasMaxLength(1000).IsRequired();
+            entity.Property(r => r.Category).HasMaxLength(20).IsRequired();
+            entity.Property(r => r.CardId).HasMaxLength(50);
         });
 
         modelBuilder.Entity<PlayerRating>(entity =>

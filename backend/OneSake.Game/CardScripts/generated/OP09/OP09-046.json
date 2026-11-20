@@ -1,0 +1,16 @@
+{
+  "cardId": "OP09-046",
+  "status": "manual",
+  "sourceTextHash": "bc3f501120f7ee37cd32af852d6f7615818db3f657d780d03438a53e6ff61379",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Play up to 1 {Cross Guild} type Character card or Character card with a type including {Baroque Works} with a cost of 5 or less from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Play up to 1 {Cross Guild} type Character card or Character card with a type including {Baroque Works} with a cost of 5 or less from your hand."
+    ],
+    "failedParts": [
+      "Play up to 1 {Cross Guild} type Character card or Character card with a type including {Baroque Works} with a cost of 5 or less from your hand"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP03-099",
+  "status": "manual",
+  "sourceTextHash": "3ea0baf7e8422186e4f7231671cea14105ef181b23125297094197d2037d92f0",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] [When Attacking] Look at up to 1 card from the top of your or your opponent's Life cards, and place it at the top or bottom of the Life cards. Then, this Leader gains +1000 power during this battle.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] [When Attacking] Look at up to 1 card from the top of your or your opponent's Life cards, and place it at the top or bottom of the Life cards. Then, this Leader gains +1000 power during this battle."
+    ],
+    "failedParts": [
+      "Look at up to 1 card from the top of your or your opponent's Life cards, and place it at the top or bottom of the Life cards"
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "cardId": "EB05-049",
+  "status": "manual",
+  "sourceTextHash": "28102b6312d5a4bef957ef1fa7e0fd31b85f6f0a731df750ff783f3806b2790a",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] You may K.O. 1 of your {Thriller Bark Pirates} type Characters: Give up to 1 of your opponent's Characters -3 cost during this turn. | [Counter] You may K.O. 1 of your {Thriller Bark Pirates} type Characters: Up to 1 of your Leader or Characters gains +4000 power during this battle.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Main] You may K.O. 1 of your {Thriller Bark Pirates} type Characters: Give up to 1 of your opponent's Characters -3 cost during this turn.",
+      "[Counter] You may K.O. 1 of your {Thriller Bark Pirates} type Characters: Up to 1 of your Leader or Characters gains +4000 power during this battle."
+    ],
+    "failedParts": [
+      "K.O. 1 of your {Thriller Bark Pirates} type Characters: Give up to 1 of your opponent's Characters -3 cost during this turn",
+      "K.O. 1 of your {Thriller Bark Pirates} type Characters: Up to 1 of your Leader or Characters gains +4000 power during this battle"
+    ]
+  }
+}

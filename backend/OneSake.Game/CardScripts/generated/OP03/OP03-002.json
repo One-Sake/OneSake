@@ -1,0 +1,16 @@
+{
+  "cardId": "OP03-002",
+  "status": "manual",
+  "sourceTextHash": "2c6970f29c23e095ca5c84859df9a2a355aafe53644952c34215b2f77603e2b9",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] [When Attacking] Your opponent cannot activate a [Blocker] Character that has 2000 or less power during this battle.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] [When Attacking] Your opponent cannot activate a [Blocker] Character that has 2000 or less power during this battle."
+    ],
+    "failedParts": [
+      "Your opponent cannot activate a [Blocker] Character that has 2000 or less power during this battle"
+    ]
+  }
+}

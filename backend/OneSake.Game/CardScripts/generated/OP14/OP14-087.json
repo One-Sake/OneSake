@@ -1,0 +1,16 @@
+{
+  "cardId": "OP14-087",
+  "status": "manual",
+  "sourceTextHash": "499fad6a74884833babf6ebe2d11f757a00894ca5e3ad4058a9ef62d50df49cb",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your Leader's type includes \"Baroque Works\", look at 4 cards from the top of your deck; reveal up to 1 card with a type including {Baroque Works} other than [Miss.Valentine] and add it to your hand. Then, trash the rest.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your Leader's type includes \"Baroque Works\", look at 4 cards from the top of your deck; reveal up to 1 card with a type including {Baroque Works} other than [Miss.Valentine] and add it to your hand. Then, trash the rest."
+    ],
+    "failedParts": [
+      "IF: If your Leader's type includes \"Baroque Works\", look at 4 cards from the top of your deck; reveal up to 1 card with a type including {Baroque Works} other than [Miss.Valentine] and add it to your hand"
+    ]
+  }
+}

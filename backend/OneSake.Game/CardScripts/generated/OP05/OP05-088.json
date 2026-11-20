@@ -1,0 +1,16 @@
+{
+  "cardId": "OP05-088",
+  "status": "manual",
+  "sourceTextHash": "46156cf8d19a3a06e0ad4c0c508daabfcf17a527588129479b4a5c8e946600c1",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] RESTDON1 You may rest this Character and place 2 cards from your trash at the bottom of your deck in any order: Add up to 1 black Character card with a cost of 3 to 5 from your trash to your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] RESTDON1 You may rest this Character and place 2 cards from your trash at the bottom of your deck in any order: Add up to 1 black Character card with a cost of 3 to 5 from your trash to your hand."
+    ],
+    "failedParts": [
+      "Add up to 1 black Character card with a cost of 3 to 5 from your trash to your hand"
+    ]
+  }
+}

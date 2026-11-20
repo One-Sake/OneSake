@@ -1,0 +1,16 @@
+{
+  "cardId": "OP17-099",
+  "status": "manual",
+  "sourceTextHash": "b896997e21657730f3b751629a9e1764f94ae9c4b0b2611a59921d060f3e610e",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking] You may trash 1 card from your hand: Your opponent chooses one: . Trash 1 card from your hand. Then, add up to 1 card from the top of your deck to the top of your Life cards. . Trash 1 card from your opponent's hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[When Attacking] You may trash 1 card from your hand: Your opponent chooses one: . Trash 1 card from your hand. Then, add up to 1 card from the top of your deck to the top of your Life cards. . Trash 1 card from your opponent's hand."
+    ],
+    "failedParts": [
+      "Your opponent chooses one:"
+    ]
+  }
+}

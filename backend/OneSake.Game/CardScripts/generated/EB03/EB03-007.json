@@ -1,0 +1,72 @@
+{
+  "cardId": "EB03-007",
+  "status": "manual",
+  "sourceTextHash": "a0df621064184aa8e1b4fef4a66c8c5e70ba579a6d1749bcf9506a4961e2ac5c",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Blocker] [On K.O.] Play up to 1 Character card with 6000 power or less and no base effect from your hand.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Static",
+        "text": "[Blocker]",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "GainFlag",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "Permanent",
+            "flag": "Blocker",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "[Blocker]"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Blocker] [On K.O.] Play up to 1 Character card with 6000 power or less and no base effect from your hand."
+    ],
+    "failedParts": [
+      "Play up to 1 Character card with 6000 power or less and no base effect from your hand"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP13-007",
+  "status": "manual",
+  "sourceTextHash": "1645dd10424aca26244069f6c761e8e1343fc9924a85f10eac40bdf048ea5ba1",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may give 1 of your active DON!! cards to 1 of your Leader or Character cards and trash this Character: Give up to 1 of your opponent's Characters 3000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may give 1 of your active DON!! cards to 1 of your Leader or Character cards and trash this Character: Give up to 1 of your opponent's Characters 3000 power during this turn."
+    ],
+    "failedParts": [
+      "COST: You may give 1 of your active DON!! cards to 1 of your Leader or Character cards and trash this Character"
+    ]
+  }
+}

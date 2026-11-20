@@ -1,0 +1,16 @@
+{
+  "cardId": "OP10-040",
+  "status": "manual",
+  "sourceTextHash": "bcba907c006cc6150e89aab7e5d0fc5089a2cf20f14b43063dd7435dbe700d11",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main]/[Counter] K.O. up to 1 of your opponent's rested Characters with a cost of 7 or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Main]/[Counter] K.O. up to 1 of your opponent's rested Characters with a cost of 7 or less."
+    ],
+    "failedParts": [
+      "/[Counter] K.O. up to 1 of your opponent's rested Characters with a cost of 7 or less"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "P-090",
+  "status": "manual",
+  "sourceTextHash": "f9b809fcf9b5cc0bf0d6ab29dd1c1eba67da1658858f087a50ec0b1d54a52f08",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Opponent's Turn] [On K.O.] DON!! 1: Play up to 1 {Big Mom Pirates} type Character card with a cost equal to or less than the number of DON!! cards on your opponent's field other than [Charlotte Smoothie] from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Opponent's Turn] [On K.O.] DON!! 1: Play up to 1 {Big Mom Pirates} type Character card with a cost equal to or less than the number of DON!! cards on your opponent's field other than [Charlotte Smoothie] from your hand."
+    ],
+    "failedParts": [
+      "Play up to 1 {Big Mom Pirates} type Character card with a cost equal to or less than the number of DON!! cards on your opponent's field other than [Charlotte Smoothie] from your hand"
+    ]
+  }
+}

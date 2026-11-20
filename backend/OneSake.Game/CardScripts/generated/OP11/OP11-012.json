@@ -1,0 +1,16 @@
+{
+  "cardId": "OP11-012",
+  "status": "manual",
+  "sourceTextHash": "ddc7a56dd867d8e519c08ac2c6f4c8b135e53edbc44fa533d850d00eca57a44e",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] [Once Per Turn] When your opponent activates an Event, all of your Characters gain +2000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] [Once Per Turn] When your opponent activates an Event, all of your Characters gain +2000 power during this turn."
+    ],
+    "failedParts": [
+      "When your opponent activates an Event, all of your Characters gain +2000 power during this turn"
+    ]
+  }
+}

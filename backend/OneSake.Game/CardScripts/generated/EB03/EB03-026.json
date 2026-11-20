@@ -1,0 +1,52 @@
+{
+  "cardId": "EB03-026",
+  "status": "manual",
+  "sourceTextHash": "2e2ebc48878f9e299803b7f0d90118ccf0941a5c056a517bfc302ac0a1c1f263",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] You may place 1 of your Characters at the bottom of the owner's deck: Give your Leader and 1 Character up to 1 rested DON!! card each.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] If your opponent has 5 or more cards in their hand, your opponent places 1 card from their hand at the bottom of their deck.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "OpponentHandToDeckBottom",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [
+              {
+                "kind": "OpponentHandAtLeast",
+                "amount": 5,
+                "text": "your opponent has 5 or more cards in their hand"
+              }
+            ],
+            "text": "Your opponent places 1 card from their hand at the bottom of their deck"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] You may place 1 of your Characters at the bottom of the owner's deck: Give your Leader and 1 Character up to 1 rested DON!! card each."
+    ],
+    "failedParts": [
+      "COST: You may place 1 of your Characters at the bottom of the owner's deck"
+    ]
+  }
+}

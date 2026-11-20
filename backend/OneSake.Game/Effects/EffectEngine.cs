@@ -1,5 +1,8 @@
 using OneSake.Game.State;
 
+using OneSake.Game.Randomness;
+using OneSake.Game.Rules;
+
 namespace OneSake.Game.Effects;
 
 // A question the engine asks a player while an effect resolves.
@@ -260,6 +263,15 @@ public sealed class EffectEngine
 
                     frame.StepIndex += 1;
                     frame.Scratch.Clear();
+
+                    // Rule 9-1-2: rule processing after every step. A finished game stops the effect.
+                    if (context.ProcessRules())
+                    {
+                        frame.Finished = true;
+                        _queue.Clear();
+                        return null;
+                    }
+
                     break;
                 }
             }
@@ -699,7 +711,7 @@ public sealed class EffectEngine
                 return null;
 
             case StepKind.ShuffleDeck:
-                Shuffle(player.DrawDeck);
+                player.DrawDeck.Shuffle(player.Random);
                 return null;
 
             case StepKind.LookAndReveal:
@@ -851,8 +863,8 @@ public sealed class EffectEngine
 
         return step.Kind switch
         {
-            StepKind.KO => !(byOpponent && card.HasFlag(EffectFlags.CannotBeKOdByEffects)) && !card.IsLeader,
-            StepKind.Rest => !(byOpponent && card.HasFlag(EffectFlags.CannotBeRestedByEffects)),
+            StepKind.KO => Prohibitions.CanBeKOd(card, byEffect: true, byOpponent),
+            StepKind.Rest => Prohibitions.CanBeRested(card, byOpponent),
             StepKind.ReturnToHand or StepKind.BottomOfDeck or StepKind.TopOfDeck or StepKind.TrashCard => !card.IsLeader,
             StepKind.GiveRestedDon => !card.IsStage,
             _ => true
@@ -982,13 +994,17 @@ public sealed class EffectEngine
     {
         var player = context.GetPlayer(frame.ControllerId);
 
+        // Rule 11-3-2: the cards stay in the deck while they are looked at. They leave it only
+        // when the effect places them (below), so no card is in "no area" during the choice.
         if (!frame.Scratch.Looked)
         {
             frame.Scratch.Looked = true;
             frame.Scratch.LookedCards = player.DrawDeck.Take(step.Amount).ToList();
-            player.DrawDeck.RemoveRange(0, frame.Scratch.LookedCards.Count);
         }
 
+        // A card that left the deck in the meantime (e.g. a manual action) is no longer part of it.
+        frame.Scratch.LookedCards.RemoveAll(card => !player.DrawDeck.Contains(card));
+        frame.Scratch.Chosen.RemoveAll(card => !player.DrawDeck.Contains(card));
         var looked = frame.Scratch.LookedCards;
         var matching = looked
             .Where(card => !frame.Scratch.Chosen.Contains(card))
@@ -1013,6 +1029,11 @@ public sealed class EffectEngine
             var names = string.Join(", ", looked.Select(card => card.Name));
             return Ask(frame, context, $"{frame.Source.Name}: you look at {names}. Choose up to {step.SecondAmount - frame.Scratch.Chosen.Count} card(s) to reveal.",
                 [EffectChoiceRequest.Select, EffectChoiceRequest.Done], matching);
+        }
+
+        foreach (var card in looked)
+        {
+            player.DrawDeck.Remove(card);
         }
 
         foreach (var card in frame.Scratch.Chosen)
@@ -1186,12 +1207,21 @@ public sealed class EffectEngine
             return false;
         }
 
-        if (!byEffect && card.HasFlag(EffectFlags.CannotBeKOdInBattle))
+        // Rule 1-3-3 / 10-2-1-3: "cannot be K.O.'d in battle" wins.
+        if (!byEffect && !Prohibitions.CanBeKOd(card, byEffect: false, byOpponent: true))
         {
             return false;
         }
 
-        // [On K.O.] abilities are checked while the card is still on the field (DON!! requirement, conditions).
+        // Rule 10-2-17-1: [On K.O.] is checked while the card is still on the field, then it is trashed.
+        if (context.Events is { } events)
+        {
+            events.Publish(new CharacterKOd(card, owner.PlayerId, byEffect));
+            owner.TrashCharacter(card);
+            return true;
+        }
+
+        // Without an event bus: queue the abilities here (DON!! requirement, conditions).
         var onKoAbilities = card.Script.WithTiming(EffectTiming.OnKO)
             .Where(ability => EffectQueries.AbilityIsActive(ability, card, owner.PlayerId, context))
             .ToList();
@@ -1241,6 +1271,12 @@ public sealed class EffectEngine
         }
 
         context.Log("EFFECT_PLAY", $"{player.DisplayName} played {card.Name}{(rested ? " rested" : string.Empty)}.");
+
+        if (context.Events is { } events)
+        {
+            events.Publish(new CardPlayed(card, player.PlayerId, ByEffect: true));
+            return;
+        }
 
         foreach (var ability in card.Script.WithTiming(EffectTiming.OnPlay))
         {
@@ -1294,15 +1330,6 @@ public sealed class EffectEngine
         {
             player.TrashCards.Add(player.DrawDeck[0]);
             player.DrawDeck.RemoveAt(0);
-        }
-    }
-
-    private static void Shuffle(IList<CardInstance> cards)
-    {
-        for (var index = cards.Count - 1; index > 0; index -= 1)
-        {
-            var swapIndex = Random.Shared.Next(index + 1);
-            (cards[index], cards[swapIndex]) = (cards[swapIndex], cards[index]);
         }
     }
 

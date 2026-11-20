@@ -1,0 +1,16 @@
+{
+  "cardId": "OP03-001",
+  "status": "manual",
+  "sourceTextHash": "67f1cbc8face964fea25b8befb27956da66187d9d104b706db4416efc057554a",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: When this Leader attacks or is attacked, you may trash any number of Event or Stage cards from your hand. This Leader gains +1000 power during this battle for every card trashed.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "When this Leader attacks or is attacked, you may trash any number of Event or Stage cards from your hand. This Leader gains +1000 power during this battle for every card trashed."
+    ],
+    "failedParts": [
+      "When this Leader attacks or is attacked, you may trash any number of Event or Stage cards from your hand"
+    ]
+  }
+}

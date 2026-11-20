@@ -1,0 +1,16 @@
+{
+  "cardId": "OP16-084",
+  "status": "manual",
+  "sourceTextHash": "5a510ac748fb669228f3d107346e601b428081dc3639610417a4cca934e10009",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may trash this Character with a cost of 20 or more: If you have 9 or more DON!! cards on your field, play up to 1 [Kouzuki Momonosuke] with a cost of 9 from your trash.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may trash this Character with a cost of 20 or more: If you have 9 or more DON!! cards on your field, play up to 1 [Kouzuki Momonosuke] with a cost of 9 from your trash."
+    ],
+    "failedParts": [
+      "COST: You may trash this Character with a cost of 20 or more"
+    ]
+  }
+}

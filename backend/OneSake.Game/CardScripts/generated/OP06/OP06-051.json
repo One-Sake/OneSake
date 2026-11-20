@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-051",
+  "status": "manual",
+  "sourceTextHash": "8c67aebdd94fb25d1f9d234cb40ca790f9586c1457270ce4d7b8fc360da29890",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] You may trash 2 cards from your hand: Your opponent returns 1 of their Characters to the owner's hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] You may trash 2 cards from your hand: Your opponent returns 1 of their Characters to the owner's hand."
+    ],
+    "failedParts": [
+      "Your opponent returns 1 of their Characters to the owner's hand"
+    ]
+  }
+}

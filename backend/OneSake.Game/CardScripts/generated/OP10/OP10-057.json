@@ -1,0 +1,16 @@
+{
+  "cardId": "OP10-057",
+  "status": "manual",
+  "sourceTextHash": "ec69aaf5dda649bc062ccd9d95feb4143b96c9e7f6f8dbbd755ac2df84fc322f",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] You may rest your Leader or 1 of your Stage cards: If your Leader is [Usopp], look at 5 cards from the top of your deck; reveal up to 2 {Dressrosa} type cards other than [Leo] and add them to your hand. Then, place the rest at the bottom of your deck in any order, and trash 1 card from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] You may rest your Leader or 1 of your Stage cards: If your Leader is [Usopp], look at 5 cards from the top of your deck; reveal up to 2 {Dressrosa} type cards other than [Leo] and add them to your hand. Then, place the rest at the bottom of your deck in any order, and trash 1 card from your hand."
+    ],
+    "failedParts": [
+      "COST: You may rest your Leader or 1 of your Stage cards"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP07-006",
+  "status": "manual",
+  "sourceTextHash": "3b01678bdb642e4d1149fdd3d483cfa0407e9e5a61d32dd04c22bf52c6f8c8df",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] You may give your 1 active Leader -5000 power during this turn: Draw 1 card and trash 1 card from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] You may give your 1 active Leader -5000 power during this turn: Draw 1 card and trash 1 card from your hand."
+    ],
+    "failedParts": [
+      "COST: You may give your 1 active Leader -5000 power during this turn"
+    ]
+  }
+}

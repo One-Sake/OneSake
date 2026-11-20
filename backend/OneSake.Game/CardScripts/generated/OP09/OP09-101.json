@@ -1,0 +1,16 @@
+{
+  "cardId": "OP09-101",
+  "status": "manual",
+  "sourceTextHash": "1a7ac25b861cd06f3124ee53d54f1b6c3b1773e269d5a9e375f470ec11ef0e6b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Place 1 of your opponent's Characters with a cost of 3 or less at the top or bottom of your opponent's Life cards face-up: Your opponent trashes 1 card from their hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Place 1 of your opponent's Characters with a cost of 3 or less at the top or bottom of your opponent's Life cards face-up: Your opponent trashes 1 card from their hand."
+    ],
+    "failedParts": [
+      "COST: Place 1 of your opponent's Characters with a cost of 3 or less at the top or bottom of your opponent's Life cards face-up"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP12-060",
+  "status": "manual",
+  "sourceTextHash": "24bc484225f04f3aecc9ea4135bad1efccc4a0b092a6b4726f118264e1a191b4",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] If your Leader is multicolored, choose one: . Return up to 1 of your opponent's Characters with a cost of 4 or less to the owner's hand. . If you have 6 or less cards in your hand, draw 2 cards.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Main] If your Leader is multicolored, choose one: . Return up to 1 of your opponent's Characters with a cost of 4 or less to the owner's hand. . If you have 6 or less cards in your hand, draw 2 cards."
+    ],
+    "failedParts": [
+      "COST: If your Leader is multicolored, choose one"
+    ]
+  }
+}

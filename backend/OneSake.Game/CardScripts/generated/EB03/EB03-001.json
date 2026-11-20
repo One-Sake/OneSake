@@ -1,0 +1,18 @@
+{
+  "cardId": "EB03-001",
+  "status": "manual",
+  "sourceTextHash": "8491b70a896404c7b7619682992f0ee984a99359c56268a4fb10d03a17b959a9",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Once Per Turn] If your Character with a base cost of 4 or more would be K.O.'d, you may trash 1 card from your hand instead. | [Activate: Main] You may rest this Leader: Give up to 1 of your opponent's Characters 2000 power during this turn. Then, up to 1 of your Characters without a [When Attacking] effect gains [Rush] during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Once Per Turn] If your Character with a base cost of 4 or more would be K.O.'d, you may trash 1 card from your hand instead.",
+      "[Activate: Main] You may rest this Leader: Give up to 1 of your opponent's Characters 2000 power during this turn. Then, up to 1 of your Characters without a [When Attacking] effect gains [Rush] during this turn."
+    ],
+    "failedParts": [
+      "IF: If your Character with a base cost of 4 or more would be K.O.'d, you may trash 1 card from your hand instead",
+      "Up to 1 of your Characters without a [When Attacking] effect gains [Rush] during this turn"
+    ]
+  }
+}

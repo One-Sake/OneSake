@@ -1,0 +1,18 @@
+{
+  "cardId": "EB01-059",
+  "status": "manual",
+  "sourceTextHash": "a58a1e07d4a7f6521e56b2b6cb709f18bd03650ae2a09197bfa7ab8cf8eca33b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] K.O. up to 1 of your opponent's Characters. Then, trash cards from the top of your Life cards until you have 1 Life card. | [Trigger] K.O. up to 1 of your opponent's Characters with a cost equal to or less than the total of your and your opponent's Life cards.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Main] K.O. up to 1 of your opponent's Characters. Then, trash cards from the top of your Life cards until you have 1 Life card.",
+      "[Trigger] K.O. up to 1 of your opponent's Characters with a cost equal to or less than the total of your and your opponent's Life cards."
+    ],
+    "failedParts": [
+      "Trash cards from the top of your Life cards until you have 1 Life card",
+      "K.O. up to 1 of your opponent's Characters with a cost equal to or less than the total of your and your opponent's Life cards"
+    ]
+  }
+}

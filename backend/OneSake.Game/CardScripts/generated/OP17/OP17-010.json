@@ -1,0 +1,16 @@
+{
+  "cardId": "OP17-010",
+  "status": "manual",
+  "sourceTextHash": "37ca0042a406699e19ca9e599fa1e39cda251eddfc92862d327c01ae19e33a4e",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] If your opponent has a Character with 10000 power or more and you have no other [Fossa], this Character gains [Blocker] and +2000 power until the end of your opponent's next End Phase.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] If your opponent has a Character with 10000 power or more and you have no other [Fossa], this Character gains [Blocker] and +2000 power until the end of your opponent's next End Phase."
+    ],
+    "failedParts": [
+      "IF: If your opponent has a Character with 10000 power or more and you have no other [Fossa], this Character gains [Blocker] and +2000 power until the end of your opponent's next End Phase"
+    ]
+  }
+}

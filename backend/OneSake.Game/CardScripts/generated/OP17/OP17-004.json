@@ -1,0 +1,16 @@
+{
+  "cardId": "OP17-004",
+  "status": "manual",
+  "sourceTextHash": "ce2ea90376f6d2b5a79e86b5b107139d39d4f36d9712c9907a1b88becaeb5705",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Up to 1 of your {Land of Wano} type Characters or up to 1 of your Characters with a type including {Whitebeard Pirates} gains [Rush] during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Up to 1 of your {Land of Wano} type Characters or up to 1 of your Characters with a type including {Whitebeard Pirates} gains [Rush] during this turn."
+    ],
+    "failedParts": [
+      "Up to 1 of your {Land of Wano} type Characters or up to 1 of your Characters with a type including {Whitebeard Pirates} gains [Rush] during this turn"
+    ]
+  }
+}

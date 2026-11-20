@@ -1,0 +1,75 @@
+{
+  "cardId": "OP12-087",
+  "status": "manual",
+  "sourceTextHash": "ca13323dd6b54024ae77725a3ebd085afb48dab640224e6c4ec0fbd4cbc8cfee",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If your Leader is [Koala] or [Monkey.D.Luffy], this Character gains [Blocker] and +3 cost.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] You may trash 1 card from your hand: If your opponent has 5 or more cards in their hand, your opponent trashes 2 cards from their hand.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [
+          {
+            "kind": "TrashFromHand",
+            "amount": 1,
+            "filter": {
+              "owner": "You",
+              "allowLeader": false,
+              "allowCharacter": true,
+              "allowStage": true,
+              "category": "",
+              "useBaseValues": false,
+              "typeIncludes": "",
+              "name": "",
+              "nameNot": "",
+              "color": "",
+              "attribute": "",
+              "keyword": "",
+              "excludeSource": false,
+              "requiresTrigger": false,
+              "nameOrType": false,
+              "maxCostFrom": ""
+            }
+          }
+        ],
+        "steps": [
+          {
+            "kind": "OpponentTrashesFromHand",
+            "amount": 2,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [
+              {
+                "kind": "OpponentHandAtLeast",
+                "amount": 5,
+                "text": "your opponent has 5 or more cards in their hand"
+              }
+            ],
+            "text": "Your opponent trashes 2 cards from their hand"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "If your Leader is [Koala] or [Monkey.D.Luffy], this Character gains [Blocker] and +3 cost."
+    ],
+    "failedParts": [
+      "IF: If your Leader is [Koala] or [Monkey.D.Luffy], this Character gains [Blocker] and +3 cost"
+    ]
+  }
+}

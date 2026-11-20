@@ -1,0 +1,16 @@
+{
+  "cardId": "OP15-027",
+  "status": "manual",
+  "sourceTextHash": "23202c8baa1ca30a518577f368c7c135e645f30955776ebe324777a9309376d1",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Rest up to 1 of your opponent's Characters with a DON!! card given.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Rest up to 1 of your opponent's Characters with a DON!! card given."
+    ],
+    "failedParts": [
+      "Rest up to 1 of your opponent's Characters with a DON!! card given"
+    ]
+  }
+}

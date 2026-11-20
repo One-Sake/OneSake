@@ -1,0 +1,16 @@
+{
+  "cardId": "OP15-009",
+  "status": "manual",
+  "sourceTextHash": "10d75c673ff18a7564f80a15be74141d0bd0ccc11ff434fd674e462b691287a0",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If your Character with 7000 base power or less would be removed from the field by your opponent's effect, you may give your Leader -2000 power during this turn instead.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If your Character with 7000 base power or less would be removed from the field by your opponent's effect, you may give your Leader -2000 power during this turn instead."
+    ],
+    "failedParts": [
+      "IF: If your Character with 7000 base power or less would be removed from the field by your opponent's effect, you may give your Leader -2000 power during this turn instead"
+    ]
+  }
+}

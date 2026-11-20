@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-092",
+  "status": "manual",
+  "sourceTextHash": "e5b5fca3bd5e4a1fcbced2a1006209b65f272e12875e11b86a0fabf0a63a0a5e",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Choose one: . Trash up to 1 of your opponent's Characters with a cost of 4 or less. . Your opponent places 3 cards from their trash at bottom of their deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Choose one: . Trash up to 1 of your opponent's Characters with a cost of 4 or less. . Your opponent places 3 cards from their trash at bottom of their deck in any order."
+    ],
+    "failedParts": [
+      "COST: Choose one"
+    ]
+  }
+}

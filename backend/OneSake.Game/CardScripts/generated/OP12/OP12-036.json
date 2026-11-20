@@ -1,0 +1,16 @@
+{
+  "cardId": "OP12-036",
+  "status": "manual",
+  "sourceTextHash": "e53a8e85ded14eba2a4f1eb6d8c243ca21c81415938e314910ad1752a1123844",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: This card in your hand cannot be played by effects. If your Leader has the attribute, this Character cannot be K.O.'d in battle by attribute cards and gains +1000 power.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "This card in your hand cannot be played by effects. If your Leader has the attribute, this Character cannot be K.O.'d in battle by attribute cards and gains +1000 power."
+    ],
+    "failedParts": [
+      "This card in your hand cannot be played by effects"
+    ]
+  }
+}

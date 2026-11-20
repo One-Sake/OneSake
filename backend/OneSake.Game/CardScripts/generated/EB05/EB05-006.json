@@ -1,0 +1,16 @@
+{
+  "cardId": "EB05-006",
+  "status": "manual",
+  "sourceTextHash": "4460dd4d33d8fbd43449b3770a9ab5f4f34a0a4de710734f0b45f4d2fa997b66",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] You may add 1 card from the top of your Life cards to your hand: Choose one: . Give up to 1 Character +3000 power during this turn. . Give up to 1 Character -4000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] You may add 1 card from the top of your Life cards to your hand: Choose one: . Give up to 1 Character +3000 power during this turn. . Give up to 1 Character -4000 power during this turn."
+    ],
+    "failedParts": [
+      "Choose one:"
+    ]
+  }
+}

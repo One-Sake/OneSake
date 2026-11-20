@@ -1,0 +1,16 @@
+{
+  "cardId": "ST05-005",
+  "status": "manual",
+  "sourceTextHash": "b89cb42e326fd3e2800c603447050dc45879266707b66c7bb373116f1db567f9",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] You may rest this Character and trash 1 {FILM} type card from your hand: If your opponent has more DON!! cards on their field than you, add 2 DON!! cards from your DON!! deck and rest them.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] You may rest this Character and trash 1 {FILM} type card from your hand: If your opponent has more DON!! cards on their field than you, add 2 DON!! cards from your DON!! deck and rest them."
+    ],
+    "failedParts": [
+      "Add 2 DON!! cards from your DON!! deck and rest them"
+    ]
+  }
+}

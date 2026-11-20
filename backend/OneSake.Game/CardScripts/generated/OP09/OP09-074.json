@@ -1,0 +1,16 @@
+{
+  "cardId": "OP09-074",
+  "status": "manual",
+  "sourceTextHash": "9572081519fd9e34e4e4068bd12971a59c3d629f11f467fc93896c5e213979d8",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] [Once Per Turn] When a DON!! card on your field is returned to your DON!! deck, up to 1 of your Leader or Character cards gains +1000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] [Once Per Turn] When a DON!! card on your field is returned to your DON!! deck, up to 1 of your Leader or Character cards gains +1000 power during this turn."
+    ],
+    "failedParts": [
+      "When a DON!! card on your field is returned to your DON!! deck, up to 1 of your Leader or Character cards gains +1000 power during this turn"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP17-034",
+  "status": "manual",
+  "sourceTextHash": "c5d48354eef6e070efe1536f2ad3e69072e0eb49f02c0d6fd1f76dff149ae1b7",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] If your opponent's Leader has 6000 power or more, set up to 1 of your DON!! cards as active. Then, your {Red-Haired Pirates} type Leader's base power becomes 6000 until the end of your opponent's next End Phase.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] If your opponent's Leader has 6000 power or more, set up to 1 of your DON!! cards as active. Then, your {Red-Haired Pirates} type Leader's base power becomes 6000 until the end of your opponent's next End Phase."
+    ],
+    "failedParts": [
+      "IF: If your opponent's Leader has 6000 power or more, set up to 1 of your DON!! cards as active"
+    ]
+  }
+}

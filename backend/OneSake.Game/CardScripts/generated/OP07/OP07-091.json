@@ -1,0 +1,16 @@
+{
+  "cardId": "OP07-091",
+  "status": "manual",
+  "sourceTextHash": "b17289580f000ad7797a9daf761c236225ae6bf302106100cf1c74bc8788428f",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking] Trash up to 1 of your opponent's Characters with a cost of 2 or less. Then, place any number of Character cards with a cost of 4 or more from your trash at the bottom of your deck in any order. This Character gains +1000 power during this turn for every 3 cards placed at the bottom of your deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[When Attacking] Trash up to 1 of your opponent's Characters with a cost of 2 or less. Then, place any number of Character cards with a cost of 4 or more from your trash at the bottom of your deck in any order. This Character gains +1000 power during this turn for every 3 cards placed at the bottom of your deck."
+    ],
+    "failedParts": [
+      "Place any number of Character cards with a cost of 4 or more from your trash at the bottom of your deck in any order"
+    ]
+  }
+}

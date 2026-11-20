@@ -1,0 +1,16 @@
+{
+  "cardId": "EB01-014",
+  "status": "manual",
+  "sourceTextHash": "72115ad8f455fcbd9414b586d6d8aa188d8e39e16c13cd2aa3f96fba1f82f5dc",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] [Your Turn] This Character gains +1000 power for every 3 of your rested DON!! cards.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] [Your Turn] This Character gains +1000 power for every 3 of your rested DON!! cards."
+    ],
+    "failedParts": [
+      "This Character gains +1000 power for every 3 of your rested DON!! cards"
+    ]
+  }
+}

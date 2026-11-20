@@ -1,0 +1,16 @@
+{
+  "cardId": "OP14-003",
+  "status": "manual",
+  "sourceTextHash": "8a5354beb3bb036c2cd304946d501c73129ae249daf8b975deea4511e887de19",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: This Character cannot be K.O.'d by effects of your opponent's Characters with 5000 base power or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "This Character cannot be K.O.'d by effects of your opponent's Characters with 5000 base power or less."
+    ],
+    "failedParts": [
+      "This Character cannot be K.O.'d by effects of your opponent's Characters with 5000 base power or less"
+    ]
+  }
+}

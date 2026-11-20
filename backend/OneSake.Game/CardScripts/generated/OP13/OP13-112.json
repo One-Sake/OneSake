@@ -1,0 +1,16 @@
+{
+  "cardId": "OP13-112",
+  "status": "manual",
+  "sourceTextHash": "5c32f64ce10dc46305958114135024163194b5e4daa7f12a6dd6a8317fc4ffd2",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If you have a total of 2 or more given DON!! cards, this Character gains [Blocker].",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If you have a total of 2 or more given DON!! cards, this Character gains [Blocker]."
+    ],
+    "failedParts": [
+      "IF: If you have a total of 2 or more given DON!! cards, this Character gains [Blocker]"
+    ]
+  }
+}

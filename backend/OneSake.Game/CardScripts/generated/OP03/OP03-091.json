@@ -1,0 +1,16 @@
+{
+  "cardId": "OP03-091",
+  "status": "manual",
+  "sourceTextHash": "6dc46fafe289a5b6d87b1c26ae0e66693b57ce1a476037807c8018222707f246",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Set the cost of up to 1 of your opponent's Characters with no base effect to 0 during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Set the cost of up to 1 of your opponent's Characters with no base effect to 0 during this turn."
+    ],
+    "failedParts": [
+      "Set the cost of up to 1 of your opponent's Characters with no base effect to 0 during this turn"
+    ]
+  }
+}

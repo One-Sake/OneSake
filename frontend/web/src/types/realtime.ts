@@ -31,6 +31,29 @@ export interface PlayerStateDto {
   handCards: CardInstanceDto[];
   boardCards: CardInstanceDto[];
   trashCards: CardInstanceDto[];
+  // Manual mode: deck cards only this player sees right now (null for the opponent).
+  manualView?: ManualViewDto | null;
+}
+
+export interface ManualViewDto {
+  // 'LOOK' = top N cards of the deck, 'SEARCH' = the whole deck.
+  kind: 'LOOK' | 'SEARCH';
+  cards: CardInstanceDto[];
+}
+
+// Manual mode: resolve a card effect by hand. The server checks every action.
+export interface ManualActionDto {
+  kind: string;
+  cardInstanceId?: string;
+  // hand, character, stage, leader, trash, deck, life (DON!!: active, rested)
+  fromZone?: string;
+  toZone?: string;
+  // 'top', 'bottom' or an index
+  toPosition?: string;
+  amount?: number;
+  targetPlayerId?: string;
+  // MODIFY_POWER / MODIFY_COST: 'turn' or 'battle'
+  duration?: 'turn' | 'battle';
 }
 
 export interface CardInstanceDto {
@@ -48,6 +71,8 @@ export interface CardInstanceDto {
   isRested?: boolean;
   attachedDon?: number;
   canAttack?: boolean;
+  // [Rush: Character] in the turn it was played: only Characters are valid attack targets.
+  canAttackOnlyCharacters?: boolean;
   keywords?: string[];
   // [Activate: Main] ability that can be used right now.
   canActivate?: boolean;
@@ -55,6 +80,8 @@ export interface CardInstanceDto {
   isCounterEvent?: boolean;
   // 'auto' = all effects automated, 'partial', 'manual' = resolve by hand, '' = no effect text.
   effectStatus?: '' | 'auto' | 'partial' | 'manual';
+  // Card script file: 'verified' (tested), 'generated' (not checked by hand), 'manual' or ''.
+  scriptStatus?: '' | 'verified' | 'generated' | 'manual';
   // Effect texts the server does not automate.
   manualEffects?: string[];
 }
@@ -113,6 +140,8 @@ export interface GameStateDto {
   turnOrderRoll?: TurnOrderRollDto | null;
   // Quick Match rooms are ranked (they change the bounty), private tables are casual.
   isRanked?: boolean;
+  // Number of recorded decisions in this match (sent with a bug report).
+  recordedInputs?: number;
 }
 
 export interface DiceRollDto {
@@ -143,6 +172,16 @@ export interface ChoicePromptDto {
   cards?: CardInstanceDto[];
   sourceName?: string;
   effectText?: string;
+  // ORDER_TRIGGERS: the effects to put in order.
+  triggers?: TriggerOptionDto[];
+}
+
+export interface TriggerOptionDto {
+  id: string;
+  cardInstanceId: string;
+  cardName: string;
+  timing: string;
+  text: string;
 }
 
 export interface ChoiceSubmissionDto {
@@ -151,6 +190,8 @@ export interface ChoiceSubmissionDto {
   selectedOption: string;
   selectedCardInstanceId?: string;
   targetCardInstanceId?: string;
+  // ORDER_TRIGGERS: all effect ids, first = resolved first.
+  orderedIds?: string[];
 }
 
 export interface ChatMessageDto {

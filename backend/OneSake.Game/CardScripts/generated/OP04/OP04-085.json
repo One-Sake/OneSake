@@ -1,0 +1,16 @@
+{
+  "cardId": "OP04-085",
+  "status": "manual",
+  "sourceTextHash": "9cc83e9a55a7fa0d1c01f06f72d07ab068fcb9c93f8dd8c1e038204541bd8639",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] [When Attacking] If your Leader has the {Dressrosa} type, give up to 1 of your opponent's Characters -2 cost during this turn. Then, trash 1 card from the top of your deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] [When Attacking] If your Leader has the {Dressrosa} type, give up to 1 of your opponent's Characters -2 cost during this turn. Then, trash 1 card from the top of your deck."
+    ],
+    "failedParts": [
+      "[On Play] [When Attacking] If your Leader has the {Dressrosa} type, give up to 1 of your opponent's Characters -2 cost during this turn. Then, trash 1 card from the top of your deck."
+    ]
+  }
+}

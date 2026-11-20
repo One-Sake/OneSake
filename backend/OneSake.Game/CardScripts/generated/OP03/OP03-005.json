@@ -1,0 +1,16 @@
+{
+  "cardId": "OP03-005",
+  "status": "manual",
+  "sourceTextHash": "829b0fa926dfc4776b8a08e6a0dbeab81372c5da5d5e53357be75e3f665f00d5",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] This Character gains +2000 power during this turn. Then, trash this Character at the end of this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] This Character gains +2000 power during this turn. Then, trash this Character at the end of this turn."
+    ],
+    "failedParts": [
+      "Trash this Character at the end of this turn"
+    ]
+  }
+}

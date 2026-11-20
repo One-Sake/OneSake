@@ -1,0 +1,16 @@
+{
+  "cardId": "OP10-027",
+  "status": "manual",
+  "sourceTextHash": "87ed99d19f689851ebd1774a825a1368f838eefce177bf2a3cd1d724944a5b63",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may place this Character and 1 [Kin'emon] with 1000 power from your trash at the bottom of your deck in any order: Play up to 1 [Kin'emon] with a cost of 6 from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may place this Character and 1 [Kin'emon] with 1000 power from your trash at the bottom of your deck in any order: Play up to 1 [Kin'emon] with a cost of 6 from your hand."
+    ],
+    "failedParts": [
+      "COST: You may place this Character and 1 [Kin'emon] with 1000 power from your trash at the bottom of your deck in any order"
+    ]
+  }
+}

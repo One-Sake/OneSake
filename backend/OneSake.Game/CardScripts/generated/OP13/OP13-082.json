@@ -1,0 +1,16 @@
+{
+  "cardId": "OP13-082",
+  "status": "manual",
+  "sourceTextHash": "8825be9ac53a6ab76a8ff70922c058327dae6a3ab6ef5480edf38124a251889d",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] If your Leader is [Imu], you may rest 1 of your DON!! cards and trash 1 card from your hand: Trash all of your Characters and play up to 5 {Five Elders} type Character cards with 5000 power and different card names from your trash.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] If your Leader is [Imu], you may rest 1 of your DON!! cards and trash 1 card from your hand: Trash all of your Characters and play up to 5 {Five Elders} type Character cards with 5000 power and different card names from your trash."
+    ],
+    "failedParts": [
+      "COST: If your Leader is [Imu], you may rest 1 of your DON!! cards and trash 1 card from your hand"
+    ]
+  }
+}

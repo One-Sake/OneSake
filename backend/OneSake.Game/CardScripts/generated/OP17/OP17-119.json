@@ -1,0 +1,18 @@
+{
+  "cardId": "OP17-119",
+  "status": "manual",
+  "sourceTextHash": "8428219b509acc1c815d27911407dd198d9682b50c6fd0ecaaa5afce93d028a0",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: This Character gains +12 cost, and if it is your opponent's turn, this Character gains +3000 power. | [On Play] K.O. your opponent's Characters with a total cost of 4 or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "This Character gains +12 cost, and if it is your opponent's turn, this Character gains +3000 power.",
+      "[On Play] K.O. your opponent's Characters with a total cost of 4 or less."
+    ],
+    "failedParts": [
+      "This Character gains +12 cost, and if it is your opponent's turn, this Character gains +3000 power",
+      "K.O. your opponent's Characters with a total cost of 4 or less"
+    ]
+  }
+}

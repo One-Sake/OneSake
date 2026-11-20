@@ -1,0 +1,77 @@
+{
+  "cardId": "ST05-010",
+  "status": "manual",
+  "sourceTextHash": "b68af03c8a096bac8a0138f41ff46596d6a2cc8f0cbeaaf2030f900e719c046b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: When this Character battles \"Strike\" attribute Characters, this Character gains +3000 power during this turn.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "ActivateMain",
+        "text": "[Activate: Main] [Once Per Turn] DON!! -1: This Character gains +2000 power during this turn.",
+        "requiredDon": 0,
+        "oncePerTurn": true,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [
+          {
+            "kind": "ReturnDon",
+            "amount": 1
+          }
+        ],
+        "steps": [
+          {
+            "kind": "PowerModifier",
+            "amount": 2000,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "This Character gains +2000 power during this turn"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "When this Character battles \"Strike\" attribute Characters, this Character gains +3000 power during this turn."
+    ],
+    "failedParts": [
+      "When this Character battles \"Strike\" attribute Characters, this Character gains +3000 power during this turn"
+    ]
+  }
+}

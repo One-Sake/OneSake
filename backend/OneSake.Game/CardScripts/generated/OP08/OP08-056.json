@@ -1,0 +1,46 @@
+{
+  "cardId": "OP08-056",
+  "status": "manual",
+  "sourceTextHash": "81eb57cf86b419c7b3ec3c79387f96284026c65fa90f5eba882998dcaf2315c0",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] [Once Per Turn] When your Character with a type including {Whitebeard Piratess} is removed from the field by an effect, draw 1 card. Then, place 1 card from your hand at the top or bottom of your deck.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Play this card.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "PlayThisCard",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Play this card"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Your Turn] [Once Per Turn] When your Character with a type including {Whitebeard Piratess} is removed from the field by an effect, draw 1 card. Then, place 1 card from your hand at the top or bottom of your deck."
+    ],
+    "failedParts": [
+      "When your Character with a type including {Whitebeard Piratess} is removed from the field by an effect, draw 1 card"
+    ]
+  }
+}

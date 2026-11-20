@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-015",
+  "status": "manual",
+  "sourceTextHash": "2151499cf801d52feb0f883aa18a63af3d468f08c6e43c0650e61d6c35fe573d",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] You may trash 1 of your Characters with 6000 power or more: Play up to 1 {FILM} type Character card with 2000 to 5000 power from your trash rested.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] You may trash 1 of your Characters with 6000 power or more: Play up to 1 {FILM} type Character card with 2000 to 5000 power from your trash rested."
+    ],
+    "failedParts": [
+      "Play up to 1 {FILM} type Character card with 2000 to 5000 power from your trash rested"
+    ]
+  }
+}

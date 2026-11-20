@@ -1,0 +1,16 @@
+{
+  "cardId": "P-107",
+  "status": "manual",
+  "sourceTextHash": "0367b74858be45e00f84b4d47d7af8e2a63161d1e046ed711f4cfcbbe4e9d8bf",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If either you or your opponent has 10 DON!! cards on the field, your Leader gains +2000 power until the end of your opponent's next End Phase.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If either you or your opponent has 10 DON!! cards on the field, your Leader gains +2000 power until the end of your opponent's next End Phase."
+    ],
+    "failedParts": [
+      "IF: If either you or your opponent has 10 DON!! cards on the field, your Leader gains +2000 power until the end of your opponent's next End Phase"
+    ]
+  }
+}

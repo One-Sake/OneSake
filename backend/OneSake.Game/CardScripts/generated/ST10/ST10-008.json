@@ -1,0 +1,47 @@
+{
+  "cardId": "ST10-008",
+  "status": "generated",
+  "sourceTextHash": "4e7ea3385b0ffd9224c8d4619e79a9b52b5d49edf009e38df51f61ac9a6b6ac6",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] If you have 3 or less DON!! cards on your field, add up to 2 DON!! cards from your DON!! deck and rest them.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "AddDonFromDeck",
+            "amount": 2,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": true,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [
+              {
+                "kind": "DonOnFieldAtMost",
+                "amount": 3,
+                "text": "you have 3 or less DON!! cards on your field"
+              }
+            ],
+            "text": "Add up to 2 DON!! cards from your DON!! deck and rest them"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

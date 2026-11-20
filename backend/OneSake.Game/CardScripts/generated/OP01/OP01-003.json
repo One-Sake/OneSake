@@ -1,0 +1,16 @@
+{
+  "cardId": "OP01-003",
+  "status": "manual",
+  "sourceTextHash": "9c056bd9f8a27a014a5c5b458da788317a282d4c8f107cc255441d90fe348613",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] RESTDON4: Set up to 1 of your \"Supernova\" or {Straw Hat Crew} type Character cards with a cost of 5 or less as active. It gains +1000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] RESTDON4: Set up to 1 of your \"Supernova\" or {Straw Hat Crew} type Character cards with a cost of 5 or less as active. It gains +1000 power during this turn."
+    ],
+    "failedParts": [
+      "Set up to 1 of your \"Supernova\" or {Straw Hat Crew} type Character cards with a cost of 5 or less as active"
+    ]
+  }
+}

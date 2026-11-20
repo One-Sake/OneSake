@@ -1,0 +1,16 @@
+{
+  "cardId": "OP08-100",
+  "status": "manual",
+  "sourceTextHash": "0fcc1103285f1c7cc5d15921e17d16a27f762284a06acb5ab74fd1b1c4f45cb2",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Look at 7 cards from the top of your deck and play up to 1 [Upper Yard]. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Look at 7 cards from the top of your deck and play up to 1 [Upper Yard]. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "Look at 7 cards from the top of your deck and play up to 1 [Upper Yard]"
+    ]
+  }
+}

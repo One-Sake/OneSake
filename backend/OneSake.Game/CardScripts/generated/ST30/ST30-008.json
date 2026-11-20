@@ -1,0 +1,72 @@
+{
+  "cardId": "ST30-008",
+  "status": "manual",
+  "sourceTextHash": "e189a66bb80e9a9aa0ce1f48b9d63062cef2bf9270e517119e98f89623990259",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Blocker] [On K.O.] You may trash 1 Character card with 6000 power from your hand: Play this Character card from your trash rested.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Static",
+        "text": "[Blocker]",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "GainFlag",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "Permanent",
+            "flag": "Blocker",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "[Blocker]"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Blocker] [On K.O.] You may trash 1 Character card with 6000 power from your hand: Play this Character card from your trash rested."
+    ],
+    "failedParts": [
+      "Play this Character card from your trash rested"
+    ]
+  }
+}

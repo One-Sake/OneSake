@@ -1,0 +1,16 @@
+{
+  "cardId": "ST08-001",
+  "status": "manual",
+  "sourceTextHash": "e5f54abd3c4e90e334eabda7021d1dbb3772608b860c5a19221e66829e3a793a",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] When a Character is K.O.'d, give up to 1 rested DON!! card to this Leader.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] When a Character is K.O.'d, give up to 1 rested DON!! card to this Leader."
+    ],
+    "failedParts": [
+      "When a Character is K.O.'d, give up to 1 rested DON!! card to this Leader"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "EB05-013",
+  "status": "manual",
+  "sourceTextHash": "2ee3a34d1b12dbd736f0c888c28b7640db813421ff61089d56e5f21d94c52625",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Your Opponent's Attack] [Once Per Turn] You may rest 1 of your DON!! cards: Your {Fish-Man} or {Merfolk} type Leader gains +2000 power during this battle.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Your Opponent's Attack] [Once Per Turn] You may rest 1 of your DON!! cards: Your {Fish-Man} or {Merfolk} type Leader gains +2000 power during this battle."
+    ],
+    "failedParts": [
+      "Your {Fish-Man} or {Merfolk} type Leader gains +2000 power during this battle"
+    ]
+  }
+}

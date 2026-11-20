@@ -1,0 +1,72 @@
+{
+  "cardId": "OP17-012",
+  "status": "manual",
+  "sourceTextHash": "96cd60e85cbb44bb687dd89d6df498d81bb981db8bbc28b73ab0aca8f9287f06",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Blocker] [On K.O.] Play up to 1 card with a cost of 1 and a type including {Whitebeard Pirates} from your hand.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Static",
+        "text": "[Blocker]",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "GainFlag",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "Permanent",
+            "flag": "Blocker",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "[Blocker]"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Blocker] [On K.O.] Play up to 1 card with a cost of 1 and a type including {Whitebeard Pirates} from your hand."
+    ],
+    "failedParts": [
+      "Play up to 1 card with a cost of 1 and a type including {Whitebeard Pirates} from your hand"
+    ]
+  }
+}

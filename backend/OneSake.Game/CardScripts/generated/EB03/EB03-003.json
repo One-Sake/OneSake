@@ -1,0 +1,16 @@
+{
+  "cardId": "EB03-003",
+  "status": "manual",
+  "sourceTextHash": "6a2816701b9ade841ea3625d6572228b5ccc4beb41f97bc5336fc412e41b8e8a",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your Leader is [Uta], draw 2 cards. Then, play up to 1 Character card with 6000 power or less and no base effect from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your Leader is [Uta], draw 2 cards. Then, play up to 1 Character card with 6000 power or less and no base effect from your hand."
+    ],
+    "failedParts": [
+      "Play up to 1 Character card with 6000 power or less and no base effect from your hand"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP08-075",
+  "status": "manual",
+  "sourceTextHash": "c22ff32d5014afe12282abeb6757cbd0b1a76ebb885c2e758c17edd07a9f37f3",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] DON!! 1: Rest up to 1 of your opponent's Characters with a cost of 2 or less. Then, turn all of your Life cards face-down.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Main] DON!! 1: Rest up to 1 of your opponent's Characters with a cost of 2 or less. Then, turn all of your Life cards face-down."
+    ],
+    "failedParts": [
+      "Turn all of your Life cards face-down"
+    ]
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "cardId": "OP13-089",
+  "status": "manual",
+  "sourceTextHash": "2bffacc59150431e7326c1a511f20227dd00752144272f75a1874aecffc2fa76",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If you have 7 or more cards in your trash, this Character cannot be removed from the field by your opponent's effects and gains [Blocker].",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnKO",
+        "text": "[On K.O.] Draw 1 card.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Draw 1 card"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "If you have 7 or more cards in your trash, this Character cannot be removed from the field by your opponent's effects and gains [Blocker]."
+    ],
+    "failedParts": [
+      "This Character cannot be removed from the field by your opponent's effects and gains [Blocker]"
+    ]
+  }
+}

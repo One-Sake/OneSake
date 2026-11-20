@@ -1,0 +1,52 @@
+{
+  "cardId": "OP06-069",
+  "status": "generated",
+  "sourceTextHash": "da54dd35a82c89045c6d12aa73d1ae068d9c4022a84ac1838598651c28ccbd27",
+  "parserVersion": "cardscriptgen-1",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] If the number of DON!! cards on your field is equal to or less than the number on your opponent's field and you have 5 or less cards in your hand, draw 2 cards.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 2,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [
+              {
+                "kind": "DonNotMoreThanOpponent",
+                "amount": 0,
+                "text": "the number of DON!! cards on your field is equal to or less than the number on your opponent's field"
+              },
+              {
+                "kind": "HandAtMost",
+                "amount": 5,
+                "text": "you have 5 or less cards in your hand"
+              }
+            ],
+            "text": "Draw 2 cards"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [],
+    "failedParts": []
+  }
+}

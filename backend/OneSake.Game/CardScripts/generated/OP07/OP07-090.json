@@ -1,0 +1,16 @@
+{
+  "cardId": "OP07-090",
+  "status": "manual",
+  "sourceTextHash": "d6032a6d90f859dafdf709ffa0dfe2c6c331d2e925124af7081a3e0ef8eb3dda",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Your opponent trashes 1 card from their hand and reveals their hand. Then, your opponent draws 1 card.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Your opponent trashes 1 card from their hand and reveals their hand. Then, your opponent draws 1 card."
+    ],
+    "failedParts": [
+      "Your opponent trashes 1 card from their hand and reveals their hand"
+    ]
+  }
+}

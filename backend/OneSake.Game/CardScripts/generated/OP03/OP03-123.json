@@ -1,0 +1,16 @@
+{
+  "cardId": "OP03-123",
+  "status": "manual",
+  "sourceTextHash": "07275b3bf8092b5224d8f279a01cd76c5d31249b341ee7c0c9f08c7d84fe7656",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Add up to 1 Character with a cost of 8 or less to the top or bottom of the owner's Life cards face-up.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Add up to 1 Character with a cost of 8 or less to the top or bottom of the owner's Life cards face-up."
+    ],
+    "failedParts": [
+      "Add up to 1 Character with a cost of 8 or less to the top or bottom of the owner's Life cards face-up"
+    ]
+  }
+}

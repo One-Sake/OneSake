@@ -1,0 +1,46 @@
+{
+  "cardId": "OP15-012",
+  "status": "manual",
+  "sourceTextHash": "64587d2d417c55d2eabd1f73c2987f67299d254c99f5cb0bc8f6cbf1c2c2326b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking] Give up to 1 rested DON!! card to its owner's Leader or 1 of their Characters.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnKO",
+        "text": "[On K.O.] Draw 1 card.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Draw 1 card"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[When Attacking] Give up to 1 rested DON!! card to its owner's Leader or 1 of their Characters."
+    ],
+    "failedParts": [
+      "Give up to 1 rested DON!! card to its owner's Leader or 1 of their Characters"
+    ]
+  }
+}

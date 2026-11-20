@@ -1,0 +1,16 @@
+{
+  "cardId": "EB02-010",
+  "status": "manual",
+  "sourceTextHash": "7d983dae9b5118873feb278624db75534e030c09dcd716a30c5ead3313669d42",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] DON!! 2: If the only Characters on your field are {Straw Hat Crew} type Characters, set up to 2 of your DON!! cards as active. Then, this Leader gains +1000 power until the end of your opponent's next turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] DON!! 2: If the only Characters on your field are {Straw Hat Crew} type Characters, set up to 2 of your DON!! cards as active. Then, this Leader gains +1000 power until the end of your opponent's next turn."
+    ],
+    "failedParts": [
+      "IF: If the only Characters on your field are {Straw Hat Crew} type Characters, set up to 2 of your DON!! cards as active"
+    ]
+  }
+}

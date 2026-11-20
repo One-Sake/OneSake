@@ -1,0 +1,46 @@
+{
+  "cardId": "OP07-077",
+  "status": "manual",
+  "sourceTextHash": "931b1a4a7337f9baba7394614260ce61c2f66f7eac9df54baf78be9fc31c8ef0",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] If your Leader has the [Animal Kingdom Pirates] or {Big Mom Pirates} type, look at 5 cards from the top of your deck; reveal up to 1 [Animal Kingdom Pirates] or {Big Mom Pirates} type card and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Activate this card's [Main] effect.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "ActivateOwnAbility",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "Main",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Activate this card's [Main] effect"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Main] If your Leader has the [Animal Kingdom Pirates] or {Big Mom Pirates} type, look at 5 cards from the top of your deck; reveal up to 1 [Animal Kingdom Pirates] or {Big Mom Pirates} type card and add it to your hand. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "IF: If your Leader has the [Animal Kingdom Pirates] or {Big Mom Pirates} type, look at 5 cards from the top of your deck; reveal up to 1 [Animal Kingdom Pirates] or {Big Mom Pirates} type card and add it to your hand"
+    ]
+  }
+}

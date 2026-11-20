@@ -1,0 +1,16 @@
+{
+  "cardId": "OP11-036",
+  "status": "manual",
+  "sourceTextHash": "473913d08f4186fd666128230333c61c5582114238b93fd09709e0d6ce01d71f",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your Leader is \"Shirahoshi\", look at 5 cards from the top of your deck; reveal up to 1 {Neptunian} type card or \"Shirahoshi\" and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your Leader is \"Shirahoshi\", look at 5 cards from the top of your deck; reveal up to 1 {Neptunian} type card or \"Shirahoshi\" and add it to your hand. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "IF: If your Leader is \"Shirahoshi\", look at 5 cards from the top of your deck; reveal up to 1 {Neptunian} type card or \"Shirahoshi\" and add it to your hand"
+    ]
+  }
+}

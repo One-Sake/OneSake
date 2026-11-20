@@ -1,0 +1,16 @@
+{
+  "cardId": "OP09-014",
+  "status": "manual",
+  "sourceTextHash": "e0e311b810d61d925399f0332cdd9003b48671d9265d51d4573e9bdb01bb470c",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Your opponent cannot activate up to 1 [Blocker] Character that has 4000 power or less during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Your opponent cannot activate up to 1 [Blocker] Character that has 4000 power or less during this turn."
+    ],
+    "failedParts": [
+      "Your opponent cannot activate up to 1 [Blocker] Character that has 4000 power or less during this turn"
+    ]
+  }
+}

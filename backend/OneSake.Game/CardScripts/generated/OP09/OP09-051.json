@@ -1,0 +1,16 @@
+{
+  "cardId": "OP09-051",
+  "status": "manual",
+  "sourceTextHash": "8c7c2303543c96ee657d566398408dedf224785aa2ba7ba37f94ab5ebc58dc3c",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Place up to 1 of your opponent's Characters at the bottom of the owner's deck. Then, if you do not have 5 Characters with a cost of 5 or more, place this Character at the bottom of the owner's deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Place up to 1 of your opponent's Characters at the bottom of the owner's deck. Then, if you do not have 5 Characters with a cost of 5 or more, place this Character at the bottom of the owner's deck."
+    ],
+    "failedParts": [
+      "IF: If you do not have 5 Characters with a cost of 5 or more, place this Character at the bottom of the owner's deck"
+    ]
+  }
+}

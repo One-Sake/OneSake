@@ -1,0 +1,16 @@
+{
+  "cardId": "ST11-001",
+  "status": "manual",
+  "sourceTextHash": "1f0f55a519987b36eb4ca1a70f24f85f2283328ec80f2d525d07602874fbac2e",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] [When Attacking] [Once Per Turn] Reveal 1 card from the top of your deck and add up to 1 {FILM} type card to your hand. Then, place the rest at the bottom of your deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] [When Attacking] [Once Per Turn] Reveal 1 card from the top of your deck and add up to 1 {FILM} type card to your hand. Then, place the rest at the bottom of your deck."
+    ],
+    "failedParts": [
+      "Reveal 1 card from the top of your deck and add up to 1 {FILM} type card to your hand"
+    ]
+  }
+}

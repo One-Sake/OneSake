@@ -1,0 +1,16 @@
+{
+  "cardId": "OP12-071",
+  "status": "manual",
+  "sourceTextHash": "44cf549df7219e3a1a8078ab3cc4d0f4148bf603190fc179b7626faa38d37fa2",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Look at 4 cards from the top of your deck; reveal up to 1 [Sanji] or Event card and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Look at 4 cards from the top of your deck; reveal up to 1 [Sanji] or Event card and add it to your hand. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "Look at 4 cards from the top of your deck; reveal up to 1 [Sanji] or Event card and add it to your hand"
+    ]
+  }
+}

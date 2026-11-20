@@ -1,0 +1,16 @@
+{
+  "cardId": "EB02-025",
+  "status": "manual",
+  "sourceTextHash": "b1e6b10d6a044acd11ff2ca04889d9dec0687b08109788f0fb094863aebf1e80",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may rest 1 of your DON!! cards and this Character: If your Leader is [Donquixote Rosinante], look at 5 cards from the top of your deck; play up to 1 Character card with a cost of 2 or less rested. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may rest 1 of your DON!! cards and this Character: If your Leader is [Donquixote Rosinante], look at 5 cards from the top of your deck; play up to 1 Character card with a cost of 2 or less rested. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "Look at 5 cards from the top of your deck; play up to 1 Character card with a cost of 2 or less rested"
+    ]
+  }
+}

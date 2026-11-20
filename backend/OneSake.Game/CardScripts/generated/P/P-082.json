@@ -1,0 +1,16 @@
+{
+  "cardId": "P-082",
+  "status": "manual",
+  "sourceTextHash": "991111db5f2cc9f26e193e7129f824ae99034899ad0df8cc90d627851c3517b6",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] [On Play] If your Leader has the {Cross Guild} type or a type including {Baroque Works}, place up to 1 of your opponent's Characters with 2000 power or less at the bottom of the owner's deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] [On Play] If your Leader has the {Cross Guild} type or a type including {Baroque Works}, place up to 1 of your opponent's Characters with 2000 power or less at the bottom of the owner's deck."
+    ],
+    "failedParts": [
+      "IF: If your Leader has the {Cross Guild} type or a type including {Baroque Works}, place up to 1 of your opponent's Characters with 2000 power or less at the bottom of the owner's deck"
+    ]
+  }
+}

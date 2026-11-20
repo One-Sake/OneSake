@@ -1,0 +1,16 @@
+{
+  "cardId": "OP14-067",
+  "status": "manual",
+  "sourceTextHash": "2fd16a3113dbcad213b2c29d0fc148622dcbc2a042e7429225aca0db38c6afb1",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On K.O.] Add up to 1 DON!! card from your DON!! deck and rest it, look at 5 cards from the top of your deck; reveal up to 1 {Donquixote Pirates} type card and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On K.O.] Add up to 1 DON!! card from your DON!! deck and rest it, look at 5 cards from the top of your deck; reveal up to 1 {Donquixote Pirates} type card and add it to your hand. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "Add up to 1 DON!! card from your DON!! deck and rest it, look at 5 cards from the top of your deck; reveal up to 1 {Donquixote Pirates} type card and add it to your hand"
+    ]
+  }
+}

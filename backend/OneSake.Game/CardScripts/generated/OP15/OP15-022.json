@@ -1,0 +1,18 @@
+{
+  "cardId": "OP15-022",
+  "status": "manual",
+  "sourceTextHash": "701d6f7e21bf00193e18f6854548461e745c3f8d4f4a2cc3409e7194258b924f",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: Under the rules of this game, you do not lose when your deck has 0 cards. You lose at the end of the turn in which your deck becomes 0 cards. | [Activate: Main] [Once Per Turn] Trash 4 cards from the top of your deck. Then, if your deck has 0 cards, set up to 1 of your Characters as active.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "Under the rules of this game, you do not lose when your deck has 0 cards. You lose at the end of the turn in which your deck becomes 0 cards.",
+      "[Activate: Main] [Once Per Turn] Trash 4 cards from the top of your deck. Then, if your deck has 0 cards, set up to 1 of your Characters as active."
+    ],
+    "failedParts": [
+      "Under the rules of this game, you do not lose when your deck has 0 cards",
+      "IF: If your deck has 0 cards, set up to 1 of your Characters as active"
+    ]
+  }
+}

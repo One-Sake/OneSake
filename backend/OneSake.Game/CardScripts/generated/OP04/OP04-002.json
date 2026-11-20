@@ -1,0 +1,16 @@
+{
+  "cardId": "OP04-002",
+  "status": "manual",
+  "sourceTextHash": "924380224fd2e2f95de76aae59147e9a4eb84169ed563804a68dc9dd81cb74f5",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may rest this Character and give your 1 active Leader -5000 power during this turn: Look at 5 cards from the top of your deck; reveal up to 1 {Alabasta} type card and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may rest this Character and give your 1 active Leader -5000 power during this turn: Look at 5 cards from the top of your deck; reveal up to 1 {Alabasta} type card and add it to your hand. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "COST: You may rest this Character and give your 1 active Leader -5000 power during this turn"
+    ]
+  }
+}

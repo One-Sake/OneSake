@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-102",
+  "status": "manual",
+  "sourceTextHash": "623f59b943f41be88906be4632e4807e7aba9d22c077593934ef4fb04f01f8c1",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] You may place 1 Stage with a cost of 1 at the bottom of the owner's deck: K.O. up to 1 of your opponent's Characters with a cost of 2 or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] You may place 1 Stage with a cost of 1 at the bottom of the owner's deck: K.O. up to 1 of your opponent's Characters with a cost of 2 or less."
+    ],
+    "failedParts": [
+      "COST: You may place 1 Stage with a cost of 1 at the bottom of the owner's deck"
+    ]
+  }
+}

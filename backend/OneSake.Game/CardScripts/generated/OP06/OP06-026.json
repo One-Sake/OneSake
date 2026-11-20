@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-026",
+  "status": "manual",
+  "sourceTextHash": "02743bb484df99f550268d5e5f5d71e2a96051219a6e19ddfd4798463214acfb",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Set up to 1 of your \"Slash\" attribute Characters with a cost of 4 or less as active. Then, you cannot attack a Leader during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Set up to 1 of your \"Slash\" attribute Characters with a cost of 4 or less as active. Then, you cannot attack a Leader during this turn."
+    ],
+    "failedParts": [
+      "Set up to 1 of your \"Slash\" attribute Characters with a cost of 4 or less as active"
+    ]
+  }
+}

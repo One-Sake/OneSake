@@ -19,24 +19,36 @@ public sealed class MatchResultService
     // One save at a time, so two matches of the same player cannot overwrite each other's rating.
     private readonly SemaphoreSlim _saveLock = new(1, 1);
     private readonly IMemoryCache? _cache;
+    private readonly MatchRecordingService? _recordings;
 
     public MatchResultService(
         IServiceScopeFactory scopeFactory,
         ILogger<MatchResultService> logger,
-        IMemoryCache? cache = null)
+        IMemoryCache? cache = null,
+        MatchRecordingService? recordings = null)
     {
         _scopeFactory = scopeFactory;
         _logger = logger;
         _cache = cache;
+        _recordings = recordings;
     }
 
     // Runs in the background, so a slow or missing database does not delay the game.
-    public void SaveInBackground(MatchResultData result)
+    // The recording of the match is stored afterwards and points to the saved result.
+    public void SaveInBackground(MatchResultData result, OneSake.Game.Replay.MatchRecording? recording = null)
     {
-        _ = Task.Run(() => SaveAsync(result));
+        _ = Task.Run(async () =>
+        {
+            var resultId = await SaveAsync(result);
+            if (recording is not null && _recordings is not null)
+            {
+                await _recordings.SaveAsync(recording, resultId);
+            }
+        });
     }
 
-    public async Task SaveAsync(MatchResultData result)
+    // Returns the ID of the saved result, or null when saving failed.
+    public async Task<Guid?> SaveAsync(MatchResultData result)
     {
         await _saveLock.WaitAsync();
         try
@@ -65,6 +77,7 @@ public sealed class MatchResultService
                 result.Loser.DisplayName,
                 result.EndReason,
                 ratingChanged);
+            return entity.Id;
         }
         catch (Exception exception)
         {
@@ -72,6 +85,7 @@ public sealed class MatchResultService
                 exception,
                 "Could not save match result for room {RoomCode}. The game continues without statistics.",
                 result.RoomCode);
+            return null;
         }
         finally
         {

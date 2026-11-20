@@ -1,0 +1,16 @@
+{
+  "cardId": "OP11-102",
+  "status": "manual",
+  "sourceTextHash": "3c8144c455236e76c41a17b63cf95d946ef81bb618cb92b93d9322b9f20289b6",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] [Once Per Turn] This effect can be activated when your opponent activates an Event or [Trigger]. If your opponent has 2 or more Life cards, trash 1 card from the top of each of your and your opponent's Life cards.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] [Once Per Turn] This effect can be activated when your opponent activates an Event or [Trigger]. If your opponent has 2 or more Life cards, trash 1 card from the top of each of your and your opponent's Life cards."
+    ],
+    "failedParts": [
+      "This effect can be activated when your opponent activates an Event or [Trigger]"
+    ]
+  }
+}

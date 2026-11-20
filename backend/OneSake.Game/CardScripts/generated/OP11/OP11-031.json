@@ -1,0 +1,18 @@
+{
+  "cardId": "OP11-031",
+  "status": "manual",
+  "sourceTextHash": "11760b687b50bd38e18791542032cc4be8ff4ddbdd12dd322e593c7f3c4ee83a",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your Leader has the \"Fish-Man\" or {Merfolk} type, rest up to 1 of your opponent's Characters with a cost of 5 or less. | [Activate: Main] [Once Per Turn] Up to 1 of your \"Fish-Man\" or {Merfolk} type Characters can attack Characters on the turn in which it is played.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your Leader has the \"Fish-Man\" or {Merfolk} type, rest up to 1 of your opponent's Characters with a cost of 5 or less.",
+      "[Activate: Main] [Once Per Turn] Up to 1 of your \"Fish-Man\" or {Merfolk} type Characters can attack Characters on the turn in which it is played."
+    ],
+    "failedParts": [
+      "IF: If your Leader has the \"Fish-Man\" or {Merfolk} type, rest up to 1 of your opponent's Characters with a cost of 5 or less",
+      "Up to 1 of your \"Fish-Man\" or {Merfolk} type Characters can attack Characters on the turn in which it is played"
+    ]
+  }
+}

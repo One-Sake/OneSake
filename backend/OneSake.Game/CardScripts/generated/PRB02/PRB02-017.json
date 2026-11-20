@@ -1,0 +1,18 @@
+{
+  "cardId": "PRB02-017",
+  "status": "manual",
+  "sourceTextHash": "0fa9f1faf8aef5f9faf3ad42d377374edc90de3a8b1071f6a83d16158f5e82f6",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Once Per Turn] You may trash 1 card with a [Trigger] from your hand: Your opponent's rested Leader or up to 1 of your opponent's Characters other than [Monkey.D.Luffy] cannot attack until the end of your opponent's next End Phase. | [Trigger] K.O up to 1 of your opponent's Characters with a cost of 4 or less",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Once Per Turn] You may trash 1 card with a [Trigger] from your hand: Your opponent's rested Leader or up to 1 of your opponent's Characters other than [Monkey.D.Luffy] cannot attack until the end of your opponent's next End Phase.",
+      "[Trigger] K.O up to 1 of your opponent's Characters with a cost of 4 or less"
+    ],
+    "failedParts": [
+      "Your opponent's rested Leader or up to 1 of your opponent's Characters other than [Monkey.D.Luffy] cannot attack until the end of your opponent's next End Phase",
+      "K.O up to 1 of your opponent's Characters with a cost of 4 or less"
+    ]
+  }
+}

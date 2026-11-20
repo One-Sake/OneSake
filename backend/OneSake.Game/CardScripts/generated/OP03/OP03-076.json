@@ -1,0 +1,16 @@
+{
+  "cardId": "OP03-076",
+  "status": "manual",
+  "sourceTextHash": "171170ff0e88e4f9ca129faab9491e9a9dfbad56bcc31df46b409fe34cf29fc9",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] [Once Per Turn] You may trash 2 cards from your hand: When your opponent's Character is K.O.'d, set this Leader as active.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] [Once Per Turn] You may trash 2 cards from your hand: When your opponent's Character is K.O.'d, set this Leader as active."
+    ],
+    "failedParts": [
+      "When your opponent's Character is K.O.'d, set this Leader as active"
+    ]
+  }
+}

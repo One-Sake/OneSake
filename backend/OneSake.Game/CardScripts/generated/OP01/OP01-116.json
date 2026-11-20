@@ -1,0 +1,16 @@
+{
+  "cardId": "OP01-116",
+  "status": "manual",
+  "sourceTextHash": "6699c8daeeeca406d454ed6438c607f11645d6f6f6b70a9170865b6aab74c48d",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] Look at 5 cards from the top of your deck; play up to 1 {SMILE} type Character card with a cost of 3 or less. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Main] Look at 5 cards from the top of your deck; play up to 1 {SMILE} type Character card with a cost of 3 or less. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "Look at 5 cards from the top of your deck; play up to 1 {SMILE} type Character card with a cost of 3 or less"
+    ]
+  }
+}

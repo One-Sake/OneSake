@@ -1,0 +1,16 @@
+{
+  "cardId": "OP17-075",
+  "status": "manual",
+  "sourceTextHash": "90367d1b80b7f54c3821eed539edb1dcf1ea1961e4b3acd8a5ddd44c6300cf5e",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] DON!! 2: Trash 1 card from your opponent's hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] DON!! 2: Trash 1 card from your opponent's hand."
+    ],
+    "failedParts": [
+      "Trash 1 card from your opponent's hand"
+    ]
+  }
+}

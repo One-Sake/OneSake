@@ -1,0 +1,16 @@
+{
+  "cardId": "ST12-007",
+  "status": "manual",
+  "sourceTextHash": "4d7200869f10c47a1d113907845dffc4121d27e1cd57c8c3b4973eda828675a7",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] RESTDON2: If your opponent has 3 or more Life cards, set up to 1 of your \"Slash\" attribute Characters with a cost of 4 or less as active.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] RESTDON2: If your opponent has 3 or more Life cards, set up to 1 of your \"Slash\" attribute Characters with a cost of 4 or less as active."
+    ],
+    "failedParts": [
+      "Set up to 1 of your \"Slash\" attribute Characters with a cost of 4 or less as active"
+    ]
+  }
+}

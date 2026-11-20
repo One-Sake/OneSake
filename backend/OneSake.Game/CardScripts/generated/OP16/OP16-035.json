@@ -1,0 +1,16 @@
+{
+  "cardId": "OP16-035",
+  "status": "manual",
+  "sourceTextHash": "48f40339370cf7608a511cb12694ee5a37369a9bb0915bf5ff289b5204db699a",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Rest up to 1 of your opponent's cards. Then, you may trash 1 card from your hand. If you do, give up to 3 rested DON!! cards to your Leader.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Rest up to 1 of your opponent's cards. Then, you may trash 1 card from your hand. If you do, give up to 3 rested DON!! cards to your Leader."
+    ],
+    "failedParts": [
+      "IF: If you do, give up to 3 rested DON!! cards to your Leader"
+    ]
+  }
+}

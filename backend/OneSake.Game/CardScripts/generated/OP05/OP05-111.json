@@ -1,0 +1,16 @@
+{
+  "cardId": "OP05-111",
+  "status": "manual",
+  "sourceTextHash": "bac156be8c252d5eebf08d5a3259839d4cde0e1d4121feea423cde03d1362113",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] You may play 1 [Kotori] from your hand: Add up to 1 of your opponent's Characters with a cost of 3 or less to the top or bottom of your opponent's Life cards face-up.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] You may play 1 [Kotori] from your hand: Add up to 1 of your opponent's Characters with a cost of 3 or less to the top or bottom of your opponent's Life cards face-up."
+    ],
+    "failedParts": [
+      "COST: You may play 1 [Kotori] from your hand"
+    ]
+  }
+}

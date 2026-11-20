@@ -1,0 +1,16 @@
+{
+  "cardId": "OP05-004",
+  "status": "manual",
+  "sourceTextHash": "7e90576a5b1685b48bc2caa7a82dcaafb9ec3c15fe0fb6d9bb7fbcff7bb3d01f",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] If this Character has 7000 power or more, play up to 1 {Revolutionary Army} type Character card with 5000 power or less other than [Emporio.Ivankov] from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] If this Character has 7000 power or more, play up to 1 {Revolutionary Army} type Character card with 5000 power or less other than [Emporio.Ivankov] from your hand."
+    ],
+    "failedParts": [
+      "IF: If this Character has 7000 power or more, play up to 1 {Revolutionary Army} type Character card with 5000 power or less other than [Emporio.Ivankov] from your hand"
+    ]
+  }
+}

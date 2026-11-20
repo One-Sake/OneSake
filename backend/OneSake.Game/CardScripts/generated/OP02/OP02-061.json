@@ -1,0 +1,16 @@
+{
+  "cardId": "OP02-061",
+  "status": "manual",
+  "sourceTextHash": "e3c3eccf5fe0f9abe9531cdb7ff9d1a75735c741ab7791abc7c49e1622230f13",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking] If you have 1 or less cards in your hand, your opponent cannot activate the [Blocker] of any Character with a cost of 5 or less during this battle.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[When Attacking] If you have 1 or less cards in your hand, your opponent cannot activate the [Blocker] of any Character with a cost of 5 or less during this battle."
+    ],
+    "failedParts": [
+      "Your opponent cannot activate the [Blocker] of any Character with a cost of 5 or less during this battle"
+    ]
+  }
+}

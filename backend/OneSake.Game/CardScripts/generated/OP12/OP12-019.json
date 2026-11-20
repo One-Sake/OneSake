@@ -1,0 +1,18 @@
+{
+  "cardId": "OP12-019",
+  "status": "manual",
+  "sourceTextHash": "deb493042327020e1c02c611feef1d47b6d8d7009b221151874bd9ebb3cbdf89",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] You may give 1 active DON!! card to 1 of your [Silvers Rayleigh]: Up to 1 of your Leader or Character cards gains +1000 power during this turn. | [Counter] Up to 1 of your Characters or [Silvers Rayleigh] gains +2000 power during this battle.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Main] You may give 1 active DON!! card to 1 of your [Silvers Rayleigh]: Up to 1 of your Leader or Character cards gains +1000 power during this turn.",
+      "[Counter] Up to 1 of your Characters or [Silvers Rayleigh] gains +2000 power during this battle."
+    ],
+    "failedParts": [
+      "COST: You may give 1 active DON!! card to 1 of your [Silvers Rayleigh]",
+      "Up to 1 of your Characters or [Silvers Rayleigh] gains +2000 power during this battle"
+    ]
+  }
+}

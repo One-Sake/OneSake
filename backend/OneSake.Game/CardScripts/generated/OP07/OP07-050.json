@@ -1,0 +1,16 @@
+{
+  "cardId": "OP07-050",
+  "status": "manual",
+  "sourceTextHash": "e972dc23b99daefc3629b19081b0e783e0e2d96ae820e30000bfd18b0be9dddc",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If you have 2 or more [Amazon Lily] or {Kuja Pirates} type Characters on your field, return up to 1 of your opponent's Characters with a cost of 3 or less to the owner's hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If you have 2 or more [Amazon Lily] or {Kuja Pirates} type Characters on your field, return up to 1 of your opponent's Characters with a cost of 3 or less to the owner's hand."
+    ],
+    "failedParts": [
+      "IF: If you have 2 or more [Amazon Lily] or {Kuja Pirates} type Characters on your field, return up to 1 of your opponent's Characters with a cost of 3 or less to the owner's hand"
+    ]
+  }
+}

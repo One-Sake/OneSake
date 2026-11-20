@@ -1,0 +1,16 @@
+{
+  "cardId": "OP10-119",
+  "status": "manual",
+  "sourceTextHash": "4d279513a97201f980be806f10568592614c98068006cc8f93433df6c0fcc030",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Reveal up to 1 {Supernovas} type Character card from your hand and add it to the top of your Life cards face-down. Then, give up to 1 rested DON!! card to 1 of your {Supernovas} type Leader.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Reveal up to 1 {Supernovas} type Character card from your hand and add it to the top of your Life cards face-down. Then, give up to 1 rested DON!! card to 1 of your {Supernovas} type Leader."
+    ],
+    "failedParts": [
+      "Reveal up to 1 {Supernovas} type Character card from your hand and add it to the top of your Life cards face-down"
+    ]
+  }
+}

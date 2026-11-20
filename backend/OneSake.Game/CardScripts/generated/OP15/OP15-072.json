@@ -1,0 +1,16 @@
+{
+  "cardId": "OP15-072",
+  "status": "manual",
+  "sourceTextHash": "74a703c5fa031da29313bd8697cc9360b090cd4d696b08bb80ad8f64c1fc598d",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] DON!! 2, You may rest this Character: If you have [Kotori] and [Satori], give up to 1 of your opponent's Characters 3000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] DON!! 2, You may rest this Character: If you have [Kotori] and [Satori], give up to 1 of your opponent's Characters 3000 power during this turn."
+    ],
+    "failedParts": [
+      "IF: If you have [Kotori] and [Satori], give up to 1 of your opponent's Characters 3000 power during this turn"
+    ]
+  }
+}

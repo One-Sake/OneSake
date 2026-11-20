@@ -1,0 +1,16 @@
+{
+  "cardId": "OP04-048",
+  "status": "manual",
+  "sourceTextHash": "c0d61ba42601ace36e0ad5c3d326a0e3ff8fff6cdf6b6343ef4eb4614f015445",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Return all cards in your hand to your deck and shuffle your deck. Then, draw cards equal to the number you returned to your deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Return all cards in your hand to your deck and shuffle your deck. Then, draw cards equal to the number you returned to your deck."
+    ],
+    "failedParts": [
+      "Return all cards in your hand to your deck and shuffle your deck"
+    ]
+  }
+}

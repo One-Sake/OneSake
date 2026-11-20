@@ -7,7 +7,7 @@ const CARD_OPTIONS = ['PLAY_CARD', 'ATTACH_DON', 'ATTACK', 'BLOCK', 'COUNTER', '
 export const EFFECT_PROMPT_KINDS = ['EFFECT_CHOICE', 'TRIGGER_DECISION'];
 
 // These prompts have their own overlay (dice roll, card effects) and never show as buttons here.
-export const OVERLAY_PROMPT_KINDS = ['TURN_ORDER_DECISION', ...EFFECT_PROMPT_KINDS];
+export const OVERLAY_PROMPT_KINDS = ['TURN_ORDER_DECISION', 'ORDER_TRIGGERS', ...EFFECT_PROMPT_KINDS];
 
 // The prompt options that can be answered with a simple button.
 export function getVisibleChoiceOptions(

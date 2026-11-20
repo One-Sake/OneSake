@@ -1,0 +1,47 @@
+name: Simulation nightly
+
+# 20,000 bot matches per branch with a new seed every night. Failures are uploaded as
+# recordings (play them with the ReplayTool, see docs/simulation-findings.md).
+# Note: GitHub starts scheduled workflows only from the default branch, so this file must also
+# exist there; it then checks out logic and dev itself.
+on:
+  schedule:
+    - cron: "17 2 * * *"
+  workflow_dispatch:
+
+jobs:
+  simulate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        branch: [logic, dev]
+
+    steps:
+      - name: Checkout ${{ matrix.branch }}
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.branch }}
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Build simulator
+        run: dotnet build ./backend/OneSake.Simulator/OneSake.Simulator.csproj -c Release
+
+      - name: Simulate 20,000 matches
+        run: >
+          dotnet run --project ./backend/OneSake.Simulator -c Release --no-build --
+          --games 20000 --seed ${{ github.run_number }} --bots random,greedy --decks meta,random
+          --parallel 4 --out sim-failures
+
+      - name: Upload failures
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sim-failures-${{ matrix.branch }}-${{ github.run_number }}
+          path: sim-failures
+          if-no-files-found: ignore

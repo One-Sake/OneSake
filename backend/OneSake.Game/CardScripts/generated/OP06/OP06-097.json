@@ -1,0 +1,46 @@
+{
+  "cardId": "OP06-097",
+  "status": "manual",
+  "sourceTextHash": "a76a487542f821618f86292318ef1c9eaf9509535262167e1edb628085f80431",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] Trash 1 card from your opponent's hand.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Activate this card's [Main] effect.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "ActivateOwnAbility",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "Main",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Activate this card's [Main] effect"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Main] Trash 1 card from your opponent's hand."
+    ],
+    "failedParts": [
+      "Trash 1 card from your opponent's hand"
+    ]
+  }
+}

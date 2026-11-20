@@ -1,0 +1,16 @@
+{
+  "cardId": "OP05-060",
+  "status": "manual",
+  "sourceTextHash": "60c3ef20e90ccd5187e02f0b719362cfc597057eeecd017b59b494a3b41d383d",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] You may add 1 card from the top of your Life cards to your hand: If you have 0 or 3 or more DON!! cards on your field, add up to 1 DON!! card from your DON!! deck and set it as active.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] You may add 1 card from the top of your Life cards to your hand: If you have 0 or 3 or more DON!! cards on your field, add up to 1 DON!! card from your DON!! deck and set it as active."
+    ],
+    "failedParts": [
+      "IF: If you have 0 or 3 or more DON!! cards on your field, add up to 1 DON!! card from your DON!! deck and set it as active"
+    ]
+  }
+}

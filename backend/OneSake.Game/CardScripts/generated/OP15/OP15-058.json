@@ -1,0 +1,18 @@
+{
+  "cardId": "OP15-058",
+  "status": "manual",
+  "sourceTextHash": "1041c9a886711f95022c01ad5c743cecf22560859abfad9c654477282cf2f5fb",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: Under the rules of this game, your DON!! deck consists of 6 cards. | [Activate: Main] [Once Per Turn] If it is your second turn or later, add up to 1 DON!! card from your DON!! deck and set it as active, and add up to 4 additional DON!! cards and rest them. Then, give up to 4 rested DON!! cards to 1 of your Characters.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "Under the rules of this game, your DON!! deck consists of 6 cards.",
+      "[Activate: Main] [Once Per Turn] If it is your second turn or later, add up to 1 DON!! card from your DON!! deck and set it as active, and add up to 4 additional DON!! cards and rest them. Then, give up to 4 rested DON!! cards to 1 of your Characters."
+    ],
+    "failedParts": [
+      "Under the rules of this game, your DON!! deck consists of 6 cards",
+      "IF: If it is your second turn or later, add up to 1 DON!! card from your DON!! deck and set it as active, and add up to 4 additional DON!! cards and rest them"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP09-052",
+  "status": "manual",
+  "sourceTextHash": "ca4cba42966b1704b1b15a992f50a5738078f80b9b00d986361778e0242242c9",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Opponent's Turn] You may trash 1 card from your hand: When this Character is K.O.'d by your opponent's effect, play this Character card from your trash rested.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Opponent's Turn] You may trash 1 card from your hand: When this Character is K.O.'d by your opponent's effect, play this Character card from your trash rested."
+    ],
+    "failedParts": [
+      "When this Character is K.O.'d by your opponent's effect, play this Character card from your trash rested"
+    ]
+  }
+}

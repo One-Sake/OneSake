@@ -1,0 +1,16 @@
+{
+  "cardId": "OP05-001",
+  "status": "manual",
+  "sourceTextHash": "894d522c09ed85ad862287dd38437febe6483a9722144ef6379aa4b92338f28a",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] [Opponent's Turn] [Once Per Turn] If your Character with 5000 power or more would be K.O.'d, you may give that Character -1000 power during this turn instead of that Character being K.O.'d.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] [Opponent's Turn] [Once Per Turn] If your Character with 5000 power or more would be K.O.'d, you may give that Character -1000 power during this turn instead of that Character being K.O.'d."
+    ],
+    "failedParts": [
+      "IF: If your Character with 5000 power or more would be K.O.'d, you may give that Character -1000 power during this turn instead of that Character being K.O.'d"
+    ]
+  }
+}

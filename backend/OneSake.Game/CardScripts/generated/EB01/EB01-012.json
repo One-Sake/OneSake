@@ -1,0 +1,16 @@
+{
+  "cardId": "EB01-012",
+  "status": "manual",
+  "sourceTextHash": "0c0189adc99eae4e4ce4e1875c1e7ad7405f64db3fc7793a249ba38bb8660cc5",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play]/[When Attacking] If your Leader has the {Supernovas} type and you have no other [Cavendish] Characters, set up to 2 of your DON!! cards as active.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play]/[When Attacking] If your Leader has the {Supernovas} type and you have no other [Cavendish] Characters, set up to 2 of your DON!! cards as active."
+    ],
+    "failedParts": [
+      "/[When Attacking] If your Leader has the {Supernovas} type and you have no other [Cavendish] Characters, set up to 2 of your DON!! cards as active"
+    ]
+  }
+}

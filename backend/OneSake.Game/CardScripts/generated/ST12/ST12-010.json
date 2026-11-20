@@ -1,0 +1,52 @@
+{
+  "cardId": "ST12-010",
+  "status": "manual",
+  "sourceTextHash": "d475f404ea8884a53c735e1d89128c427dfcf69995b6cef5d384ee2ac23fdcf9",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Reveal 1 card from the top of your deck and play up to 1 Character card with a cost of 2. Then, place the rest at the top or bottom of your deck.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "WhenAttacking",
+        "text": "[When Attacking] [Once Per Turn] Draw 1 card if you have 6 or less cards in your hand.",
+        "requiredDon": 0,
+        "oncePerTurn": true,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [
+              {
+                "kind": "HandAtMost",
+                "amount": 6,
+                "text": "you have 6 or less cards in your hand"
+              }
+            ],
+            "text": "Draw 1 card"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[On Play] Reveal 1 card from the top of your deck and play up to 1 Character card with a cost of 2. Then, place the rest at the top or bottom of your deck."
+    ],
+    "failedParts": [
+      "Reveal 1 card from the top of your deck and play up to 1 Character card with a cost of 2"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP05-053",
+  "status": "manual",
+  "sourceTextHash": "3a40a6026187510396cf5411012646cc77ca68a81ef089de8e73c55fb216b6bc",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] [Once Per Turn] When you draw a card outside of your Draw Phase, this Character gains +2000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] [Once Per Turn] When you draw a card outside of your Draw Phase, this Character gains +2000 power during this turn."
+    ],
+    "failedParts": [
+      "When you draw a card outside of your Draw Phase, this Character gains +2000 power during this turn"
+    ]
+  }
+}

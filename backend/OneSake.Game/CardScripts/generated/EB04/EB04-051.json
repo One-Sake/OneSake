@@ -1,0 +1,18 @@
+{
+  "cardId": "EB04-051",
+  "status": "manual",
+  "sourceTextHash": "7543369c78410656d4dec645ca4b23f098224eb5bfceb35812bb2a80497baf49",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: This Character cannot attack unless there is a Character with 12000 base power or more. | [Trigger] Give all of your opponent's Characters -3000 power during this turn. Then, if you have 0 Life cards, play this card.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "This Character cannot attack unless there is a Character with 12000 base power or more.",
+      "[Trigger] Give all of your opponent's Characters -3000 power during this turn. Then, if you have 0 Life cards, play this card."
+    ],
+    "failedParts": [
+      "This Character cannot attack unless there is a Character with 12000 base power or more",
+      "IF: If you have 0 Life cards, play this card"
+    ]
+  }
+}

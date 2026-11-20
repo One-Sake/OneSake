@@ -1,0 +1,16 @@
+{
+  "cardId": "OP14-035",
+  "status": "manual",
+  "sourceTextHash": "631570748a49acbfcaca0383fe113ad147bfa08add425804cfc027f5380fd184",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] When this Character becomes rested, up to 1 of your opponent's rested Characters with a cost of 4 or less will not become active in your opponent's next Refresh Phase.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] When this Character becomes rested, up to 1 of your opponent's rested Characters with a cost of 4 or less will not become active in your opponent's next Refresh Phase."
+    ],
+    "failedParts": [
+      "When this Character becomes rested, up to 1 of your opponent's rested Characters with a cost of 4 or less will not become active in your opponent's next Refresh Phase"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP05-109",
+  "status": "manual",
+  "sourceTextHash": "e2f0f81d415edd882eb79745d806cbbfdc578a30717549c55c47343cbd2ea8c8",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Once Per Turn] When a [Trigger] activates, draw 2 cards and trash 2 cards from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Once Per Turn] When a [Trigger] activates, draw 2 cards and trash 2 cards from your hand."
+    ],
+    "failedParts": [
+      "When a [Trigger] activates, draw 2 cards and trash 2 cards from your hand"
+    ]
+  }
+}

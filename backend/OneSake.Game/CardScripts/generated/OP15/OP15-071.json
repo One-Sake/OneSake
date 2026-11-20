@@ -1,0 +1,18 @@
+{
+  "cardId": "OP15-071",
+  "status": "manual",
+  "sourceTextHash": "2eead12e506e8d81ede7af9a6e605c983e68a2edfa02bb52df7b9c94751b7bf1",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: All of your [Ohm] cards and this Character gain [Double Attack]. | [Opponent's Turn] All of your [Ohm] cards' base power and this Character's base power become 6000.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "All of your [Ohm] cards and this Character gain [Double Attack].",
+      "[Opponent's Turn] All of your [Ohm] cards' base power and this Character's base power become 6000."
+    ],
+    "failedParts": [
+      "All of your [Ohm] cards and this Character gain [Double Attack]",
+      "All of your [Ohm] cards' base power and this Character's base power become 6000"
+    ]
+  }
+}

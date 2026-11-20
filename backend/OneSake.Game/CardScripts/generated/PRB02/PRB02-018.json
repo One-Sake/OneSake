@@ -1,0 +1,16 @@
+{
+  "cardId": "PRB02-018",
+  "status": "manual",
+  "sourceTextHash": "304cb798aba27cacc46b42e37e1c39814dbd112b8a8b32a3befbb9155868e4e4",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If you have a face-up Life card, play up to 1 [Sabo], [Portgas.D.Ace], or [Monkey.D.Luffy] with a cost of 2 from your hand or trash.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If you have a face-up Life card, play up to 1 [Sabo], [Portgas.D.Ace], or [Monkey.D.Luffy] with a cost of 2 from your hand or trash."
+    ],
+    "failedParts": [
+      "IF: If you have a face-up Life card, play up to 1 [Sabo], [Portgas.D.Ace], or [Monkey.D.Luffy] with a cost of 2 from your hand or trash"
+    ]
+  }
+}

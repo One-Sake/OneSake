@@ -1,0 +1,16 @@
+{
+  "cardId": "OP14-001",
+  "status": "manual",
+  "sourceTextHash": "9aa381d4edb00e25b6a1772aa7830ef117318616bab8e57ed2f2763b687d31fa",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] Select 2 of your {Supernovas} or {Heart Pirates} type Characters. Swap the base power of the selected Characters with each other during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] Select 2 of your {Supernovas} or {Heart Pirates} type Characters. Swap the base power of the selected Characters with each other during this turn."
+    ],
+    "failedParts": [
+      "Swap the base power of the selected Characters with each other during this turn"
+    ]
+  }
+}

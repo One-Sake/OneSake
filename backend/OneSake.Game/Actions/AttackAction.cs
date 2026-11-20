@@ -1,5 +1,6 @@
 using OneSake.Domain;
 using OneSake.Game.Effects;
+using OneSake.Game.Rules;
 using OneSake.Game.State;
 
 namespace OneSake.Game.Actions;
@@ -15,7 +16,8 @@ public sealed class AttackAction
         string activePlayerId,
         string? attackerInstanceId,
         string? targetInstanceId,
-        int turnNumber)
+        int turnNumber,
+        GameEventBus? events = null)
     {
         ActionGuard.EnsureMainPhase(phase);
         ActionGuard.EnsureActivePlayer(attacker, activePlayerId);
@@ -45,14 +47,14 @@ public sealed class AttackAction
         }
 
         // [Rush: Character]: in the turn it was played, it may only attack Characters.
-        if (targetCard.IsLeader && attackingCard.IsCharacter && attackingCard.PlayedOnTurn == turnNumber && !attackingCard.HasRush)
+        if (targetCard.IsLeader && CanAttackOnlyCharacters(attackingCard, turnNumber))
         {
             throw new InvalidOperationException($"{attackingCard.Name} can only attack Characters in the turn it was played.");
         }
 
         attackingCard.IsRested = true;
 
-        return new BattleState
+        var battle = new BattleState
         {
             AttackerPlayerId = attacker.PlayerId,
             DefenderPlayerId = opponent.PlayerId,
@@ -60,6 +62,16 @@ public sealed class AttackAction
             Target = targetCard,
             Step = BattleStep.Block
         };
+
+        events?.Publish(new CardRested(attackingCard, attacker.PlayerId));
+        events?.Publish(new AttackDeclared(attackingCard, targetCard, attacker.PlayerId, opponent.PlayerId));
+        return battle;
+    }
+
+    // Rule 10-1-6-1: a [Rush: Character] card may attack only Characters in the turn it was played.
+    public static bool CanAttackOnlyCharacters(CardInstance card, int turnNumber)
+    {
+        return card.IsCharacter && card.PlayedOnTurn == turnNumber && !card.HasRush;
     }
 
     // Rule 6-5-6-1: no battles on your own first turn.
@@ -71,7 +83,8 @@ public sealed class AttackAction
     // Active Leader, or active Character that was not played this turn (unless it has [Rush]).
     public static bool CanAttack(CardInstance card, PlayerState owner, int turnNumber)
     {
-        if (card.IsRested || !CanBattleThisTurn(owner) || card.HasFlag(EffectFlags.CannotAttack))
+        // Rule 1-3-3: "cannot attack" always wins over effects that allow attacking.
+        if (card.IsRested || !CanBattleThisTurn(owner) || !Prohibitions.CanAttack(card))
         {
             return false;
         }

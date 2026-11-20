@@ -20,6 +20,22 @@ type FeedItem =
   | { kind: 'log'; key: string; ts: number; event: LogEventDto }
   | { kind: 'chat'; key: string; ts: number; message: ChatMessageDto };
 
+// Manual actions and "resolve manually" notes stand out, so the opponent notices them at once.
+const MANUAL_EVENT_TYPES = ['MANUAL', 'EFFECT_MANUAL'];
+
+function isManualEvent(event: LogEventDto): boolean {
+  return MANUAL_EVENT_TYPES.includes(event.type);
+}
+
+function getLogClassName(event: LogEventDto): string {
+  if (isManualEvent(event)) {
+    return 'match-feed__log match-feed__log--manual';
+  }
+
+  // "1/3: Zoro [On Play] ..." - the order in which simultaneous effects are resolved.
+  return event.type === 'EFFECT_ORDER' ? 'match-feed__log match-feed__log--order' : 'match-feed__log';
+}
+
 // How close (in px) to the bottom still counts as "at the bottom".
 const STICK_TO_BOTTOM_PX = 24;
 
@@ -78,7 +94,12 @@ export function MatchFeed({
         {items.length === 0 && <p className="match-feed__empty">No events yet.</p>}
         {items.map((item) =>
           item.kind === 'log' ? (
-            <p key={item.key} className="match-feed__log">
+            <p key={item.key} className={getLogClassName(item.event)}>
+              {isManualEvent(item.event) && !item.event.text.startsWith('✋') && (
+                <span aria-hidden="true" className="match-feed__hand">
+                  ✋{' '}
+                </span>
+              )}
               <span>
                 T{item.event.turnNumber} · {formatPhase(item.event.phase)} ·{' '}
               </span>

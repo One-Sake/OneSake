@@ -1,4 +1,5 @@
 using OneSake.Domain;
+using OneSake.Game.Rules;
 using OneSake.Game.State;
 
 namespace OneSake.Game.Actions;
@@ -12,7 +13,8 @@ public sealed class PlayCardAction
         string activePlayerId,
         string? selectedCardInstanceId,
         string? replaceCharacterInstanceId,
-        int turnNumber)
+        int turnNumber,
+        GameEventBus? events = null)
     {
         ActionGuard.EnsureMainPhase(phase);
         ActionGuard.EnsureActivePlayer(player, activePlayerId);
@@ -54,30 +56,38 @@ public sealed class PlayCardAction
         {
             if (characterToReplace is not null)
             {
+                // Rule 3-7-6-1-1: this is rule processing, not a K.O. - no [On K.O.].
                 player.TrashCharacter(characterToReplace);
+                events?.Publish(new CardMovedZone(characterToReplace, player.PlayerId, "character", "trash"));
             }
 
             card.ResetFieldState();
             card.PlayedOnTurn = turnNumber;
             player.Characters.Add(card);
+            events?.Publish(new CardPlayed(card, player.PlayerId, ByEffect: false));
         }
         else if (card.IsStage)
         {
             // Only one Stage is allowed - the old one goes to the trash.
+            // Rule 3-8-5-1: only one Stage - the old one goes to the trash.
             if (player.Stage is not null)
             {
-                player.Stage.ResetFieldState();
-                player.TrashCards.Add(player.Stage);
+                var oldStage = player.Stage;
+                oldStage.ResetFieldState();
+                player.TrashCards.Add(oldStage);
+                events?.Publish(new CardMovedZone(oldStage, player.PlayerId, "stage", "trash"));
             }
 
             card.ResetFieldState();
             card.PlayedOnTurn = turnNumber;
             player.Stage = card;
+            events?.Publish(new CardPlayed(card, player.PlayerId, ByEffect: false));
         }
         else
         {
-            // Events are activated and then trashed. Card effects are not automated yet.
+            // Rule 8-4-2: an Event card is trashed and its effect is carried out.
             player.TrashCards.Add(card);
+            events?.Publish(new EventActivated(card, player.PlayerId, IsCounter: false));
         }
 
         return card;

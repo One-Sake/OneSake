@@ -1,0 +1,16 @@
+{
+  "cardId": "ST13-014",
+  "status": "manual",
+  "sourceTextHash": "218bc057c4998fa3e1e7a1ae287cbc4bdfb956535e1f543cac45b78029dd4344",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may trash this Character: Reveal 1 card from the top of your Life cards. If that card is a [Monkey.D.Luffy] with a cost of 5, you may play that card. If you do, up to 1 of your Leader gains +2000 power until the end of your opponent's next turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may trash this Character: Reveal 1 card from the top of your Life cards. If that card is a [Monkey.D.Luffy] with a cost of 5, you may play that card. If you do, up to 1 of your Leader gains +2000 power until the end of your opponent's next turn."
+    ],
+    "failedParts": [
+      "Reveal 1 card from the top of your Life cards"
+    ]
+  }
+}

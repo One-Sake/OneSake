@@ -1,0 +1,16 @@
+{
+  "cardId": "ST01-001",
+  "status": "manual",
+  "sourceTextHash": "485fe3ca2b86d042d1d9180ba7f63e1d07eedbccbb5971f7f94c413d189dfddc",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] Give this Leader or 1 of your Characters up to 1 rested DON!! card.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] Give this Leader or 1 of your Characters up to 1 rested DON!! card."
+    ],
+    "failedParts": [
+      "Give this Leader or 1 of your Characters up to 1 rested DON!! card"
+    ]
+  }
+}

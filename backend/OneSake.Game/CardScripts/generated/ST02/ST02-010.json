@@ -1,0 +1,16 @@
+{
+  "cardId": "ST02-010",
+  "status": "manual",
+  "sourceTextHash": "7658248c45b77decb23bab3d71edd6827fffd198deeb8cc4d33c6c7ea036076c",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] [Once Per Turn] [Your Turn] If this Character battles your opponent's Character, set this card as active.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] [Once Per Turn] [Your Turn] If this Character battles your opponent's Character, set this card as active."
+    ],
+    "failedParts": [
+      "IF: If this Character battles your opponent's Character, set this card as active"
+    ]
+  }
+}

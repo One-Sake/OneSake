@@ -1,0 +1,16 @@
+{
+  "cardId": "OP09-056",
+  "status": "manual",
+  "sourceTextHash": "500f581e433a1255a41fbbbc182d451e5800105a16308e9dea19f4955c49decd",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Look at 4 cards from the top of your deck; reveal up to 1 {Cross Guild} type card or card with a type including {Baroque Works} other than [Mr.3] and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Look at 4 cards from the top of your deck; reveal up to 1 {Cross Guild} type card or card with a type including {Baroque Works} other than [Mr.3] and add it to your hand. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "Look at 4 cards from the top of your deck; reveal up to 1 {Cross Guild} type card or card with a type including {Baroque Works} other than [Mr.3] and add it to your hand"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP14-010",
+  "status": "manual",
+  "sourceTextHash": "3685907dd62da44d7b6395e4f2bfdf4f79cf7c2c54dec99a89ae696852789a97",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On K.O.] Look at 5 cards from the top of your deck; play up to 1 {Supernovas} type Character card with 2000 power or less other than [Basil Hawkins]. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On K.O.] Look at 5 cards from the top of your deck; play up to 1 {Supernovas} type Character card with 2000 power or less other than [Basil Hawkins]. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "Look at 5 cards from the top of your deck; play up to 1 {Supernovas} type Character card with 2000 power or less other than [Basil Hawkins]"
+    ]
+  }
+}

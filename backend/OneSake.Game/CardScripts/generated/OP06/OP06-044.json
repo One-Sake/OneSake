@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-044",
+  "status": "manual",
+  "sourceTextHash": "a4b69c2d3dbc55a2d0f98fd834a1ab4faed605918d6f5b847fb73821dbb276aa",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] [Once Per Turn] When your opponent activates an Event, your opponent must place 1 card from their hand at the bottom of their deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] [Once Per Turn] When your opponent activates an Event, your opponent must place 1 card from their hand at the bottom of their deck."
+    ],
+    "failedParts": [
+      "When your opponent activates an Event, your opponent must place 1 card from their hand at the bottom of their deck"
+    ]
+  }
+}

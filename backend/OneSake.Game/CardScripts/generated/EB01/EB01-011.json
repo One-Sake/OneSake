@@ -1,0 +1,16 @@
+{
+  "cardId": "EB01-011",
+  "status": "manual",
+  "sourceTextHash": "9db5ecdb82ef115b69662aba274e9f00e3736a7a1baad4f2208a9325c5e44c90",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may rest this card and place 1 of your Characters with 1000 base power at the bottom of your deck: Draw 1 card.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may rest this card and place 1 of your Characters with 1000 base power at the bottom of your deck: Draw 1 card."
+    ],
+    "failedParts": [
+      "COST: You may rest this card and place 1 of your Characters with 1000 base power at the bottom of your deck"
+    ]
+  }
+}

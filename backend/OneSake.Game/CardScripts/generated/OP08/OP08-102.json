@@ -1,0 +1,16 @@
+{
+  "cardId": "OP08-102",
+  "status": "manual",
+  "sourceTextHash": "f10111de259c22feb95e31dd3e797d55f5bde03c0d909efebe9c5b8506271a48",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] You may trash 1 card from your hand: K.O. up to 1 of your opponent's Characters with a cost equal to or less than your number of Life cards.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] You may trash 1 card from your hand: K.O. up to 1 of your opponent's Characters with a cost equal to or less than your number of Life cards."
+    ],
+    "failedParts": [
+      "K.O. up to 1 of your opponent's Characters with a cost equal to or less than your number of Life cards"
+    ]
+  }
+}

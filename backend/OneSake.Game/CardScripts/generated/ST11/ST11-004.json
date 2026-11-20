@@ -1,0 +1,16 @@
+{
+  "cardId": "ST11-004",
+  "status": "manual",
+  "sourceTextHash": "f548adccd58b19ce272eb70a758a54989ec1aad6cdd320626b1b62d05decc78d",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] If your Leader is [Uta], look at 3 cards from the top of your deck, reveal up to 1 {FILM} type card other than [New Genesis] and add it to your hand. Then, place the rest at the bottom of your deck in any order and set up to 1 of your DON!! cards as active.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Main] If your Leader is [Uta], look at 3 cards from the top of your deck, reveal up to 1 {FILM} type card other than [New Genesis] and add it to your hand. Then, place the rest at the bottom of your deck in any order and set up to 1 of your DON!! cards as active."
+    ],
+    "failedParts": [
+      "Look at 3 cards from the top of your deck, reveal up to 1 {FILM} type card other than [New Genesis] and add it to your hand"
+    ]
+  }
+}

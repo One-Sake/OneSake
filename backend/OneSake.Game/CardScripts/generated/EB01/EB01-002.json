@@ -1,0 +1,72 @@
+{
+  "cardId": "EB01-002",
+  "status": "manual",
+  "sourceTextHash": "137463f4f3bbfc021be004449986aea521b2fc589a62734fc9f6d381b3ae3045",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Your Opponent's Attack] [Once Per Turn] You may trash 1 card from your hand: If your Leader has the [Land of Wano] or {Whitebeard Pirates} type, give up to 1 of your opponent's Leader or Character cards -2000 power during this turn.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] Give up to 1 rested DON!! card to your Leader or 1 of your Characters.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "GiveRestedDon",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": false,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": true,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Give up to 1 rested DON!! card to your Leader or 1 of your Characters"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[On Your Opponent's Attack] [Once Per Turn] You may trash 1 card from your hand: If your Leader has the [Land of Wano] or {Whitebeard Pirates} type, give up to 1 of your opponent's Leader or Character cards -2000 power during this turn."
+    ],
+    "failedParts": [
+      "IF: If your Leader has the [Land of Wano] or {Whitebeard Pirates} type, give up to 1 of your opponent's Leader or Character cards -2000 power during this turn"
+    ]
+  }
+}

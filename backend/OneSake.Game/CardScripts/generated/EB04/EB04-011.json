@@ -1,0 +1,72 @@
+{
+  "cardId": "EB04-011",
+  "status": "manual",
+  "sourceTextHash": "328536912e04b1ac3e9dc5902114aed7808c56e5af2e6c23176553783f0d588c",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Rush: Character] [On Play] Draw a card for each of your {Neptunian} type Characters. Then, trash the same number of cards from your hand.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Static",
+        "text": "[RushCharacter]",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "GainFlag",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "Permanent",
+            "flag": "RushCharacter",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "[RushCharacter]"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Rush: Character] [On Play] Draw a card for each of your {Neptunian} type Characters. Then, trash the same number of cards from your hand."
+    ],
+    "failedParts": [
+      "Draw a card for each of your {Neptunian} type Characters"
+    ]
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "cardId": "OP01-024",
+  "status": "manual",
+  "sourceTextHash": "83c032ce40842620406e98256b005494406d0644d6020d1a7678bb4db054883c",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x2] This Character cannot be K.O.'d in battle by \"Strike\" attribute Characters.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "ActivateMain",
+        "text": "[Activate: Main] [Once Per Turn] Give this Character up to 2 rested DON!! cards.",
+        "requiredDon": 0,
+        "oncePerTurn": true,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "GiveRestedDon",
+            "amount": 2,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Give this Character up to 2 rested DON!! cards"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[DON!! x2] This Character cannot be K.O.'d in battle by \"Strike\" attribute Characters."
+    ],
+    "failedParts": [
+      "This Character cannot be K.O.'d in battle by \"Strike\" attribute Characters"
+    ]
+  }
+}

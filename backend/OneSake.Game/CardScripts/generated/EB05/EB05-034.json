@@ -1,0 +1,16 @@
+{
+  "cardId": "EB05-034",
+  "status": "manual",
+  "sourceTextHash": "3068d549893d5150c4771371e751975e04a12177e6da3dff28b06e2a5b2b9a0e",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] DON!! -2: If you have 7 or more DON!! cards on your field, give up to 1 of your opponent's Characters-4000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] DON!! -2: If you have 7 or more DON!! cards on your field, give up to 1 of your opponent's Characters-4000 power during this turn."
+    ],
+    "failedParts": [
+      "Give up to 1 of your opponent's Characters-4000 power during this turn"
+    ]
+  }
+}

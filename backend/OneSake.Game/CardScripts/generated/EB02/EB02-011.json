@@ -1,0 +1,16 @@
+{
+  "cardId": "EB02-011",
+  "status": "manual",
+  "sourceTextHash": "c862347b0061f3841cecbb1365ba6158002348a8fe1a160bdbfa0b7cec6c33b2",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your Leader has the \"Fish-Man\" or {East Blue} type, give up to 1 rested DON!! card to 1 of your Leader. Then, up to 1 of your opponent's Characters with a cost of 5 or less cannot be rested until the end of your opponent's next turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your Leader has the \"Fish-Man\" or {East Blue} type, give up to 1 rested DON!! card to 1 of your Leader. Then, up to 1 of your opponent's Characters with a cost of 5 or less cannot be rested until the end of your opponent's next turn."
+    ],
+    "failedParts": [
+      "IF: If your Leader has the \"Fish-Man\" or {East Blue} type, give up to 1 rested DON!! card to 1 of your Leader"
+    ]
+  }
+}

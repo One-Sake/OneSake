@@ -1,0 +1,16 @@
+{
+  "cardId": "OP15-015",
+  "status": "manual",
+  "sourceTextHash": "a6c49ffa541279f23757bb1e56d637f8660bf6b6d28813289566794bda128f0d",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Give up to 1 of your opponent's rested DON!! cards to 1 of your opponent's Characters. Then, give -1000 power during this turn to up to 1 of your opponent's Characters with a DON!! card given.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Give up to 1 of your opponent's rested DON!! cards to 1 of your opponent's Characters. Then, give -1000 power during this turn to up to 1 of your opponent's Characters with a DON!! card given."
+    ],
+    "failedParts": [
+      "Give up to 1 of your opponent's rested DON!! cards to 1 of your opponent's Characters"
+    ]
+  }
+}

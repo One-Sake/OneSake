@@ -1,0 +1,16 @@
+{
+  "cardId": "OP04-043",
+  "status": "manual",
+  "sourceTextHash": "0e86fb225a54711cf0d727fef3b3565a46f5abfb947aa8bca2a979fbbc652ebb",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] [When Attacking] Return up to 1 Character with a cost of 2 or less to the owner's hand or the bottom of their deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] [When Attacking] Return up to 1 Character with a cost of 2 or less to the owner's hand or the bottom of their deck."
+    ],
+    "failedParts": [
+      "Return up to 1 Character with a cost of 2 or less to the owner's hand or the bottom of their deck"
+    ]
+  }
+}

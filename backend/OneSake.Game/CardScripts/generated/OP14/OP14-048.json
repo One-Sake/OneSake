@@ -1,0 +1,16 @@
+{
+  "cardId": "OP14-048",
+  "status": "manual",
+  "sourceTextHash": "6496106159d9cddf13fda368e9563b7699c3e513c1ef90632758d8c95a08df1d",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Return up to 1 of your opponent's Characters to the owner's hand. Then, trash all cards from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Return up to 1 of your opponent's Characters to the owner's hand. Then, trash all cards from your hand."
+    ],
+    "failedParts": [
+      "Trash all cards from your hand"
+    ]
+  }
+}

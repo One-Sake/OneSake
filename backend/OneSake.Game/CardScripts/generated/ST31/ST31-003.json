@@ -1,0 +1,16 @@
+{
+  "cardId": "ST31-003",
+  "status": "manual",
+  "sourceTextHash": "2d58e615ffe265c30507a9c359f9d8afe6673ea66921b57023801dacc41e6203",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Opponent's Turn] If you have a total of 3 or more given DON!! cards, this Character gains [Blocker] and +3000 power.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Opponent's Turn] If you have a total of 3 or more given DON!! cards, this Character gains [Blocker] and +3000 power."
+    ],
+    "failedParts": [
+      "IF: If you have a total of 3 or more given DON!! cards, this Character gains [Blocker] and +3000 power"
+    ]
+  }
+}

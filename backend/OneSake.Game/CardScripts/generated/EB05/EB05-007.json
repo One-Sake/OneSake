@@ -1,0 +1,72 @@
+{
+  "cardId": "EB05-007",
+  "status": "manual",
+  "sourceTextHash": "025b9a8f71b38eaa7d7c9daafa4ac207c95490661ce3696db3ef2d020428f7bb",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] You may reveal a total of 3 Event or {Punk Hazard} type cards from your hand: Draw 1 card.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "EndOfYourTurn",
+        "text": "[End of Your Turn] This Character gains +5000 power until the end of your opponent's next End Phase.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "PowerModifier",
+            "amount": 5000,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "UntilEndOfOpponentsNextTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "This Character gains +5000 power until the end of your opponent's next End Phase"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[On Play] You may reveal a total of 3 Event or {Punk Hazard} type cards from your hand: Draw 1 card."
+    ],
+    "failedParts": [
+      "COST: You may reveal a total of 3 Event or {Punk Hazard} type cards from your hand"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP12-066",
+  "status": "manual",
+  "sourceTextHash": "2af14db7f74820ba8d38ad7e3990f2585dba2c5d4eb93875c2c6cb94daedf070",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If you have 4 or more Events in your trash, this Character gains [Blocker].",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If you have 4 or more Events in your trash, this Character gains [Blocker]."
+    ],
+    "failedParts": [
+      "IF: If you have 4 or more Events in your trash, this Character gains [Blocker]"
+    ]
+  }
+}

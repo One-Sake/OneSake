@@ -1,0 +1,16 @@
+{
+  "cardId": "OP02-064",
+  "status": "manual",
+  "sourceTextHash": "fd2bc0ea8ff17e53af3dc67df5e028ce066dfe799fac1c74fe20228c6db8a29d",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] [When Attacking] You may trash 1 card from your hand: Place up to 1 Character with a cost of 2 or less at the bottom of the owner's deck. Then, at the end of this battle, place this Character at the bottom of the owner's deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] [When Attacking] You may trash 1 card from your hand: Place up to 1 Character with a cost of 2 or less at the bottom of the owner's deck. Then, at the end of this battle, place this Character at the bottom of the owner's deck."
+    ],
+    "failedParts": [
+      "At the end of this battle, place this Character at the bottom of the owner's deck"
+    ]
+  }
+}

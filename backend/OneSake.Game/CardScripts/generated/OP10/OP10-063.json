@@ -1,0 +1,16 @@
+{
+  "cardId": "OP10-063",
+  "status": "manual",
+  "sourceTextHash": "f98aed1a283800768f33b7bc6d0a0f2ab66a37a19c5697aae1d2141e8921afbb",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your Leader's type includes \"GERMA\", look at 5 cards from the top of your deck; reveal up to 1 card with a type including {GERMA} and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your Leader's type includes \"GERMA\", look at 5 cards from the top of your deck; reveal up to 1 card with a type including {GERMA} and add it to your hand. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "IF: If your Leader's type includes \"GERMA\", look at 5 cards from the top of your deck; reveal up to 1 card with a type including {GERMA} and add it to your hand"
+    ]
+  }
+}

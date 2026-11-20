@@ -1,0 +1,46 @@
+{
+  "cardId": "ST12-016",
+  "status": "manual",
+  "sourceTextHash": "07d5c66e36c70dbbd9225fd2e69e4327f062c803cad408d1c7fada63bc5ab7a4",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] / [Counter] Rest up to 1 of your opponent's Leader or Character cards with a cost of 4 or less.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Activate this card's [Main] effect.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "ActivateOwnAbility",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "Main",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Activate this card's [Main] effect"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Main] / [Counter] Rest up to 1 of your opponent's Leader or Character cards with a cost of 4 or less."
+    ],
+    "failedParts": [
+      "/ [Counter] Rest up to 1 of your opponent's Leader or Character cards with a cost of 4 or less"
+    ]
+  }
+}

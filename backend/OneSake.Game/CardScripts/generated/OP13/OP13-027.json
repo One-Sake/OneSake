@@ -1,0 +1,46 @@
+{
+  "cardId": "OP13-027",
+  "status": "manual",
+  "sourceTextHash": "de551af143ebdf27f07eeb416be268132d56f001d2b4db3f4d11f0f9f9165065",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [End of Your Turn] If your Leader has the \"FILM\" or {Straw Hat Crew} type, set up to 1 of your DON!! cards as active.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] Set up to 2 of your DON!! cards as active.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "SetDonActive",
+            "amount": 2,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Set up to 2 of your DON!! cards as active"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[End of Your Turn] If your Leader has the \"FILM\" or {Straw Hat Crew} type, set up to 1 of your DON!! cards as active."
+    ],
+    "failedParts": [
+      "IF: If your Leader has the \"FILM\" or {Straw Hat Crew} type, set up to 1 of your DON!! cards as active"
+    ]
+  }
+}

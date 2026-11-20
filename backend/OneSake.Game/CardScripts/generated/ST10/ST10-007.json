@@ -1,0 +1,16 @@
+{
+  "cardId": "ST10-007",
+  "status": "manual",
+  "sourceTextHash": "a2610a749f8c171f10c2c2932a5a1b8032803f27da23d8a94c1b3f90cdea5725",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] [Once Per Turn] When a DON!! card on your field is returned to your DON!! deck, K.O. up to 1 of your opponent's rested Characters with a cost of 3 or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] [Once Per Turn] When a DON!! card on your field is returned to your DON!! deck, K.O. up to 1 of your opponent's rested Characters with a cost of 3 or less."
+    ],
+    "failedParts": [
+      "When a DON!! card on your field is returned to your DON!! deck, K.O. up to 1 of your opponent's rested Characters with a cost of 3 or less"
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "cardId": "OP14-041",
+  "status": "manual",
+  "sourceTextHash": "97813b21c73f34851f00579bb4dd5bde7f6bb193c12b911dfb038699fd56df0a",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Opponent's Turn] When you play a Character, draw 1 card. | [DON!! x1] [Once Per Turn] When one of your {Amazon Lily} or {Kuja Pirates} type Characters with 5000 base power or more is K.O.'d add up to 1 card from the top of your opponent's Life cards to the owner's hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Opponent's Turn] When you play a Character, draw 1 card.",
+      "[DON!! x1] [Once Per Turn] When one of your {Amazon Lily} or {Kuja Pirates} type Characters with 5000 base power or more is K.O.'d add up to 1 card from the top of your opponent's Life cards to the owner's hand."
+    ],
+    "failedParts": [
+      "When you play a Character, draw 1 card",
+      "When one of your {Amazon Lily} or {Kuja Pirates} type Characters with 5000 base power or more is K.O.'d add up to 1 card from the top of your opponent's Life cards to the owner's hand"
+    ]
+  }
+}

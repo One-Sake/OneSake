@@ -1,0 +1,16 @@
+{
+  "cardId": "OP17-050",
+  "status": "manual",
+  "sourceTextHash": "730153421c51e70a832b0175b7b4bc9cbf2573c6fb59bb81276beb3c88266778",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Look at 2 cards from the top of your deck, reorganize them in any order and place them at the top or bottom of your deck. Then, draw 1 card.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Look at 2 cards from the top of your deck, reorganize them in any order and place them at the top or bottom of your deck. Then, draw 1 card."
+    ],
+    "failedParts": [
+      "Look at 2 cards from the top of your deck, reorganize them in any order and place them at the top or bottom of your deck"
+    ]
+  }
+}

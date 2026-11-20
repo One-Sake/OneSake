@@ -1,0 +1,16 @@
+{
+  "cardId": "OP09-017",
+  "status": "manual",
+  "sourceTextHash": "be4ea5ad3eeae97d3e4c835e726900db3648ef1fa96ad9dd344085f3b8d2d7fa",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] If your Leader has 7000 power or more and the {Kid Pirates} type, this Character gains [Rush].",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] If your Leader has 7000 power or more and the {Kid Pirates} type, this Character gains [Rush]."
+    ],
+    "failedParts": [
+      "IF: If your Leader has 7000 power or more and the {Kid Pirates} type, this Character gains [Rush]"
+    ]
+  }
+}

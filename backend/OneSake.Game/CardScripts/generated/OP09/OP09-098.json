@@ -1,0 +1,18 @@
+{
+  "cardId": "OP09-098",
+  "status": "manual",
+  "sourceTextHash": "9d45056c087e58db03ee2a48fb09e9fec9f682cdc8e51377aff1a8245d02052f",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] If your Leader has the {Blackbeard Pirates} type, negate the effect of up to 1 of your opponent's Characters during this turn. Then, if that Character has a cost of 4 or less, K.O. it. | [Trigger] Negate the effect of up to 1 of your opponent's Leader or Character cards during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Main] If your Leader has the {Blackbeard Pirates} type, negate the effect of up to 1 of your opponent's Characters during this turn. Then, if that Character has a cost of 4 or less, K.O. it.",
+      "[Trigger] Negate the effect of up to 1 of your opponent's Leader or Character cards during this turn."
+    ],
+    "failedParts": [
+      "Negate the effect of up to 1 of your opponent's Characters during this turn",
+      "Negate the effect of up to 1 of your opponent's Leader or Character cards during this turn"
+    ]
+  }
+}

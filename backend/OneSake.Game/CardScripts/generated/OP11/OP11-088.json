@@ -1,0 +1,72 @@
+{
+  "cardId": "OP11-088",
+  "status": "manual",
+  "sourceTextHash": "d16dcd31718f983c80c4059a5d97bee9dff635d830ae89a2a08ce685f359f9fa",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Blocker] [Once Per Turn] This effect can be activated when your opponent's Character attacks. If that Character has the attribute, this Character gains +5000 power during this battle.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Static",
+        "text": "[Blocker]",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "GainFlag",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "Permanent",
+            "flag": "Blocker",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "[Blocker]"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Blocker] [Once Per Turn] This effect can be activated when your opponent's Character attacks. If that Character has the attribute, this Character gains +5000 power during this battle."
+    ],
+    "failedParts": [
+      "This effect can be activated when your opponent's Character attacks"
+    ]
+  }
+}

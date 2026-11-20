@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -22,6 +22,10 @@
 
   <ItemGroup>
     <None Include="TestData\**" CopyToOutputDirectory="PreserveNewest" />
+    <!-- Bug report replays, see docs/bug-reports.md. -->
+    <None Include="Replays\**\*.json" CopyToOutputDirectory="PreserveNewest" />
+    <!-- Meta decks and the card fixture for simulations. -->
+    <None Include="Decks\**" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP16-079",
+  "status": "manual",
+  "sourceTextHash": "5ff4e1cb506940cd132a8025c972a2ae3eb9ab3f71b7438e44b54bf157298f5a",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: When a {Land of Wano} type Character card is played from your trash, that Character gains [Rush] during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "When a {Land of Wano} type Character card is played from your trash, that Character gains [Rush] during this turn."
+    ],
+    "failedParts": [
+      "When a {Land of Wano} type Character card is played from your trash, that Character gains [Rush] during this turn"
+    ]
+  }
+}

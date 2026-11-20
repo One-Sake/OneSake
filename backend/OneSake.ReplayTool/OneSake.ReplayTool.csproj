@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Developer tool: exports bug reports and plays recordings (see docs/bug-reports.md). Not deployed. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPublishable>false</IsPublishable>
+  </PropertyGroup>
+
+  <!-- Npgsql pulls in an older EF Core Relational than the other packages; use the newest 8.x. -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OneSake.Server\OneSake.Server.csproj" />
+    <ProjectReference Include="..\OneSake.Persistence\OneSake.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>

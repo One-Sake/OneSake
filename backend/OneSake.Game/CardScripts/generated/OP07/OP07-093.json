@@ -1,0 +1,16 @@
+{
+  "cardId": "OP07-093",
+  "status": "manual",
+  "sourceTextHash": "d3f5d849e25446f25875ec7cd37f2156564bd95e734f478c20c5a4907febc9ae",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] You may place 3 cards from your trash at the bottom of your deck in any order: Your opponent trashes 1 card from their hand. Then, you may place up to 1 card from your opponent's trash at the bottom of their deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] You may place 3 cards from your trash at the bottom of your deck in any order: Your opponent trashes 1 card from their hand. Then, you may place up to 1 card from your opponent's trash at the bottom of their deck."
+    ],
+    "failedParts": [
+      "Place up to 1 card from your opponent's trash at the bottom of their deck"
+    ]
+  }
+}

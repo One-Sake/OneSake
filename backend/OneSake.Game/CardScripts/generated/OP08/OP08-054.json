@@ -1,0 +1,16 @@
+{
+  "cardId": "OP08-054",
+  "status": "manual",
+  "sourceTextHash": "585f425d1611315a009d3a03d0a075d30d3c1ac28c6a3981ef4577171b19f651",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Counter] Up to 1 of your Leader or Character cards gains +3000 power during this battle. Then, reveal 1 card from the top of your deck and play up to 1 Character card with a type including {Whitebeard Piratess} and a cost of 3 or less. Then, place the rest at the top or bottom of your deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Counter] Up to 1 of your Leader or Character cards gains +3000 power during this battle. Then, reveal 1 card from the top of your deck and play up to 1 Character card with a type including {Whitebeard Piratess} and a cost of 3 or less. Then, place the rest at the top or bottom of your deck."
+    ],
+    "failedParts": [
+      "Reveal 1 card from the top of your deck and play up to 1 Character card with a type including {Whitebeard Piratess} and a cost of 3 or less"
+    ]
+  }
+}

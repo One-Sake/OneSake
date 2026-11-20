@@ -1,0 +1,16 @@
+{
+  "cardId": "OP03-027",
+  "status": "manual",
+  "sourceTextHash": "af2672c8dbd83a5a99da3a1febb59f01ecb1f12679ee9cefffb8099964b2eb39",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your Leader has the {East Blue} type, rest up to 1 of your opponent's Characters with a cost of 2 or less and, if you don't have [Buchi], play up to 1 [Buchi] from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your Leader has the {East Blue} type, rest up to 1 of your opponent's Characters with a cost of 2 or less and, if you don't have [Buchi], play up to 1 [Buchi] from your hand."
+    ],
+    "failedParts": [
+      "Rest up to 1 of your opponent's Characters with a cost of 2 or less and, if you don't have [Buchi], play up to 1 [Buchi] from your hand"
+    ]
+  }
+}

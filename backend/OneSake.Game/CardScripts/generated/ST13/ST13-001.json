@@ -1,0 +1,16 @@
+{
+  "cardId": "ST13-001",
+  "status": "manual",
+  "sourceTextHash": "49329cc843d32d9d16f673404599322a00b342421a103fa2061bb75fc46208e1",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] [Activate: Main] [Once Per Turn] You may add 1 of your Characters with a cost of 3 or more and 7000 power or more to the top of your Life cards face-up: Up to 1 of your Characters gains +2000 power until the start of your next turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] [Activate: Main] [Once Per Turn] You may add 1 of your Characters with a cost of 3 or more and 7000 power or more to the top of your Life cards face-up: Up to 1 of your Characters gains +2000 power until the start of your next turn."
+    ],
+    "failedParts": [
+      "COST: You may add 1 of your Characters with a cost of 3 or more and 7000 power or more to the top of your Life cards face-up"
+    ]
+  }
+}

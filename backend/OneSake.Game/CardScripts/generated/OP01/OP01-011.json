@@ -1,0 +1,16 @@
+{
+  "cardId": "OP01-011",
+  "status": "manual",
+  "sourceTextHash": "2802e961d8349b517646e8ecc138b84ba7781817996b229ee239757b16587c12",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] You may place 1 card from your hand at the bottom of your deck: Draw 1 card.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] You may place 1 card from your hand at the bottom of your deck: Draw 1 card."
+    ],
+    "failedParts": [
+      "COST: You may place 1 card from your hand at the bottom of your deck"
+    ]
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "cardId": "OP06-116",
+  "status": "manual",
+  "sourceTextHash": "76999d892fada4cc359494ee827d5473a7e99912a49f6597e292bf7042d50e7a",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] Choose one: . K.O. up to 1 of your opponent's Characters with a cost of 5 or less. . If your opponent has 1 Life card, deal 1 damage to your opponent. Then, add 1 card from the top of your Life cards to your hand.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Draw 1 cards.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Draw 1 cards"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Main] Choose one: . K.O. up to 1 of your opponent's Characters with a cost of 5 or less. . If your opponent has 1 Life card, deal 1 damage to your opponent. Then, add 1 card from the top of your Life cards to your hand."
+    ],
+    "failedParts": [
+      "COST: Choose one"
+    ]
+  }
+}

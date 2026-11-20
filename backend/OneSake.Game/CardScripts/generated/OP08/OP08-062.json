@@ -1,0 +1,16 @@
+{
+  "cardId": "OP08-062",
+  "status": "manual",
+  "sourceTextHash": "98c8321ccba5a041e6d6de5228505ee1b76e051b13fdc2b6ec313c5872ccec67",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may trash this Character: If your Leader has the {Big Mom Pirates} type, play up to 1 [Charlotte Katakuri] from your hand with a cost of 3 or more that is equal to or less than the number of DON!! cards on your opponent's field.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may trash this Character: If your Leader has the {Big Mom Pirates} type, play up to 1 [Charlotte Katakuri] from your hand with a cost of 3 or more that is equal to or less than the number of DON!! cards on your opponent's field."
+    ],
+    "failedParts": [
+      "Play up to 1 [Charlotte Katakuri] from your hand with a cost of 3 or more that is equal to or less than the number of DON!! cards on your opponent's field"
+    ]
+  }
+}

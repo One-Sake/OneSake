@@ -1,0 +1,16 @@
+{
+  "cardId": "EB03-039",
+  "status": "manual",
+  "sourceTextHash": "6dba8f03cc7c8824ad60fa59dacb52589faf1f14295e17cb827b5dc2a501972c",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your Leader has the {Animal Kingdom Pirates} type, draw 1 card and trash 1 card from your hand. Then, play up to 1 Character card with 6000 power or less and no base effect from your trash.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your Leader has the {Animal Kingdom Pirates} type, draw 1 card and trash 1 card from your hand. Then, play up to 1 Character card with 6000 power or less and no base effect from your trash."
+    ],
+    "failedParts": [
+      "Play up to 1 Character card with 6000 power or less and no base effect from your trash"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP13-034",
+  "status": "manual",
+  "sourceTextHash": "ac587f7569c0e6ee23c07f1ac95b937f49a2a6ef7129b0e15fedd7c2083dd6e0",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your Leader has the \"FILM\" or {Straw Hat Crew} type, set up to 1 of your DON!! cards as active.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your Leader has the \"FILM\" or {Straw Hat Crew} type, set up to 1 of your DON!! cards as active."
+    ],
+    "failedParts": [
+      "IF: If your Leader has the \"FILM\" or {Straw Hat Crew} type, set up to 1 of your DON!! cards as active"
+    ]
+  }
+}

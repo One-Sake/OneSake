@@ -1,0 +1,16 @@
+{
+  "cardId": "OP17-021",
+  "status": "manual",
+  "sourceTextHash": "3d62e9d949cb010f050a632f79f2c48495a4596ade20f610c5a8bf66ff14519f",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If your Character with a type including {Red-Haired Pirates} would be removed from the field by your opponent's effect, you may rest 1 of your cards instead.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If your Character with a type including {Red-Haired Pirates} would be removed from the field by your opponent's effect, you may rest 1 of your cards instead."
+    ],
+    "failedParts": [
+      "IF: If your Character with a type including {Red-Haired Pirates} would be removed from the field by your opponent's effect, you may rest 1 of your cards instead"
+    ]
+  }
+}

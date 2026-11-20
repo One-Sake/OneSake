@@ -1,0 +1,16 @@
+{
+  "cardId": "OP09-045",
+  "status": "manual",
+  "sourceTextHash": "450fcf6bd48fa9f585e1ca3728b59f3738118c974f099ceef70857bb4f5bf76f",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If you have a [Buggy] or [Mohji] Character, this Character cannot be K.O.'d in battle.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If you have a [Buggy] or [Mohji] Character, this Character cannot be K.O.'d in battle."
+    ],
+    "failedParts": [
+      "IF: If you have a [Buggy] or [Mohji] Character, this Character cannot be K.O.'d in battle"
+    ]
+  }
+}

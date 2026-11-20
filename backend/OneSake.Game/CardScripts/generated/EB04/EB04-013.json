@@ -1,0 +1,16 @@
+{
+  "cardId": "EB04-013",
+  "status": "manual",
+  "sourceTextHash": "f95d975d82082ef5bc42bd767d307b6dec7fbf8ba03934804a552fc2cb42ccda",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your Leader has the {Minks} type, set up to 2 of your {Minks} type Characters and your Leader as active.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your Leader has the {Minks} type, set up to 2 of your {Minks} type Characters and your Leader as active."
+    ],
+    "failedParts": [
+      "Set up to 2 of your {Minks} type Characters and your Leader as active"
+    ]
+  }
+}

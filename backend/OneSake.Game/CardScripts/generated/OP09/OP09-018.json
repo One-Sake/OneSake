@@ -1,0 +1,16 @@
+{
+  "cardId": "OP09-018",
+  "status": "manual",
+  "sourceTextHash": "d01290c34dd012929e4dd0da083d1b7aadbf7bc5ae2d8a1da49a86bfa92ab77b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] K.O. up to 2 of your opponent's Characters with a total power of 4000 or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Main] K.O. up to 2 of your opponent's Characters with a total power of 4000 or less."
+    ],
+    "failedParts": [
+      "K.O. up to 2 of your opponent's Characters with a total power of 4000 or less"
+    ]
+  }
+}

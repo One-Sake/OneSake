@@ -1,0 +1,16 @@
+{
+  "cardId": "OP03-043",
+  "status": "manual",
+  "sourceTextHash": "b2da45022c8f6580de1ef1a35f87f13d9bbc36ea23f02508b105ab68208edbb4",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: When you deal damage to your opponent's Life, you may trash 3 cards from the top of your deck. If you do, trash this Character.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "When you deal damage to your opponent's Life, you may trash 3 cards from the top of your deck. If you do, trash this Character."
+    ],
+    "failedParts": [
+      "When you deal damage to your opponent's Life, you may trash 3 cards from the top of your deck"
+    ]
+  }
+}

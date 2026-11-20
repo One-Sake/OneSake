@@ -1,0 +1,16 @@
+{
+  "cardId": "OP05-062",
+  "status": "manual",
+  "sourceTextHash": "0499f7eab21e448726f94bcbcf9eb26130f18957600a6a50f027ae6870841d90",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If you have 10 DON!! cards on your field, this Character gains [Blocker].",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If you have 10 DON!! cards on your field, this Character gains [Blocker]."
+    ],
+    "failedParts": [
+      "IF: If you have 10 DON!! cards on your field, this Character gains [Blocker]"
+    ]
+  }
+}

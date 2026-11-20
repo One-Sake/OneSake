@@ -1,0 +1,16 @@
+{
+  "cardId": "EB03-031",
+  "status": "manual",
+  "sourceTextHash": "39b898afb06bb322a81eb3cc0ef89cbad1d6a364cb74f560bb4d1d26c76bbb19",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] [On Play] DON!! 1: If your Leader is [Sanji], activate the [Main] effect of up to 1 Event card with a cost of 7 or less in your trash.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] [On Play] DON!! 1: If your Leader is [Sanji], activate the [Main] effect of up to 1 Event card with a cost of 7 or less in your trash."
+    ],
+    "failedParts": [
+      "Activate the [Main] effect of up to 1 Event card with a cost of 7 or less in your trash"
+    ]
+  }
+}

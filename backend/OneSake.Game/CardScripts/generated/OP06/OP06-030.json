@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-030",
+  "status": "manual",
+  "sourceTextHash": "40b9cae7b3504b0571b7142a774155b8a0a5d428514e92535a152fd40d8405d2",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking] If your Leader has the {New Fish-Man Pirates} type, this Character cannot be K.O.'d in battle and gains +2000 power until the start of your next turn. Then, add 1 card from the top of your Life cards to your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[When Attacking] If your Leader has the {New Fish-Man Pirates} type, this Character cannot be K.O.'d in battle and gains +2000 power until the start of your next turn. Then, add 1 card from the top of your Life cards to your hand."
+    ],
+    "failedParts": [
+      "This Character cannot be K.O.'d in battle and gains +2000 power until the start of your next turn"
+    ]
+  }
+}

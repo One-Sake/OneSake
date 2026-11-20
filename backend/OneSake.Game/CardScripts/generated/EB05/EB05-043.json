@@ -1,0 +1,16 @@
+{
+  "cardId": "EB05-043",
+  "status": "manual",
+  "sourceTextHash": "8620bbf33c894a699c3eb6afc5334fb1ffb565b5cf405131e66e479f17427eba",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On K.O.] K.O. or rest up to 1 of your opponent's Characters with a cost of 6 or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On K.O.] K.O. or rest up to 1 of your opponent's Characters with a cost of 6 or less."
+    ],
+    "failedParts": [
+      "K.O. or rest up to 1 of your opponent's Characters with a cost of 6 or less"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-119",
+  "status": "manual",
+  "sourceTextHash": "dcf6b9ced2aca576305565b4f4a73464cd4ed5622dca3d08ef85ca1bfeccaf90",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Reveal 1 card from the top of your deck and play up to 1 Character with a cost of 9 or less other than [Sanji]. Then, place the rest at the bottom of your deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Reveal 1 card from the top of your deck and play up to 1 Character with a cost of 9 or less other than [Sanji]. Then, place the rest at the bottom of your deck."
+    ],
+    "failedParts": [
+      "Reveal 1 card from the top of your deck and play up to 1 Character with a cost of 9 or less other than [Sanji]"
+    ]
+  }
+}

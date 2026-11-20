@@ -1,0 +1,16 @@
+{
+  "cardId": "OP01-004",
+  "status": "manual",
+  "sourceTextHash": "25890c65e68a6657db8a85e05142769fbb357289cf521446be74b5f24420386b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] [Your Turn] [Once Per Turn] Draw 1 card when your opponent activates an Event.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] [Your Turn] [Once Per Turn] Draw 1 card when your opponent activates an Event."
+    ],
+    "failedParts": [
+      "Draw 1 card when your opponent activates an Event"
+    ]
+  }
+}

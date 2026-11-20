@@ -1,0 +1,16 @@
+{
+  "cardId": "OP12-069",
+  "status": "manual",
+  "sourceTextHash": "2b170fbd417de898fb8db9da76ff6b3b1a56e180ca1783f9979a8a35413d1ee8",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Your Opponent's Attack] [Once Per Turn] DON!! 1: If your Leader's type includes \"Baroque Works\", up to 1 of your Leader or Character cards gains +2000 power during this battle.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Your Opponent's Attack] [Once Per Turn] DON!! 1: If your Leader's type includes \"Baroque Works\", up to 1 of your Leader or Character cards gains +2000 power during this battle."
+    ],
+    "failedParts": [
+      "IF: If your Leader's type includes \"Baroque Works\", up to 1 of your Leader or Character cards gains +2000 power during this battle"
+    ]
+  }
+}

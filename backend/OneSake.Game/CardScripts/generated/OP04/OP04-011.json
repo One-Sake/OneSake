@@ -1,0 +1,16 @@
+{
+  "cardId": "OP04-011",
+  "status": "manual",
+  "sourceTextHash": "32a8dc9f5078db683d5960c10a21b8f8f6e55352d986e2e1d89516f05a1c3981",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking] Reveal 1 card from the top of your deck. If the revealed card is a Character card with 6000 power or more, this Character gains +3000 power during this turn. Then, place the revealed card at the bottom of your deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[When Attacking] Reveal 1 card from the top of your deck. If the revealed card is a Character card with 6000 power or more, this Character gains +3000 power during this turn. Then, place the revealed card at the bottom of your deck."
+    ],
+    "failedParts": [
+      "Reveal 1 card from the top of your deck"
+    ]
+  }
+}

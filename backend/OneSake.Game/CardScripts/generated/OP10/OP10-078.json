@@ -1,0 +1,16 @@
+{
+  "cardId": "OP10-078",
+  "status": "manual",
+  "sourceTextHash": "611191ad972fb6b230e3ff3890290ce0f08852108d029dfe86a4e863c2d01d9f",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main]/[Counter] Look at 3 cards from the top of your deck; reveal up to 1 {Donquixote Pirates} type card other than [I Do Not Forgive Those Who Laugh at My Family!!!] and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Main]/[Counter] Look at 3 cards from the top of your deck; reveal up to 1 {Donquixote Pirates} type card other than [I Do Not Forgive Those Who Laugh at My Family!!!] and add it to your hand. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "/[Counter] Look at 3 cards from the top of your deck; reveal up to 1 {Donquixote Pirates} type card other than [I Do Not Forgive Those Who Laugh at My Family!!!] and add it to your hand"
+    ]
+  }
+}

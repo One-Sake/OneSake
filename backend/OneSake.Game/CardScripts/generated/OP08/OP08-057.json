@@ -1,0 +1,16 @@
+{
+  "cardId": "OP08-057",
+  "status": "manual",
+  "sourceTextHash": "a3d3ae8571b8aec907be9b6d14eeea6ca9ba0ca372a16198a5fb853ce2126587",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] DON!! 2: Choose one: . If you have 5 or less cards in your hand, draw 1 card. . Give up to 1 of your opponent's Characters 2 cost during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] DON!! 2: Choose one: . If you have 5 or less cards in your hand, draw 1 card. . Give up to 1 of your opponent's Characters 2 cost during this turn."
+    ],
+    "failedParts": [
+      "Choose one:"
+    ]
+  }
+}

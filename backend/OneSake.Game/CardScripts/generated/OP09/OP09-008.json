@@ -1,0 +1,16 @@
+{
+  "cardId": "OP09-008",
+  "status": "manual",
+  "sourceTextHash": "122de3c08c9ddf43e51eaaba0c6d76ea41d6ff9f50f9ccfa4d9ed99e76a6016f",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may place this Character at the bottom of the owner's deck: Give up to 1 of your opponent's Characters 3000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may place this Character at the bottom of the owner's deck: Give up to 1 of your opponent's Characters 3000 power during this turn."
+    ],
+    "failedParts": [
+      "COST: You may place this Character at the bottom of the owner's deck"
+    ]
+  }
+}

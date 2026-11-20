@@ -1,0 +1,16 @@
+{
+  "cardId": "EB05-028",
+  "status": "manual",
+  "sourceTextHash": "6977db9e7e165af81b79e784c5dcac18021b722c42c8077bf9169e1820c17923",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] If your opponent has 9 or more cards in their hand, they trash 4 cards from their hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] If your opponent has 9 or more cards in their hand, they trash 4 cards from their hand."
+    ],
+    "failedParts": [
+      "They trash 4 cards from their hand"
+    ]
+  }
+}

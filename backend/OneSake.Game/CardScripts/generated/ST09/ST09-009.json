@@ -1,0 +1,16 @@
+{
+  "cardId": "ST09-009",
+  "status": "manual",
+  "sourceTextHash": "572332bf636e04c444c6e8ceeb5f2bc6286ff0a0b97841ca89b3aca88b9277bf",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Trigger] K.O. up to 1 of your opponent's Characters with a cost of 1 or less and add this card to your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Trigger] K.O. up to 1 of your opponent's Characters with a cost of 1 or less and add this card to your hand."
+    ],
+    "failedParts": [
+      "K.O. up to 1 of your opponent's Characters with a cost of 1 or less and add this card to your hand"
+    ]
+  }
+}

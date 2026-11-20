@@ -1,0 +1,16 @@
+{
+  "cardId": "EB02-039",
+  "status": "manual",
+  "sourceTextHash": "80a113e8c1f8de8ad8dbf81e659c43b75f0c331052aa31291dcbc640d3aa09cd",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] You may trash 1 {GERMA 66} type Character card with 4000 power or less from your hand: If the number of DON!! cards on your field is equal to or less than the number on your opponent's field, play up to 1 Character card with 5000 to 7000 power and the same card name as the trashed card from your trash.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Main] You may trash 1 {GERMA 66} type Character card with 4000 power or less from your hand: If the number of DON!! cards on your field is equal to or less than the number on your opponent's field, play up to 1 Character card with 5000 to 7000 power and the same card name as the trashed card from your trash."
+    ],
+    "failedParts": [
+      "Play up to 1 Character card with 5000 to 7000 power and the same card name as the trashed card from your trash"
+    ]
+  }
+}

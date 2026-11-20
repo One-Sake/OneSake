@@ -1,0 +1,46 @@
+{
+  "cardId": "ST03-010",
+  "status": "manual",
+  "sourceTextHash": "f5269c282863c4845cacd398fc755153a8f7149495f019ac41b5cda5dfd60d03",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Look at 3 cards from the top of your deck and return them to the top or bottom of the deck in any order.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Play this card.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "PlayThisCard",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Play this card"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[On Play] Look at 3 cards from the top of your deck and return them to the top or bottom of the deck in any order."
+    ],
+    "failedParts": [
+      "Look at 3 cards from the top of your deck and return them to the top or bottom of the deck in any order"
+    ]
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "cardId": "OP16-063",
+  "status": "manual",
+  "sourceTextHash": "db134dbeee65076113f086341b34d4c74d7db7e7eece4b6ed5d34b31270e8db5",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] [Once Per Turn] DON!! 1: Up to 1 of your opponent's Characters cannot activate [Blocker] during this turn.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] Add up to 2 DON!! cards from your DON!! deck and rest them.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "AddDonFromDeck",
+            "amount": 2,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": true,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Add up to 2 DON!! cards from your DON!! deck and rest them"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Activate: Main] [Once Per Turn] DON!! 1: Up to 1 of your opponent's Characters cannot activate [Blocker] during this turn."
+    ],
+    "failedParts": [
+      "Up to 1 of your opponent's Characters cannot activate [Blocker] during this turn"
+    ]
+  }
+}

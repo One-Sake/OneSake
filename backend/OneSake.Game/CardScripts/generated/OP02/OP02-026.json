@@ -1,0 +1,16 @@
+{
+  "cardId": "OP02-026",
+  "status": "manual",
+  "sourceTextHash": "52113a378aa298aa574c621a12db2c7b579264a8e1a9a5e2200bc819b0a36f50",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Once Per Turn] When you play a Character with no base effect from your hand, if you have 3 or less Characters, set up to 2 of your DON!! cards as active.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Once Per Turn] When you play a Character with no base effect from your hand, if you have 3 or less Characters, set up to 2 of your DON!! cards as active."
+    ],
+    "failedParts": [
+      "When you play a Character with no base effect from your hand, if you have 3 or less Characters, set up to 2 of your DON!! cards as active"
+    ]
+  }
+}

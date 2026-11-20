@@ -1,0 +1,16 @@
+{
+  "cardId": "OP02-013",
+  "status": "manual",
+  "sourceTextHash": "2843f9411b4327247ea67f6af260e33116c66a53dd40ca79be98f9caf1f4bbf8",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Give up to 2 of your opponent's Characters -3000 power during this turn. Then, if your Leader's type includes \"Whitebeard Pirates\", this Character gains [Rush] during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Give up to 2 of your opponent's Characters -3000 power during this turn. Then, if your Leader's type includes \"Whitebeard Pirates\", this Character gains [Rush] during this turn."
+    ],
+    "failedParts": [
+      "IF: If your Leader's type includes \"Whitebeard Pirates\", this Character gains [Rush] during this turn"
+    ]
+  }
+}

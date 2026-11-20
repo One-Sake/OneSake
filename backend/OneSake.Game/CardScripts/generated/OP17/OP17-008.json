@@ -1,0 +1,16 @@
+{
+  "cardId": "OP17-008",
+  "status": "manual",
+  "sourceTextHash": "6af1002b4c0e8c777341d6a06d2204c7724220e04a73a0a74ac773e30680e489",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Your [Edward.Newgate] Leader's base power becomes 8000 until the end of your opponent's next End Phase.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Your [Edward.Newgate] Leader's base power becomes 8000 until the end of your opponent's next End Phase."
+    ],
+    "failedParts": [
+      "Your [Edward.Newgate] Leader's base power becomes 8000 until the end of your opponent's next End Phase"
+    ]
+  }
+}

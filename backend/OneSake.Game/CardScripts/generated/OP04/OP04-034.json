@@ -1,0 +1,16 @@
+{
+  "cardId": "OP04-034",
+  "status": "manual",
+  "sourceTextHash": "6675b7e6c1dcf3fc348dbe04471c0de12b5a2ef56e3c45a82cb9d0bdc272e64e",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [End of Your Turn] If you have 3 or more active DON!! cards, K.O. up to 1 of your opponent's rested Characters with a cost of 3 or less.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[End of Your Turn] If you have 3 or more active DON!! cards, K.O. up to 1 of your opponent's rested Characters with a cost of 3 or less."
+    ],
+    "failedParts": [
+      "IF: If you have 3 or more active DON!! cards, K.O. up to 1 of your opponent's rested Characters with a cost of 3 or less"
+    ]
+  }
+}

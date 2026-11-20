@@ -1,0 +1,16 @@
+{
+  "cardId": "OP09-076",
+  "status": "manual",
+  "sourceTextHash": "8526858fe593f91a32bb6abde11a04e19deb0d3814250f07d05d1fd4e6fff1a5",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] You may return 1 or more DON!! cards from your field to your DON!! deck: Add up to 1 DON!! card from your DON!! deck and set it as active.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] You may return 1 or more DON!! cards from your field to your DON!! deck: Add up to 1 DON!! card from your DON!! deck and set it as active."
+    ],
+    "failedParts": [
+      "COST: You may return 1 or more DON!! cards from your field to your DON!! deck"
+    ]
+  }
+}

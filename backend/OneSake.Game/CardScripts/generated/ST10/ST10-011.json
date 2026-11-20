@@ -1,0 +1,16 @@
+{
+  "cardId": "ST10-011",
+  "status": "manual",
+  "sourceTextHash": "c48fee9dfa5824f2887e023a37d6616a0f210e06ad256ad9d05ebf7007fab904",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Your Turn] [Once Per Turn] When a DON!! card on your field is returned to your DON!! deck, this Character gains +2000 power until the start of your next turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Your Turn] [Once Per Turn] When a DON!! card on your field is returned to your DON!! deck, this Character gains +2000 power until the start of your next turn."
+    ],
+    "failedParts": [
+      "When a DON!! card on your field is returned to your DON!! deck, this Character gains +2000 power until the start of your next turn"
+    ]
+  }
+}

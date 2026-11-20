@@ -1,0 +1,16 @@
+{
+  "cardId": "OP10-091",
+  "status": "manual",
+  "sourceTextHash": "1e3887d77699641f856c7efb725da4bd8b47b7b952d47e8f1ce24ca235ce6394",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Activate: Main] You may rest this Character and 1 of your {Dressrosa} type Leader or Stage cards: K.O. up to 1 of your opponent's Characters with a cost of 1 or less. Then, trash 2 cards from the top of your deck.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Activate: Main] You may rest this Character and 1 of your {Dressrosa} type Leader or Stage cards: K.O. up to 1 of your opponent's Characters with a cost of 1 or less. Then, trash 2 cards from the top of your deck."
+    ],
+    "failedParts": [
+      "COST: You may rest this Character and 1 of your {Dressrosa} type Leader or Stage cards"
+    ]
+  }
+}

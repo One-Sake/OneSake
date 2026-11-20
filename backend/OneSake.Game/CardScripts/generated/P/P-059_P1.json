@@ -1,0 +1,16 @@
+{
+  "cardId": "P-059_P1",
+  "status": "manual",
+  "sourceTextHash": "8cfb6b0ad4576eae5173ea08c1c537637cc7cc6d2651666717e7d7e09d00fceb",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Counter] If your Leader is [Uta], you may return any number of Characters on your field to the owner's hand. Up to 1 of your Leader or Character cards gains +2000 power during this battle for every returned Character.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Counter] If your Leader is [Uta], you may return any number of Characters on your field to the owner's hand. Up to 1 of your Leader or Character cards gains +2000 power during this battle for every returned Character."
+    ],
+    "failedParts": [
+      "Return any number of Characters on your field to the owner's hand"
+    ]
+  }
+}

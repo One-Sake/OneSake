@@ -1,0 +1,16 @@
+{
+  "cardId": "OP07-002",
+  "status": "manual",
+  "sourceTextHash": "43401724831e868f020511eadf6bdb531b067a2838aaf41441aebed9542624cd",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Set the power of up to 1 of your opponent's Characters to 0 during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Set the power of up to 1 of your opponent's Characters to 0 during this turn."
+    ],
+    "failedParts": [
+      "Set the power of up to 1 of your opponent's Characters to 0 during this turn"
+    ]
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "cardId": "OP02-066",
+  "status": "manual",
+  "sourceTextHash": "e1bb12775223928f1f2566d242a72f9c6c3ebac72744567db71f29e6fda1563c",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Main] You may trash 2 cards from your hand: If your Leader has the {Impel Down} type, draw up to 2 cards.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Trigger",
+        "text": "[Trigger] Draw 2 cards.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 2,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Draw 2 cards"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Main] You may trash 2 cards from your hand: If your Leader has the {Impel Down} type, draw up to 2 cards."
+    ],
+    "failedParts": [
+      "Draw up to 2 cards"
+    ]
+  }
+}

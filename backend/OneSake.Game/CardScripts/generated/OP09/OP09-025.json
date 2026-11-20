@@ -1,0 +1,16 @@
+{
+  "cardId": "OP09-025",
+  "status": "manual",
+  "sourceTextHash": "5f5b3d79228073f7f4fb0f8ab91a2c5d7a044ceccb936c04a8b65ee12a417d4f",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If your Leader has the {ODYSSEY} type, this Character cannot be K.O.'d in battle by Leaders.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If your Leader has the {ODYSSEY} type, this Character cannot be K.O.'d in battle by Leaders."
+    ],
+    "failedParts": [
+      "This Character cannot be K.O.'d in battle by Leaders"
+    ]
+  }
+}

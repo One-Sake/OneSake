@@ -1,0 +1,72 @@
+{
+  "cardId": "ST32-005",
+  "status": "manual",
+  "sourceTextHash": "19c2487ab9718138e1f7ea5f1870672088ae49ee5e74c146e155381d9b3e10c9",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Rush: Character] [On Play] If your Leader has the attribute, rest up to 1 of your opponent's Characters with a cost of 2 or less.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "Static",
+        "text": "[RushCharacter]",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "GainFlag",
+            "amount": 0,
+            "secondAmount": 0,
+            "optional": false,
+            "target": {
+              "count": 1,
+              "upTo": false,
+              "all": false,
+              "self": true,
+              "yourLeader": false,
+              "previous": false,
+              "filter": {
+                "owner": "You",
+                "allowLeader": false,
+                "allowCharacter": true,
+                "allowStage": false,
+                "category": "",
+                "useBaseValues": false,
+                "typeIncludes": "",
+                "name": "",
+                "nameNot": "",
+                "color": "",
+                "attribute": "",
+                "keyword": "",
+                "excludeSource": false,
+                "requiresTrigger": false,
+                "nameOrType": false,
+                "maxCostFrom": ""
+              }
+            },
+            "zone": "Field",
+            "duration": "Permanent",
+            "flag": "RushCharacter",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "[RushCharacter]"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "[Rush: Character] [On Play] If your Leader has the attribute, rest up to 1 of your opponent's Characters with a cost of 2 or less."
+    ],
+    "failedParts": [
+      "IF: If your Leader has the attribute, rest up to 1 of your opponent's Characters with a cost of 2 or less"
+    ]
+  }
+}

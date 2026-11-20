@@ -1,0 +1,18 @@
+{
+  "cardId": "EB05-021",
+  "status": "manual",
+  "sourceTextHash": "f460fe0ecc5df615e475e1bf6a53551baa9d9a50e561b7f36595b2c05786e6de",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Draw 2 cards and play up to 1 {Cross Guild} type Character card with a cost of 8 or less from your hand. Then, you cannot play Character cards during this turn. | [When Attacking] Negate the effect of up to 1 of your opponent's Characters during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Draw 2 cards and play up to 1 {Cross Guild} type Character card with a cost of 8 or less from your hand. Then, you cannot play Character cards during this turn.",
+      "[When Attacking] Negate the effect of up to 1 of your opponent's Characters during this turn."
+    ],
+    "failedParts": [
+      "You cannot play Character cards during this turn",
+      "Negate the effect of up to 1 of your opponent's Characters during this turn"
+    ]
+  }
+}

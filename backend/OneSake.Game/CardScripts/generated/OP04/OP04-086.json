@@ -1,0 +1,16 @@
+{
+  "cardId": "OP04-086",
+  "status": "manual",
+  "sourceTextHash": "2349258f58e7ebf6f82f0a6216cf803c8800219a46ef1b3737f8be7b53520564",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [DON!! x1] When this Character battles and K.O.'s your opponent's Character, draw 2 cards and trash 2 cards from your hand.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[DON!! x1] When this Character battles and K.O.'s your opponent's Character, draw 2 cards and trash 2 cards from your hand."
+    ],
+    "failedParts": [
+      "When this Character battles and K.O.'s your opponent's Character, draw 2 cards and trash 2 cards from your hand"
+    ]
+  }
+}

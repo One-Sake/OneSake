@@ -1,0 +1,16 @@
+{
+  "cardId": "OP13-056",
+  "status": "manual",
+  "sourceTextHash": "d1f84816c8ffc47a519538596a9862c036f42ec2cf952179dea460333e0646dd",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking] If your Leader's type includes \"Whitebeard Pirates\", draw 1 card.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[When Attacking] If your Leader's type includes \"Whitebeard Pirates\", draw 1 card."
+    ],
+    "failedParts": [
+      "IF: If your Leader's type includes \"Whitebeard Pirates\", draw 1 card"
+    ]
+  }
+}

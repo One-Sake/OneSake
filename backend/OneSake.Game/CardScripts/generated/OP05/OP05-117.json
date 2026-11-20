@@ -1,0 +1,16 @@
+{
+  "cardId": "OP05-117",
+  "status": "manual",
+  "sourceTextHash": "da6bbc34ce4f6a9452d0a02578a2924d1656628d0e5bf42e951ec2ec9160987d",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Look at the top 5 cards of your deck; reveal up to 1 {Sky Island} type card and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Look at the top 5 cards of your deck; reveal up to 1 {Sky Island} type card and add it to your hand. Then, place the rest at the bottom of your deck in any order."
+    ],
+    "failedParts": [
+      "Look at the top 5 cards of your deck; reveal up to 1 {Sky Island} type card and add it to your hand"
+    ]
+  }
+}

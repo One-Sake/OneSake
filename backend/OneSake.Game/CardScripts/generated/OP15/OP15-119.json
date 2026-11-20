@@ -1,0 +1,16 @@
+{
+  "cardId": "OP15-119",
+  "status": "manual",
+  "sourceTextHash": "853df6dce2f276bae85ff77c6211fb0d0a7d5c9db1d35982a3621b075ad3e0cb",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If you have 6 or more DON!! cards on your field, this Character gains [Rush]. When your opponent activates an Event or [Blocker], reveal up to 1 card from the top of your Life cards. This Character gains +1000 power during this turn per 1 cost on the revealed card.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If you have 6 or more DON!! cards on your field, this Character gains [Rush]. When your opponent activates an Event or [Blocker], reveal up to 1 card from the top of your Life cards. This Character gains +1000 power during this turn per 1 cost on the revealed card."
+    ],
+    "failedParts": [
+      "When your opponent activates an Event or [Blocker], reveal up to 1 card from the top of your Life cards"
+    ]
+  }
+}

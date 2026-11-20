@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-047",
+  "status": "manual",
+  "sourceTextHash": "6e10ef1a5bb8abc2dc6f7be0e0186ea315e115ec0ba68e7a809dd763af759e94",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [On Play] Your opponent returns all cards in their hand to their deck and shuffles their deck. Then, your opponent draws 5 cards.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[On Play] Your opponent returns all cards in their hand to their deck and shuffles their deck. Then, your opponent draws 5 cards."
+    ],
+    "failedParts": [
+      "Your opponent returns all cards in their hand to their deck and shuffles their deck"
+    ]
+  }
+}

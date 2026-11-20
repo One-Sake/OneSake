@@ -1,0 +1,18 @@
+{
+  "cardId": "OP17-063",
+  "status": "manual",
+  "sourceTextHash": "b1b9f43329e4acb05f8aab4d03659ce5a6cfe2365bfd2919e1c14894f515d71b",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: All Character cards in your hand without a Counter have a +1000 Counter. | [Activate: Main] [Once Per Turn] DON!! -1: If this Character was played on this turn, negate the effect of up to 1 of your opponent's Characters with a cost of 6 or less during this turn, and K.O. it.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "All Character cards in your hand without a Counter have a +1000 Counter.",
+      "[Activate: Main] [Once Per Turn] DON!! -1: If this Character was played on this turn, negate the effect of up to 1 of your opponent's Characters with a cost of 6 or less during this turn, and K.O. it."
+    ],
+    "failedParts": [
+      "All Character cards in your hand without a Counter have a +1000 Counter",
+      "IF: If this Character was played on this turn, negate the effect of up to 1 of your opponent's Characters with a cost of 6 or less during this turn, and K.O. it"
+    ]
+  }
+}

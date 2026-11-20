@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-103",
+  "status": "manual",
+  "sourceTextHash": "6be078f15ba99e6d37748cb1221cf732717ecb78c6d23acde216cbb5cfc5e4c1",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [When Attacking] You may trash 2 cards from your hand: Add up to 1 of your Characters with 0 power to the top or bottom of the owner's Life cards face-up.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[When Attacking] You may trash 2 cards from your hand: Add up to 1 of your Characters with 0 power to the top or bottom of the owner's Life cards face-up."
+    ],
+    "failedParts": [
+      "Add up to 1 of your Characters with 0 power to the top or bottom of the owner's Life cards face-up"
+    ]
+  }
+}

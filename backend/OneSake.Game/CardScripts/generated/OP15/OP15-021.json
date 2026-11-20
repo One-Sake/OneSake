@@ -1,0 +1,18 @@
+{
+  "cardId": "OP15-021",
+  "status": "manual",
+  "sourceTextHash": "dcf25f453698f53faf06228470e25f1ac41d728bfc24842f1fcfa041ab27b4f8",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If you have 4 or more Events in your trash, give this card in your hand -3 cost. | [Main]/[Counter] Give up to 1 of your opponent's Characters -3000 power during this turn.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If you have 4 or more Events in your trash, give this card in your hand -3 cost.",
+      "[Main]/[Counter] Give up to 1 of your opponent's Characters -3000 power during this turn."
+    ],
+    "failedParts": [
+      "IF: If you have 4 or more Events in your trash, give this card in your hand -3 cost",
+      "/[Counter] Give up to 1 of your opponent's Characters -3000 power during this turn"
+    ]
+  }
+}

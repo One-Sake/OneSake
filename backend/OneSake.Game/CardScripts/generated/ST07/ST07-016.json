@@ -1,0 +1,18 @@
+{
+  "cardId": "ST07-016",
+  "status": "manual",
+  "sourceTextHash": "3aa9115247801b80305e918793095f6f694baf869667e15a1de1e66eb7326642",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: [Counter] Look at up to 1 card from the top of your or your opponent's Life cards, and place it at the top or bottom of the Life cards. Then, up to 1 of your Leader or Character cards gains +2000 power during this battle. | [Trigger] Draw 1 card, look at up to 1 card from the top of your opponent's Life cards, and place it at the top or bottom of the Life cards.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "[Counter] Look at up to 1 card from the top of your or your opponent's Life cards, and place it at the top or bottom of the Life cards. Then, up to 1 of your Leader or Character cards gains +2000 power during this battle.",
+      "[Trigger] Draw 1 card, look at up to 1 card from the top of your opponent's Life cards, and place it at the top or bottom of the Life cards."
+    ],
+    "failedParts": [
+      "Look at up to 1 card from the top of your or your opponent's Life cards, and place it at the top or bottom of the Life cards",
+      "Draw 1 card, look at up to 1 card from the top of your opponent's Life cards, and place it at the top or bottom of the Life cards"
+    ]
+  }
+}

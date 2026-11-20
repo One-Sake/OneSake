@@ -1,0 +1,16 @@
+{
+  "cardId": "OP06-072",
+  "status": "manual",
+  "sourceTextHash": "bc1fd80a81085fdb47e5a243696591eb52b39ceb8ea19471c07a7956238e4ea2",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If your Leader has the {GERMA 66} type and the number of DON!! cards on your field is at least 2 less than the number on your opponent's field, this Character gains [Blocker].",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If your Leader has the {GERMA 66} type and the number of DON!! cards on your field is at least 2 less than the number on your opponent's field, this Character gains [Blocker]."
+    ],
+    "failedParts": [
+      "IF: If your Leader has the {GERMA 66} type and the number of DON!! cards on your field is at least 2 less than the number on your opponent's field, this Character gains [Blocker]"
+    ]
+  }
+}

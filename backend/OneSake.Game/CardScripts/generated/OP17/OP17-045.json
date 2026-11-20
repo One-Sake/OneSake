@@ -1,0 +1,46 @@
+{
+  "cardId": "OP17-045",
+  "status": "manual",
+  "sourceTextHash": "b5493a26ec2cacbad541fb2dcea33d9f84764e425c259523fb800ce2836a64c5",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If one of your Characters would be removed from the field by your opponent's effect, you may trash 2 cards from your hand instead.",
+  "script": {
+    "abilities": [
+      {
+        "timing": "OnPlay",
+        "text": "[On Play] Draw 1 card.",
+        "requiredDon": 0,
+        "oncePerTurn": false,
+        "onlyYourTurn": false,
+        "onlyOpponentsTurn": false,
+        "conditions": [],
+        "costs": [],
+        "steps": [
+          {
+            "kind": "Draw",
+            "amount": 1,
+            "secondAmount": 0,
+            "optional": false,
+            "zone": "Field",
+            "duration": "ThisTurn",
+            "flag": "",
+            "rested": false,
+            "restDestination": "bottom",
+            "playRevealed": false,
+            "position": "top",
+            "side": "You",
+            "conditions": [],
+            "text": "Draw 1 card"
+          }
+        ],
+        "index": 0
+      }
+    ],
+    "unsupportedTexts": [
+      "If one of your Characters would be removed from the field by your opponent's effect, you may trash 2 cards from your hand instead."
+    ],
+    "failedParts": [
+      "IF: If one of your Characters would be removed from the field by your opponent's effect, you may trash 2 cards from your hand instead"
+    ]
+  }
+}

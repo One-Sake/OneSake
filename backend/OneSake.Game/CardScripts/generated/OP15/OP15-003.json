@@ -1,0 +1,18 @@
+{
+  "cardId": "OP15-003",
+  "status": "manual",
+  "sourceTextHash": "b69df123075a46ca944d74011ddd9b22ba8d063470bed9b5e72a5f299bdf5a0a",
+  "parserVersion": "cardscriptgen-1",
+  "notes": "Not automated: If this Character would be K.O.'d, you may trash 1 Character card with a power of 6000 or less from your hand instead. | [Activate: Main] [Once Per Turn] You may give 1 of your opponent's rested DON!! cards to 1 of your opponent's Characters: Give up to 1 rested DON!! card to its owner's Leader or 1 of their Characters.",
+  "script": {
+    "abilities": [],
+    "unsupportedTexts": [
+      "If this Character would be K.O.'d, you may trash 1 Character card with a power of 6000 or less from your hand instead.",
+      "[Activate: Main] [Once Per Turn] You may give 1 of your opponent's rested DON!! cards to 1 of your opponent's Characters: Give up to 1 rested DON!! card to its owner's Leader or 1 of their Characters."
+    ],
+    "failedParts": [
+      "IF: If this Character would be K.O.'d, you may trash 1 Character card with a power of 6000 or less from your hand instead",
+      "COST: You may give 1 of your opponent's rested DON!! cards to 1 of your opponent's Characters"
+    ]
+  }
+}
