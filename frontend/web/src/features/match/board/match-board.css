@@ -3120,3 +3120,146 @@ body.is-dragging-card * {
     animation: none;
   }
 }
+
+/* Turn timer: ring with seconds next to the name, time bank as small number. */
+.match-clock {
+  --clock-color: #f0bf38;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+  color: var(--clock-color);
+}
+
+.match-clock.is-warn {
+  --clock-color: #ff9d3b;
+}
+
+.match-clock.is-danger {
+  --clock-color: #ff5a4e;
+}
+
+.match-clock__ring {
+  width: 30px;
+  height: 30px;
+  transform: rotate(-90deg);
+}
+
+.match-clock__track {
+  fill: rgb(0 0 0 / 35%);
+  stroke: rgb(255 255 255 / 14%);
+  stroke-width: 3;
+}
+
+.match-clock__progress {
+  fill: none;
+  stroke: var(--clock-color);
+  stroke-width: 3;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.2s linear, stroke 0.3s;
+}
+
+.match-clock__ring text {
+  fill: #ffffff;
+  font-size: 10px;
+  font-weight: 800;
+  transform: rotate(90deg);
+  transform-origin: 18px 18px;
+}
+
+.match-clock.is-danger .match-clock__ring {
+  animation: match-clock-pulse 0.8s ease-in-out infinite;
+}
+
+@keyframes match-clock-pulse {
+  50% {
+    filter: drop-shadow(0 0 6px #ff5a4e);
+    scale: 1.12;
+  }
+}
+
+.match-clock__bank {
+  color: #c7d6dc;
+  font-size: 0.68rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.match-clock__bank.is-active {
+  color: var(--clock-color);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Our own clock as a bar above the actions. */
+.match-timer-bar {
+  --clock-color: #f0bf38;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: min(360px, 90%);
+  min-height: 24px;
+  margin: 0 auto 4px;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 16%);
+  border-radius: 999px;
+  padding: 2px 4px 2px 12px;
+  background: rgb(0 0 0 / 45%);
+}
+
+.match-timer-bar.is-warn {
+  --clock-color: #ff9d3b;
+}
+
+.match-timer-bar.is-danger {
+  --clock-color: #ff5a4e;
+  animation: match-timer-bar-pulse 0.8s ease-in-out infinite;
+}
+
+@keyframes match-timer-bar-pulse {
+  50% {
+    box-shadow: 0 0 14px rgb(255 90 78 / 70%);
+  }
+}
+
+.match-timer-bar__fill {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--clock-color) 55%, transparent), color-mix(in srgb, var(--clock-color) 25%, transparent));
+  transition: transform 0.2s linear;
+}
+
+.match-timer-bar__label {
+  position: relative;
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 70%);
+}
+
+.match-timer-bar__sound {
+  position: relative;
+  min-width: 28px;
+  min-height: 20px;
+  border: 0;
+  border-radius: 999px;
+  padding: 0 4px;
+  font-size: 0.8rem;
+  background: rgb(0 0 0 / 35%);
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .match-clock.is-danger .match-clock__ring,
+  .match-timer-bar.is-danger {
+    animation: none;
+  }
+
+  .match-clock__progress,
+  .match-timer-bar__fill {
+    transition: none;
+  }
+}

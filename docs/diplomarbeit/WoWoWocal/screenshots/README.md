@@ -33,6 +33,18 @@ verkürzter Schonfrist (`Match__ReconnectGraceSeconds=25`), Testdeck ohne Karten
 | [2026-11-21_05-sieg-gegner-getrennt.png](2026-11-21_05-sieg-gegner-getrennt.png) | Frist abgelaufen, Sicht des Gewinners: „Gegner hat die Verbindung verloren – Sieg“ |
 | [2026-11-21_06-niederlage-verbindung.png](2026-11-21_06-niederlage-verbindung.png) | Frist abgelaufen, Sicht des Getrennten nach der Rückkehr: „Verbindung verloren – Niederlage“ |
 
+## Stand 2026-11-21 – Zug-Timer
+
+Wie oben, Backend mit kurzen Timer-Werten (Zugzeit 20 s, Zeitbank 10 s, Antwortzeit 5 s).
+
+| Datei | Zeigt |
+|-------|-------|
+| [2026-11-21_07-timer-normal.png](2026-11-21_07-timer-normal.png) | Eigener Zug: Timer-Ring am Namensschild, Balken „Zugzeit“ über der Aktionsleiste, Zeitbank ⌛ als kleine Zahl |
+| [2026-11-21_08-timer-orange.png](2026-11-21_08-timer-orange.png) | Weniger als 15 s Gesamtzeit: Ring und Balken orange |
+| [2026-11-21_09-timer-rot-zeitbank.png](2026-11-21_09-timer-rot-zeitbank.png) | Zeitbank läuft, unter 5 s: rot und pulsierend, Hinweis „Zeitbank“ |
+| [2026-11-21_10-niederlage-zeit-abgelaufen.png](2026-11-21_10-niederlage-zeit-abgelaufen.png) | Zweiter Zug in Folge ohne Zeit: „Zeit abgelaufen – Niederlage“ |
+| [2026-11-21_11-antwortzeit-counter.png](2026-11-21_11-antwortzeit-counter.png) | Counter-Entscheidung des Verteidigers mit „Antwortzeit“ (im Hintergrund hängt das Würfel-Overlay – bekannter, älterer Anzeigefehler) |
+
 ## Noch aufzunehmen (mit laufendem Backend)
 
 - Deckbuilder mit Karten, Filtern und fertigem Deck

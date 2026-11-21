@@ -150,6 +150,26 @@ export interface GameStateDto {
   endReason?: string | null;
   // How long our seat is kept if the connection drops now.
   viewerReconnectGraceMs?: number | null;
+  // Turn timer (null: no clock running - timer off, lobby, or paused during a reconnect).
+  timer?: TimerDto | null;
+  timerMode?: TimerMode;
+  // Our open decisions. A prompt not in this list was answered by the server (time ran out).
+  openChoiceIds?: string[];
+}
+
+export type TimerMode = 'STANDARD' | 'RELAXED' | 'OFF';
+
+export interface TimerDto {
+  // Whose clock runs ('' during the mulligan: both players).
+  activePlayerId: string;
+  kind: 'TURN' | 'RESPONSE' | 'MULLIGAN' | 'TURN_ORDER';
+  // End of the normal time (server time); after that the time bank runs if usesTimeBank.
+  deadlineUnixMs: number;
+  usesTimeBank: boolean;
+  usingTimeBank: boolean;
+  // Time bank per player in ms (for the running player: what was left when the clock started).
+  timeBankMs: Record<string, number>;
+  mode: TimerMode;
 }
 
 export interface DiceRollDto {
@@ -226,6 +246,7 @@ export interface RoomSummaryDto {
   phase: MatchPhase;
   playerNames: string[];
   createdAtUnixMs: number;
+  timerMode?: TimerMode;
 }
 
 // Only for us: our seat in the room and the secret token to get it back after a lost connection.

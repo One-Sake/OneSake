@@ -117,6 +117,9 @@ public class TurnTimerTests
         Assert.DoesNotContain(update.LogEvents, log => log.Type == "COUNTER");
         Assert.Equal(lifeBefore - 1, match.Player(bob).LifeCount);
         Assert.Equal(0, Bank(match, bob));
+        // The client learns that its counter prompt is gone (it was answered by the server).
+        Assert.Empty(update.StateSnapshots[bob].OpenChoiceIds);
+        Assert.Equal([match.Prompt("MAIN_ACTION", alice).ChoiceId], update.StateSnapshots[alice].OpenChoiceIds);
         // Alice's turn time did not run while Bob had to decide: 85 s left.
         timer = Timer(match);
         Assert.Equal("TURN", timer.Kind);

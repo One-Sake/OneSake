@@ -185,6 +185,10 @@ public record GameStateDto
 
     // "STANDARD", "RELAXED" or "OFF".
     public string TimerMode { get; init; } = "OFF";
+
+    // IDs of the decisions the viewer still has to make. A prompt that is not in this list was
+    // answered by the server (time ran out) and is no longer valid.
+    public IReadOnlyList<string> OpenChoiceIds { get; init; } = [];
 }
 
 // The running clock. The server decides; the client only shows the countdown.

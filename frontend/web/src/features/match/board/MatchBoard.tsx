@@ -30,6 +30,7 @@ import { ManualViewDialog } from './ManualViewDialog';
 import { TriggerOrderOverlay } from './TriggerOrderOverlay';
 import { getGameOverReason } from '../matchFormatters';
 import { OfflineBadge } from './OfflineBadge';
+import { OwnTimerBar, PlayerClock } from '../timer/PlayerClock';
 import { useBoardMetrics } from './useBoardMetrics';
 import { useHandDrag } from './useHandDrag';
 import type { DragItem, DropTarget } from './useHandDrag';
@@ -904,6 +905,7 @@ export function MatchBoard({
             <span>Opponent</span>
             <strong>{opponent?.displayName || 'Waiting...'}</strong>
             <OfflineBadge player={opponent} />
+            <PlayerClock playerId={opponent?.playerId} timer={gameState?.timer} />
           </div>
           <div className="match-opponent-hand" aria-label={`Opponent hand: ${opponentHandCount} cards`} role="img">
             {Array.from({ length: Math.min(opponentHandCount, MAX_OPPONENT_HAND_BACKS) }, (_, index) => (
@@ -931,6 +933,8 @@ export function MatchBoard({
               {battle.counterBonus > 0 && <small>Counter +{battle.counterBonus}</small>}
             </div>
           )}
+
+          <OwnTimerBar playerId={localPlayer?.playerId} timer={gameState?.timer} />
 
           {showActions && (
             <div className="match-actions" aria-label="Match actions" role="group">
@@ -1021,6 +1025,7 @@ export function MatchBoard({
       >
         <span>You</span>
         <strong>{localPlayer?.displayName || 'Player'}</strong>
+        <PlayerClock playerId={localPlayer?.playerId} timer={gameState?.timer} />
       </div>
 
       {hint && (

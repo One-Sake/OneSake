@@ -2337,7 +2337,14 @@ public sealed class MatchRoom
                 EndReason = _phase == MatchPhase.GameOver ? _endReason : null,
                 ViewerReconnectGraceMs = ViewerReconnectGraceMs(viewerPlayerId),
                 Timer = CreateTimerSnapshot(),
-                TimerMode = TimerModeName(TimerMode)
+                TimerMode = TimerModeName(TimerMode),
+                OpenChoiceIds = viewerPlayerId is null
+                    ? []
+                    : _openChoicePrompts.Values
+                        .Where(prompt => prompt.PlayerId == viewerPlayerId)
+                        .OrderBy(PromptNumber)
+                        .Select(prompt => prompt.ChoiceId)
+                        .ToArray()
             };
         }
     }

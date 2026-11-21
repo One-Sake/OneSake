@@ -16,6 +16,7 @@ import {
   ResyncDto,
   RoomSummaryDto,
   SeatAssignedDto,
+  TimerMode,
 } from '../types/realtime';
 import { getGuestId } from './guestId';
 import { clearRejoinData, loadRejoinData, saveRejoinData, type RejoinData } from './rejoinStorage';
@@ -314,9 +315,9 @@ export class SignalRClient {
     return this.connection!.invoke<RoomSummaryDto[]>('GetRooms');
   }
 
-  async createRoom(roomCode: string, displayName: string): Promise<void> {
+  async createRoom(roomCode: string, displayName: string, timerMode: TimerMode = 'STANDARD'): Promise<void> {
     await this.connect();
-    await this.connection!.invoke('CreateRoom', roomCode, displayName);
+    await this.connection!.invoke('CreateRoomWithTimer', roomCode, displayName, timerMode);
   }
 
   async leaveRoom(roomCode: string): Promise<void> {

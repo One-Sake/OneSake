@@ -1,5 +1,6 @@
 import type { RoomSummaryDto } from '../../types/realtime';
-import { formatPhase } from './matchFormatters';
+import { formatPhase, TIMER_LABELS } from './matchFormatters';
+
 
 interface RoomTileProps {
   room: RoomSummaryDto;
@@ -30,6 +31,9 @@ export function RoomTile({ isJoined, joinDisabled, onJoinRoom, room }: RoomTileP
         <span className="room-tile__meta">
           <span className="room-tile__code">{room.roomCode}</span>
           <span className="lobby-mode-tag lobby-mode-tag--casual">Casual</span>
+          <span className="room-tile__timer" title="Zug-Timer dieses Tisches">
+            {TIMER_LABELS[room.timerMode ?? 'STANDARD']}
+          </span>
           <span className={`room-tile__status ${isOpen ? 'is-open' : ''}`}>
             {getStatusLabel(room, isFull)}
           </span>

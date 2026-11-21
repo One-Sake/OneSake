@@ -1,4 +1,4 @@
-import type { MatchPhase } from '../../types/realtime';
+import type { MatchPhase, TimerMode } from '../../types/realtime';
 
 const PHASE_LABELS: Record<number, string> = {
   0: 'Lobby',
@@ -37,3 +37,10 @@ export function getGameOverReason(endReason: string | null | undefined, didWin: 
       return '';
   }
 }
+
+// Timer setting of a table (room list, lobby).
+export const TIMER_LABELS: Record<TimerMode, string> = {
+  STANDARD: '⏱ Standard',
+  RELAXED: '⏱ Entspannt',
+  OFF: 'Ohne Timer',
+};

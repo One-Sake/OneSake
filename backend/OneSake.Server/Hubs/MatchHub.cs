@@ -36,6 +36,21 @@ public class MatchHub : Hub
         await JoinExistingRoom(room, normalizedRoomCode, displayName, GetConnectionGuestId());
     }
 
+    // Private table with a chosen timer: "STANDARD", "RELAXED" or "OFF". CreateRoom stays for older
+    // clients (SignalR has no optional parameters).
+    public async Task CreateRoomWithTimer(string roomCode, string displayName, string timerMode)
+    {
+        var mode = (timerMode ?? string.Empty).Trim().ToUpperInvariant() switch
+        {
+            "RELAXED" => TimerMode.Relaxed,
+            "OFF" => TimerMode.Off,
+            _ => TimerMode.Standard
+        };
+        var normalizedRoomCode = NormalizeRoomCode(roomCode);
+        var room = RunRoomAction(() => _roomManager.Create(normalizedRoomCode, mode));
+        await JoinExistingRoom(room, normalizedRoomCode, displayName, GetConnectionGuestId());
+    }
+
     public async Task JoinRoom(string roomCode, string displayName)
     {
         var normalizedRoomCode = NormalizeRoomCode(roomCode);

@@ -30,6 +30,7 @@ export const CHANGELOG: ChangelogEntry[] = [
       'Log/Chat-Leiste lässt sich in der Breite ziehen und einklappen.',
       'Eigene Kartenrückseiten für Deck, Leben und DON!!.',
       'Zurück ins Match nach Verbindungsabbruch: dein Platz bleibt 90 Sekunden frei, auch nach dem Neuladen der Seite.',
+      'Zug-Timer mit Zeitbank: 90 Sekunden pro Zug plus persönliche Zeitbank; bei eigenen Tischen wählbar (Standard, Entspannt, Aus).',
     ],
   },
   {

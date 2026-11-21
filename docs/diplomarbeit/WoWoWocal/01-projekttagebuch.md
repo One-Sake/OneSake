@@ -228,7 +228,7 @@ Keine Commits. Sprint 3 wurde ab 06.10.2026 geplant.
 - **Probleme/Lessons Learned:** Viele Tests rufen `JoinPlayer("p1")` direkt auf. Damit sie unverändert
   bleiben, gilt dort „Spieler-ID = Verbindung“; nur der Hub nutzt die neue Methode `JoinConnection`.
 
-### 2026-11-21 01:55 – Reconnect im Backend ★ 🤖
+### 2026-11-21 01:28 – Reconnect im Backend ★ 🤖
 - Commit „Keep the seat of a disconnected player for a grace period“: Bricht die Verbindung im
   laufenden Match ab, bleibt der Platz 90 s reserviert (`Match:ReconnectGraceSeconds`). Pro Spieler und
   Match gibt es zusätzlich ein Gesamtbudget von 180 s (`Match:ReconnectBudgetSeconds`); ist es fast
@@ -270,7 +270,7 @@ Keine Commits. Sprint 3 wurde ab 06.10.2026 geplant.
   40 Sekunden auf – kürzer als die Schonfrist.
 - Screenshots: `screenshots/2026-11-21_01-reconnect-banner.png` bis `screenshots/2026-11-21_06-niederlage-verbindung.png`
 
-### 2026-11-21 13:05 – Zug-Timer im Backend ★ 🤖
+### 2026-11-21 12:33 – Zug-Timer im Backend ★ 🤖
 - Commit „Add a server-side turn timer with a time bank“: 90 s pro Zug, danach die persönliche
   Zeitbank (Start 180 s, +10 s nach jedem eigenen Zug, max. 240 s); 25 s Antwortzeit für Block, Counter,
   Trigger usw.; Mulligan 30 s und Würfelentscheidung 20 s ohne Zeitbank; 2 s Toleranz für Lag. Läuft die
@@ -288,6 +288,28 @@ Keine Commits. Sprint 3 wurde ab 06.10.2026 geplant.
   „aufzeichnen“ geteilt werden, damit ein Timeout als *ein* Input `TIMEOUT` aufgezeichnet wird und das
   Replay ihn mit demselben Code nachspielt. In den Tests fiel auf, dass hier niemand im eigenen ersten
   Zug angreifen darf – der Counter-Test greift deshalb in Zug 3 an.
+
+### 2026-11-21 12:45 – Zug-Timer im Frontend, Timer-Wahl für eigene Tische ★ 🤖
+- Commit „Show the turn timer and let private tables choose it“: Ring mit Sekunden am Namensschild
+  (eigener und gegnerischer Spieler), Zeitbank als kleine Zahl ⌛ daneben, Balken über der
+  Aktionsleiste für die eigene Uhr („Zugzeit“ / „Antwortzeit“ / „Zeitbank“). Ab 15 s Gesamtzeit
+  orange, ab 5 s rot und pulsierend mit leisem Tick-Geräusch (Web Audio, per 🔊/🔇 abschaltbar);
+  bei `prefers-reduced-motion` kein Pulsieren. In der Lobby „Timer für eigene Tische:
+  Standard / Entspannt / Aus“ (neue Hub-Methode `CreateRoomWithTimer`, `CreateRoom` bleibt für ältere
+  Clients), die Tisch-Liste zeigt die Einstellung. Profil-Statistik und Spielende kennen den Endgrund
+  „Zeit abgelaufen“.
+- **Überlegung:** Die Farbe richtet sich nach der *gesamten* Restzeit (normale Zeit + Zeitbank) – sonst
+  würde der Ring bei vollen 180 s Zeitbank schon nach 75 s rot werden und unnötig Stress machen.
+  Der Ring füllt sich je Abschnitt (erst normale Zeit, dann Zeitbank) neu, damit man sieht, dass die
+  Zeitbank angebrochen ist.
+- **Probleme/Lessons Learned:** Beim Browser-Test (Counter läuft ab) blieb beim Verteidiger der Knopf
+  „Pass“ stehen – der Server hatte schon automatisch entschieden, aber der Client wusste es nicht.
+  Lösung: Der Snapshot enthält jetzt `openChoiceIds` (eigene offene Entscheidungen); veraltete Prompts
+  verwirft der Client. Außerdem gefunden (älter, nicht behoben): Entscheidet der Würfelgewinner sehr
+  schnell, bleibt beim Gegner das Würfel-Overlay hängen.
+- **Geprüft:** Playwright mit zwei Browsern und kurzen Timer-Werten: automatisches Zugende, Zeitbank,
+  zwei Timeouts → Niederlage `TIMEOUT` bei beiden; Counter läuft ab → Kampf geht ohne Counter weiter.
+- Screenshots: `screenshots/2026-11-21_07-timer-normal.png` bis `screenshots/2026-11-21_11-antwortzeit-counter.png`
 
 <!-- Neue Einträge unten anfügen. Vorlage:
 

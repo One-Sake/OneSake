@@ -6,6 +6,7 @@ const END_REASON_LABELS: Record<string, string> = {
   DECK_OUT: 'Deck leer',
   CONCEDE: 'Aufgegeben',
   DISCONNECT: 'Verbindung',
+  TIMEOUT: 'Zeit abgelaufen',
 };
 
 export function LeaderThumb({ cardId, imageUrl }: { cardId: string; imageUrl?: string }) {

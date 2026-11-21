@@ -12,6 +12,7 @@ import {
   LogEventDto,
   MatchFoundDto,
   RoomSummaryDto,
+  TimerMode,
 } from '../../types/realtime';
 import { Modal } from '../../components/ui/Modal';
 import { loadRecentDeckIds, loadStoredDecks, saveRecentDeckId } from '../deckbuilder/utils/deckStorage';
@@ -153,6 +154,8 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
   const [showReconnected, setShowReconnected] = useState(false);
   // A running match found after a reload ("Back to the match").
   const [rejoinOffer, setRejoinOffer] = useState<RejoinData | null>(null);
+  // Timer for tables we open ourselves.
+  const [tableTimerMode, setTableTimerMode] = useState<TimerMode>('STANDARD');
   const joinedRoomCodeRef = useRef('');
   const resetRoomStateRef = useRef<() => void>(() => undefined);
 
@@ -171,6 +174,11 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
       // Open prompts are cleared on the server when the game ends.
       if (snapshot.phase === 'GameOver' || snapshot.phase === 'Lobby') {
         setCurrentPrompt(null);
+      } else if (snapshot.openChoiceIds) {
+        // The server decided for us (time ran out): that prompt is gone. New prompts arrive after
+        // the snapshot, so this never drops a newer one.
+        const openIds = snapshot.openChoiceIds;
+        setCurrentPrompt((previous) => (previous && !openIds.includes(previous.choiceId) ? null : previous));
       }
 
       // After the game the seat is freed on a disconnect: nothing to come back to.
@@ -477,7 +485,7 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
     setError('');
     try {
       if (mode === 'create') {
-        await signalRClient.createRoom(normalizedRoomCode, normalizedDisplayName);
+        await signalRClient.createRoom(normalizedRoomCode, normalizedDisplayName, tableTimerMode);
       } else {
         await signalRClient.joinRoom(normalizedRoomCode, normalizedDisplayName);
       }
@@ -818,8 +826,10 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
         onStartQuickMatch={() => void startQuickMatch()}
         pending={pending}
         playersInRoom={playersInRoom}
+        onTableTimerModeChange={setTableTimerMode}
         queueStartedAt={queueStartedAt}
         roomCodeInput={roomCodeInput}
+        tableTimerMode={tableTimerMode}
         selectedDeck={selectedDeck}
         selectedDeckId={selectedDeckId}
         serverSlot={(

@@ -1378,3 +1378,33 @@
   color: var(--color-text-muted);
   font-size: 0.85rem;
 }
+
+/* Timer of tables we open ourselves. */
+.lobby-timer-select {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.lobby-timer-select select {
+  min-height: 32px;
+  border: 1px solid rgb(240 191 56 / 35%);
+  border-radius: 8px;
+  padding: 4px 8px;
+  color: #ffe7a1;
+  font: inherit;
+  background: rgb(10 22 34 / 90%);
+}
+
+.room-tile__timer {
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
