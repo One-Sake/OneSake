@@ -11,7 +11,7 @@ export interface ChangelogEntry {
 export const CHANGELOG: ChangelogEntry[] = [
   {
     version: '0.5.0',
-    date: '2026-11-20',
+    date: '2026-11-21',
     title: 'Quick Match, Ranked, Meta und neues Spielfeld',
     items: [
       'Quick Match: ein Klick, und du wirst automatisch einem Gegner zugeteilt.',
@@ -29,6 +29,13 @@ export const CHANGELOG: ChangelogEntry[] = [
       'Handkarten und DON!! per Drag & Drop spielen.',
       'Log/Chat-Leiste lässt sich in der Breite ziehen und einklappen.',
       'Eigene Kartenrückseiten für Deck, Leben und DON!!.',
+      'Zurück ins Match nach Verbindungsabbruch: dein Platz bleibt 90 Sekunden frei, auch nach dem Neuladen der Seite.',
+      'Zug-Timer mit Zeitbank: 90 Sekunden pro Zug plus persönliche Zeitbank; bei eigenen Tischen wählbar (Standard, Entspannt, Aus).',
+
+      'Animationen im Match: gezogene und gespielte Karten fliegen an ihren Platz, Karten des Gegners und Events werden groß gezeigt (Einstellung über das Zahnrad: Normal, Schnell, Aus).',
+      'Zugwechsel-Banner „DEIN ZUG“ / „ZUG DES GEGNERS“ und neuer Spielende-Screen mit Kopfgeld, Revanche-Tisch und Zurück zur Lobby.',
+      'Sounds im Match (selbst erzeugt, ohne Audiodateien) mit Lautstärke-Regler und Stummschalten im Zahnrad.',
+      'Tastenkürzel im Match (Leertaste, A, D, E, Tab, 1–9, Enter, Esc, ? für die Übersicht) und Hinweise: Kein-Blocker-Schritt wird übersprungen, „Auto-Pass Counter“ optional, „Zug beenden“ leuchtet, wenn nichts mehr geht.',
     ],
   },
   {

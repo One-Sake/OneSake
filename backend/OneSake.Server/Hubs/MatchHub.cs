@@ -8,20 +8,17 @@ namespace OneSake.Server.Hubs;
 public class MatchHub : Hub
 {
     private readonly MatchRoomManager _roomManager;
-    private readonly MatchResultService _matchResultService;
     private readonly MatchmakingQueue _matchmakingQueue;
-    private readonly MatchRecordingService _matchRecordingService;
+    private readonly MatchUpdatePublisher _publisher;
 
     public MatchHub(
         MatchRoomManager roomManager,
-        MatchResultService matchResultService,
         MatchmakingQueue matchmakingQueue,
-        MatchRecordingService matchRecordingService)
+        MatchUpdatePublisher publisher)
     {
-        _matchRecordingService = matchRecordingService;
         _roomManager = roomManager;
-        _matchResultService = matchResultService;
         _matchmakingQueue = matchmakingQueue;
+        _publisher = publisher;
     }
 
     private const int MaxRoomCodeLength = 12;
@@ -36,6 +33,21 @@ public class MatchHub : Hub
     {
         var normalizedRoomCode = NormalizeRoomCode(roomCode);
         var room = RunRoomAction(() => _roomManager.Create(normalizedRoomCode));
+        await JoinExistingRoom(room, normalizedRoomCode, displayName, GetConnectionGuestId());
+    }
+
+    // Private table with a chosen timer: "STANDARD", "RELAXED" or "OFF". CreateRoom stays for older
+    // clients (SignalR has no optional parameters).
+    public async Task CreateRoomWithTimer(string roomCode, string displayName, string timerMode)
+    {
+        var mode = (timerMode ?? string.Empty).Trim().ToUpperInvariant() switch
+        {
+            "RELAXED" => TimerMode.Relaxed,
+            "OFF" => TimerMode.Off,
+            _ => TimerMode.Standard
+        };
+        var normalizedRoomCode = NormalizeRoomCode(roomCode);
+        var room = RunRoomAction(() => _roomManager.Create(normalizedRoomCode, mode));
         await JoinExistingRoom(room, normalizedRoomCode, displayName, GetConnectionGuestId());
     }
 
@@ -75,9 +87,11 @@ public class MatchHub : Hub
 
         if (pair is not null)
         {
-            var (matchRoom, update) = _roomManager.CreateQuickMatchRoom(pair);
+            var (matchRoom, update, firstSeat, secondSeat) = _roomManager.CreateQuickMatchRoom(pair);
             await Groups.AddToGroupAsync(pair.First.ConnectionId, matchRoom.RoomCode);
             await Groups.AddToGroupAsync(pair.Second.ConnectionId, matchRoom.RoomCode);
+            await Clients.Client(pair.First.ConnectionId).SendAsync("SeatAssigned", firstSeat);
+            await Clients.Client(pair.Second.ConnectionId).SendAsync("SeatAssigned", secondSeat);
             await PublishMatchUpdate(matchRoom.RoomCode, update);
 
             var matchFound = new MatchFoundDto { RoomCode = matchRoom.RoomCode };
@@ -109,13 +123,80 @@ public class MatchHub : Hub
     {
         _matchmakingQueue.Remove(Context.ConnectionId);
 
+        // The seat is kept for a grace period (MatchRoom.Disconnect), the player can come back with
+        // RejoinRoom. Leaving on purpose (LeaveRoom, Concede) is still immediate.
         foreach (var room in _roomManager.GetRoomsForConnection(Context.ConnectionId))
         {
-            await RemoveFromRoom(room);
+            var update = room.Disconnect(Context.ConnectionId);
+            if (update is not null)
+            {
+                await PublishMatchUpdate(room.RoomCode, update);
+            }
         }
 
         await BroadcastRoomList();
         await base.OnDisconnectedAsync(exception);
+    }
+
+    // After a page reload: is the stored seat still there? Does not take the seat.
+    public RejoinResultDto CheckRejoin(string roomCode, string playerId, string rejoinToken)
+    {
+        var normalizedRoomCode = NormalizeRoomCode(roomCode);
+        var status = _roomManager.Get(normalizedRoomCode)?.CheckRejoin(playerId, rejoinToken) ?? RejoinStatus.Invalid;
+        return new RejoinResultDto
+        {
+            Status = status switch
+            {
+                RejoinStatus.Ok => "OK",
+                RejoinStatus.Expired => "EXPIRED",
+                _ => "INVALID"
+            },
+            RoomCode = normalizedRoomCode,
+            PlayerId = status == RejoinStatus.Invalid ? string.Empty : playerId
+        };
+    }
+
+    // Back to the own seat after a lost connection or a page reload (token from SeatAssigned).
+    public async Task<RejoinResultDto> RejoinRoom(string roomCode, string playerId, string rejoinToken)
+    {
+        var normalizedRoomCode = NormalizeRoomCode(roomCode);
+        var room = _roomManager.Get(normalizedRoomCode);
+        var invalid = new RejoinResultDto { Status = "INVALID", RoomCode = normalizedRoomCode };
+        if (room is null)
+        {
+            return invalid;
+        }
+
+        var outcome = room.Rejoin(playerId, rejoinToken, Context.ConnectionId);
+        switch (outcome.Status)
+        {
+            case RejoinStatus.Invalid:
+                return invalid;
+
+            case RejoinStatus.Expired:
+                if (outcome.Update is not null)
+                {
+                    await PublishMatchUpdate(normalizedRoomCode, outcome.Update);
+                }
+
+                // Only the final result: the seat is lost, no actions are possible.
+                await Clients.Caller.SendAsync("StateSnapshot", outcome.FinalState);
+                await Clients.Caller.SendAsync("Resync", outcome.Resync);
+                return new RejoinResultDto { Status = "EXPIRED", RoomCode = normalizedRoomCode, PlayerId = playerId };
+        }
+
+        // A connection can only be in one room; a running Quick Match search ends.
+        _matchmakingQueue.Remove(Context.ConnectionId);
+        if (outcome.PreviousConnectionId is not null)
+        {
+            await Groups.RemoveFromGroupAsync(outcome.PreviousConnectionId, normalizedRoomCode);
+        }
+
+        await Groups.AddToGroupAsync(Context.ConnectionId, normalizedRoomCode);
+        await PublishMatchUpdate(normalizedRoomCode, outcome.Update!);
+        await Clients.Caller.SendAsync("Resync", outcome.Resync);
+        await BroadcastRoomList();
+        return new RejoinResultDto { Status = "OK", RoomCode = normalizedRoomCode, PlayerId = playerId };
     }
 
     public async Task StartMatch(string roomCode)
@@ -131,7 +212,7 @@ public class MatchHub : Hub
     {
         var normalizedRoomCode = NormalizeRoomCode(roomCode);
         var room = GetExistingRoom(normalizedRoomCode);
-        var update = RunRoomAction(() => room.SetPlayerDeck(Context.ConnectionId, deck));
+        var update = RunRoomAction(() => room.SetPlayerDeck(ResolvePlayerId(room), deck));
         await PublishMatchUpdate(normalizedRoomCode, update);
     }
 
@@ -140,7 +221,9 @@ public class MatchHub : Hub
         var normalizedRoomCode = NormalizeRoomCode(roomCode);
         var room = GetExistingRoom(normalizedRoomCode);
 
-        if (!string.Equals(submission.PlayerId, Context.ConnectionId, StringComparison.Ordinal))
+        // The player always comes from the connection. A client can only answer for its own seat.
+        var playerId = ResolvePlayerId(room);
+        if (!string.Equals(submission.PlayerId, playerId, StringComparison.Ordinal))
         {
             throw new HubException("Invalid player id for this connection.");
         }
@@ -148,7 +231,7 @@ public class MatchHub : Hub
         var normalizedSubmission = submission with
         {
             ChoiceId = submission.ChoiceId.Trim(),
-            PlayerId = Context.ConnectionId,
+            PlayerId = playerId,
             SelectedOption = submission.SelectedOption.Trim(),
             SelectedCardInstanceId = string.IsNullOrWhiteSpace(submission.SelectedCardInstanceId)
                 ? null
@@ -172,7 +255,7 @@ public class MatchHub : Hub
             throw new HubException("A manual action is required.");
         }
 
-        var update = RunRoomAction(() => room.ManualAction(Context.ConnectionId, action));
+        var update = RunRoomAction(() => room.ManualAction(ResolvePlayerId(room), action));
         await PublishMatchUpdate(normalizedRoomCode, update);
     }
 
@@ -187,7 +270,7 @@ public class MatchHub : Hub
             return;
         }
 
-        var senderId = room.ResolvePlayerId(Context.ConnectionId);
+        var senderId = ResolvePlayerId(room);
         var chatMessage = new ChatMessageDto
         {
             RoomCode = normalizedRoomCode,
@@ -196,6 +279,7 @@ public class MatchHub : Hub
             TsUnixMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
         };
 
+        room.AddChatMessage(chatMessage);
         await Clients.Group(normalizedRoomCode).SendAsync("ChatMessage", chatMessage);
 
         var logEvent = room.CreateLogEvent("CHAT", $"Player {senderId}: {normalizedText}");
@@ -216,15 +300,17 @@ public class MatchHub : Hub
             }
         }
 
-        var update = RunRoomAction(() => room.JoinPlayer(Context.ConnectionId, displayName, guestId));
+        var (update, seat) = RunRoomAction(() => room.JoinConnection(Context.ConnectionId, displayName, guestId));
         await Groups.AddToGroupAsync(Context.ConnectionId, roomCode);
+        await Clients.Caller.SendAsync("SeatAssigned", seat);
         await PublishMatchUpdate(roomCode, update);
         await BroadcastRoomList();
     }
 
     private async Task RemoveFromRoom(MatchRoom room, string endReason = MatchEndReasons.Disconnect)
     {
-        var update = room.RemovePlayer(Context.ConnectionId, endReason);
+        var playerId = room.ResolvePlayerId(Context.ConnectionId);
+        var update = playerId is null ? null : room.RemovePlayer(playerId, endReason);
         await Groups.RemoveFromGroupAsync(Context.ConnectionId, room.RoomCode);
 
         if (update is not null)
@@ -251,6 +337,14 @@ public class MatchHub : Hub
         }
     }
 
+    // Every action is done for the player whose seat this connection holds, never for the
+    // connection ID itself (it changes after a reconnect).
+    private string ResolvePlayerId(MatchRoom room)
+    {
+        return room.ResolvePlayerId(Context.ConnectionId)
+            ?? throw new HubException("You are not a player in this room.");
+    }
+
     private MatchRoom GetExistingRoom(string roomCode)
     {
         return _roomManager.Get(roomCode) ?? throw new HubException($"Room {roomCode} does not exist.");
@@ -272,39 +366,8 @@ public class MatchHub : Hub
         return normalizedRoomCode;
     }
 
-    private async Task PublishMatchUpdate(string roomCode, MatchUpdate update)
+    private Task PublishMatchUpdate(string roomCode, MatchUpdate update)
     {
-        // Every update passes through here, so a finished match is saved exactly once.
-        if (update.MatchResult is not null)
-        {
-            _matchResultService.SaveInBackground(update.MatchResult, update.Recording);
-        }
-        else if (update.Recording is not null)
-        {
-            // A match without a result (both players lost): only the recording is stored.
-            _matchRecordingService.SaveInBackground(update.Recording);
-        }
-
-        if (update.StateSnapshots.Count > 0)
-        {
-            foreach (var playerSnapshot in update.StateSnapshots)
-            {
-                await Clients.Client(playerSnapshot.Key).SendAsync("StateSnapshot", playerSnapshot.Value);
-            }
-        }
-        else
-        {
-            await Clients.Group(roomCode).SendAsync("StateSnapshot", update.StateSnapshot);
-        }
-
-        foreach (var logEvent in update.LogEvents)
-        {
-            await Clients.Group(roomCode).SendAsync("LogEvent", logEvent);
-        }
-
-        foreach (var prompt in update.ChoicePrompts)
-        {
-            await Clients.Client(prompt.PlayerId).SendAsync("ChoicePrompt", prompt);
-        }
+        return _publisher.PublishAsync(roomCode, update);
     }
 }

@@ -19,6 +19,8 @@ public record PlayerStateDto
     public string PlayerId { get; init; } = string.Empty;
     public string DisplayName { get; init; } = string.Empty;
     public bool Connected { get; init; }
+    // Set while the player is disconnected: the seat is kept until this time (then the player loses).
+    public long? DisconnectedUntilUnixMs { get; init; }
     public int DeckCount { get; init; }
     public int HandCount { get; init; }
     public int LifeCount { get; init; }
@@ -167,6 +169,44 @@ public record GameStateDto
 
     // Number of recorded decisions in this match ("atSeq" of a bug report). Not the seed.
     public int RecordedInputs { get; init; }
+
+    // Server time when the snapshot was made. Clients compute countdowns with the offset to their
+    // own clock, so a wrong phone clock does not matter.
+    public long ServerTimeUnixMs { get; init; }
+
+    // GameOver only: LIFE, DECK_OUT, DISCONNECT ... (null while the match runs).
+    public string? EndReason { get; init; }
+
+    // How long the viewer's seat is kept after a lost connection (for the "reconnecting" countdown).
+    public long? ViewerReconnectGraceMs { get; init; }
+
+    // Turn timer (null: no timer running, e.g. timer off, lobby, or paused while a player is disconnected).
+    public TimerDto? Timer { get; init; }
+
+    // "STANDARD", "RELAXED" or "OFF".
+    public string TimerMode { get; init; } = "OFF";
+
+    // IDs of the decisions the viewer still has to make. A prompt that is not in this list was
+    // answered by the server (time ran out) and is no longer valid.
+    public IReadOnlyList<string> OpenChoiceIds { get; init; } = [];
+}
+
+// The running clock. The server decides; the client only shows the countdown.
+public record TimerDto
+{
+    // Whose clock runs ("" for the mulligan: both players at the same time).
+    public string ActivePlayerId { get; init; } = string.Empty;
+    // "TURN", "RESPONSE", "MULLIGAN" or "TURN_ORDER".
+    public string Kind { get; init; } = string.Empty;
+    // End of the normal time (server time). After that the time bank runs (if the kind has one).
+    public long DeadlineUnixMs { get; init; }
+    // True when this kind can use the time bank (turn and response).
+    public bool UsesTimeBank { get; init; }
+    // True when the normal time is already over at the time of the snapshot.
+    public bool UsingTimeBank { get; init; }
+    // Time bank of every player (for the running player: what was left when this clock started).
+    public IReadOnlyDictionary<string, long> TimeBankMs { get; init; } = new Dictionary<string, long>();
+    public string Mode { get; init; } = "STANDARD";
 }
 
 public record DiceRollDto
@@ -256,6 +296,36 @@ public record RoomSummaryDto
     public MatchPhase Phase { get; init; } = MatchPhase.Lobby;
     public IReadOnlyList<string> PlayerNames { get; init; } = [];
     public long CreatedAtUnixMs { get; init; }
+    // "STANDARD", "RELAXED" or "OFF".
+    public string TimerMode { get; init; } = "STANDARD";
+}
+
+// Sent only to the player who took the seat. The token lets the player come back to the seat
+// after a lost connection (RejoinRoom). It is a secret: never sent to the opponent or logged.
+public record SeatAssignedDto
+{
+    public string RoomCode { get; init; } = string.Empty;
+    public string PlayerId { get; init; } = string.Empty;
+    public string RejoinToken { get; init; } = string.Empty;
+}
+
+// Answer of RejoinRoom. Status: "OK", "EXPIRED" (deadline over, match lost) or "INVALID".
+public record RejoinResultDto
+{
+    public string Status { get; init; } = string.Empty;
+    public string RoomCode { get; init; } = string.Empty;
+    public string PlayerId { get; init; } = string.Empty;
+}
+
+// Sent to a player after a rejoin: everything the client lost (the state comes as StateSnapshot).
+public record ResyncDto
+{
+    public string RoomCode { get; init; } = string.Empty;
+    public string PlayerId { get; init; } = string.Empty;
+    public IReadOnlyList<LogEventDto> LogEvents { get; init; } = [];
+    public IReadOnlyList<ChatMessageDto> ChatMessages { get; init; } = [];
+    // All decisions this player still has to make, oldest first.
+    public IReadOnlyList<ChoicePromptDto> ChoicePrompts { get; init; } = [];
 }
 
 // Sent to both players when Quick Match found an opponent.

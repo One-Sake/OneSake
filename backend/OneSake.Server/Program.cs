@@ -61,14 +61,20 @@ builder.Services
 var fixedDiceRolls = builder.Environment.IsDevelopment()
     ? builder.Configuration.GetSection("Match:FixedDiceRolls").Get<int[]>()
     : null;
+// Reconnect grace period and budget (and later the turn timer): section "Match", see docs/deployment.md.
+var matchOptions = (builder.Configuration.GetSection(MatchSettings.SectionName).Get<MatchSettings>() ?? new MatchSettings())
+    .ToOptions();
 builder.Services.AddSingleton(_ => fixedDiceRolls is { Length: > 0 }
-    ? new MatchRoomManager(() => new FixedDiceRoller(fixedDiceRolls))
-    : new MatchRoomManager());
+    ? new MatchRoomManager(() => new FixedDiceRoller(fixedDiceRolls), matchOptions)
+    : new MatchRoomManager(options: matchOptions));
+// Checks reconnect deadlines (and timers) every second.
+builder.Services.AddHostedService<MatchDeadlineService>();
 // Speichert beendete Matches (Fehler werden nur geloggt, das Spiel laeuft weiter)
 builder.Services.AddSingleton<MatchRecordingService>();
 builder.Services.AddSingleton<IBugReportStore, EfBugReportStore>();
 builder.Services.AddSingleton<BugReportService>();
 builder.Services.AddSingleton<MatchResultService>();
+builder.Services.AddSingleton<MatchUpdatePublisher>();
 builder.Services.AddHostedService<MatchRecordingRetentionService>();
 // Warteschlange fuer Quick Match
 builder.Services.AddSingleton<MatchmakingQueue>();

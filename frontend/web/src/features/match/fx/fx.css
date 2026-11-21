@@ -1,0 +1,914 @@
+/* Match effects: overlay layer, flying copies, highlights. Only transform/opacity are animated. */
+
+.fx-layer {
+  position: absolute;
+  inset: 0;
+  /* Above the card dialogs (74/76): a [Trigger] reveal shows for a moment over the dialog. */
+  z-index: 80;
+  overflow: hidden;
+  pointer-events: none;
+  contain: layout style;
+}
+
+.fx-layer > * {
+  position: absolute;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.fx-card {
+  border-radius: var(--card-corner-radius, 5px);
+  box-shadow: 0 10px 26px rgb(0 0 0 / 45%);
+}
+
+.fx-card > .match-card-view {
+  pointer-events: none;
+}
+
+.fx-card--back {
+  border: 1px solid rgb(240 191 56 / 45%);
+  background:
+    repeating-linear-gradient(45deg, rgb(255 255 255 / 6%) 0 4px, transparent 4px 9px),
+    linear-gradient(160deg, #1f3a57, #0c1a29);
+}
+
+.fx-card--don {
+  border-color: rgb(255 210 94 / 75%);
+  background: linear-gradient(160deg, #f6d36b, #b37a16);
+}
+
+/* The real card while its copy is flying. */
+[data-fx-hidden] {
+  opacity: 0 !important;
+}
+
+/* Short highlights - also shown with animations off. */
+[data-fx-flash] {
+  outline: 3px solid var(--fx-flash-color, #ffd25e);
+  outline-offset: 2px;
+  transition: outline-color 0.2s;
+}
+
+[data-fx-flash='hit'] {
+  --fx-flash-color: #ff5a4e;
+}
+
+[data-fx-flash='good'] {
+  --fx-flash-color: #5fe0b4;
+}
+
+/* The opponent's last action stays marked for a moment. */
+[data-fx-recent] {
+  box-shadow:
+    0 0 0 2px rgb(140 200 255 / 85%),
+    0 0 16px rgb(140 200 255 / 55%) !important;
+}
+
+/* ---------- Settings (gear in the top bar) ---------- */
+
+.fx-settings {
+  position: relative;
+}
+
+.fx-settings__button {
+  min-width: 38px;
+  font-size: 1.05rem;
+}
+
+.fx-settings__panel {
+  position: fixed;
+  z-index: 120;
+  display: grid;
+  gap: 12px;
+  width: min(280px, 86vw);
+  border: 1px solid rgb(240 191 56 / 40%);
+  border-radius: 12px;
+  padding: 14px;
+  color: #e7f0f3;
+  background: rgb(10 20 31 / 97%);
+  box-shadow: 0 18px 42px rgb(0 0 0 / 55%);
+}
+
+.fx-settings__group {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+.fx-settings__group legend,
+.fx-settings__label {
+  margin-bottom: 4px;
+  color: #9db5bd;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.fx-settings__segments {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  border-radius: 9px;
+  padding: 3px;
+  background: rgb(255 255 255 / 6%);
+}
+
+.fx-settings__segments label {
+  display: grid;
+  place-items: center;
+  min-height: 34px;
+  border-radius: 7px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.fx-settings__segments label.is-active {
+  color: #1a1207;
+  background: #f0bf38;
+}
+
+.fx-settings__segments input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.fx-settings__segments label:has(input:focus-visible) {
+  outline: 2px solid #ffe39b;
+}
+
+.fx-settings__check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  color: #e7f0f3;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+
+.fx-settings__check input {
+  width: 18px;
+  height: 18px;
+  accent-color: #f0bf38;
+}
+
+/* ---------- Copies of cards (draw, play, reveal) ---------- */
+
+.fx-card--face {
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 25%);
+  background: #13263a;
+}
+
+.fx-card--face img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fx-card__name {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  height: 100%;
+  padding: 6%;
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+/* Event reveal: golden glow around the card. */
+.fx-card--glow {
+  box-shadow:
+    0 0 0 2px rgb(255 214 102 / 90%),
+    0 0 34px 8px rgb(255 196 64 / 65%),
+    0 18px 40px rgb(0 0 0 / 55%);
+}
+
+.fx-card__label {
+  position: absolute;
+  bottom: 8%;
+  left: 50%;
+  border-radius: 999px;
+  padding: 3px 10px;
+  color: #1a1207;
+  font-size: 0.8rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  background: linear-gradient(90deg, #ffe08a, #f0bf38);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 45%);
+  translate: -50% 0;
+}
+
+/* ---------- Battle ---------- */
+
+.fx-pop {
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 900;
+  white-space: nowrap;
+  text-shadow: 0 2px 6px rgb(0 0 0 / 80%);
+}
+
+.fx-pop--battle {
+  border-radius: 999px;
+  color: #ffe9a8;
+  background: rgb(20 10 4 / 78%);
+  box-shadow: 0 0 0 1px rgb(240 191 56 / 60%);
+}
+
+.fx-pop--counter {
+  color: #6dffb9;
+  font-size: 1.35rem;
+}
+
+.fx-pop--power {
+  color: #6dffb9;
+  font-size: 1.1rem;
+}
+
+.fx-pop--shield {
+  font-size: 1.8rem;
+}
+
+.fx-shard {
+  border-radius: 2px;
+  background-color: #2a3e55;
+  background-repeat: no-repeat;
+  box-shadow: 0 0 6px rgb(255 120 80 / 50%);
+}
+
+.fx-card--ghost {
+  filter: grayscale(1) brightness(1.6);
+  mix-blend-mode: screen;
+}
+
+.fx-card__label--trigger {
+  font-size: 1rem;
+  background: linear-gradient(90deg, #ffb35e, #ff6b3d);
+}
+
+[data-fx-flash='gold'] {
+  --fx-flash-color: #ffd25e;
+}
+
+/* Resting and standing up are animated (individual rotate/scale, GPU). */
+.fx-mode-normal .match-card-view,
+.fx-mode-fast .match-card-view {
+  transition:
+    rotate 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    scale 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Attack mode: valid targets pulse. Pulses only animate the opacity of a glow layer
+   (no box-shadow animation: that would repaint every frame). */
+.match-board__side--opponent .match-card-view.is-targetable::after,
+.match-card-view.can-attack::after {
+  position: absolute;
+  inset: -3px;
+  z-index: 3;
+  border-radius: inherit;
+  content: '';
+  opacity: 0;
+  pointer-events: none;
+}
+
+.match-board__side--opponent .match-card-view.is-targetable::after {
+  box-shadow:
+    0 0 0 3px rgb(255 214 102 / 95%),
+    0 0 22px rgb(255 196 64 / 70%);
+}
+
+.match-card-view.can-attack::after {
+  box-shadow:
+    0 0 0 2px rgb(95 224 180 / 95%),
+    0 0 20px rgb(95 224 180 / 65%);
+}
+
+.fx-mode-normal .match-board__side--opponent .match-card-view.is-targetable::after,
+.fx-mode-fast .match-board__side--opponent .match-card-view.is-targetable::after {
+  animation: fx-glow-pulse 1s ease-in-out infinite;
+}
+
+.fx-mode-normal .match-card-view.can-attack::after,
+.fx-mode-fast .match-card-view.can-attack::after {
+  animation: fx-glow-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes fx-glow-pulse {
+  50% {
+    opacity: 1;
+  }
+}
+
+.fx-arrow {
+  position: absolute;
+  inset: 0;
+  z-index: 23;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.fx-arrow path {
+  fill: none;
+  stroke: #ffd25e;
+  stroke-width: 5;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 6px rgb(255 196 64 / 75%));
+}
+
+.fx-arrow polygon {
+  fill: #ffd25e;
+  filter: drop-shadow(0 0 6px rgb(255 196 64 / 75%));
+}
+/* ---------- DON!!, effects, power ---------- */
+
+.fx-pulse {
+  border: 3px solid #ffd25e;
+  border-radius: 10px;
+  box-shadow:
+    0 0 18px rgb(255 196 64 / 75%),
+    inset 0 0 12px rgb(255 196 64 / 45%);
+}
+
+.fx-line {
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgb(255 214 102 / 95%), rgb(255 214 102 / 35%));
+  box-shadow: 0 0 8px rgb(255 196 64 / 70%);
+}
+
+/* Changed power: green for more, red for less (base power in the tooltip). */
+.match-card-stat--power.is-boosted,
+.match-card-stat--power[data-fx-power='up'] {
+  color: #04210f;
+  background: #6dffb9;
+}
+
+.match-card-stat--power.is-reduced,
+.match-card-stat--power[data-fx-power='down'] {
+  color: #ffffff;
+  background: #e0443a;
+}
+
+
+/* ---------- Turn banner ---------- */
+
+.fx-turn-banner {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  z-index: 70;
+  display: grid;
+  place-items: center;
+  gap: 2px;
+  width: 100%;
+  padding: 14px 0;
+  pointer-events: none;
+  translate: 0 -50%;
+  animation: fx-turn-banner 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.fx-turn-banner strong {
+  font-family: var(--font-display, inherit);
+  font-size: clamp(1.6rem, 6cqw, 3.2rem);
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.fx-turn-banner span {
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.fx-turn-banner.is-mine {
+  color: #1a1207;
+  background: linear-gradient(90deg, transparent, rgb(240 191 56 / 92%) 18%, rgb(255 224 138 / 96%) 50%, rgb(240 191 56 / 92%) 82%, transparent);
+}
+
+.fx-turn-banner.is-theirs {
+  color: #c9d6dc;
+  background: linear-gradient(90deg, transparent, rgb(20 32 46 / 88%) 18%, rgb(32 48 66 / 92%) 50%, rgb(20 32 46 / 88%) 82%, transparent);
+}
+
+@keyframes fx-turn-banner {
+  0% {
+    opacity: 0;
+    transform: translateX(-12%) scaleY(0.6);
+  }
+
+  25% {
+    opacity: 1;
+    transform: translateX(0) scaleY(1);
+  }
+
+  75% {
+    opacity: 1;
+    transform: translateX(0) scaleY(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(12%) scaleY(0.9);
+  }
+}
+
+.fx-mode-fast .fx-turn-banner {
+  animation-duration: 0.55s;
+}
+
+.fx-mode-off .fx-turn-banner {
+  animation: fx-fade 0.9s linear both;
+}
+
+@keyframes fx-fade {
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  15%,
+  85% {
+    opacity: 1;
+  }
+}
+
+/* The own action bar glows for a moment after "DEIN ZUG". */
+.match-board-frame[data-fx-turn-glow] .match-actions button:not(:disabled) {
+  box-shadow:
+    0 0 0 2px rgb(255 214 102 / 80%),
+    0 0 18px rgb(255 196 64 / 60%);
+}
+
+/* ---------- Game over ---------- */
+
+.fx-game-over {
+  position: absolute;
+  inset: 0;
+  z-index: 72;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+}
+
+.fx-game-over__veil {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 45%, rgb(10 20 31 / 55%), rgb(4 8 14 / 88%));
+  animation: fx-fade-in 0.5s ease-out both;
+}
+
+.fx-game-over.is-lose .fx-game-over__veil {
+  background: radial-gradient(circle at 50% 45%, rgb(30 8 8 / 70%), rgb(2 3 6 / 94%));
+}
+
+@keyframes fx-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.fx-game-over__card {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(520px, 100%);
+  max-height: 100%;
+  overflow: auto;
+  border: 1px solid rgb(240 191 56 / 55%);
+  border-radius: 16px;
+  padding: clamp(14px, 3cqh, 26px);
+  color: #e7f0f3;
+  background: linear-gradient(170deg, rgb(24 40 58 / 96%), rgb(10 20 31 / 97%));
+  box-shadow: 0 24px 60px rgb(0 0 0 / 60%);
+  animation: fx-game-over-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.fx-game-over.is-lose .fx-game-over__card {
+  border-color: rgb(160 70 70 / 55%);
+}
+
+@keyframes fx-game-over-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.92);
+  }
+}
+
+.fx-game-over__title {
+  margin: 0;
+  font-size: clamp(2.2rem, 9cqh, 4rem);
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  line-height: 1;
+}
+
+.fx-game-over.is-win .fx-game-over__title {
+  color: #ffd25e;
+  text-shadow:
+    0 0 18px rgb(255 196 64 / 70%),
+    0 3px 0 #7a4c00;
+}
+
+.fx-game-over.is-lose .fx-game-over__title {
+  color: #c9b3b3;
+  text-shadow: 0 3px 0 #2a0c0c;
+}
+
+.fx-game-over__leaders {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.fx-game-over__leader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.fx-game-over__leader img,
+.fx-game-over__leader-blank {
+  width: 46px;
+  aspect-ratio: 63 / 88;
+  border-radius: 4px;
+  object-fit: cover;
+  background: #1f3a57;
+}
+
+.fx-game-over__leader div {
+  display: grid;
+  min-width: 0;
+  font-size: 0.8rem;
+}
+
+.fx-game-over__leader small {
+  color: #9db5bd;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.fx-game-over__leader strong,
+.fx-game-over__leader span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fx-game-over__vs {
+  color: #9db5bd;
+  font-weight: 900;
+}
+
+.fx-game-over__facts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+  margin: 0;
+}
+
+.fx-game-over__facts div {
+  display: grid;
+  justify-items: center;
+}
+
+.fx-game-over__facts dt {
+  color: #9db5bd;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.fx-game-over__facts dd {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 900;
+}
+
+.fx-game-over__facts .is-up dd {
+  color: #6dffb9;
+}
+
+.fx-game-over__facts .is-down dd {
+  color: #ff8a80;
+}
+
+.fx-game-over__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.fx-game-over__actions button {
+  min-height: 44px;
+  border: 1px solid rgb(255 255 255 / 25%);
+  border-radius: 999px;
+  padding: 0 18px;
+  color: #e7f0f3;
+  font-weight: 800;
+  background: rgb(255 255 255 / 8%);
+  cursor: pointer;
+}
+
+.fx-game-over__actions .fx-game-over__primary {
+  border-color: #ffe39b;
+  color: #1a1207;
+  background: linear-gradient(180deg, #ffe08a, #f0bf38);
+}
+
+.fx-game-over__particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.fx-game-over__particles span {
+  position: absolute;
+  top: -10px;
+  left: var(--x);
+  width: var(--size);
+  height: calc(var(--size) * 1.6);
+  border-radius: 2px;
+  background: linear-gradient(180deg, #ffe08a, #f0bf38);
+  box-shadow: 0 0 6px rgb(255 196 64 / 70%);
+  animation: fx-confetti 2.6s linear var(--delay) infinite;
+}
+
+@keyframes fx-confetti {
+  from {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg);
+  }
+
+  to {
+    opacity: 0.2;
+    transform: translate(var(--drift), 110cqh) rotate(540deg);
+  }
+}
+
+.fx-mode-off .fx-game-over__particles,
+.fx-mode-off .fx-game-over__card,
+.fx-mode-off .fx-game-over__veil {
+  animation: none;
+}
+
+.fx-mode-off .fx-game-over__particles {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-turn-banner,
+  .fx-game-over__card,
+  .fx-game-over__veil {
+    animation-name: fx-fade-short;
+  }
+
+  /* Glows stay visible but do not pulse. */
+  .fx-mode-normal .match-card-view.can-attack::after,
+  .fx-mode-normal .match-board__side--opponent .match-card-view.is-targetable::after {
+    animation: none;
+    opacity: 0.6;
+  }
+
+  .fx-game-over__particles {
+    display: none;
+  }
+}
+
+@keyframes fx-fade-short {
+  from {
+    opacity: 1;
+  }
+}
+/* Volume slider in the settings. */
+.fx-settings__volume {
+  display: grid;
+  grid-template-columns: auto 1fr 3.2em;
+  align-items: center;
+  gap: 8px;
+  color: #e7f0f3;
+  font-size: 0.85rem;
+}
+
+.fx-settings__volume input {
+  width: 100%;
+  accent-color: #f0bf38;
+}
+
+.fx-settings__volume output {
+  color: #9db5bd;
+  font-size: 0.8rem;
+  text-align: right;
+}
+/* ---------- Keyboard hints, help, card hints ---------- */
+
+/* Small key hints on the action buttons - only where a keyboard is likely. */
+.fx-kbd {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .match-actions .fx-kbd {
+    display: inline-block;
+    margin-left: 6px;
+    border: 1px solid currentColor;
+    border-radius: 4px;
+    padding: 0 4px;
+    font-family: inherit;
+    font-size: 0.62rem;
+    font-weight: 800;
+    line-height: 1.4;
+    opacity: 0.65;
+    vertical-align: middle;
+  }
+}
+
+/* "End Turn" glows stronger when nothing useful is left to do (only a hint). */
+.match-actions .match-actions__end-turn.is-suggested {
+  box-shadow:
+    0 0 0 3px rgb(255 224 138 / 90%),
+    0 0 34px rgb(255 196 64 / 85%);
+}
+
+/* The glow pulses on a layer behind the label; the button itself never moves (easy to click). */
+.match-actions .match-actions__end-turn.is-suggested {
+  position: relative;
+}
+
+.match-actions .match-actions__end-turn.is-suggested::after {
+  position: absolute;
+  inset: -5px;
+  border-radius: inherit;
+  box-shadow: 0 0 26px 6px rgb(255 214 102 / 85%);
+  content: '';
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.fx-mode-normal .match-actions .match-actions__end-turn.is-suggested::after,
+.fx-mode-fast .match-actions .match-actions__end-turn.is-suggested::after {
+  animation: fx-end-turn 1.4s ease-in-out infinite;
+}
+
+@keyframes fx-end-turn {
+  50% {
+    opacity: 1;
+  }
+}
+
+.fx-hotkeys {
+  position: absolute;
+  inset: 0;
+  z-index: 85;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+  background: rgb(2 6 12 / 60%);
+}
+
+.fx-hotkeys__panel {
+  width: min(440px, 100%);
+  max-height: 100%;
+  overflow: auto;
+  border: 1px solid rgb(240 191 56 / 50%);
+  border-radius: 14px;
+  padding: 16px 18px;
+  color: #e7f0f3;
+  background: rgb(10 20 31 / 97%);
+  box-shadow: 0 18px 42px rgb(0 0 0 / 55%);
+}
+
+.fx-hotkeys__panel header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.fx-hotkeys__panel h2 {
+  margin: 0;
+  color: #ffe08a;
+  font-size: 1.1rem;
+}
+
+.fx-hotkeys__panel header button {
+  min-width: 36px;
+  min-height: 36px;
+  border: 0;
+  border-radius: 8px;
+  color: #e7f0f3;
+  background: rgb(255 255 255 / 8%);
+  cursor: pointer;
+}
+
+.fx-hotkeys__panel dl {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+}
+
+.fx-hotkeys__panel dl div {
+  display: grid;
+  grid-template-columns: 7.5em 1fr;
+  align-items: center;
+  gap: 10px;
+}
+
+.fx-hotkeys__panel dd {
+  margin: 0;
+  font-size: 0.88rem;
+}
+
+.fx-hotkeys kbd,
+.fx-settings__note kbd {
+  border: 1px solid rgb(255 255 255 / 35%);
+  border-bottom-width: 3px;
+  border-radius: 5px;
+  padding: 1px 7px;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 800;
+  background: rgb(255 255 255 / 8%);
+}
+
+.fx-settings__note {
+  display: block;
+  margin: 2px 0 0;
+  color: #9db5bd;
+  font-size: 0.74rem;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+/* Hints on opponent cards: icons appear on hover or keyboard focus. */
+.fx-card-hints {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  max-width: calc(100% - 6px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s;
+}
+
+.fx-card-hints span {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  border-radius: 999px;
+  padding: 1px 5px;
+  color: #ffffff;
+  font-size: 0.68rem;
+  background: rgb(8 14 22 / 88%);
+  box-shadow: 0 0 0 1px rgb(240 191 56 / 55%);
+}
+
+.fx-card-hints small {
+  display: none;
+  font-size: 0.6rem;
+  font-weight: 800;
+}
+
+.match-card-view:hover .fx-card-hints,
+.match-card-view:focus-visible .fx-card-hints {
+  opacity: 1;
+}
+
+.match-card-view:hover .fx-card-hints small {
+  display: inline;
+}
+.fx-game-over__reason {
+  margin: -6px 0 0;
+  color: #ffe7a1;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-align: center;
+}

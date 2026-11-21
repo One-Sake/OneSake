@@ -106,6 +106,37 @@ Wenn ein neues Set erscheint, ändert sich der Format-Teil im Dateinamen. Liefer
 
 Quellenangabe: Unter jeder Meta-Ansicht steht „Daten: Card Kaizoku · Snapshot <Datum>“.
 
+## Reconnect und Zug-Timer
+
+Alle Werte in Sekunden, Abschnitt `Match` in `appsettings.json` (Standardwerte stehen dort),
+überschreibbar per Umgebungsvariable. Regeln und automatische Entscheidungen: `docs/turn-timer.md`.
+
+| Schlüssel | Standard | Bedeutung |
+|-----------|----------|-----------|
+| `Match:ReconnectGraceSeconds` | 90 | So lange bleibt der Platz nach einem Verbindungsabbruch im laufenden Match frei, danach Niederlage `DISCONNECT` |
+| `Match:ReconnectBudgetSeconds` | 180 | Getrennte Zeit insgesamt pro Spieler und Match |
+| `Match:LobbyReconnectGraceSeconds` | 30 | Frist in der Lobby (Match nicht gestartet), danach wird der Platz frei |
+| `Match:Timer:TurnSeconds` | 90 | Zugzeit pro eigenem Zug |
+| `Match:Timer:ResponseSeconds` | 25 | Antwortzeit außerhalb des eigenen Zugs (Block, Counter, Trigger …) |
+| `Match:Timer:MulliganSeconds` | 30 | Mulligan (ohne Zeitbank) |
+| `Match:Timer:TurnOrderSeconds` | 20 | Würfelentscheidung Erster/Zweiter (ohne Zeitbank) |
+| `Match:Timer:TimeBankStartSeconds` | 180 | Zeitbank zu Beginn des Matches |
+| `Match:Timer:TimeBankBonusSeconds` | 10 | Bonus nach jedem eigenen Zug |
+| `Match:Timer:TimeBankMaxSeconds` | 240 | Maximum der Zeitbank |
+| `Match:Timer:ToleranceSeconds` | 2 | Toleranz für Lag/Animationen |
+
+Der Modus „Entspannt“ verdoppelt alle Timer-Werte, „Aus“ schaltet den Timer ab (nur private Tische;
+Quick Match hat immer den Standard-Timer).
+
+```bash
+# Beispiel: kurze Werte zum Testen in Development
+Match__ReconnectGraceSeconds=25 Match__Timer__TurnSeconds=20 Match__Timer__TimeBankStartSeconds=10 \
+Match__Timer__TimeBankBonusSeconds=2 Match__Timer__TimeBankMaxSeconds=10 Match__Timer__ResponseSeconds=5
+```
+
+Hinweis für den Betrieb: Der Platz eines getrennten Spielers liegt nur im Speicher des Servers.
+Ein Neustart des Servers (z. B. ein Deployment) beendet laufende Matches weiterhin.
+
 ## Würfel-Test-Hook (nur Development)
 
 `Match:FixedDiceRolls` gibt die Würfe fest vor, z. B. `[3, 3, 5, 2]` (erst Gleichstand, dann 5:2).

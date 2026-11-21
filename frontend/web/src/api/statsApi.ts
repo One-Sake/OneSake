@@ -13,7 +13,7 @@ export interface RecentMatchDto {
   ownLeaderCardId: string;
   opponentLeaderCardId: string;
   won: boolean;
-  endReason: 'LIFE' | 'DECK_OUT' | 'CONCEDE' | 'DISCONNECT' | string;
+  endReason: 'LIFE' | 'DECK_OUT' | 'CONCEDE' | 'DISCONNECT' | 'TIMEOUT' | string;
   turnCount: number;
   isRanked?: boolean;
   // Rating points / bounty won (+) or lost (-); null when the match did not change the rating.

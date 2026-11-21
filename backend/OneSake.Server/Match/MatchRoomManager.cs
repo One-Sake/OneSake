@@ -11,13 +11,18 @@ public sealed class MatchRoomManager
     private readonly Dictionary<string, MatchRoom> _rooms = new(StringComparer.OrdinalIgnoreCase);
     // Creates the dice for each new room (fixed values only in Development, see Program.cs).
     private readonly Func<IDiceRoller> _diceRollerFactory;
+    private readonly MatchRoomOptions _options;
+    private readonly IClock _clock;
 
-    public MatchRoomManager(Func<IDiceRoller>? diceRollerFactory = null)
+    public MatchRoomManager(Func<IDiceRoller>? diceRollerFactory = null, MatchRoomOptions? options = null, IClock? clock = null)
     {
         _diceRollerFactory = diceRollerFactory ?? (() => CryptoDiceRoller.Instance);
+        _options = options ?? new MatchRoomOptions();
+        _clock = clock ?? SystemClock.Instance;
     }
 
-    public MatchRoom Create(string roomCode)
+    // Private tables choose their timer (Standard, Relaxed, Off).
+    public MatchRoom Create(string roomCode, TimerMode timerMode = TimerMode.Standard)
     {
         lock (_sync)
         {
@@ -26,14 +31,14 @@ public sealed class MatchRoomManager
                 throw new InvalidOperationException($"Room {roomCode} already exists.");
             }
 
-            var createdRoom = new MatchRoom(roomCode, diceRoller: _diceRollerFactory());
+            var createdRoom = new MatchRoom(roomCode, diceRoller: _diceRollerFactory(), options: _options, clock: _clock, timerMode: timerMode);
             _rooms[roomCode] = createdRoom;
             return createdRoom;
         }
     }
 
     // Creates a private room with a random code and puts both Quick Match players into it.
-    public (MatchRoom Room, MatchUpdate Update) CreateQuickMatchRoom(QueuePair pair)
+    public (MatchRoom Room, MatchUpdate Update, SeatAssignedDto FirstSeat, SeatAssignedDto SecondSeat) CreateQuickMatchRoom(QueuePair pair)
     {
         MatchRoom room;
         lock (_sync)
@@ -45,13 +50,14 @@ public sealed class MatchRoomManager
             }
             while (_rooms.ContainsKey(roomCode));
 
-            room = new MatchRoom(roomCode, isQuickMatch: true, diceRoller: _diceRollerFactory());
+            // Ranked: the timer is always on.
+            room = new MatchRoom(roomCode, isQuickMatch: true, diceRoller: _diceRollerFactory(), options: _options, clock: _clock, timerMode: TimerMode.Standard);
             _rooms[roomCode] = room;
         }
 
-        room.JoinPlayer(pair.First.ConnectionId, pair.First.DisplayName, pair.First.GuestId);
-        var update = room.JoinPlayer(pair.Second.ConnectionId, pair.Second.DisplayName, pair.Second.GuestId);
-        return (room, update);
+        var (_, firstSeat) = room.JoinConnection(pair.First.ConnectionId, pair.First.DisplayName, pair.First.GuestId);
+        var (update, secondSeat) = room.JoinConnection(pair.Second.ConnectionId, pair.Second.DisplayName, pair.Second.GuestId);
+        return (room, update, firstSeat, secondSeat);
     }
 
     private static string CreateRandomRoomCode()
@@ -71,6 +77,14 @@ public sealed class MatchRoomManager
         {
             _rooms.TryGetValue(roomCode, out var room);
             return room;
+        }
+    }
+
+    public IReadOnlyList<MatchRoom> GetAllRooms()
+    {
+        lock (_sync)
+        {
+            return _rooms.Values.ToArray();
         }
     }
 

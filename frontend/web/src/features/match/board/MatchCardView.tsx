@@ -21,6 +21,8 @@ interface MatchCardViewProps {
   onMenu?: (x: number, y: number) => void;
   // Called with the card when the mouse enters it, and with null when it leaves.
   onPreview?: (card: CardInstanceDto | null) => void;
+  // Small icons shown on hover, e.g. "Hat [Blocker]" on opponent cards.
+  hints?: { icon: string; label: string }[];
 }
 
 function hasPower(card: CardInstanceDto): boolean {
@@ -32,6 +34,7 @@ export function MatchCardView({
   card,
   clickable = false,
   disabled = false,
+  hints,
   onClick,
   onInspect,
   onMenu,
@@ -57,8 +60,19 @@ export function MatchCardView({
     .filter(Boolean)
     .join(' ');
 
-  const power = card.power ?? card.basePower ?? 0;
+  const power =card.power ?? card.basePower ?? 0;
   const powerBoosted = power > (card.basePower ?? power);
+  const powerReduced = power < (card.basePower ?? power);
+  const powerClassName = [
+    'match-card-stat match-card-stat--power',
+    powerBoosted ? 'is-boosted' : '',
+    powerReduced ? 'is-reduced' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+  // Hover: the base power of a card whose power changed.
+  const powerTitle =
+    (powerBoosted || powerReduced) && size !== 'inspect' ? `Power ${power} (Basis ${card.basePower ?? 0})` : undefined;
 
   // ---------- Inspect (right click / long press) and hover preview ----------
 
@@ -143,13 +157,24 @@ export function MatchCardView({
         </>
       )}
 
+      {hints && hints.length > 0 && (
+        <span className="fx-card-hints" aria-hidden="true">
+          {hints.map((hint) => (
+            <span key={hint.label} title={hint.label}>
+              {hint.icon}
+              <small>{hint.label}</small>
+            </span>
+          ))}
+        </span>
+      )}
+
       {showStats && size !== 'inspect' && (
         <span className="match-card-view__stats" aria-hidden="true">
           {size === 'hand' && typeof card.cost === 'number' && card.category !== 'Leader' && (
             <span className="match-card-stat match-card-stat--cost">{card.cost}</span>
           )}
           {hasPower(card) && power !== 0 && (
-            <span className={powerBoosted ? 'match-card-stat match-card-stat--power is-boosted' : 'match-card-stat match-card-stat--power'}>
+            <span className={powerClassName}>
               {power}
             </span>
           )}
@@ -164,7 +189,10 @@ export function MatchCardView({
     </>
   );
 
-  const label = ariaLabel ?? `${card.name} (${card.cardId})`;
+  const hintText = hints?.length ? `, ${hints.map((hint) => hint.label).join(', ')}` : '';
+  const label = ariaLabel ?? `${card.name} (${card.cardId})${hintText}`;
+  // Lets the animation layer find the card (not for the big inspect view).
+  const fxProps = size === 'inspect' ? {} : { 'data-fx-card': card.instanceId };
 
   if (clickable) {
     return (
@@ -173,7 +201,9 @@ export function MatchCardView({
         className={className}
         disabled={disabled}
         onClick={handleClick}
+        title={powerTitle}
         type="button"
+        {...fxProps}
         {...interactionProps}
       >
         {content}
@@ -182,7 +212,7 @@ export function MatchCardView({
   }
 
   return (
-    <span aria-label={label} className={className} role="img" {...interactionProps}>
+    <span aria-label={label} className={className} role="img" title={powerTitle} {...fxProps} {...interactionProps}>
       {content}
     </span>
   );

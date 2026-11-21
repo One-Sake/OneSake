@@ -14,6 +14,8 @@ export interface PlayerStateDto {
   playerId: string;
   displayName: string;
   connected: boolean;
+  // Set while the player is disconnected: the seat is kept until then (server time).
+  disconnectedUntilUnixMs?: number | null;
   deckCount: number;
   handCount: number;
   lifeCount: number;
@@ -142,6 +144,32 @@ export interface GameStateDto {
   isRanked?: boolean;
   // Number of recorded decisions in this match (sent with a bug report).
   recordedInputs?: number;
+  // Server time of the snapshot: countdowns use the offset to the local clock.
+  serverTimeUnixMs?: number;
+  // GameOver only: 'LIFE', 'DECK_OUT', 'DISCONNECT', 'TIMEOUT' ...
+  endReason?: string | null;
+  // How long our seat is kept if the connection drops now.
+  viewerReconnectGraceMs?: number | null;
+  // Turn timer (null: no clock running - timer off, lobby, or paused during a reconnect).
+  timer?: TimerDto | null;
+  timerMode?: TimerMode;
+  // Our open decisions. A prompt not in this list was answered by the server (time ran out).
+  openChoiceIds?: string[];
+}
+
+export type TimerMode = 'STANDARD' | 'RELAXED' | 'OFF';
+
+export interface TimerDto {
+  // Whose clock runs ('' during the mulligan: both players).
+  activePlayerId: string;
+  kind: 'TURN' | 'RESPONSE' | 'MULLIGAN' | 'TURN_ORDER';
+  // End of the normal time (server time); after that the time bank runs if usesTimeBank.
+  deadlineUnixMs: number;
+  usesTimeBank: boolean;
+  usingTimeBank: boolean;
+  // Time bank per player in ms (for the running player: what was left when the clock started).
+  timeBankMs: Record<string, number>;
+  mode: TimerMode;
 }
 
 export interface DiceRollDto {
@@ -218,6 +246,29 @@ export interface RoomSummaryDto {
   phase: MatchPhase;
   playerNames: string[];
   createdAtUnixMs: number;
+  timerMode?: TimerMode;
+}
+
+// Only for us: our seat in the room and the secret token to get it back after a lost connection.
+export interface SeatAssignedDto {
+  roomCode: string;
+  playerId: string;
+  rejoinToken: string;
+}
+
+export interface RejoinResultDto {
+  status: 'OK' | 'EXPIRED' | 'INVALID';
+  roomCode: string;
+  playerId: string;
+}
+
+// After a rejoin: everything the client lost while it was offline (the state comes as snapshot).
+export interface ResyncDto {
+  roomCode: string;
+  playerId: string;
+  logEvents: LogEventDto[];
+  chatMessages: ChatMessageDto[];
+  choicePrompts: ChoicePromptDto[];
 }
 
 // Sent by the server when Quick Match paired two players.

@@ -66,12 +66,17 @@ public class MatchmakingQueueTests
         manager.Create("PUBLIC");
         var pair = new QueuePair(new QueueEntry("c1", "Alice", null), new QueueEntry("c2", "Bob", null));
 
-        var (room, update) = manager.CreateQuickMatchRoom(pair);
+        var (room, update, firstSeat, secondSeat) = manager.CreateQuickMatchRoom(pair);
 
         Assert.True(room.IsQuickMatch);
         Assert.Equal(6, room.RoomCode.Length);
         Assert.True(room.HasPlayer("c1"));
         Assert.True(room.HasPlayer("c2"));
+        // Every seat has its own stable player ID, not the connection ID.
+        Assert.Equal(firstSeat.PlayerId, room.ResolvePlayerId("c1"));
+        Assert.Equal(secondSeat.PlayerId, room.ResolvePlayerId("c2"));
+        Assert.NotEqual("c1", firstSeat.PlayerId);
+        Assert.NotEqual(firstSeat.RejoinToken, secondSeat.RejoinToken);
         Assert.Equal(2, update.StateSnapshot.Players.Count);
         Assert.Same(room, manager.Get(room.RoomCode));
 

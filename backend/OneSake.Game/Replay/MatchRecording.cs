@@ -55,6 +55,13 @@ public static class RecordedInputKinds
     public const string Manual = "MANUAL";
     // The player left the running match (concede or disconnect). Payload: { "endReason": ... }.
     public const string Leave = "LEAVE";
+    // Meta events: the connection of the player dropped / came back. They change nothing in the game.
+    public const string Disconnect = "DISCONNECT";
+    public const string Reconnect = "RECONNECT";
+    // The reconnect deadline ran out: the player loses (end reason DISCONNECT).
+    public const string DisconnectTimeout = "DISCONNECT_TIMEOUT";
+    // The time ran out: the server decided automatically. Payload: { "kind": "TURN" | "RESPONSE" | ... }.
+    public const string Timeout = "TIMEOUT";
 }
 
 public static class MatchRecordingJson

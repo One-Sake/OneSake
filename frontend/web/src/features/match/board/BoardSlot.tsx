@@ -37,6 +37,7 @@ export function BoardSlot({ children, dropClassName = '', dropTarget, filled = f
             }
           : undefined
       }
+      data-fx-zone={`${side}-${zone.kind}`}
       role="group"
     >
       <span className="board-zone__label" aria-hidden="true">

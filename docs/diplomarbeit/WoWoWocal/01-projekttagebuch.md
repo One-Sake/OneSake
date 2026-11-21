@@ -214,6 +214,271 @@ Keine Commits. Sprint 3 wurde ab 06.10.2026 geplant.
   Ordner verhindern, dass Teamkollegen (oder ihre KI-Agenten) in dieselben Dateien schreiben.
   Nur der „Was ist neu“-Changelog in der App bleibt gemeinsam.
 
+### 2026-11-21 01:21 – Stabile Spieler-Identität (Grundlage für Reconnect) ★ 🤖
+- Commit „Give every seat a stable player ID and a rejoin token“ (Branch `logic`): Jeder Platz im
+  Raum bekommt beim Betreten eine eigene Spieler-ID (`p1-…`) und ein geheimes Rejoin-Token
+  (32 Byte aus `RandomNumberGenerator`, Base64Url). Das Token geht nur an diesen Spieler
+  (Nachricht `SeatAssigned`). Alle Hub-Methoden ermitteln den Spieler über `ResolvePlayerId`
+  (Verbindung → Platz), Snapshots und Prompts werden an die aktuelle Verbindung des Platzes geschickt.
+  Das Senden steckt jetzt in `MatchUpdatePublisher`, damit es später auch ein Hintergrunddienst nutzen kann.
+- **Überlegung:** Bisher war die Spieler-ID die SignalR-Verbindungs-ID. Nach einem Verbindungsabbruch
+  bekommt der Browser aber eine neue Verbindung – der Server erkannte den Spieler nicht mehr.
+  Alternative wäre die Gast-ID gewesen; sie ist aber nicht geheim (steht in der URL, ist im Profil
+  sichtbar) und gilt für alle Tabs eines Browsers. Ein eigenes Token pro Platz ist sicherer und eindeutig.
+- **Probleme/Lessons Learned:** Viele Tests rufen `JoinPlayer("p1")` direkt auf. Damit sie unverändert
+  bleiben, gilt dort „Spieler-ID = Verbindung“; nur der Hub nutzt die neue Methode `JoinConnection`.
+
+### 2026-11-21 01:28 – Reconnect im Backend ★ 🤖
+- Commit „Keep the seat of a disconnected player for a grace period“: Bricht die Verbindung im
+  laufenden Match ab, bleibt der Platz 90 s reserviert (`Match:ReconnectGraceSeconds`). Pro Spieler und
+  Match gibt es zusätzlich ein Gesamtbudget von 180 s (`Match:ReconnectBudgetSeconds`); ist es fast
+  aufgebraucht (< 1 s), verliert man sofort. Neue Hub-Methode `RejoinRoom(roomCode, playerId, token)`
+  (Token-Vergleich in konstanter Zeit) – danach bekommt der Spieler Snapshot, alle offenen Entscheidungen
+  und die letzten Log-/Chat-Einträge (`Resync`). Läuft die Frist ab, endet das Match mit Niederlage
+  `DISCONNECT` (zählt im Ranked). In der Lobby gilt eine Frist von 30 s, nach dem Spielende wird der
+  Platz wie bisher sofort frei. Ein `MatchDeadlineService` prüft jede Sekunde alle Räume.
+  Die Uhr kommt über `IClock`, damit Tests die Zeit vorspulen können (12 neue Tests).
+- **Überlegung:** Am Handy reicht schon ein App-Wechsel, damit der Browser die Verbindung kappt – bisher
+  war das Match dann sofort verloren. Die Frist ist ein Kompromiss: lang genug für ein Funkloch, kurz genug,
+  dass der Gegner nicht ewig wartet. Das Budget verhindert, dass jemand durch ständiges Trennen Zeit schindet.
+  Disconnect/Reconnect landen als Meta-Ereignisse in der Aufzeichnung, der Fristablauf als Eingabe
+  `DISCONNECT_TIMEOUT` – so bleibt das Replay deterministisch.
+- **Probleme/Lessons Learned:** Nach einem Neuladen kommt die neue Verbindung oft an, *bevor* der Server
+  merkt, dass die alte weg ist. Deshalb übernimmt ein gültiger Rejoin den Platz auch von einer noch
+  „lebenden“ Verbindung. Außerdem kann man das Budget nie „genau auf 0“ verbrauchen (die Frist endet
+  genau dann) – darum zählt weniger als 1 s Rest als aufgebraucht.
+
+### 2026-11-21 12:27 – Reconnect im Frontend ★ 🤖
+- Commit „Bring players back to their seat after a lost connection“: Der Client speichert Raum,
+  Spieler-ID und Rejoin-Token in `sessionStorage` und `localStorage` (alles in try/catch) und ruft nach
+  jeder neuen Verbindung automatisch `RejoinRoom` auf. SignalR versucht es jetzt bis zu 10 Minuten
+  lang erneut (Standard: nach ~40 s Schluss); beim Zurückkehren in die App (`visibilitychange`) oder wenn
+  das Netz wiederkommt (`online`) wird sofort neu verbunden. Eigene Trennung: Banner
+  „Verbindung verloren – verbinde neu … (0:24)“, Board ausgegraut; danach kurz „Wieder verbunden ✓“.
+  Gegner getrennt: „Getrennt · 1:12“ am Namensschild. Nach dem Neuladen springt die App direkt zur
+  Match-Seite und zeigt „Laufendes Match gefunden – Zurück ins Match“ (neue Hub-Methode `CheckRejoin`,
+  die nur prüft und den Platz nicht übernimmt). Spielende-Fenster zeigt jetzt den Grund
+  (`endReason` im Snapshot), z. B. „Gegner hat die Verbindung verloren – Sieg“.
+- **Überlegung:** Countdowns rechnen mit der Serverzeit (jeder Snapshot schickt `serverTimeUnixMs`),
+  damit eine falsch gehende Handyuhr keine Rolle spielt. Nur das eigene Banner rechnet lokal, weil die
+  Frist ja genau ab dem eigenen Verbindungsverlust läuft. Wer zu spät zurückkommt, sieht trotzdem das
+  Ergebnis und das Log bis zum Ende, kann aber nichts mehr tun.
+- **Geprüft:** Playwright mit zwei Browsern (Offline schalten, Neuladen, Frist ablaufen lassen) –
+  alle drei Szenarien grün; Screenshots 2026-11-21_01 bis _06.
+- **Probleme/Lessons Learned:** Ohne Anpassung wäre „ein Klick zurück“ nach dem Neuladen zwei Klicks
+  gewesen (erst der Startbildschirm). Außerdem: Die Standard-Wiederverbindung von SignalR gibt nach etwa
+  40 Sekunden auf – kürzer als die Schonfrist.
+- Screenshots: `screenshots/2026-11-21_01-reconnect-banner.png` bis `screenshots/2026-11-21_06-niederlage-verbindung.png`
+
+### 2026-11-21 12:33 – Zug-Timer im Backend ★ 🤖
+- Commit „Add a server-side turn timer with a time bank“: 90 s pro Zug, danach die persönliche
+  Zeitbank (Start 180 s, +10 s nach jedem eigenen Zug, max. 240 s); 25 s Antwortzeit für Block, Counter,
+  Trigger usw.; Mulligan 30 s und Würfelentscheidung 20 s ohne Zeitbank; 2 s Toleranz für Lag. Läuft die
+  Zeit ab, entscheidet der Server automatisch in einer festen, dokumentierten Reihenfolge
+  (`docs/turn-timer.md`), z. B. Counter → `PASS`, eigener Zug → Zug beenden. Zwei eigene Züge in Folge
+  ohne Zeit = Niederlage mit neuem Endgrund `TIMEOUT`. Modi Standard / Entspannt (doppelt) / Aus,
+  Quick Match immer Standard. Der Snapshot enthält jetzt `timer` (wessen Uhr, Art, Frist, Zeitbanken).
+  11 neue Tests mit der Fake-Uhr (u. a. Zeitbank, Counter-Timeout, Pause bei Disconnect, Replay).
+- **Überlegung:** Es läuft immer nur *eine* Uhr – wie bei einer Schachuhr. Während der Gegner über
+  einen Counter nachdenkt, steht die Zugzeit des Angreifers. Die automatische Entscheidung lehnt immer
+  ab, wo es geht („nichts tun“ ist am wenigsten überraschend), und nimmt sonst die erste gültige
+  Option – so ist das Ergebnis vorhersagbar und im Replay identisch. Alternativen: Zufällige Auswahl
+  (nicht deterministisch), sofortige Niederlage beim ersten Timeout (zu hart bei kurzem Lag).
+- **Probleme/Lessons Learned:** Die Logik von `SubmitChoice` musste in „prüfen/ausführen“ und
+  „aufzeichnen“ geteilt werden, damit ein Timeout als *ein* Input `TIMEOUT` aufgezeichnet wird und das
+  Replay ihn mit demselben Code nachspielt. In den Tests fiel auf, dass hier niemand im eigenen ersten
+  Zug angreifen darf – der Counter-Test greift deshalb in Zug 3 an.
+
+### 2026-11-21 12:45 – Zug-Timer im Frontend, Timer-Wahl für eigene Tische ★ 🤖
+- Commit „Show the turn timer and let private tables choose it“: Ring mit Sekunden am Namensschild
+  (eigener und gegnerischer Spieler), Zeitbank als kleine Zahl ⌛ daneben, Balken über der
+  Aktionsleiste für die eigene Uhr („Zugzeit“ / „Antwortzeit“ / „Zeitbank“). Ab 15 s Gesamtzeit
+  orange, ab 5 s rot und pulsierend mit leisem Tick-Geräusch (Web Audio, per 🔊/🔇 abschaltbar);
+  bei `prefers-reduced-motion` kein Pulsieren. In der Lobby „Timer für eigene Tische:
+  Standard / Entspannt / Aus“ (neue Hub-Methode `CreateRoomWithTimer`, `CreateRoom` bleibt für ältere
+  Clients), die Tisch-Liste zeigt die Einstellung. Profil-Statistik und Spielende kennen den Endgrund
+  „Zeit abgelaufen“.
+- **Überlegung:** Die Farbe richtet sich nach der *gesamten* Restzeit (normale Zeit + Zeitbank) – sonst
+  würde der Ring bei vollen 180 s Zeitbank schon nach 75 s rot werden und unnötig Stress machen.
+  Der Ring füllt sich je Abschnitt (erst normale Zeit, dann Zeitbank) neu, damit man sieht, dass die
+  Zeitbank angebrochen ist.
+- **Probleme/Lessons Learned:** Beim Browser-Test (Counter läuft ab) blieb beim Verteidiger der Knopf
+  „Pass“ stehen – der Server hatte schon automatisch entschieden, aber der Client wusste es nicht.
+  Lösung: Der Snapshot enthält jetzt `openChoiceIds` (eigene offene Entscheidungen); veraltete Prompts
+  verwirft der Client. Außerdem gefunden (älter, nicht behoben): Entscheidet der Würfelgewinner sehr
+  schnell, bleibt beim Gegner das Würfel-Overlay hängen.
+- **Geprüft:** Playwright mit zwei Browsern und kurzen Timer-Werten: automatisches Zugende, Zeitbank,
+  zwei Timeouts → Niederlage `TIMEOUT` bei beiden; Counter läuft ab → Kampf geht ohne Counter weiter.
+- Screenshots: `screenshots/2026-11-21_07-timer-normal.png` bis `screenshots/2026-11-21_11-antwortzeit-counter.png`
+
+### 2026-11-21 12:47 – Konfiguration dokumentiert, Abschluss Reconnect/Timer 🤖
+- Commit „Document the reconnect and turn timer settings“: Alle neuen Werte (`Match:ReconnectGraceSeconds`,
+  `Match:ReconnectBudgetSeconds`, `Match:LobbyReconnectGraceSeconds`, `Match:Timer:*`) mit Standardwerten
+  und Beispiel für kurze Testwerte in `docs/deployment.md`; Nachtrag in `docs/handoff.md`.
+- **Gesamtprüfung:** `dotnet build`/`dotnet test` grün (300 Tests, 6 übersprungen wie bisher),
+  `npm run lint`/`npm run build` grün, Simulator-Smoke wie in CI (200 Partien, 0 Fehler),
+  Playwright-Szenarien a)–e) grün.
+- **Überlegung/Grenze:** Die Plätze liegen nur im Speicher des Servers. Ein Neustart (Deployment) beendet
+  laufende Matches weiterhin – dafür bräuchte es eine gemeinsame Speicherung (z. B. Redis), was für den
+  aktuellen Ein-Server-Betrieb zu viel Aufwand wäre.
+
+### 2026-11-21 – Roadmap und Alleinstellungsmerkmale festgehalten 🤖
+- Neue Datei `04-roadmap-und-alleinstellungsmerkmale.md`: was nach den vier Logik-Prompts
+  (Ereignis-System, Determinismus/Aufzeichnung, Bot-Simulation, Karten nach Meta) noch fehlt,
+  welche Ideen OneSake von anderen OPTCG-Simulatoren abheben (Deck-Labor, Coach,
+  „Was wäre wenn?“-Replay, Lethal-Puzzle, Banden/Titel, Streamer-/Turnier-Modus) und eine
+  empfohlene Reihenfolge. Neue Ideen in `02-entscheidungen-und-ideen.md` (2.2 Offen) eingetragen.
+- **Überlegung:** Die Ideen bauen bewusst auf der deterministischen Engine, der Bot-Simulation und
+  den Meta-Daten auf – das ist schwer nachzumachen und gut in der Diplomarbeit vorzuführen.
+  Grundlagen (Reconnect, Timer, Spiel-Gefühl) kommen trotzdem zuerst, weil ohne sie niemand lange spielt.
+
+### 2026-11-21 13:25 – Animations-System für das Match ★ 🤖
+- Commit „Add an animation layer and queue to the match board“: neuer Ordner
+  `frontend/web/src/features/match/fx/` mit `fxQueue.ts` (Warteschlange: nacheinander, ab 4 wartenden
+  Animationen doppelte Geschwindigkeit, Überspringen bei Klick/Taste), `FxLayer.tsx` (Overlay über dem
+  Board, `pointer-events: none`), `useBoardFx.ts` (vergleicht zwei Snapshots und liest neue Log-Einträge),
+  `fxDom.ts` (fliegende Kopien, nur `transform`/`opacity`) und Zahnrad-Menü „Animationen: Normal /
+  Schnell / Aus“ (localStorage mit try/catch, bei `prefers-reduced-motion` standardmäßig „Aus“).
+  Karten und Zonen tragen `data-fx-card` / `data-fx-zone`, damit die Animationen ihre Positionen finden.
+- **Überlegung:** Der neue Spielzustand wird **sofort** übernommen, die Animation ist nur eine Schicht
+  darüber (eine Kopie fliegt dorthin, wo die Karte schon liegt). So ist das Board nie falsch, Eingaben
+  werden nie blockiert und ein Klick springt einfach ans Ende. Alternative wäre, den Zustand erst nach
+  der Animation zu zeigen (wie viele TCG-Clients) – dann wartet man auf Animationen und es kann zu
+  Abweichungen zwischen Anzeige und Server kommen. Animiert wird mit der Web Animations API
+  (`element.animate`), weil man damit jede Animation sofort beenden kann; keine neue Bibliothek.
+- **Probleme/Lessons Learned:** Die Topbar schneidet überstehende Inhalte ab – das Menü liegt deshalb
+  `fixed` unter dem Zahnrad. Wartende Animationen verstecken ihre Zielkarte schon beim Einreihen; damit
+  diese nie unsichtbar bleibt, führt „Überspringen“ jeden wartenden Schritt kurz aus und räumt auf.
+- Screenshot: `screenshots/2026-11-21_20-match-einstellungen.png`
+
+### 2026-11-21 14:05 – Animationen: Ziehen, Spielen, Events ★ 🤖
+- Commit „Animate drawing, playing and Event cards“: Gezogene Karten fliegen vom Deck in die Hand
+  (Gegner: Kartenrücken in die Gegnerhand). Spielt der Gegner eine Karte, wird sie 0,6 s groß in der
+  Mitte gezeigt und fliegt dann in ihren Slot; danach bleibt sie 2 s leicht markiert. Eigene Karten
+  per Klick bekommen dieselbe Landung wie bei Drag & Drop (bei Drag & Drop bleibt die bestehende
+  Landung). Events (auch [Counter]-Events) erscheinen groß mit goldenem Leuchten und fliegen in den Trash.
+- **Überlegung:** Die Ereignisse werden aus dem Vergleich zweier Snapshots erkannt (welche Karte ist
+  neu auf dem Feld, im Trash, in der Hand), weil die Log-Einträge auf `dev` nur Text enthalten.
+  Die echte Karte liegt schon an ihrem Platz und ist nur unsichtbar, bis die Kopie landet.
+- **Geprüft:** Playwright-Bot spielt mit zwei Browsern ein Match über die echte Oberfläche und nimmt
+  bei bestimmten Ereignissen Bildfolgen auf (Screenshot alle 100 ms).
+- **Probleme/Lessons Learned:** Karten im Effekt-Dialog tragen dieselbe Karten-ID wie auf dem Board –
+  sie werden bei der Positionssuche ausgeschlossen. Das Bild einer noch nie gezeigten Gegnerkarte lädt
+  erst während des Reveals; bis dahin ist der Kartenname zu sehen. Ein Reveal wird höchstens um 30 %
+  beschleunigt, damit man die Karte lesen kann.
+- Bildfolgen: `screenshots/2026-11-21_21-bildfolge-gegner-spielt-karte.png`,
+  `screenshots/2026-11-21_22-bildfolge-gegner-spielt-event.png`
+
+### 2026-11-21 14:50 – Animationen: Angriff, Block, Counter, Treffer, K.O., Life ★ 🤖
+- Commit „Animate attacks, blocks, counters, hits, K.O.s and Life cards“:
+  Beim Wählen des Angriffsziels läuft ein geschwungener goldener Zielpfeil (SVG) von der angreifenden
+  Karte zum Mauszeiger/Finger, gültige Ziele pulsieren. Nach dem Angriff springt der Angreifer Richtung
+  Ziel und zurück, das Resten dreht sich animiert, über dem Ziel erscheint „5000 ⚔ 5000“. Block: der
+  Blocker gleitet kurz vor, Schild-Symbol. Counter: „+2000“ steigt grün auf, die Power zählt hoch.
+  Treffer: Leader wackelt, roter Rand, am Handy `navigator.vibrate(30)` (abschaltbar). K.O.: die Karte
+  zerfällt in 12 Splitter, ein blasser Geist fliegt in den Trash. Life: die Karte dreht sich auf dem Weg
+  in die Hand um (Gegner: Rückseite). [Trigger]: die Karte erscheint groß mit „TRIGGER“.
+- **Überlegung:** Angriff, Block und Counter lassen sich direkt am `battle`-Objekt im Snapshot ablesen
+  (neuer Angreifer = Angriff, anderes Ziel = Block, höherer Counter-Bonus = Counter). Der K.O. ist ein
+  Character, der vom Feld in den Trash wechselt. Die Splitter nutzen das Kartenbild als Hintergrund –
+  keine Bilddateien nötig.
+- **Probleme/Lessons Learned:** Die Karte-Dialoge liegen im selben Stapelkontext wie das Board; die
+  fx-Schicht liegt deshalb darüber (sie fängt keine Klicks ab). Während ein gegnerischer [Trigger]
+  aufgelöst wird, liegt die Karte in keiner Zone – sie wird über den Namen im Log gefunden.
+- Bildfolgen: `screenshots/2026-11-21_23-bildfolge-angriff-zielpfeil.png`,
+  `…_24-bildfolge-angriff.png`, `…_25-bildfolge-ko.png`, `…_26-bildfolge-life-trigger.png`,
+  `…_27-bildfolge-counter.png`
+
+### 2026-11-21 15:30 – Animationen: DON!!, Refresh, Effekte, Power ★ 🤖
+- Commit „Animate DON!!, refresh, effects and power changes“: DON!! anlegen – eine DON!!-Karte fliegt
+  aus der Cost-Area auf die Karte, „+1000“ steigt auf. DON!!-Phase – neue DON!!-Karten fliegen vom
+  DON!!-Deck in die Cost-Area. Refresh – alle gerestete Karten drehen sich gleichzeitig zurück (CSS-Übergang
+  auf `rotate`/`scale`). Effekt löst aus – die Quelle bekommt einen goldenen Puls, Linien führen zu den
+  Karten, die der Effekt nennt oder gerade verändert hat. Power – das Power-Feld bläht sich kurz auf,
+  grün bei Plus, rot bei Minus; geänderte Power bleibt grün/rot, beim Hover steht die Basis-Power
+  im Tooltip. Angriffsbereite Karten haben einen feinen pulsierenden Rand.
+- **Überlegung:** Effekt-Logs beginnen mit „Kartenname: …“ – daraus wird die Quelle gelesen. Ziele
+  stehen nicht strukturiert im Log; deshalb werden genannte Kartennamen und Karten mit gerade geänderter
+  Power als Ziel genommen (kann in seltenen Fällen ungenau sein, ist aber rein optisch).
+- **Probleme/Lessons Learned:** Das Power-Feld fängt keine Mauszeiger-Ereignisse – der Basis-Power-Tooltip
+  sitzt deshalb auf der Karte selbst.
+- Bildfolgen: `screenshots/2026-11-21_28-bildfolge-don.png`, `…_29-bildfolge-effekt.png`
+
+### 2026-11-21 16:10 – Zugwechsel-Banner und Spielende-Screen ★ 🤖
+- Commit „Show a turn banner and a new game over screen“: Bei jedem Zugwechsel läuft 0,9 s ein Banner
+  quer über das Board – „DEIN ZUG“ in Gold bzw. „ZUG DES GEGNERS“ gedämpft, mit Zugnummer; danach leuchtet
+  die eigene Aktionsleiste kurz auf. Spielende: „SIEG“ mit Goldkonfetti bzw. „NIEDERLAGE“ mit dunklem
+  Schleier, darunter beide Spieler mit Leader, Zahl der Züge, Modus und – bei Ranked – die
+  Kopfgeld-Änderung. Buttons „Revanche-Tisch erstellen“ (bestehender Erstellen-Ablauf mit neuem Code)
+  und „Zurück zur Lobby“.
+- **Überlegung:** Die Kopfgeld-Abfrage war im `BountyChangeBanner` versteckt; sie steckt jetzt im Hook
+  `useBountyChange`, den Banner und Spielende-Screen gemeinsam nutzen (eine Abfrage statt zwei). Der
+  Banner hält Eingaben nicht auf (`pointer-events: none`).
+- **Probleme/Lessons Learned:** Der Test-Bot hat den Sieg zuerst bei einem abgewehrten Angriff
+  aufgenommen – die Aufnahme wird jetzt wiederholt, bis das Spiel wirklich vorbei ist.
+- Bildfolgen/Screenshots: `screenshots/2026-11-21_30-bildfolge-zugwechsel.png`,
+  `…_31-bildfolge-sieg.png`, `…_32-niederlage.png`
+
+### 2026-11-21 16:45 – Sounds im Match ★ 🤖
+- Commit „Add synthesized match sounds“: `fx/sounds.ts` erzeugt alle Klänge mit der Web Audio API
+  (Oszillatoren und gefiltertes Rauschen): Karte ziehen, Karte spielen, Event, Angriff (Whoosh),
+  Treffer, Block (Schild), Counter, K.O., Life verloren, DON!!, Zugwechsel (eigener/gegnerischer),
+  Sieg, Niederlage und ein Timer-Tick für später. Im Zahnrad: „Sound an“ und Lautstärke-Regler
+  (Standard: an, 50 %), gespeichert in localStorage. Der Klang startet mit seinem Animationsschritt;
+  beim Überspringen bleibt es still.
+- **Überlegung:** Synthetisierte Klänge statt Audiodateien – keine Lizenzfragen, keine Downloads, sehr
+  klein, und sie passen automatisch zur Lautstärke. Der AudioContext wird erst nach dem ersten Klick oder
+  Tastendruck erzeugt (Browser-Regel, und niemand wird beim Öffnen der Seite überrascht).
+- **Geprüft:** Playwright zählt AudioContexts und gestartete Töne: 0 vor der ersten Interaktion,
+  Töne im Match, stumm = keine Töne bei zwei Zugwechseln, Einstellungen nach dem Neuladen erhalten.
+- Screenshot: `screenshots/2026-11-21_33-sound-einstellungen.png`
+
+### 2026-11-21 18:20 – Tastenkürzel, Auto-Pass, Hinweise; Leistung ★ 🤖
+- Commit „Add keyboard shortcuts, auto pass and board hints“: Tastenkürzel (nur wenn kein Eingabefeld
+  aktiv ist): Leertaste = Zug beenden (zweimal drücken oder 400 ms halten), A = Angriff, D = DON!!,
+  E = Effekt, Tab = nächste eigene Feldkarte, 1–9 = Handkarte auswählen (Enter spielt sie), Enter =
+  im Dialog bestätigen, Esc = abbrechen, ? = Übersicht. Kleine Kürzel-Hinweise auf den Buttons
+  (nur Desktop, für Screenreader ausgeblendet). Auto-Pass: Block-Schritt ohne möglichen Blocker
+  (öffentliche Information) nach 0,7 s; Counter-Schritt nur mit selbst eingeschaltetem
+  „Auto-Pass Counter“ und zufälliger Pause von 0,8–1,6 s. „End Turn“ leuchtet, wenn nichts Sinnvolles
+  mehr möglich ist (nur Hinweis). Gegnerkarten zeigen beim Hover Mini-Icons (🛡 Blocker, 💀 On K.O.,
+  ✦ Trigger …).
+- **Leistung:** Messung mit Playwright im Handy-Querformat (844 × 390) und 4-facher CPU-Drosselung
+  (Chrome DevTools Protocol) auf dem Produktions-Build. Erst lag die Erkennung im React-Commit bei bis zu
+  355 ms, weil direkt nach den DOM-Änderungen Positionen gelesen wurden (erzwungenes Layout). Jetzt liest
+  die Erkennung keine Positionen mehr, Animationen starten im nächsten Animation-Frame, Positionen werden
+  nach dem Zeichnen gemerkt: Erkennung max. 1,5 ms, Animationsschritt max. 7 ms, in ~2100 Frames mit
+  laufender Animation nur 0–1 Frame über 50 ms (50,1 ms). Pulsierende Ränder animieren nur noch die
+  `opacity` einer Leucht-Ebene statt `box-shadow` (das hätte jeden Frame neu gezeichnet).
+  Messmarken `fx-snapshot`, `fx-step`, `fx-boxes` sind im DevTools-Performance-Panel sichtbar.
+- **Geprüft:** Tastenkürzel im Browser (Hilfe, 1/Enter, Tab/D, Leertaste zweimal und halten);
+  mit `prefers-reduced-motion` 8 Züge gespielt – keine einzige bewegte Animation, Board voll bedienbar.
+- **Probleme/Lessons Learned:** (1) Der pulsierende „End Turn“ hat sich anfangs skaliert – ein ständig
+  bewegtes Klickziel (Playwright wartete vergeblich auf „stabil“); jetzt pulsiert nur das Leuchten.
+  (2) Die Text-Einblendungen stiegen auch im reduzierten Modus auf – jetzt nur Ein-/Ausblenden.
+  (3) **Befund am Server:** Auf `dev` schickt der Server den Counter- und Block-Schritt gar nicht, wenn
+  nichts nutzbar ist. Der Angreifer merkt dann am sofortigen Schaden, dass keine Counter auf der Hand sind –
+  genau das Informationsleck, das der Auto-Pass vermeiden soll. Der Client-Schalter greift deshalb derzeit
+  praktisch nie; die eigentliche Lösung (Counter-Schritt immer senden oder serverseitig kurz warten) ist
+  eine Backend-Änderung und war nicht Teil dieses Auftrags.
+- Screenshots: `screenshots/2026-11-21_34-tastenkuerzel.png`, `…_35-leertaste-bestaetigen.png`,
+  `…_36-gegnerkarte-hinweise.png`, `…_37-zug-beenden-hinweis.png`
+
+### 2026-11-21 15:28 – dev und logic zusammengeführt, alles auf main ★ 🤖
+- Merge von `dev` (Animationen, Sounds, Tastenkürzel) in `logic` (Reconnect, Zug-Timer, Manueller Modus,
+  Aufzeichnung), danach `logic` → `dev` → `main` (Deployment).
+- **Konflikte:** vor allem `MatchBoard.tsx` – beide Branches haben das Board erweitert. Gelöst, indem beide
+  Funktionen erhalten bleiben: Manueller Modus und „Fehler melden“ aus `logic`, Animationen, Mini-Icons und
+  Tastenkürzel aus `dev`. Der neue Spielende-Screen zeigt jetzt zusätzlich den Endgrund aus `logic`
+  (z. B. „Zeit abgelaufen – Niederlage“, „Gegner hat die Verbindung verloren – Sieg“) und „Fehler melden“.
+  Doku und Changelog: beide Seiten behalten, zeitlich sortiert.
+- **Geprüft (zusammengeführter Stand):** `dotnet build`/`dotnet test` grün (300 Tests, 6 übersprungen),
+  Simulator-Smoke 200/200, `npm run lint`/`npm run build` grün; Playwright mit zwei Browsern:
+  Reconnect a)–c), Timer d)–e), Animations-Bot über ein ganzes Match bis zum Sieg, Sounds, Tastenkürzel.
+- **Probleme/Lessons Learned:** Ein Test erwartete nach dem Neuladen den Startbildschirm – mit Reconnect
+  springt die App aber direkt zu „Zurück ins Match“. Die Funktionen der beiden Branches beeinflussen sich
+  also; deshalb wurde nach dem Merge alles noch einmal gemeinsam getestet.
+
 <!-- Neue Einträge unten anfügen. Vorlage:
 
 ### JJJJ-MM-TT HH:MM – Titel ★/👥/🤖

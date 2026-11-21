@@ -4,6 +4,7 @@ import type { CSSProperties, ReactNode } from 'react';
 import type { ConnectionStatus } from '../../api/signalrClient';
 import type { CardDto } from '../../types/cards';
 import type { Deck } from '../../types/decks';
+import type { TimerMode } from '../../types/realtime';
 import { getTotalCards } from '../deckbuilder/utils/deckValidation';
 import { DeckCarousel } from './DeckCarousel';
 import { getLeaderColorHex, getLeaderColorNames, getLeaderColors } from './leaderColors';
@@ -30,6 +31,9 @@ interface LobbyPanelProps {
   playersInRoom: number;
   isMatchRunning: boolean;
   queueStartedAt: number | null;
+  // Timer for tables we open ourselves (Quick Match always has the standard timer).
+  tableTimerMode: TimerMode;
+  onTableTimerModeChange: (mode: TimerMode) => void;
   pending: boolean;
   decks: Deck[];
   selectedDeck: Deck | null;
@@ -112,6 +116,8 @@ export function LobbyPanel({
   pending,
   playersInRoom,
   queueStartedAt,
+  tableTimerMode,
+  onTableTimerModeChange,
   roomCodeInput,
   selectedDeck,
   selectedDeckId,
@@ -289,6 +295,20 @@ export function LobbyPanel({
               pending={pending}
               queueStartedAt={queueStartedAt}
             />
+
+            {!joinedRoomCode && (
+              <label className="lobby-timer-select">
+                <span>Timer für eigene Tische</span>
+                <select
+                  onChange={(event) => onTableTimerModeChange(event.target.value as TimerMode)}
+                  value={tableTimerMode}
+                >
+                  <option value="STANDARD">Standard (90 s + Zeitbank)</option>
+                  <option value="RELAXED">Entspannt (doppelte Zeiten)</option>
+                  <option value="OFF">Aus</option>
+                </select>
+              </label>
+            )}
 
             <div className="lobby-links">
               {!joinedRoomCode && (

@@ -10,7 +10,7 @@ public class MatchResult
     public DateTime EndedAtUtc { get; set; }
     public int TurnCount { get; set; }
 
-    // LIFE, DECK_OUT, CONCEDE or DISCONNECT
+    // LIFE, DECK_OUT, CONCEDE, DISCONNECT or TIMEOUT
     public string EndReason { get; set; } = "";
 
     public string? WinnerGuestId { get; set; }

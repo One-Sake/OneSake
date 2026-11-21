@@ -1,4 +1,4 @@
-import type { MatchPhase } from '../../types/realtime';
+import type { MatchPhase, TimerMode } from '../../types/realtime';
 
 const PHASE_LABELS: Record<number, string> = {
   0: 'Lobby',
@@ -23,3 +23,24 @@ export function formatPhase(phase: MatchPhase): string {
 export function formatUnixMs(tsUnixMs: number): string {
   return new Date(tsUnixMs).toLocaleTimeString();
 }
+
+// Second line of the game over screen.
+export function getGameOverReason(endReason: string | null | undefined, didWin: boolean): string {
+  switch (endReason) {
+    case 'DISCONNECT':
+      return didWin ? 'Gegner hat die Verbindung verloren – Sieg' : 'Verbindung verloren – Niederlage';
+    case 'TIMEOUT':
+      return didWin ? 'Zeit des Gegners abgelaufen – Sieg' : 'Zeit abgelaufen – Niederlage';
+    case 'DECK_OUT':
+      return 'Keine Karten mehr im Deck';
+    default:
+      return '';
+  }
+}
+
+// Timer setting of a table (room list, lobby).
+export const TIMER_LABELS: Record<TimerMode, string> = {
+  STANDARD: '⏱ Standard',
+  RELAXED: '⏱ Entspannt',
+  OFF: 'Ohne Timer',
+};

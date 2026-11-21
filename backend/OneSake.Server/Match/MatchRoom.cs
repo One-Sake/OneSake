@@ -100,6 +100,8 @@ public sealed class MatchRoom
 
     // Result of the match that just ended. Reported once with the next update.
     private DateTimeOffset _matchStartedAtUtc;
+    // Why the last match ended (MatchEndReasons), shown on the game over screen.
+    private string? _endReason;
     private bool _resultReported;
     private MatchResultData? _pendingResult;
 
@@ -108,13 +110,26 @@ public sealed class MatchRoom
     private readonly DateTimeOffset _createdAtUtc;
     private DateTimeOffset _lastActivityUtc;
 
-    public MatchRoom(string roomCode, bool isQuickMatch = false, IDiceRoller? diceRoller = null, ulong? seed = null)
+    private readonly IClock _clock;
+    private readonly MatchRoomOptions _options;
+
+    public MatchRoom(
+        string roomCode,
+        bool isQuickMatch = false,
+        IDiceRoller? diceRoller = null,
+        ulong? seed = null,
+        MatchRoomOptions? options = null,
+        IClock? clock = null,
+        TimerMode timerMode = TimerMode.Off)
     {
+        TimerMode = timerMode;
         _roomCode = roomCode;
         IsQuickMatch = isQuickMatch;
         _customDiceRoller = diceRoller;
         _fixedSeed = seed;
-        _createdAtUtc = DateTimeOffset.UtcNow;
+        _options = options ?? new MatchRoomOptions();
+        _clock = clock ?? SystemClock.Instance;
+        _createdAtUtc = _clock.UtcNow;
         _lastActivityUtc = _createdAtUtc;
         _context = new RoomContext(this);
         _resolver = new EffectResolver(_context, _events);
@@ -151,28 +166,119 @@ public sealed class MatchRoom
     // Quick Match rooms are private and do not appear in the public room list.
     public bool IsQuickMatch { get; }
 
+    // Off for tests, replays and the simulator (only explicit TIMEOUT inputs).
+    public TimerMode TimerMode { get; }
+
     #region ROOM MEMBERSHIP
 
+    // A seat belongs to one player for the whole stay in the room. The player ID is stable, the
+    // SignalR connection can change (reconnect, page reload). The rejoin token proves the seat.
+    private sealed class PlayerSeat
+    {
+        public required string PlayerId { get; init; }
+        public required string RejoinToken { get; init; }
+        // null while the player is disconnected.
+        public string? ConnectionId { get; set; }
+        public DateTimeOffset? DisconnectedAtUtc { get; set; }
+        // The seat is lost when the player is not back by then.
+        public DateTimeOffset? GraceDeadlineUtc { get; set; }
+        // Disconnected time in this match so far (Match:ReconnectBudgetSeconds).
+        public TimeSpan BudgetUsed { get; set; }
+        // The deadline ran out during the match: the player lost and can only look at the result.
+        public bool Expired { get; set; }
+    }
+
+    // Seats by player ID.
+    private readonly Dictionary<string, PlayerSeat> _seats = new(StringComparer.Ordinal);
+
+    // True when this connection currently sits on a seat of this room.
     public bool HasPlayer(string connectionId)
     {
         lock (_sync)
         {
-            return _players.Any(player => player.PlayerId == connectionId);
+            return _seats.Values.Any(seat => seat.ConnectionId == connectionId);
         }
+    }
+
+    // The stable player ID behind a connection, null when the connection has no seat here.
+    public string? ResolvePlayerId(string connectionId)
+    {
+        lock (_sync)
+        {
+            return _seats.Values.FirstOrDefault(seat => seat.ConnectionId == connectionId)?.PlayerId;
+        }
+    }
+
+    // The connection a player is reachable on right now (null while disconnected).
+    public string? GetConnectionId(string playerId)
+    {
+        lock (_sync)
+        {
+            return _seats.TryGetValue(playerId, out var seat) ? seat.ConnectionId : null;
+        }
+    }
+
+    // Takes a seat for a new connection: a fresh player ID ("p1-…") and a secret rejoin token.
+    // The same connection joining again keeps its seat (e.g. a new display name).
+    public (MatchUpdate Update, SeatAssignedDto Seat) JoinConnection(string connectionId, string displayName, string? guestId = null)
+    {
+        lock (_sync)
+        {
+            var existing = _seats.Values.FirstOrDefault(seat => seat.ConnectionId == connectionId);
+            var playerId = existing?.PlayerId ?? CreatePlayerId();
+            var update = JoinPlayer(playerId, displayName, guestId, connectionId);
+            return (update, CreateSeatAssigned(_seats[playerId]));
+        }
+    }
+
+    private SeatAssignedDto CreateSeatAssigned(PlayerSeat seat)
+    {
+        return new SeatAssignedDto
+        {
+            RoomCode = _roomCode,
+            PlayerId = seat.PlayerId,
+            RejoinToken = seat.RejoinToken
+        };
+    }
+
+    private string CreatePlayerId()
+    {
+        string playerId;
+        do
+        {
+            playerId = $"p{_players.Count + 1}-{ToBase64Url(RandomNumberGenerator.GetBytes(6))}";
+        }
+        while (_seats.ContainsKey(playerId));
+
+        return playerId;
+    }
+
+    private static string ToBase64Url(byte[] bytes)
+    {
+        return Convert.ToBase64String(bytes).TrimEnd('=').Replace('+', '-').Replace('/', '_');
     }
 
     // Removes a player from the room. Returns null when the player was not in this room.
     // If a match was running, it is aborted and the room goes back to the lobby.
     // endReason is stored when this ends a running match (the remaining player wins).
-    public MatchUpdate? RemovePlayer(string connectionId, string endReason = MatchEndReasons.Disconnect)
+    public MatchUpdate? RemovePlayer(string playerId, string endReason = MatchEndReasons.Disconnect)
     {
         lock (_sync)
         {
-            var player = _players.FirstOrDefault(entry => entry.PlayerId == connectionId);
+            return RemovePlayerCore(playerId, endReason) ? CreateUpdate() : null;
+        }
+    }
+
+    private bool RemovePlayerCore(string playerId, string endReason)
+    {
+        {
+            var player = _players.FirstOrDefault(entry => entry.PlayerId == playerId);
             if (player is null)
             {
-                return null;
+                return false;
             }
+
+            _seats.Remove(playerId);
 
             var wasMatchRunning = _phase != MatchPhase.Lobby && _phase != MatchPhase.GameOver;
             if (wasMatchRunning)
@@ -180,7 +286,7 @@ public sealed class MatchRoom
                 Record(player, RecordedInputKinds.Leave, new { endReason });
             }
 
-            var remainingPlayer = _players.FirstOrDefault(entry => entry.PlayerId != connectionId);
+            var remainingPlayer = _players.FirstOrDefault(entry => entry.PlayerId != playerId);
             if (wasMatchRunning && remainingPlayer is not null)
             {
                 RecordResult(remainingPlayer, player, endReason);
@@ -203,7 +309,259 @@ public sealed class MatchRoom
                 CreateLogEvent("MATCH_ABORTED", "Match ended because a player left.");
             }
 
+            return true;
+        }
+    }
+
+    #endregion
+
+    #region RECONNECT
+
+    private bool IsMatchRunning => _phase is not (MatchPhase.Lobby or MatchPhase.GameOver);
+
+    // The connection of a player dropped. In a running match the seat is kept for a grace period
+    // (limited by the reconnect budget), in the lobby for a shorter time. After the game it is freed.
+    public MatchUpdate? Disconnect(string connectionId)
+    {
+        lock (_sync)
+        {
+            var seat = _seats.Values.FirstOrDefault(entry => entry.ConnectionId == connectionId);
+            if (seat is null)
+            {
+                return null;
+            }
+
+            if (_phase == MatchPhase.GameOver)
+            {
+                return RemovePlayer(seat.PlayerId);
+            }
+
+            var player = GetPlayerSlot(seat.PlayerId);
+            var now = _clock.UtcNow;
+            seat.ConnectionId = null;
+            seat.DisconnectedAtUtc = now;
+            player.Connected = false;
+
+            if (_phase == MatchPhase.Lobby)
+            {
+                seat.GraceDeadlineUtc = now + _options.LobbyReconnectGrace;
+                CreateLogEvent("PLAYER_DISCONNECTED", $"{player.DisplayName} hat die Verbindung verloren.");
+                return CreateUpdate();
+            }
+
+            var budgetLeft = _options.ReconnectBudget - seat.BudgetUsed;
+            var grace = budgetLeft < _options.ReconnectGrace ? budgetLeft : _options.ReconnectGrace;
+            // Less than a second left counts as used up: the seat is lost right away.
+            if (grace < TimeSpan.FromSeconds(1))
+            {
+                grace = TimeSpan.Zero;
+            }
+
+            seat.GraceDeadlineUtc = now + grace;
+            CreateLogEvent(
+                "PLAYER_DISCONNECTED",
+                $"📡 {player.DisplayName} hat die Verbindung verloren – wartet bis zu {(int)Math.Ceiling(grace.TotalSeconds)} s.");
+            // Only a meta event: the game state does not change, the replay skips it.
+            Record(player, RecordedInputKinds.Disconnect, new { graceMs = (long)grace.TotalMilliseconds });
+
+            // No budget left: the seat is lost right away.
+            ApplyExpiredDeadlines(now);
             return CreateUpdate();
+        }
+    }
+
+    // A player comes back with the player ID and the secret token of the seat (new connection).
+    // Also works when the server has not noticed the old connection is gone: the new one takes over.
+    public RejoinOutcome Rejoin(string playerId, string rejoinToken, string connectionId)
+    {
+        lock (_sync)
+        {
+            if (!_seats.TryGetValue(playerId ?? string.Empty, out var seat) || !TokensMatch(seat.RejoinToken, rejoinToken))
+            {
+                return new RejoinOutcome(RejoinStatus.Invalid);
+            }
+
+            var now = _clock.UtcNow;
+            // The deadline may be over before the background service noticed it.
+            ApplyExpiredDeadlines(now);
+            var player = GetPlayerSlot(playerId!);
+
+            if (seat.Expired)
+            {
+                // Too late: the match is lost. The player may still see the result.
+                var expiredUpdate = CreateUpdate();
+                return new RejoinOutcome(
+                    RejoinStatus.Expired,
+                    expiredUpdate,
+                    // Log and chat up to the end, so the player can read why the match ended.
+                    new ResyncDto
+                    {
+                        RoomCode = _roomCode,
+                        PlayerId = playerId!,
+                        LogEvents = _recentLog.ToArray(),
+                        ChatMessages = _recentChat.ToArray()
+                    },
+                    FinalState: CreateStateSnapshot(playerId));
+            }
+
+            var previousConnectionId = seat.ConnectionId;
+            if (seat.DisconnectedAtUtc is { } disconnectedAt)
+            {
+                seat.BudgetUsed += now - disconnectedAt;
+            }
+
+            seat.ConnectionId = connectionId;
+            seat.DisconnectedAtUtc = null;
+            seat.GraceDeadlineUtc = null;
+            player.Connected = true;
+            CreateLogEvent("PLAYER_RECONNECTED", $"📶 {player.DisplayName} ist wieder verbunden.");
+            if (IsMatchRunning)
+            {
+                Record(player, RecordedInputKinds.Reconnect, new { });
+            }
+
+            var update = CreateUpdate();
+            var resync = new ResyncDto
+            {
+                RoomCode = _roomCode,
+                PlayerId = playerId!,
+                LogEvents = _recentLog.ToArray(),
+                ChatMessages = _recentChat.ToArray(),
+                // Every decision this player still has to make (in the order they were asked).
+                ChoicePrompts = _openChoicePrompts.Values
+                    .Where(prompt => prompt.PlayerId == playerId)
+                    .OrderBy(PromptNumber)
+                    .ToArray()
+            };
+
+            return new RejoinOutcome(
+                RejoinStatus.Ok,
+                update,
+                resync,
+                PreviousConnectionId: previousConnectionId == connectionId ? null : previousConnectionId);
+        }
+    }
+
+    // Checks a rejoin without taking the seat (the "Back to the match" card after a page reload).
+    public RejoinStatus CheckRejoin(string playerId, string rejoinToken)
+    {
+        lock (_sync)
+        {
+            if (!_seats.TryGetValue(playerId ?? string.Empty, out var seat) || !TokensMatch(seat.RejoinToken, rejoinToken))
+            {
+                return RejoinStatus.Invalid;
+            }
+
+            var deadlineOver = seat.GraceDeadlineUtc is { } deadline && seat.ConnectionId is null && _clock.UtcNow >= deadline;
+            return seat.Expired || deadlineOver ? RejoinStatus.Expired : RejoinStatus.Ok;
+        }
+    }
+
+    // How long the viewer's seat would be kept if the connection dropped now (for the client banner).
+    private long? ViewerReconnectGraceMs(string? viewerPlayerId)
+    {
+        if (viewerPlayerId is null || !_seats.TryGetValue(viewerPlayerId, out var seat))
+        {
+            return null;
+        }
+
+        if (_phase == MatchPhase.Lobby)
+        {
+            return (long)_options.LobbyReconnectGrace.TotalMilliseconds;
+        }
+
+        var budgetLeft = _options.ReconnectBudget - seat.BudgetUsed;
+        var grace = budgetLeft < _options.ReconnectGrace ? budgetLeft : _options.ReconnectGrace;
+        return Math.Max(0, (long)grace.TotalMilliseconds);
+    }
+
+    // Called every second by MatchDeadlineService. Returns an update when something changed.
+    public MatchUpdate? Tick()
+    {
+        lock (_sync)
+        {
+            var now = _clock.UtcNow;
+            var changed = ApplyExpiredDeadlines(now);
+            changed |= CheckTimer(now);
+            return changed ? CreateUpdate() : null;
+        }
+    }
+
+    // Seats whose reconnect deadline ran out: in a running match the player loses (DISCONNECT),
+    // in the lobby the seat is freed.
+    private bool ApplyExpiredDeadlines(DateTimeOffset now)
+    {
+        var changed = false;
+        foreach (var seat in _seats.Values.ToList())
+        {
+            if (seat.ConnectionId is not null || seat.Expired || seat.GraceDeadlineUtc is not { } deadline || now < deadline)
+            {
+                continue;
+            }
+
+            if (_phase == MatchPhase.Lobby)
+            {
+                changed |= RemovePlayerCore(seat.PlayerId, MatchEndReasons.Disconnect);
+                continue;
+            }
+
+            seat.Expired = true;
+            changed = true;
+            if (IsMatchRunning)
+            {
+                ForfeitByDisconnect(GetPlayerSlot(seat.PlayerId));
+            }
+        }
+
+        return changed;
+    }
+
+    // Also used by the replay (input DISCONNECT_TIMEOUT), so it must not depend on the connection.
+    private void ForfeitByDisconnect(PlayerState player)
+    {
+        var winner = GetPlayerSlot(GetOtherPlayerId(player.PlayerId));
+        CreateLogEvent("DISCONNECT_TIMEOUT", $"⌛ {player.DisplayName} ist nicht rechtzeitig zurückgekommen.");
+        EndGame(winner, $"{winner.DisplayName} gewinnt – {player.DisplayName} hat die Verbindung verloren.", MatchEndReasons.Disconnect);
+        Record(player, RecordedInputKinds.DisconnectTimeout, new { });
+    }
+
+    // Replay of a recorded DISCONNECT_TIMEOUT.
+    public MatchUpdate ApplyDisconnectTimeout(string playerId)
+    {
+        lock (_sync)
+        {
+            if (IsMatchRunning)
+            {
+                ForfeitByDisconnect(GetPlayerSlot(playerId));
+            }
+
+            return CreateUpdate();
+        }
+    }
+
+    private static bool TokensMatch(string expected, string? actual)
+    {
+        // Constant-time comparison, so the answer time tells nothing about the token.
+        return CryptographicOperations.FixedTimeEquals(
+            System.Text.Encoding.UTF8.GetBytes(expected),
+            System.Text.Encoding.UTF8.GetBytes(actual ?? string.Empty));
+    }
+
+    // Last log entries and chat messages, sent again after a rejoin.
+    private const int RecentLogSize = 80;
+    private const int RecentChatSize = 40;
+    private readonly List<LogEventDto> _recentLog = [];
+    private readonly List<ChatMessageDto> _recentChat = [];
+
+    public void AddChatMessage(ChatMessageDto message)
+    {
+        lock (_sync)
+        {
+            _recentChat.Add(message);
+            if (_recentChat.Count > RecentChatSize)
+            {
+                _recentChat.RemoveAt(0);
+            }
         }
     }
 
@@ -227,7 +585,8 @@ public sealed class MatchRoom
                 MaxPlayers = MaxPlayers,
                 Phase = _phase,
                 PlayerNames = _players.Select(player => player.DisplayName).ToArray(),
-                CreatedAtUnixMs = _createdAtUtc.ToUnixTimeMilliseconds()
+                CreatedAtUnixMs = _createdAtUtc.ToUnixTimeMilliseconds(),
+                TimerMode = TimerModeName(TimerMode)
             };
         }
     }
@@ -235,7 +594,9 @@ public sealed class MatchRoom
     #endregion
 
     #region PUBLIC API
-    public MatchUpdate JoinPlayer(string connectionId, string displayName, string? guestId = null)
+    // Joins with a given player ID. Without connectionId the player ID is also the connection
+    // (tests, replays, the simulator). The hub uses JoinConnection, which creates the player ID.
+    public MatchUpdate JoinPlayer(string playerId, string displayName, string? guestId = null, string? connectionId = null)
     {
         lock (_sync)
         {
@@ -243,7 +604,7 @@ public sealed class MatchRoom
                 ? $"Player-{_players.Count + 1}"
                 : displayName.Trim();
 
-            var existingPlayer = _players.FirstOrDefault(player => player.PlayerId == connectionId);
+            var existingPlayer = _players.FirstOrDefault(player => player.PlayerId == playerId);
             if (existingPlayer is null)
             {
                 if (_players.Count >= MaxPlayers)
@@ -253,17 +614,27 @@ public sealed class MatchRoom
 
                 _players.Add(new PlayerState
                 {
-                    PlayerId = connectionId,
+                    PlayerId = playerId,
                     DisplayName = normalizedDisplayName,
                     GuestId = guestId,
                     Connected = true
                 });
+                _seats[playerId] = new PlayerSeat
+                {
+                    PlayerId = playerId,
+                    RejoinToken = ToBase64Url(RandomNumberGenerator.GetBytes(32)),
+                    ConnectionId = connectionId ?? playerId
+                };
             }
             else
             {
                 existingPlayer.DisplayName = normalizedDisplayName;
                 existingPlayer.GuestId = guestId ?? existingPlayer.GuestId;
                 existingPlayer.Connected = true;
+                if (connectionId is not null && _seats.TryGetValue(playerId, out var seat))
+                {
+                    seat.ConnectionId = connectionId;
+                }
             }
 
             CreateLogEvent("JOIN", $"{normalizedDisplayName} joined room {_roomCode}.");
@@ -292,9 +663,24 @@ public sealed class MatchRoom
                 throw new InvalidOperationException("The match is already running.");
             }
 
+            if (_seats.Values.Any(seat => seat.ConnectionId is null))
+            {
+                throw new InvalidOperationException("Both players must be connected to start.");
+            }
+
+            foreach (var seat in _seats.Values)
+            {
+                seat.BudgetUsed = TimeSpan.Zero;
+                seat.Expired = false;
+                seat.DisconnectedAtUtc = null;
+                seat.GraceDeadlineUtc = null;
+            }
+
+            _recentLog.Clear();
+            ResetTimer();
             _turnNumber = 1;
             _phase = MatchPhase.TurnOrder;
-            _matchStartedAtUtc = DateTimeOffset.UtcNow;
+            _matchStartedAtUtc = _clock.UtcNow;
             _resultReported = false;
             _pendingResult = null;
             _activePlayerId = string.Empty;
@@ -400,6 +786,19 @@ public sealed class MatchRoom
     {
         lock (_sync)
         {
+            var player = ApplyChoice(submission);
+
+            // Only valid decisions are recorded (invalid ones throw and change nothing).
+            Record(player, RecordedInputKinds.Choice, submission with { PlayerId = string.Empty });
+            return CreateUpdate();
+        }
+    }
+
+    // Checks and runs one decision. Throws (and changes nothing) when it is not allowed.
+    // Used by SubmitChoice and by the automatic decisions when the time ran out.
+    private PlayerState ApplyChoice(ChoiceSubmissionDto submission)
+    {
+        {
             if (!_openChoicePrompts.TryGetValue(submission.ChoiceId, out var prompt))
             {
                 throw new InvalidOperationException("Choice prompt was not found.");
@@ -478,9 +877,7 @@ public sealed class MatchRoom
                     throw new InvalidOperationException($"Unsupported choice kind '{prompt.Kind}'.");
             }
 
-            // Only valid decisions are recorded (invalid ones throw above and change nothing).
-            Record(player, RecordedInputKinds.Choice, submission with { PlayerId = string.Empty });
-            return CreateUpdate();
+            return player;
         }
     }
 
@@ -521,10 +918,16 @@ public sealed class MatchRoom
                 Text = text,
                 TurnNumber = _turnNumber,
                 Phase = _phase,
-                TsUnixMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
+                TsUnixMs = _clock.UtcNow.ToUnixTimeMilliseconds()
             };
 
             _pendingLogEvents.Add(logEvent);
+            _recentLog.Add(logEvent);
+            if (_recentLog.Count > RecentLogSize)
+            {
+                _recentLog.RemoveAt(0);
+            }
+
             return logEvent;
         }
     }
@@ -793,6 +1196,11 @@ public sealed class MatchRoom
             {
                 _endTurnAction.Execute(player, _phase, _activePlayerId);
                 _openChoicePrompts.Remove(prompt.ChoiceId);
+                // Ended in time by the player: the streak of turn timeouts starts again.
+                if (!_autoDeciding)
+                {
+                    _turnTimeouts[player.PlayerId] = 0;
+                }
 
                 EnterEndPhase(player);
 
@@ -1338,6 +1746,7 @@ public sealed class MatchRoom
     private void BeginTurn(PlayerState player)
     {
         _activePlayerId = player.PlayerId;
+        _turnTimeLeft = Scaled(_options.Timer.TurnSeconds);
         player.TurnsStarted += 1;
         _events.Publish(new TurnStarted(player.PlayerId, _turnNumber));
         EnterRefreshPhase(player);
@@ -1370,6 +1779,9 @@ public sealed class MatchRoom
             player.DonToActivateAtEndOfTurn = 0;
             CreateLogEvent("EFFECT", $"{player.DisplayName} sets {amount} DON!! as active.");
         }
+
+        // Time bank bonus after every own turn (up to the maximum).
+        AddTimeBankBonus(player.PlayerId);
 
         // Rule 6-6-1-3: effects that last "during this turn" end.
         EffectDurations.EndOfTurn(_context, _turnNumber);
@@ -1454,6 +1866,7 @@ public sealed class MatchRoom
     private void EndGame(PlayerState? winner, string message, string endReason)
     {
         _phase = MatchPhase.GameOver;
+        _endReason = endReason;
         _winnerPlayerId = winner?.PlayerId ?? string.Empty;
         _battle = null;
         _openChoicePrompts.Clear();
@@ -1480,7 +1893,7 @@ public sealed class MatchRoom
         _pendingResult = new MatchResultData(
             _roomCode,
             _matchStartedAtUtc,
-            DateTimeOffset.UtcNow,
+            _clock.UtcNow,
             _turnNumber,
             endReason,
             new MatchPlayerResult(winner.GuestId, winner.DisplayName, winner.LeaderCardId),
@@ -1494,10 +1907,384 @@ public sealed class MatchRoom
 
     #endregion
 
+    #region TIMER
+
+    // The clock runs for one player at a time ("segment"): TURN for the turn player, RESPONSE for a
+    // decision of the other player, MULLIGAN for both, TURN_ORDER for the dice winner. The normal
+    // time of a segment is used first, then the time bank (TURN, RESPONSE). Everything is paused
+    // while a player is disconnected. Timeouts are decided by MatchRoom itself and recorded as
+    // TIMEOUT inputs, so a replay comes to the same result without a clock.
+    public const string TimerTurn = "TURN";
+    public const string TimerResponse = "RESPONSE";
+    public const string TimerMulligan = "MULLIGAN";
+    public const string TimerTurnOrder = "TURN_ORDER";
+
+    private sealed record TimerSegment(string Key, string PlayerId, string Kind, DateTimeOffset StartedAt, TimeSpan BaseLeft, bool UsesBank)
+    {
+        public DateTimeOffset BaseDeadline => StartedAt + BaseLeft;
+    }
+
+    private TimerSegment? _segment;
+    // The normal time left of the running turn (TURN segments of this turn share it).
+    private TimeSpan _turnTimeLeft;
+    // A paused segment keeps its time left when it starts again (same key).
+    private string? _pausedKey;
+    private TimeSpan _pausedBaseLeft;
+    private readonly Dictionary<string, TimeSpan> _timeBanks = new(StringComparer.Ordinal);
+    // Own turns in a row that ran out of time.
+    private readonly Dictionary<string, int> _turnTimeouts = new(StringComparer.Ordinal);
+    // True while the server decides for a player whose time ran out.
+    private bool _autoDeciding;
+
+    private static string TimerModeName(TimerMode mode) => mode switch
+    {
+        TimerMode.Relaxed => "RELAXED",
+        TimerMode.Off => "OFF",
+        _ => "STANDARD"
+    };
+
+    private TimeSpan Scaled(int seconds)
+    {
+        return TimeSpan.FromSeconds(Math.Max(0, seconds) * (TimerMode == TimerMode.Relaxed ? 2 : 1));
+    }
+
+    private void ResetTimer()
+    {
+        _segment = null;
+        _pausedKey = null;
+        _turnTimeLeft = Scaled(_options.Timer.TurnSeconds);
+        _timeBanks.Clear();
+        _turnTimeouts.Clear();
+        foreach (var player in _players)
+        {
+            _timeBanks[player.PlayerId] = Scaled(_options.Timer.TimeBankStartSeconds);
+            _turnTimeouts[player.PlayerId] = 0;
+        }
+    }
+
+    private TimeSpan TimeBank(string playerId) => _timeBanks.TryGetValue(playerId, out var bank) ? bank : TimeSpan.Zero;
+
+    private void AddTimeBankBonus(string playerId)
+    {
+        var bank = TimeBank(playerId) + Scaled(_options.Timer.TimeBankBonusSeconds);
+        var max = Scaled(_options.Timer.TimeBankMaxSeconds);
+        _timeBanks[playerId] = bank > max ? max : bank;
+    }
+
+    // Which clock should run in the current state? null = none (timer off, paused, no decision).
+    private (string Key, string PlayerId, string Kind, TimeSpan Base, bool UsesBank)? DesiredSegment()
+    {
+        if (TimerMode == TimerMode.Off || !IsMatchRunning || _seats.Values.Any(seat => seat.ConnectionId is null))
+        {
+            return null;
+        }
+
+        var prompts = _openChoicePrompts.Values.OrderBy(PromptNumber).ToList();
+        if (_phase == MatchPhase.TurnOrder)
+        {
+            var order = prompts.FirstOrDefault(prompt => prompt.Kind == TurnOrderDecisionKind);
+            return order is null ? null : ($"order:{order.ChoiceId}", order.PlayerId, TimerTurnOrder, Scaled(_options.Timer.TurnOrderSeconds), false);
+        }
+
+        if (_phase == MatchPhase.Mulligan)
+        {
+            return prompts.Any(prompt => prompt.Kind == MulliganDecisionKind)
+                ? ("mulligan", string.Empty, TimerMulligan, Scaled(_options.Timer.MulliganSeconds), false)
+                : null;
+        }
+
+        var response = prompts.FirstOrDefault(prompt => prompt.PlayerId != _activePlayerId);
+        if (response is not null)
+        {
+            return ($"response:{response.ChoiceId}", response.PlayerId, TimerResponse, Scaled(_options.Timer.ResponseSeconds), true);
+        }
+
+        return prompts.Any(prompt => prompt.PlayerId == _activePlayerId)
+            ? ($"turn:{_turnNumber}", _activePlayerId, TimerTurn, _turnTimeLeft, true)
+            : null;
+    }
+
+    private void SyncTimer(DateTimeOffset now)
+    {
+        var desired = DesiredSegment();
+        if (_segment is not null && (desired is null || desired.Value.Key != _segment.Key))
+        {
+            StopSegment(now);
+        }
+
+        if (_segment is null && desired is { } next)
+        {
+            var baseLeft = next.Key == _pausedKey ? _pausedBaseLeft : next.Base;
+            _segment = new TimerSegment(next.Key, next.PlayerId, next.Kind, now, baseLeft, next.UsesBank);
+        }
+    }
+
+    // Charges the used time: first the normal time, then the time bank.
+    private void StopSegment(DateTimeOffset now)
+    {
+        var segment = _segment!;
+        _segment = null;
+        var used = now - segment.StartedAt;
+        if (used < TimeSpan.Zero)
+        {
+            used = TimeSpan.Zero;
+        }
+
+        var baseUsed = used < segment.BaseLeft ? used : segment.BaseLeft;
+        var baseLeft = segment.BaseLeft - baseUsed;
+        if (segment.UsesBank && used > baseUsed)
+        {
+            var bank = TimeBank(segment.PlayerId) - (used - baseUsed);
+            _timeBanks[segment.PlayerId] = bank < TimeSpan.Zero ? TimeSpan.Zero : bank;
+        }
+
+        if (segment.Key == $"turn:{_turnNumber}" && segment.PlayerId == _activePlayerId)
+        {
+            _turnTimeLeft = baseLeft;
+        }
+
+        _pausedKey = segment.Key;
+        _pausedBaseLeft = baseLeft;
+    }
+
+    private DateTimeOffset SegmentEnd(TimerSegment segment)
+    {
+        return segment.BaseDeadline + (segment.UsesBank ? TimeBank(segment.PlayerId) : TimeSpan.Zero);
+    }
+
+    // Called by Tick: when the time (and the time bank) of the running clock is over, the server
+    // decides for the player. Returns true when something changed.
+    private bool CheckTimer(DateTimeOffset now)
+    {
+        SyncTimer(now);
+        var segment = _segment;
+        if (segment is null || now < SegmentEnd(segment) + TimeSpan.FromSeconds(Math.Max(0, _options.Timer.ToleranceSeconds)))
+        {
+            return false;
+        }
+
+        StopSegment(now);
+        if (segment.UsesBank)
+        {
+            _timeBanks[segment.PlayerId] = TimeSpan.Zero;
+        }
+
+        if (segment.Kind == TimerMulligan)
+        {
+            // Both players decide at the same time: everybody who has not decided keeps the hand.
+            foreach (var playerId in _openChoicePrompts.Values.Where(prompt => prompt.Kind == MulliganDecisionKind)
+                         .OrderBy(PromptNumber).Select(prompt => prompt.PlayerId).ToList())
+            {
+                ApplyTimeoutCore(playerId, TimerMulligan);
+            }
+        }
+        else
+        {
+            ApplyTimeoutCore(segment.PlayerId, segment.Kind);
+        }
+
+        _pausedKey = null;
+        return true;
+    }
+
+    // Replay of a recorded TIMEOUT input (and the same code path as a live timeout).
+    public MatchUpdate ApplyTimeout(string playerId, string kind)
+    {
+        lock (_sync)
+        {
+            ApplyTimeoutCore(playerId, kind);
+            return CreateUpdate();
+        }
+    }
+
+    // The time of a player ran out. The decisions are fixed and documented (docs/turn-timer.md):
+    // mulligan KEEP, turn order GO_FIRST, optional things are declined, a required choice takes the
+    // first valid option, the own turn ends. Two own turns in a row without time = defeat TIMEOUT.
+    private void ApplyTimeoutCore(string playerId, string kind)
+    {
+        if (!IsMatchRunning)
+        {
+            return;
+        }
+
+        var player = GetPlayerSlot(playerId);
+        var opponent = GetPlayerSlot(GetOtherPlayerId(playerId));
+
+        if (kind == TimerTurn)
+        {
+            _turnTimeouts[playerId] = (_turnTimeouts.TryGetValue(playerId, out var count) ? count : 0) + 1;
+            if (_turnTimeouts[playerId] >= 2)
+            {
+                CreateLogEvent("TIMEOUT", $"⏱ Zeit abgelaufen – {player.DisplayName}: zweiter Zug in Folge ohne Zeit.");
+                EndGame(opponent, $"{opponent.DisplayName} gewinnt – bei {player.DisplayName} ist die Zeit abgelaufen.", MatchEndReasons.Timeout);
+                Record(player, RecordedInputKinds.Timeout, new { kind });
+                return;
+            }
+        }
+
+        var text = kind switch
+        {
+            TimerTurn => "Zug beendet",
+            TimerMulligan => "Starthand behalten",
+            TimerTurnOrder => "beginnt selbst",
+            _ => "keine Reaktion"
+        };
+
+        _autoDeciding = true;
+        try
+        {
+            // A turn: decide everything that is open until the turn has ended. Otherwise only the
+            // decision that ran out of time (the next one gets its own time).
+            var turnNumber = _turnNumber;
+            for (var guard = 0; guard < 100 && IsMatchRunning; guard += 1)
+            {
+                var prompt = _openChoicePrompts.Values
+                    .Where(entry => entry.PlayerId == playerId)
+                    .Where(entry => kind != TimerMulligan || entry.Kind == MulliganDecisionKind)
+                    .OrderBy(PromptNumber)
+                    .FirstOrDefault();
+                if (prompt is null)
+                {
+                    break;
+                }
+
+                if (!AutoDecide(prompt))
+                {
+                    CreateLogEvent("TIMEOUT", $"⏱ {player.DisplayName}: keine gültige automatische Entscheidung für {prompt.Kind}.");
+                    break;
+                }
+
+                if (kind != TimerTurn || _turnNumber != turnNumber || _activePlayerId != playerId)
+                {
+                    break;
+                }
+            }
+        }
+        finally
+        {
+            _autoDeciding = false;
+        }
+
+        CreateLogEvent("TIMEOUT", $"⏱ Zeit abgelaufen – {player.DisplayName}: automatisch {text}.");
+        Record(player, RecordedInputKinds.Timeout, new { kind });
+    }
+
+    // Tries the automatic answers of a prompt in a fixed order; the first valid one is used.
+    private bool AutoDecide(ChoicePromptDto prompt)
+    {
+        foreach (var candidate in AutoAnswers(prompt))
+        {
+            try
+            {
+                ApplyChoice(candidate);
+                return true;
+            }
+            catch (InvalidOperationException)
+            {
+                // Not possible right now: try the next answer.
+            }
+        }
+
+        return false;
+    }
+
+    private static IEnumerable<ChoiceSubmissionDto> AutoAnswers(ChoicePromptDto prompt)
+    {
+        ChoiceSubmissionDto Answer(string option, string? card = null, IReadOnlyList<string>? order = null) => new()
+        {
+            ChoiceId = prompt.ChoiceId,
+            PlayerId = prompt.PlayerId,
+            SelectedOption = option,
+            SelectedCardInstanceId = card,
+            OrderedIds = order
+        };
+
+        switch (prompt.Kind)
+        {
+            case TurnOrderDecisionKind:
+                yield return Answer(GoFirstOption);
+                yield break;
+            case MulliganDecisionKind:
+                yield return Answer("KEEP");
+                yield break;
+            case MainActionKind:
+                yield return Answer("END_TURN");
+                yield break;
+            case BlockStepKind:
+                yield return Answer("NO_BLOCK");
+                yield break;
+            case CounterStepKind:
+                yield return Answer("PASS");
+                yield break;
+            case TriggerDecisionKind:
+                yield return Answer(DeclineTriggerOption);
+                yield break;
+            case ManualEffectKind:
+                yield return Answer(ManualDoneOption);
+                yield break;
+            case OrderTriggersKind:
+                // The order in which the effects were offered.
+                yield return Answer(OrderOption, order: prompt.Triggers.Select(trigger => trigger.Id).ToArray());
+                yield break;
+        }
+
+        // EFFECT_CHOICE: decline ("NO"), stop choosing ("DONE"), then the first card that can be
+        // chosen, then "YES", then every other option in the order they are offered.
+        var options = prompt.Options;
+        foreach (var option in new[] { EffectChoiceRequest.No, EffectChoiceRequest.Done })
+        {
+            if (options.Contains(option))
+            {
+                yield return Answer(option);
+            }
+        }
+
+        if (options.Contains(EffectChoiceRequest.Select))
+        {
+            foreach (var card in prompt.Cards)
+            {
+                yield return Answer(EffectChoiceRequest.Select, card.InstanceId);
+            }
+        }
+
+        foreach (var option in options.Where(option =>
+                     option is not (EffectChoiceRequest.No or EffectChoiceRequest.Done or EffectChoiceRequest.Select)))
+        {
+            yield return Answer(option);
+        }
+    }
+
+    private TimerDto? CreateTimerSnapshot()
+    {
+        var segment = _segment;
+        if (segment is null)
+        {
+            return null;
+        }
+
+        return new TimerDto
+        {
+            ActivePlayerId = segment.PlayerId,
+            Kind = segment.Kind,
+            DeadlineUnixMs = segment.BaseDeadline.ToUnixTimeMilliseconds(),
+            UsesTimeBank = segment.UsesBank,
+            UsingTimeBank = segment.UsesBank && _clock.UtcNow >= segment.BaseDeadline,
+            TimeBankMs = _players.ToDictionary(
+                player => player.PlayerId,
+                player => (long)TimeBank(player.PlayerId).TotalMilliseconds,
+                StringComparer.Ordinal),
+            Mode = TimerModeName(TimerMode)
+        };
+    }
+
+    #endregion
+
     #region SNAPSHOTS
     private MatchUpdate CreateUpdate()
     {
-        _lastActivityUtc = DateTimeOffset.UtcNow;
+        _lastActivityUtc = _clock.UtcNow;
+        // Start, stop or pause the clock for the new state (before the snapshots are made).
+        SyncTimer(_lastActivityUtc);
 
         // The match is over (won, or aborted because a player left): the recording is complete.
         if (_recorder is { IsFinished: false } && _phase is MatchPhase.GameOver or MatchPhase.Lobby)
@@ -1510,6 +2297,9 @@ public sealed class MatchRoom
             StateSnapshot = CreateStateSnapshot(),
             StateSnapshots = _players
                 .ToDictionary(player => player.PlayerId, player => CreateStateSnapshot(player.PlayerId), StringComparer.Ordinal),
+            Connections = _seats.Values
+                .Where(seat => seat.ConnectionId is not null)
+                .ToDictionary(seat => seat.PlayerId, seat => seat.ConnectionId!, StringComparer.Ordinal),
             LogEvents = _pendingLogEvents.ToArray(),
             ChoicePrompts = _pendingChoicePrompts.ToArray(),
             MatchResult = _pendingResult,
@@ -1542,7 +2332,19 @@ public sealed class MatchRoom
                     .ToArray(),
                 TurnOrderRoll = CreateTurnOrderSnapshot(),
                 IsRanked = IsQuickMatch,
-                RecordedInputs = _recorder?.InputCount ?? 0
+                RecordedInputs = _recorder?.InputCount ?? 0,
+                ServerTimeUnixMs = _clock.UtcNow.ToUnixTimeMilliseconds(),
+                EndReason = _phase == MatchPhase.GameOver ? _endReason : null,
+                ViewerReconnectGraceMs = ViewerReconnectGraceMs(viewerPlayerId),
+                Timer = CreateTimerSnapshot(),
+                TimerMode = TimerModeName(TimerMode),
+                OpenChoiceIds = viewerPlayerId is null
+                    ? []
+                    : _openChoicePrompts.Values
+                        .Where(prompt => prompt.PlayerId == viewerPlayerId)
+                        .OrderBy(PromptNumber)
+                        .Select(prompt => prompt.ChoiceId)
+                        .ToArray()
             };
         }
     }
@@ -1575,6 +2377,10 @@ public sealed class MatchRoom
             PlayerId = player.PlayerId,
             DisplayName = player.DisplayName,
             Connected = player.Connected,
+            DisconnectedUntilUnixMs = _seats.TryGetValue(player.PlayerId, out var seat)
+                && seat.ConnectionId is null && !seat.Expired && seat.GraceDeadlineUtc is { } deadline
+                    ? deadline.ToUnixTimeMilliseconds()
+                    : null,
             DeckCount = player.DeckCount,
             HandCount = player.HandCount,
             LifeCount = player.LifeCount,
@@ -1648,7 +2454,7 @@ public sealed class MatchRoom
             kind,
             MatchRecordingJson.ToPayload(payload),
             ComputeStateHash(),
-            DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
+            _clock.UtcNow.ToUnixTimeMilliseconds());
     }
 
     // The recording of the running or last match (for bug reports). Never sent to clients.
@@ -1717,15 +2523,6 @@ public sealed class MatchRoom
                 .Select(prompt => $"prompt {prompt.ChoiceId} {Seat(prompt.PlayerId)} {prompt.Kind} {string.Join(',', prompt.Options)} {string.Join(',', prompt.Cards.Select(card => card.InstanceId))}"));
 
             return StateHasher.Hash(_players, lines);
-        }
-    }
-
-    public string ResolvePlayerId(string connectionId)
-    {
-        lock (_sync)
-        {
-            var player = _players.FirstOrDefault(entry => entry.PlayerId == connectionId);
-            return player?.PlayerId ?? connectionId;
         }
     }
 
@@ -1840,11 +2637,31 @@ public sealed class MatchRoom
     #endregion
 }
 
+public enum RejoinStatus
+{
+    Ok,
+    // The reconnect deadline is over: the match is lost, only the result can be shown.
+    Expired,
+    // Unknown seat or wrong token.
+    Invalid
+}
+
+public sealed record RejoinOutcome(
+    RejoinStatus Status,
+    MatchUpdate? Update = null,
+    ResyncDto? Resync = null,
+    GameStateDto? FinalState = null,
+    // The connection that held the seat before (it is replaced by the new one).
+    string? PreviousConnectionId = null);
+
 public sealed record MatchUpdate
 {
     public GameStateDto StateSnapshot { get; init; } = new();
     public IReadOnlyDictionary<string, GameStateDto> StateSnapshots { get; init; } =
         new Dictionary<string, GameStateDto>(StringComparer.Ordinal);
+    // Player ID -> SignalR connection at the time of the update (disconnected players are missing).
+    public IReadOnlyDictionary<string, string> Connections { get; init; } =
+        new Dictionary<string, string>(StringComparer.Ordinal);
     public IReadOnlyList<LogEventDto> LogEvents { get; init; } = [];
     public IReadOnlyList<ChoicePromptDto> ChoicePrompts { get; init; } = [];
 

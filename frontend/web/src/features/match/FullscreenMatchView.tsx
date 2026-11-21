@@ -13,6 +13,7 @@ import type {
 import { BountyChangeBanner } from './BountyChangeBanner';
 import { ChoiceBar } from './ChoiceBar';
 import { ConnectionStatusBadge } from './ConnectionStatusBadge';
+import { ReconnectBanner } from './ReconnectBanner';
 import { CollapsedFeed, FeedSplitter } from './FeedSplitter';
 import { clampFeedWidth, getFeedMaxWidth, loadFeedWidth, saveFeedWidth } from './feedWidth';
 import { MatchFeed } from './MatchFeed';
@@ -21,6 +22,9 @@ import { MatchBoard } from './board/MatchBoard';
 import { MatchCardPreview } from './board/MatchCardPreview';
 import { DiceRoll } from './dice/DiceRoll';
 import { formatPhase } from './matchFormatters';
+import { useBountyChange } from './useBountyChange';
+import { FxSettingsMenu } from './fx/FxSettingsMenu';
+import './fx/fx.css';
 
 // These prompts are answered directly on the board (click cards / action bar).
 const BOARD_HANDLED_PROMPT_KINDS = ['MAIN_ACTION', 'BLOCK_STEP', 'COUNTER_STEP', 'MANUAL_EFFECT'];
@@ -60,6 +64,8 @@ interface FullscreenMatchViewProps {
   canSubmitChoice: boolean;
   chatInput: string;
   chatMessages: ChatMessageDto[];
+  // Local time when our connection dropped while in the room (null = connected).
+  connectionLostAt: number | null;
   connectionStatus: ConnectionStatus;
   currentPrompt: ChoicePromptDto | null;
   error: string;
@@ -71,10 +77,14 @@ interface FullscreenMatchViewProps {
   onLeaveRoom: () => void;
   onManualAction: (action: ManualActionDto) => Promise<boolean>;
   onSubmitOrder: (orderedIds: string[]) => void;
+
+  // Game over: open a new table for a rematch.
+  onRematch?: () => void;
   onSendChat: (event: FormEvent) => void;
   onStartMatch: () => void;
   onSubmitChoice: (option: string, selectedCardInstanceId?: string, targetCardInstanceId?: string) => void;
   pending: boolean;
+  showReconnected: boolean;
 }
 
 export function FullscreenMatchView({
@@ -83,6 +93,7 @@ export function FullscreenMatchView({
   canSubmitChoice,
   chatInput,
   chatMessages,
+  connectionLostAt,
   connectionStatus,
   currentPrompt,
   error,
@@ -94,10 +105,13 @@ export function FullscreenMatchView({
   onLeaveRoom,
   onManualAction,
   onSubmitOrder,
+
+  onRematch,
   onSendChat,
   onStartMatch,
   onSubmitChoice,
   pending,
+  showReconnected,
 }: FullscreenMatchViewProps) {
   // Only used below 1024px, where the feed is a slide-in overlay.
   const [feedOpen, setFeedOpen] = useState(false);
@@ -121,6 +135,7 @@ export function FullscreenMatchView({
     players.find((player) => player.playerId === gameState?.viewerPlayerId) ?? players[0] ?? null;
   const hasOpponent = players.some((player) => player.playerId !== viewerPlayer?.playerId);
   const statusMessages: string[] = [];
+  const bountyChange = useBountyChange(gameState);
 
   // Everything in the feed counts as read while it is visible.
   useEffect(() => {
@@ -146,6 +161,7 @@ export function FullscreenMatchView({
     'match-fullscreen__stage',
     isDesktop ? 'is-desktop' : '',
     isDesktop && feedCollapsed ? 'is-feed-collapsed' : '',
+    connectionLostAt !== null ? 'is-offline' : '',
   ]
     .filter(Boolean)
     .join(' ');
@@ -191,6 +207,7 @@ export function FullscreenMatchView({
           </div>
         )}
         <ConnectionStatusBadge status={connectionStatus} />
+        <FxSettingsMenu />
         {canShowStartMatch && (
           <button
             className="match-fullscreen__toggle match-fullscreen__toggle--primary"
@@ -222,6 +239,12 @@ export function FullscreenMatchView({
       <div className="match-fullscreen__orientation-notice" role="note">
         Bitte Ger&auml;t quer halten f&uuml;r die beste Spielerfahrung.
       </div>
+
+      <ReconnectBanner
+        graceMs={gameState?.viewerReconnectGraceMs}
+        lostAt={connectionLostAt}
+        showReconnected={showReconnected}
+      />
 
       {error && <p className="match-fullscreen__error" role="alert">{error}</p>}
 
@@ -267,6 +290,7 @@ export function FullscreenMatchView({
             currentPrompt={currentPrompt}
             gameState={gameState}
             joinedRoomCode={joinedRoomCode}
+            logEvents={logEvents}
             midlineContent={
               <ChoiceBar
                 boardHandledKinds={BOARD_HANDLED_PROMPT_KINDS}
@@ -278,11 +302,15 @@ export function FullscreenMatchView({
             }
             onManualAction={onManualAction}
             onSubmitOrder={onSubmitOrder}
+
+            bountyChange={bountyChange}
+            onLeaveRoom={onLeaveRoom}
             onPreviewCard={setPreviewCard}
+            onRematch={onRematch}
             onSubmitChoice={onSubmitChoice}
             pending={pending}
           />
-          <BountyChangeBanner gameState={gameState} />
+          <BountyChangeBanner change={bountyChange} hidden={gameState?.phase === 'GameOver'} />
           <DiceRoll
             canSubmitChoice={canSubmitChoice}
             currentPrompt={currentPrompt}

@@ -48,6 +48,8 @@ Commit-Beschreibungen, Dokumentation. Stand: 2026-11-20.
 | Generische Effekt-Engine für Kartentexte | 18.11. | `759cfec` | Ausbau auf Branch `logic` |
 | Drag & Drop, skalierendes Board, verstellbarer Feed | 20.11. | `dd0004b`, `101bcf8`, `1e38b5f` | |
 | Eigene Kartenrückseiten | 20.11. | `f9f890b` | |
+| Wiederverbinden nach Verbindungsabbruch (#47), „Zurück ins Match“ nach dem Neuladen | 21.11. | Branch `logic` | Schonfrist 90 s, Budget 180 s |
+| Zug-Timer mit Zeitbank, wählbar bei eigenen Tischen | 21.11. | Branch `logic` | Regeln in `docs/turn-timer.md` |
 
 ### 2.2 Offen (geplant, Backlog)
 
@@ -60,13 +62,21 @@ Commit-Beschreibungen, Dokumentation. Stand: 2026-11-20.
 | Namen statt IDs im Chat/Log, Filter Chat/Aktionen | #44 | Projektauftrag 5.4 |
 | Deckbuilder am Handy flüssig (Virtualisierung, Lazy Loading) | #45 | Projektauftrag 4.2 |
 | OPTCGSim-Importstring | #46 | Projektauftrag 3.1 (2) – teilweise durch Text-Export erfüllt |
-| Wiederverbinden nach kurzem Verbindungsabbruch (App-Wechsel am Handy) | #47 | Mobile-Erfahrung |
 | Automatisierte Frontend-Tests | #49 | Qualität |
 | Einladungslink teilen, App installierbar (PWA) | #51 | Projektauftrag (Web/PWA) |
 | Alle Kartenversionen inkl. Alt-Arts | #56 | Community-Wunsch |
 | Vollständige Effektabdeckung, richtige Trigger-Reihenfolge | – | Branch `logic` |
 | Usability-Test: bestehende Lösung vs. OneSake am Handy | – | Projektauftrag Phase 5 |
 | Demo-Video, Abnahme | – | Projektauftrag Phase 5 |
+| Zug-Timer mit Zeitbank | – | Roadmap 21.11. (`04-roadmap-und-alleinstellungsmerkmale.md`) |
+| Spiel-Gefühl: Animationen, Sounds, Tastenkürzel, Auto-Pass | – | Roadmap 21.11. |
+| Tutorial und KI-Gegner mit Schwierigkeitsgraden | – | Roadmap 21.11. |
+| Replay-Viewer mit „Was wäre wenn?“ (ab beliebiger Stelle selbst weiterspielen) | – | Roadmap 21.11. – Alleinstellungsmerkmal |
+| Coach nach dem Match („verpasster Lethal“) und tägliches Lethal-Puzzle | – | Roadmap 21.11. – Alleinstellungsmerkmal |
+| Deck-Labor: eigenes Deck per Bot-Simulation gegen die Meta testen | – | Roadmap 21.11. – Alleinstellungsmerkmal |
+| Ränge mit One-Piece-Titeln, Banden (Crews), teilbarer Steckbrief | – | Roadmap 21.11. |
+| Streamer-/Turnier-Modus (Caster-Ansicht, OBS-Overlay, Swiss-Turniere) | – | Roadmap 21.11. |
+| Deutsch und Englisch | – | Roadmap 21.11. |
 
 ### 2.3 Verworfen oder geändert
 
@@ -104,7 +114,25 @@ Commit-Beschreibungen, Dokumentation. Stand: 2026-11-20.
 | Gemeinsames Designsystem `ui.css` | Einheitliches Aussehen | Jede Seite eigenes CSS |
 | CSS-Grid-Board mit `--card-w` und `ResizeObserver` | Passt auf jedes Gerät | Festes Hintergrundbild |
 | `prefers-reduced-motion` überall respektiert | Barrierefreiheit | – |
+| Zug-Timer serverseitig: 90 s Zug + Zeitbank 180 s (+10 s/Zug, max. 240 s), 25 s Antwortzeit, 2 s Toleranz (21.11.) | Niemand kann das Match endlos aufhalten; Zeitbank verzeiht einzelne lange Züge | Feste Zeit pro Aktion (zu hektisch), Zeit nur im Client (manipulierbar) |
+| Nur eine Uhr läuft (Schachuhr-Prinzip), Pause während Reconnect (21.11.) | Fair: Wer auf den Gegner wartet, verliert keine Zeit | Beide Uhren gleichzeitig |
+| Auto-Aktion bei Timeout: ablehnen bzw. erste gültige Option, Zug beenden; 2 Zug-Timeouts in Folge = Niederlage `TIMEOUT` (21.11.) | Vorhersagbar und deterministisch (Replay identisch) | Zufällige Auswahl, sofortige Niederlage beim ersten Timeout |
+| Timer bei privaten Tischen wählbar: Standard / Entspannt / Aus; Ranked immer Standard (21.11.) | Freundschaftsspiele und Lernpartien ohne Zeitdruck, Ranked fair für alle | Timer überall Pflicht, gar kein Timer |
+| Timer-Farbe nach Gesamtrestzeit (Zeit + Zeitbank), Tick-Geräusch abschaltbar (21.11.) | Kein unnötiger Stress, solange noch Zeitbank da ist; Ton ist optional | Farbe nur nach Zugzeit |
+| Countdowns mit Serverzeit-Offset (21.11.) | Falsch gehende Handyuhren verfälschen keine Fristen | Lokale Uhr (ungenau), nur Restsekunden schicken (springt bei Lag) |
+| Rejoin-Daten in sessionStorage **und** localStorage (21.11.) | Neuladen und App neu öffnen funktionieren; Daten werden nach Spielende gelöscht | Nur sessionStorage (App neu öffnen ginge nicht), Cookie |
 | Eigener Branch `logic` für die Regel-Engine | Großer Umbau, ohne `dev` zu blockieren | Alles auf `dev` |
+| Reconnect-Schonfrist 90 s + Budget 180 s pro Match, Lobby 30 s (21.11.) | Funkloch/App-Wechsel am Handy kostet nicht mehr das Match; Budget verhindert Zeitschinden; Werte konfigurierbar | Kein Reconnect (bisher), unbegrenzte Frist (Gegner wartet ewig), Pausieren auf Wunsch |
+| Stabile Spieler-ID pro Platz + geheimes Rejoin-Token (21.11.) | Die Verbindungs-ID ändert sich bei jedem Reconnect; das Token beweist, dass man auf diesen Platz gehört | Gast-ID (nicht geheim, gilt für alle Tabs), Verbindungs-ID behalten (kein Reconnect möglich) |
+
+| Auto-Pass nur bei öffentlichen Informationen, Counter-Auto-Pass nur auf Wunsch mit zufälliger Pause (21.11.) | Sofortiges Passen beim Counter würde verraten, dass keine Counter auf der Hand sind | Immer automatisch passen (Informationsleck), nie automatisch (mehr Leerlauf) |
+| Tastenkürzel mit Bestätigung für „Zug beenden“ (zweimal Leertaste oder 400 ms halten) (21.11.) | Schneller am Desktop, aber kein versehentliches Zugende | Einfacher Druck (zu riskant), keine Kürzel |
+| Positionen nie im React-Commit lesen, Animationen im nächsten Frame starten (21.11.) | Kein erzwungenes Layout: Erkennung von bis zu 355 ms auf 1,5 ms (4× gedrosselt) | Alles im Layout-Effekt (einfacher, aber ruckelt am Handy) |
+| Sounds mit der Web Audio API synthetisiert, keine Audiodateien (21.11.) | Keine Lizenzfragen, keine Downloads, Lautstärke zentral steuerbar | Audiodateien (Rechte, Ladezeit), keine Sounds |
+| Effekt-Ziele aus Kartennamen im Log und Power-Änderungen ableiten (21.11.) | Rein optisch, keine Server-Änderung nötig | Ziele vom Server mitschicken (genauer, aber Backend-Änderung) |
+| Spielereignisse aus dem Vergleich zweier Snapshots erkennen (21.11.) | Funktioniert ohne Änderung an Server und DTOs; Logs liefern nur Text | Strukturierte Ereignisse vom Server (Backend-Änderung, nicht Teil dieses Auftrags) |
+| Animationen als Schicht über dem sofort gültigen Zustand (21.11.) | Board ist immer korrekt, Eingaben werden nie blockiert, Klick überspringt | Zustand erst nach der Animation zeigen (Wartezeiten, Gefahr von Abweichungen) |
+| Web Animations API, nur `transform`/`opacity`, keine neue Bibliothek (21.11.) | Flüssig auch am Handy (GPU), jede Animation lässt sich sofort beenden | Animationsbibliothek (zusätzliche Abhängigkeit), CSS-Klassen mit Timern (schwer abzubrechen) |
 
 ## 4. UX- und Designüberlegungen
 
