@@ -479,6 +479,20 @@ Keine Commits. Sprint 3 wurde ab 06.10.2026 geplant.
   springt die App aber direkt zu „Zurück ins Match“. Die Funktionen der beiden Branches beeinflussen sich
   also; deshalb wurde nach dem Merge alles noch einmal gemeinsam getestet.
 
+### 2026-11-21 17:18 – Backend baute auf dem Server nicht ★ 🤖
+- Commit „Build the backend with older .NET 8 SDKs as on the server“: Im Deploy-Protokoll stand
+  `error CS0121` in `EffectQueries.cs` – `Color.Split([' ', '/'], …)` ist für ältere .NET-8-Compiler
+  mehrdeutig (`char[]` oder `string`?). Jetzt steht dort ein explizites Array `new[] { ' ', '/' }`.
+- **Befund:** Dieselbe Zeile war schon im vorherigen `main`-Stand. Das Deployment war trotzdem „grün“,
+  weil das SSH-Skript nach einem fehlgeschlagenen `dotnet publish` einfach weiterläuft – auf dem Server lief
+  also ein älteres Backend, während das Frontend neu ausgeliefert wurde.
+- **Geprüft:** SDK 8.0.100 (ältestes .NET-8-SDK) lokal in einen eigenen Ordner installiert und `main` damit
+  wie auf dem Server gebaut (`dotnet publish -c Release`): erst der Fehler reproduziert, mit der Korrektur
+  baut alles (auch Simulator, ReplayTool, CardScriptGen) und alle 300 Tests sind grün.
+- **Lessons Learned:** Die CI baut mit dem neuesten .NET-8-SDK und hat den Fehler deshalb nicht gesehen.
+  Vorschlag: im Deploy-Skript `set -e` (bricht bei Fehlern ab) und die CI zusätzlich mit dem SDK des
+  Servers bauen lassen.
+
 <!-- Neue Einträge unten anfügen. Vorlage:
 
 ### JJJJ-MM-TT HH:MM – Titel ★/👥/🤖

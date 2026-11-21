@@ -177,7 +177,8 @@ public static class EffectQueries
             ConditionKind.LeaderHasType => you.Leader is not null && HasType(you.Leader, condition.Filter!.TypeIncludes),
             ConditionKind.LeaderIsName => you.Leader is not null && HasName(you.Leader, condition.Filter!.Name),
             ConditionKind.LeaderIsMulticolored => you.Leader is not null
-                && you.Leader.Color.Split([' ', '/'], StringSplitOptions.RemoveEmptyEntries).Length > 1,
+                // Explicit array: older .NET 8 SDKs (as on the server) find the collection expression ambiguous.
+                && you.Leader.Color.Split(new[] { ' ', '/' }, StringSplitOptions.RemoveEmptyEntries).Length > 1,
             ConditionKind.LeaderColor => you.Leader is not null
                 && you.Leader.Color.Contains(condition.Filter!.Color, StringComparison.OrdinalIgnoreCase),
             ConditionKind.LifeAtMost => you.LifeCount <= condition.Amount,
