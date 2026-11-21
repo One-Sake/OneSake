@@ -153,26 +153,99 @@ public sealed class MatchRoom
 
     #region ROOM MEMBERSHIP
 
+    // A seat belongs to one player for the whole stay in the room. The player ID is stable, the
+    // SignalR connection can change (reconnect, page reload). The rejoin token proves the seat.
+    private sealed class PlayerSeat
+    {
+        public required string PlayerId { get; init; }
+        public required string RejoinToken { get; init; }
+        public string? ConnectionId { get; set; }
+    }
+
+    // Seats by player ID.
+    private readonly Dictionary<string, PlayerSeat> _seats = new(StringComparer.Ordinal);
+
+    // True when this connection currently sits on a seat of this room.
     public bool HasPlayer(string connectionId)
     {
         lock (_sync)
         {
-            return _players.Any(player => player.PlayerId == connectionId);
+            return _seats.Values.Any(seat => seat.ConnectionId == connectionId);
         }
+    }
+
+    // The stable player ID behind a connection, null when the connection has no seat here.
+    public string? ResolvePlayerId(string connectionId)
+    {
+        lock (_sync)
+        {
+            return _seats.Values.FirstOrDefault(seat => seat.ConnectionId == connectionId)?.PlayerId;
+        }
+    }
+
+    // The connection a player is reachable on right now (null while disconnected).
+    public string? GetConnectionId(string playerId)
+    {
+        lock (_sync)
+        {
+            return _seats.TryGetValue(playerId, out var seat) ? seat.ConnectionId : null;
+        }
+    }
+
+    // Takes a seat for a new connection: a fresh player ID ("p1-…") and a secret rejoin token.
+    // The same connection joining again keeps its seat (e.g. a new display name).
+    public (MatchUpdate Update, SeatAssignedDto Seat) JoinConnection(string connectionId, string displayName, string? guestId = null)
+    {
+        lock (_sync)
+        {
+            var existing = _seats.Values.FirstOrDefault(seat => seat.ConnectionId == connectionId);
+            var playerId = existing?.PlayerId ?? CreatePlayerId();
+            var update = JoinPlayer(playerId, displayName, guestId, connectionId);
+            return (update, CreateSeatAssigned(_seats[playerId]));
+        }
+    }
+
+    private SeatAssignedDto CreateSeatAssigned(PlayerSeat seat)
+    {
+        return new SeatAssignedDto
+        {
+            RoomCode = _roomCode,
+            PlayerId = seat.PlayerId,
+            RejoinToken = seat.RejoinToken
+        };
+    }
+
+    private string CreatePlayerId()
+    {
+        string playerId;
+        do
+        {
+            playerId = $"p{_players.Count + 1}-{ToBase64Url(RandomNumberGenerator.GetBytes(6))}";
+        }
+        while (_seats.ContainsKey(playerId));
+
+        return playerId;
+    }
+
+    private static string ToBase64Url(byte[] bytes)
+    {
+        return Convert.ToBase64String(bytes).TrimEnd('=').Replace('+', '-').Replace('/', '_');
     }
 
     // Removes a player from the room. Returns null when the player was not in this room.
     // If a match was running, it is aborted and the room goes back to the lobby.
     // endReason is stored when this ends a running match (the remaining player wins).
-    public MatchUpdate? RemovePlayer(string connectionId, string endReason = MatchEndReasons.Disconnect)
+    public MatchUpdate? RemovePlayer(string playerId, string endReason = MatchEndReasons.Disconnect)
     {
         lock (_sync)
         {
-            var player = _players.FirstOrDefault(entry => entry.PlayerId == connectionId);
+            var player = _players.FirstOrDefault(entry => entry.PlayerId == playerId);
             if (player is null)
             {
                 return null;
             }
+
+            _seats.Remove(playerId);
 
             var wasMatchRunning = _phase != MatchPhase.Lobby && _phase != MatchPhase.GameOver;
             if (wasMatchRunning)
@@ -180,7 +253,7 @@ public sealed class MatchRoom
                 Record(player, RecordedInputKinds.Leave, new { endReason });
             }
 
-            var remainingPlayer = _players.FirstOrDefault(entry => entry.PlayerId != connectionId);
+            var remainingPlayer = _players.FirstOrDefault(entry => entry.PlayerId != playerId);
             if (wasMatchRunning && remainingPlayer is not null)
             {
                 RecordResult(remainingPlayer, player, endReason);
@@ -235,7 +308,9 @@ public sealed class MatchRoom
     #endregion
 
     #region PUBLIC API
-    public MatchUpdate JoinPlayer(string connectionId, string displayName, string? guestId = null)
+    // Joins with a given player ID. Without connectionId the player ID is also the connection
+    // (tests, replays, the simulator). The hub uses JoinConnection, which creates the player ID.
+    public MatchUpdate JoinPlayer(string playerId, string displayName, string? guestId = null, string? connectionId = null)
     {
         lock (_sync)
         {
@@ -243,7 +318,7 @@ public sealed class MatchRoom
                 ? $"Player-{_players.Count + 1}"
                 : displayName.Trim();
 
-            var existingPlayer = _players.FirstOrDefault(player => player.PlayerId == connectionId);
+            var existingPlayer = _players.FirstOrDefault(player => player.PlayerId == playerId);
             if (existingPlayer is null)
             {
                 if (_players.Count >= MaxPlayers)
@@ -253,17 +328,27 @@ public sealed class MatchRoom
 
                 _players.Add(new PlayerState
                 {
-                    PlayerId = connectionId,
+                    PlayerId = playerId,
                     DisplayName = normalizedDisplayName,
                     GuestId = guestId,
                     Connected = true
                 });
+                _seats[playerId] = new PlayerSeat
+                {
+                    PlayerId = playerId,
+                    RejoinToken = ToBase64Url(RandomNumberGenerator.GetBytes(32)),
+                    ConnectionId = connectionId ?? playerId
+                };
             }
             else
             {
                 existingPlayer.DisplayName = normalizedDisplayName;
                 existingPlayer.GuestId = guestId ?? existingPlayer.GuestId;
                 existingPlayer.Connected = true;
+                if (connectionId is not null && _seats.TryGetValue(playerId, out var seat))
+                {
+                    seat.ConnectionId = connectionId;
+                }
             }
 
             CreateLogEvent("JOIN", $"{normalizedDisplayName} joined room {_roomCode}.");
@@ -1510,6 +1595,9 @@ public sealed class MatchRoom
             StateSnapshot = CreateStateSnapshot(),
             StateSnapshots = _players
                 .ToDictionary(player => player.PlayerId, player => CreateStateSnapshot(player.PlayerId), StringComparer.Ordinal),
+            Connections = _seats.Values
+                .Where(seat => seat.ConnectionId is not null)
+                .ToDictionary(seat => seat.PlayerId, seat => seat.ConnectionId!, StringComparer.Ordinal),
             LogEvents = _pendingLogEvents.ToArray(),
             ChoicePrompts = _pendingChoicePrompts.ToArray(),
             MatchResult = _pendingResult,
@@ -1720,15 +1808,6 @@ public sealed class MatchRoom
         }
     }
 
-    public string ResolvePlayerId(string connectionId)
-    {
-        lock (_sync)
-        {
-            var player = _players.FirstOrDefault(entry => entry.PlayerId == connectionId);
-            return player?.PlayerId ?? connectionId;
-        }
-    }
-
     private string GetOtherPlayerId(string currentPlayerId)
     {
         var otherPlayer = _players.FirstOrDefault(player => player.PlayerId != currentPlayerId);
@@ -1845,6 +1924,9 @@ public sealed record MatchUpdate
     public GameStateDto StateSnapshot { get; init; } = new();
     public IReadOnlyDictionary<string, GameStateDto> StateSnapshots { get; init; } =
         new Dictionary<string, GameStateDto>(StringComparer.Ordinal);
+    // Player ID -> SignalR connection at the time of the update (disconnected players are missing).
+    public IReadOnlyDictionary<string, string> Connections { get; init; } =
+        new Dictionary<string, string>(StringComparer.Ordinal);
     public IReadOnlyList<LogEventDto> LogEvents { get; init; } = [];
     public IReadOnlyList<ChoicePromptDto> ChoicePrompts { get; init; } = [];
 

@@ -214,6 +214,20 @@ Keine Commits. Sprint 3 wurde ab 06.10.2026 geplant.
   Ordner verhindern, dass Teamkollegen (oder ihre KI-Agenten) in dieselben Dateien schreiben.
   Nur der „Was ist neu“-Changelog in der App bleibt gemeinsam.
 
+### 2026-11-21 01:21 – Stabile Spieler-Identität (Grundlage für Reconnect) ★ 🤖
+- Commit „Give every seat a stable player ID and a rejoin token“ (Branch `logic`): Jeder Platz im
+  Raum bekommt beim Betreten eine eigene Spieler-ID (`p1-…`) und ein geheimes Rejoin-Token
+  (32 Byte aus `RandomNumberGenerator`, Base64Url). Das Token geht nur an diesen Spieler
+  (Nachricht `SeatAssigned`). Alle Hub-Methoden ermitteln den Spieler über `ResolvePlayerId`
+  (Verbindung → Platz), Snapshots und Prompts werden an die aktuelle Verbindung des Platzes geschickt.
+  Das Senden steckt jetzt in `MatchUpdatePublisher`, damit es später auch ein Hintergrunddienst nutzen kann.
+- **Überlegung:** Bisher war die Spieler-ID die SignalR-Verbindungs-ID. Nach einem Verbindungsabbruch
+  bekommt der Browser aber eine neue Verbindung – der Server erkannte den Spieler nicht mehr.
+  Alternative wäre die Gast-ID gewesen; sie ist aber nicht geheim (steht in der URL, ist im Profil
+  sichtbar) und gilt für alle Tabs eines Browsers. Ein eigenes Token pro Platz ist sicherer und eindeutig.
+- **Probleme/Lessons Learned:** Viele Tests rufen `JoinPlayer("p1")` direkt auf. Damit sie unverändert
+  bleiben, gilt dort „Spieler-ID = Verbindung“; nur der Hub nutzt die neue Methode `JoinConnection`.
+
 <!-- Neue Einträge unten anfügen. Vorlage:
 
 ### JJJJ-MM-TT HH:MM – Titel ★/👥/🤖

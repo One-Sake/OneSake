@@ -258,6 +258,15 @@ public record RoomSummaryDto
     public long CreatedAtUnixMs { get; init; }
 }
 
+// Sent only to the player who took the seat. The token lets the player come back to the seat
+// after a lost connection (RejoinRoom). It is a secret: never sent to the opponent or logged.
+public record SeatAssignedDto
+{
+    public string RoomCode { get; init; } = string.Empty;
+    public string PlayerId { get; init; } = string.Empty;
+    public string RejoinToken { get; init; } = string.Empty;
+}
+
 // Sent to both players when Quick Match found an opponent.
 public record MatchFoundDto
 {

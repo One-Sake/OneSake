@@ -8,20 +8,17 @@ namespace OneSake.Server.Hubs;
 public class MatchHub : Hub
 {
     private readonly MatchRoomManager _roomManager;
-    private readonly MatchResultService _matchResultService;
     private readonly MatchmakingQueue _matchmakingQueue;
-    private readonly MatchRecordingService _matchRecordingService;
+    private readonly MatchUpdatePublisher _publisher;
 
     public MatchHub(
         MatchRoomManager roomManager,
-        MatchResultService matchResultService,
         MatchmakingQueue matchmakingQueue,
-        MatchRecordingService matchRecordingService)
+        MatchUpdatePublisher publisher)
     {
-        _matchRecordingService = matchRecordingService;
         _roomManager = roomManager;
-        _matchResultService = matchResultService;
         _matchmakingQueue = matchmakingQueue;
+        _publisher = publisher;
     }
 
     private const int MaxRoomCodeLength = 12;
@@ -75,9 +72,11 @@ public class MatchHub : Hub
 
         if (pair is not null)
         {
-            var (matchRoom, update) = _roomManager.CreateQuickMatchRoom(pair);
+            var (matchRoom, update, firstSeat, secondSeat) = _roomManager.CreateQuickMatchRoom(pair);
             await Groups.AddToGroupAsync(pair.First.ConnectionId, matchRoom.RoomCode);
             await Groups.AddToGroupAsync(pair.Second.ConnectionId, matchRoom.RoomCode);
+            await Clients.Client(pair.First.ConnectionId).SendAsync("SeatAssigned", firstSeat);
+            await Clients.Client(pair.Second.ConnectionId).SendAsync("SeatAssigned", secondSeat);
             await PublishMatchUpdate(matchRoom.RoomCode, update);
 
             var matchFound = new MatchFoundDto { RoomCode = matchRoom.RoomCode };
@@ -131,7 +130,7 @@ public class MatchHub : Hub
     {
         var normalizedRoomCode = NormalizeRoomCode(roomCode);
         var room = GetExistingRoom(normalizedRoomCode);
-        var update = RunRoomAction(() => room.SetPlayerDeck(Context.ConnectionId, deck));
+        var update = RunRoomAction(() => room.SetPlayerDeck(ResolvePlayerId(room), deck));
         await PublishMatchUpdate(normalizedRoomCode, update);
     }
 
@@ -140,7 +139,9 @@ public class MatchHub : Hub
         var normalizedRoomCode = NormalizeRoomCode(roomCode);
         var room = GetExistingRoom(normalizedRoomCode);
 
-        if (!string.Equals(submission.PlayerId, Context.ConnectionId, StringComparison.Ordinal))
+        // The player always comes from the connection. A client can only answer for its own seat.
+        var playerId = ResolvePlayerId(room);
+        if (!string.Equals(submission.PlayerId, playerId, StringComparison.Ordinal))
         {
             throw new HubException("Invalid player id for this connection.");
         }
@@ -148,7 +149,7 @@ public class MatchHub : Hub
         var normalizedSubmission = submission with
         {
             ChoiceId = submission.ChoiceId.Trim(),
-            PlayerId = Context.ConnectionId,
+            PlayerId = playerId,
             SelectedOption = submission.SelectedOption.Trim(),
             SelectedCardInstanceId = string.IsNullOrWhiteSpace(submission.SelectedCardInstanceId)
                 ? null
@@ -172,7 +173,7 @@ public class MatchHub : Hub
             throw new HubException("A manual action is required.");
         }
 
-        var update = RunRoomAction(() => room.ManualAction(Context.ConnectionId, action));
+        var update = RunRoomAction(() => room.ManualAction(ResolvePlayerId(room), action));
         await PublishMatchUpdate(normalizedRoomCode, update);
     }
 
@@ -187,7 +188,7 @@ public class MatchHub : Hub
             return;
         }
 
-        var senderId = room.ResolvePlayerId(Context.ConnectionId);
+        var senderId = ResolvePlayerId(room);
         var chatMessage = new ChatMessageDto
         {
             RoomCode = normalizedRoomCode,
@@ -216,15 +217,17 @@ public class MatchHub : Hub
             }
         }
 
-        var update = RunRoomAction(() => room.JoinPlayer(Context.ConnectionId, displayName, guestId));
+        var (update, seat) = RunRoomAction(() => room.JoinConnection(Context.ConnectionId, displayName, guestId));
         await Groups.AddToGroupAsync(Context.ConnectionId, roomCode);
+        await Clients.Caller.SendAsync("SeatAssigned", seat);
         await PublishMatchUpdate(roomCode, update);
         await BroadcastRoomList();
     }
 
     private async Task RemoveFromRoom(MatchRoom room, string endReason = MatchEndReasons.Disconnect)
     {
-        var update = room.RemovePlayer(Context.ConnectionId, endReason);
+        var playerId = room.ResolvePlayerId(Context.ConnectionId);
+        var update = playerId is null ? null : room.RemovePlayer(playerId, endReason);
         await Groups.RemoveFromGroupAsync(Context.ConnectionId, room.RoomCode);
 
         if (update is not null)
@@ -251,6 +254,14 @@ public class MatchHub : Hub
         }
     }
 
+    // Every action is done for the player whose seat this connection holds, never for the
+    // connection ID itself (it changes after a reconnect).
+    private string ResolvePlayerId(MatchRoom room)
+    {
+        return room.ResolvePlayerId(Context.ConnectionId)
+            ?? throw new HubException("You are not a player in this room.");
+    }
+
     private MatchRoom GetExistingRoom(string roomCode)
     {
         return _roomManager.Get(roomCode) ?? throw new HubException($"Room {roomCode} does not exist.");
@@ -272,39 +283,8 @@ public class MatchHub : Hub
         return normalizedRoomCode;
     }
 
-    private async Task PublishMatchUpdate(string roomCode, MatchUpdate update)
+    private Task PublishMatchUpdate(string roomCode, MatchUpdate update)
     {
-        // Every update passes through here, so a finished match is saved exactly once.
-        if (update.MatchResult is not null)
-        {
-            _matchResultService.SaveInBackground(update.MatchResult, update.Recording);
-        }
-        else if (update.Recording is not null)
-        {
-            // A match without a result (both players lost): only the recording is stored.
-            _matchRecordingService.SaveInBackground(update.Recording);
-        }
-
-        if (update.StateSnapshots.Count > 0)
-        {
-            foreach (var playerSnapshot in update.StateSnapshots)
-            {
-                await Clients.Client(playerSnapshot.Key).SendAsync("StateSnapshot", playerSnapshot.Value);
-            }
-        }
-        else
-        {
-            await Clients.Group(roomCode).SendAsync("StateSnapshot", update.StateSnapshot);
-        }
-
-        foreach (var logEvent in update.LogEvents)
-        {
-            await Clients.Group(roomCode).SendAsync("LogEvent", logEvent);
-        }
-
-        foreach (var prompt in update.ChoicePrompts)
-        {
-            await Clients.Client(prompt.PlayerId).SendAsync("ChoicePrompt", prompt);
-        }
+        return _publisher.PublishAsync(roomCode, update);
     }
 }

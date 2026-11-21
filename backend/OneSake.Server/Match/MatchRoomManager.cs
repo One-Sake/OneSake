@@ -33,7 +33,7 @@ public sealed class MatchRoomManager
     }
 
     // Creates a private room with a random code and puts both Quick Match players into it.
-    public (MatchRoom Room, MatchUpdate Update) CreateQuickMatchRoom(QueuePair pair)
+    public (MatchRoom Room, MatchUpdate Update, SeatAssignedDto FirstSeat, SeatAssignedDto SecondSeat) CreateQuickMatchRoom(QueuePair pair)
     {
         MatchRoom room;
         lock (_sync)
@@ -49,9 +49,9 @@ public sealed class MatchRoomManager
             _rooms[roomCode] = room;
         }
 
-        room.JoinPlayer(pair.First.ConnectionId, pair.First.DisplayName, pair.First.GuestId);
-        var update = room.JoinPlayer(pair.Second.ConnectionId, pair.Second.DisplayName, pair.Second.GuestId);
-        return (room, update);
+        var (_, firstSeat) = room.JoinConnection(pair.First.ConnectionId, pair.First.DisplayName, pair.First.GuestId);
+        var (update, secondSeat) = room.JoinConnection(pair.Second.ConnectionId, pair.Second.DisplayName, pair.Second.GuestId);
+        return (room, update, firstSeat, secondSeat);
     }
 
     private static string CreateRandomRoomCode()

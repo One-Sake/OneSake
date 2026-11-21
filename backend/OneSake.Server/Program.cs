@@ -69,6 +69,7 @@ builder.Services.AddSingleton<MatchRecordingService>();
 builder.Services.AddSingleton<IBugReportStore, EfBugReportStore>();
 builder.Services.AddSingleton<BugReportService>();
 builder.Services.AddSingleton<MatchResultService>();
+builder.Services.AddSingleton<MatchUpdatePublisher>();
 builder.Services.AddHostedService<MatchRecordingRetentionService>();
 // Warteschlange fuer Quick Match
 builder.Services.AddSingleton<MatchmakingQueue>();
