@@ -48,6 +48,7 @@ Commit-Beschreibungen, Dokumentation. Stand: 2026-11-20.
 | Generische Effekt-Engine für Kartentexte | 18.11. | `759cfec` | Ausbau auf Branch `logic` |
 | Drag & Drop, skalierendes Board, verstellbarer Feed | 20.11. | `dd0004b`, `101bcf8`, `1e38b5f` | |
 | Eigene Kartenrückseiten | 20.11. | `f9f890b` | |
+| Wiederverbinden nach Verbindungsabbruch (#47), „Zurück ins Match“ nach dem Neuladen | 21.11. | Branch `logic` | Schonfrist 90 s, Budget 180 s |
 
 ### 2.2 Offen (geplant, Backlog)
 
@@ -60,7 +61,6 @@ Commit-Beschreibungen, Dokumentation. Stand: 2026-11-20.
 | Namen statt IDs im Chat/Log, Filter Chat/Aktionen | #44 | Projektauftrag 5.4 |
 | Deckbuilder am Handy flüssig (Virtualisierung, Lazy Loading) | #45 | Projektauftrag 4.2 |
 | OPTCGSim-Importstring | #46 | Projektauftrag 3.1 (2) – teilweise durch Text-Export erfüllt |
-| Wiederverbinden nach kurzem Verbindungsabbruch (App-Wechsel am Handy) | #47 | Mobile-Erfahrung |
 | Automatisierte Frontend-Tests | #49 | Qualität |
 | Einladungslink teilen, App installierbar (PWA) | #51 | Projektauftrag (Web/PWA) |
 | Alle Kartenversionen inkl. Alt-Arts | #56 | Community-Wunsch |
@@ -104,6 +104,8 @@ Commit-Beschreibungen, Dokumentation. Stand: 2026-11-20.
 | Gemeinsames Designsystem `ui.css` | Einheitliches Aussehen | Jede Seite eigenes CSS |
 | CSS-Grid-Board mit `--card-w` und `ResizeObserver` | Passt auf jedes Gerät | Festes Hintergrundbild |
 | `prefers-reduced-motion` überall respektiert | Barrierefreiheit | – |
+| Countdowns mit Serverzeit-Offset (21.11.) | Falsch gehende Handyuhren verfälschen keine Fristen | Lokale Uhr (ungenau), nur Restsekunden schicken (springt bei Lag) |
+| Rejoin-Daten in sessionStorage **und** localStorage (21.11.) | Neuladen und App neu öffnen funktionieren; Daten werden nach Spielende gelöscht | Nur sessionStorage (App neu öffnen ginge nicht), Cookie |
 | Eigener Branch `logic` für die Regel-Engine | Großer Umbau, ohne `dev` zu blockieren | Alles auf `dev` |
 | Reconnect-Schonfrist 90 s + Budget 180 s pro Match, Lobby 30 s (21.11.) | Funkloch/App-Wechsel am Handy kostet nicht mehr das Match; Budget verhindert Zeitschinden; Werte konfigurierbar | Kein Reconnect (bisher), unbegrenzte Frist (Gegner wartet ewig), Pausieren auf Wunsch |
 | Stabile Spieler-ID pro Platz + geheimes Rejoin-Token (21.11.) | Die Verbindungs-ID ändert sich bei jedem Reconnect; das Token beweist, dass man auf diesen Platz gehört | Gast-ID (nicht geheim, gilt für alle Tabs), Verbindungs-ID behalten (kein Reconnect möglich) |

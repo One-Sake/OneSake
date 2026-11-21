@@ -248,6 +248,28 @@ Keine Commits. Sprint 3 wurde ab 06.10.2026 geplant.
   „lebenden“ Verbindung. Außerdem kann man das Budget nie „genau auf 0“ verbrauchen (die Frist endet
   genau dann) – darum zählt weniger als 1 s Rest als aufgebraucht.
 
+### 2026-11-21 12:27 – Reconnect im Frontend ★ 🤖
+- Commit „Bring players back to their seat after a lost connection“: Der Client speichert Raum,
+  Spieler-ID und Rejoin-Token in `sessionStorage` und `localStorage` (alles in try/catch) und ruft nach
+  jeder neuen Verbindung automatisch `RejoinRoom` auf. SignalR versucht es jetzt bis zu 10 Minuten
+  lang erneut (Standard: nach ~40 s Schluss); beim Zurückkehren in die App (`visibilitychange`) oder wenn
+  das Netz wiederkommt (`online`) wird sofort neu verbunden. Eigene Trennung: Banner
+  „Verbindung verloren – verbinde neu … (0:24)“, Board ausgegraut; danach kurz „Wieder verbunden ✓“.
+  Gegner getrennt: „Getrennt · 1:12“ am Namensschild. Nach dem Neuladen springt die App direkt zur
+  Match-Seite und zeigt „Laufendes Match gefunden – Zurück ins Match“ (neue Hub-Methode `CheckRejoin`,
+  die nur prüft und den Platz nicht übernimmt). Spielende-Fenster zeigt jetzt den Grund
+  (`endReason` im Snapshot), z. B. „Gegner hat die Verbindung verloren – Sieg“.
+- **Überlegung:** Countdowns rechnen mit der Serverzeit (jeder Snapshot schickt `serverTimeUnixMs`),
+  damit eine falsch gehende Handyuhr keine Rolle spielt. Nur das eigene Banner rechnet lokal, weil die
+  Frist ja genau ab dem eigenen Verbindungsverlust läuft. Wer zu spät zurückkommt, sieht trotzdem das
+  Ergebnis und das Log bis zum Ende, kann aber nichts mehr tun.
+- **Geprüft:** Playwright mit zwei Browsern (Offline schalten, Neuladen, Frist ablaufen lassen) –
+  alle drei Szenarien grün; Screenshots 2026-11-21_01 bis _06.
+- **Probleme/Lessons Learned:** Ohne Anpassung wäre „ein Klick zurück“ nach dem Neuladen zwei Klicks
+  gewesen (erst der Startbildschirm). Außerdem: Die Standard-Wiederverbindung von SignalR gibt nach etwa
+  40 Sekunden auf – kürzer als die Schonfrist.
+- Screenshots: `screenshots/2026-11-21_01-reconnect-banner.png` bis `screenshots/2026-11-21_06-niederlage-verbindung.png`
+
 <!-- Neue Einträge unten anfügen. Vorlage:
 
 ### JJJJ-MM-TT HH:MM – Titel ★/👥/🤖

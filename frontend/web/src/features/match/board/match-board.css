@@ -3049,3 +3049,74 @@ body.is-dragging-card * {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+/* Reconnect: banner while our own connection is gone, board greyed out without input. */
+.match-reconnect-banner {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transform: translateX(-50%);
+  border: 1px solid rgb(234 111 99 / 55%);
+  border-radius: 999px;
+  padding: 6px 14px;
+  color: #ffd1cc;
+  font-size: 0.85rem;
+  font-weight: 800;
+  white-space: nowrap;
+  background: rgb(40 14 14 / 92%);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 35%);
+}
+
+.match-reconnect-banner.is-restored {
+  border-color: rgb(31 196 159 / 60%);
+  color: #c9f7ea;
+  background: rgb(8 40 32 / 92%);
+}
+
+.match-reconnect-banner__spinner {
+  width: 12px;
+  height: 12px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: match-reconnect-spin 0.9s linear infinite;
+}
+
+@keyframes match-reconnect-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.match-fullscreen__stage.is-offline .match-fullscreen__board {
+  filter: grayscale(0.7) brightness(0.75);
+  pointer-events: none;
+}
+
+.match-player-plate__offline {
+  display: block;
+  margin-top: 2px;
+  color: #ffb4a9;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.match-board-game-over__reason {
+  display: block;
+  margin-top: 4px;
+  color: #ffe7a1;
+  font-size: 0.55em;
+  font-weight: 700;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .match-reconnect-banner__spinner {
+    animation: none;
+  }
+}

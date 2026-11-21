@@ -23,3 +23,17 @@ export function formatPhase(phase: MatchPhase): string {
 export function formatUnixMs(tsUnixMs: number): string {
   return new Date(tsUnixMs).toLocaleTimeString();
 }
+
+// Second line of the game over screen.
+export function getGameOverReason(endReason: string | null | undefined, didWin: boolean): string {
+  switch (endReason) {
+    case 'DISCONNECT':
+      return didWin ? 'Gegner hat die Verbindung verloren – Sieg' : 'Verbindung verloren – Niederlage';
+    case 'TIMEOUT':
+      return didWin ? 'Zeit des Gegners abgelaufen – Sieg' : 'Zeit abgelaufen – Niederlage';
+    case 'DECK_OUT':
+      return 'Keine Karten mehr im Deck';
+    default:
+      return '';
+  }
+}

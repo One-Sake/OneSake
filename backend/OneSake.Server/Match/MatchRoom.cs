@@ -100,6 +100,8 @@ public sealed class MatchRoom
 
     // Result of the match that just ended. Reported once with the next update.
     private DateTimeOffset _matchStartedAtUtc;
+    // Why the last match ended (MatchEndReasons), shown on the game over screen.
+    private string? _endReason;
     private bool _resultReported;
     private MatchResultData? _pendingResult;
 
@@ -382,7 +384,19 @@ public sealed class MatchRoom
             if (seat.Expired)
             {
                 // Too late: the match is lost. The player may still see the result.
-                return new RejoinOutcome(RejoinStatus.Expired, CreateUpdate(), FinalState: CreateStateSnapshot(playerId));
+                var expiredUpdate = CreateUpdate();
+                return new RejoinOutcome(
+                    RejoinStatus.Expired,
+                    expiredUpdate,
+                    // Log and chat up to the end, so the player can read why the match ended.
+                    new ResyncDto
+                    {
+                        RoomCode = _roomCode,
+                        PlayerId = playerId!,
+                        LogEvents = _recentLog.ToArray(),
+                        ChatMessages = _recentChat.ToArray()
+                    },
+                    FinalState: CreateStateSnapshot(playerId));
             }
 
             var previousConnectionId = seat.ConnectionId;
@@ -421,6 +435,39 @@ public sealed class MatchRoom
                 resync,
                 PreviousConnectionId: previousConnectionId == connectionId ? null : previousConnectionId);
         }
+    }
+
+    // Checks a rejoin without taking the seat (the "Back to the match" card after a page reload).
+    public RejoinStatus CheckRejoin(string playerId, string rejoinToken)
+    {
+        lock (_sync)
+        {
+            if (!_seats.TryGetValue(playerId ?? string.Empty, out var seat) || !TokensMatch(seat.RejoinToken, rejoinToken))
+            {
+                return RejoinStatus.Invalid;
+            }
+
+            var deadlineOver = seat.GraceDeadlineUtc is { } deadline && seat.ConnectionId is null && _clock.UtcNow >= deadline;
+            return seat.Expired || deadlineOver ? RejoinStatus.Expired : RejoinStatus.Ok;
+        }
+    }
+
+    // How long the viewer's seat would be kept if the connection dropped now (for the client banner).
+    private long? ViewerReconnectGraceMs(string? viewerPlayerId)
+    {
+        if (viewerPlayerId is null || !_seats.TryGetValue(viewerPlayerId, out var seat))
+        {
+            return null;
+        }
+
+        if (_phase == MatchPhase.Lobby)
+        {
+            return (long)_options.LobbyReconnectGrace.TotalMilliseconds;
+        }
+
+        var budgetLeft = _options.ReconnectBudget - seat.BudgetUsed;
+        var grace = budgetLeft < _options.ReconnectGrace ? budgetLeft : _options.ReconnectGrace;
+        return Math.Max(0, (long)grace.TotalMilliseconds);
     }
 
     // Called every second by MatchDeadlineService. Returns an update when something changed.
@@ -1789,6 +1836,7 @@ public sealed class MatchRoom
     private void EndGame(PlayerState? winner, string message, string endReason)
     {
         _phase = MatchPhase.GameOver;
+        _endReason = endReason;
         _winnerPlayerId = winner?.PlayerId ?? string.Empty;
         _battle = null;
         _openChoicePrompts.Clear();
@@ -1881,7 +1929,9 @@ public sealed class MatchRoom
                 TurnOrderRoll = CreateTurnOrderSnapshot(),
                 IsRanked = IsQuickMatch,
                 RecordedInputs = _recorder?.InputCount ?? 0,
-                ServerTimeUnixMs = _clock.UtcNow.ToUnixTimeMilliseconds()
+                ServerTimeUnixMs = _clock.UtcNow.ToUnixTimeMilliseconds(),
+                EndReason = _phase == MatchPhase.GameOver ? _endReason : null,
+                ViewerReconnectGraceMs = ViewerReconnectGraceMs(viewerPlayerId)
             };
         }
     }

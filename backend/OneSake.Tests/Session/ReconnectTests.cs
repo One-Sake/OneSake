@@ -118,7 +118,12 @@ public class ReconnectTests
         var outcome = match.Room.Rejoin(match.Alice.PlayerId, match.Alice.RejoinToken, "conn-a2");
         Assert.Equal(RejoinStatus.Expired, outcome.Status);
         Assert.Equal(match.Bob.PlayerId, outcome.FinalState!.WinnerPlayerId);
+        Assert.Equal(MatchEndReasons.Disconnect, outcome.FinalState.EndReason);
+        Assert.Contains(outcome.Resync!.LogEvents, log => log.Type == "DISCONNECT_TIMEOUT");
+        Assert.Empty(outcome.Resync.ChoicePrompts);
         Assert.Null(match.Room.ResolvePlayerId("conn-a2"));
+        Assert.Equal(RejoinStatus.Expired, match.Room.CheckRejoin(match.Alice.PlayerId, match.Alice.RejoinToken));
+        Assert.Equal(RejoinStatus.Invalid, match.Room.CheckRejoin(match.Alice.PlayerId, "nope"));
     }
 
     [Fact]

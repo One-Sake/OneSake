@@ -173,6 +173,12 @@ public record GameStateDto
     // Server time when the snapshot was made. Clients compute countdowns with the offset to their
     // own clock, so a wrong phone clock does not matter.
     public long ServerTimeUnixMs { get; init; }
+
+    // GameOver only: LIFE, DECK_OUT, DISCONNECT ... (null while the match runs).
+    public string? EndReason { get; init; }
+
+    // How long the viewer's seat is kept after a lost connection (for the "reconnecting" countdown).
+    public long? ViewerReconnectGraceMs { get; init; }
 }
 
 public record DiceRollDto

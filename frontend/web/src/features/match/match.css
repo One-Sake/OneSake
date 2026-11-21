@@ -1348,3 +1348,33 @@
 .whats-new-list ul li + li {
   margin-top: 3px;
 }
+
+/* "Laufendes Match gefunden" after a reload. */
+.match-rejoin-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  border: 1px solid rgb(240 191 56 / 55%);
+  border-radius: var(--radius-panel);
+  padding: 12px 16px;
+  background: linear-gradient(135deg, rgb(240 191 56 / 16%), rgb(16 33 49 / 95%));
+  box-shadow: var(--shadow-glow);
+}
+
+.match-rejoin-card div {
+  display: grid;
+  gap: 2px;
+}
+
+.match-rejoin-card strong {
+  color: #ffe7a1;
+  font-size: 1rem;
+}
+
+.match-rejoin-card span {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}

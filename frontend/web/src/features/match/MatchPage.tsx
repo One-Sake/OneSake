@@ -2,6 +2,7 @@ import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 
 import { getMatchHubUrl } from '../../api/backendUrl';
 import { SignalRClient, type ConnectionStatus } from '../../api/signalrClient';
+import { clearRejoinData, type RejoinData } from '../../api/rejoinStorage';
 import {
   ChatMessageDto,
   ChoicePromptDto,
@@ -26,6 +27,7 @@ import { MatchStatePanel } from './MatchStatePanel';
 import { formatPhase } from './matchFormatters';
 import { generatePirateName } from './pirateNameGenerator';
 import { ServerBrowser } from './ServerBrowser';
+import { syncServerTime } from './serverClock';
 import { useLeaderCards } from './useLeaderCards';
 
 interface MatchPageProps {
@@ -146,6 +148,13 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
   // The SignalR handler is registered once, so it calls the latest version through this ref.
   const matchFoundHandlerRef = useRef<(matchFound: MatchFoundDto) => void>(() => undefined);
   const isSearchingRef = useRef(false);
+  // Reconnect: when our connection dropped while in a room, and a short "reconnected" notice.
+  const [connectionLostAt, setConnectionLostAt] = useState<number | null>(null);
+  const [showReconnected, setShowReconnected] = useState(false);
+  // A running match found after a reload ("Back to the match").
+  const [rejoinOffer, setRejoinOffer] = useState<RejoinData | null>(null);
+  const joinedRoomCodeRef = useRef('');
+  const resetRoomStateRef = useRef<() => void>(() => undefined);
 
   useEffect(() => {
     if (!signalRClient) {
@@ -157,10 +166,37 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
       setRooms(roomList);
     });
     client.onStateSnapshot((snapshot) => {
+      syncServerTime(snapshot.serverTimeUnixMs);
       setGameState(snapshot);
       // Open prompts are cleared on the server when the game ends.
       if (snapshot.phase === 'GameOver' || snapshot.phase === 'Lobby') {
         setCurrentPrompt(null);
+      }
+
+      // After the game the seat is freed on a disconnect: nothing to come back to.
+      if (snapshot.phase === 'GameOver') {
+        clearRejoinData();
+      }
+    });
+
+    // Back on our seat: the server sends everything we missed. Log and chat are replaced.
+    client.onResync((resync) => {
+      setLogEvents(resync.logEvents);
+      setChatMessages(resync.chatMessages);
+      setCurrentPrompt(resync.choicePrompts[resync.choicePrompts.length - 1] ?? null);
+    });
+
+    client.onRejoinResult((result) => {
+      setConnectionLostAt(null);
+      if (result.status === 'OK') {
+        setShowReconnected(true);
+        setError('');
+        return;
+      }
+
+      if (result.status === 'INVALID' && joinedRoomCodeRef.current) {
+        resetRoomStateRef.current();
+        setError('Das Match ist nicht mehr verfügbar.');
       }
     });
 
@@ -203,8 +239,8 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
     });
   }, [signalRClient]);
 
-  // The server removes us from the room when the connection drops,
-  // so the local room state has to be cleared as well.
+  // The server keeps our seat for a grace period when the connection drops. The room state stays,
+  // the client takes the seat back automatically after reconnecting (RejoinRoom).
   useEffect(() => {
     const lostConnection =
       connectionStatus === 'reconnecting' ||
@@ -217,11 +253,44 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
     }
 
     if (lostConnection && joinedRoomCode) {
-      resetRoomState();
-      setError('Connection lost. You left the room - join it again from the server list.');
+      setShowReconnected(false);
+      setConnectionLostAt((previous) => previous ?? Date.now());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connectionStatus]);
+
+  useEffect(() => {
+    joinedRoomCodeRef.current = joinedRoomCode;
+    signalRClient?.setAutoRejoin(Boolean(joinedRoomCode));
+    if (joinedRoomCode) {
+      setRejoinOffer(null);
+    }
+  }, [joinedRoomCode, signalRClient]);
+
+  useEffect(() => {
+    if (!showReconnected) {
+      return undefined;
+    }
+
+    const timeoutId = window.setTimeout(() => setShowReconnected(false), 2500);
+    return () => window.clearTimeout(timeoutId);
+  }, [showReconnected]);
+
+  // After a reload: is there a running match we can go back to?
+  useEffect(() => {
+    if (!signalRClient || connectionStatus !== 'connected' || joinedRoomCodeRef.current) {
+      return;
+    }
+
+    signalRClient
+      .checkStoredRejoin()
+      .then((data) => {
+        if (!joinedRoomCodeRef.current) {
+          setRejoinOffer(data);
+        }
+      })
+      .catch(() => setRejoinOffer(null));
+  }, [connectionStatus, signalRClient]);
 
   useEffect(() => {
     if (!selectedDeckId) {
@@ -353,6 +422,7 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
   }, [gameState]);
 
   const resetRoomState = (): void => {
+    setConnectionLostAt(null);
     setJoinedRoomCode('');
     setGameState(null);
     setCurrentPrompt(null);
@@ -361,6 +431,32 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
     setChatInput('');
     setIsBoardMode(false);
     void exitBoardPresentation();
+  };
+
+  // "Back to the match": take the stored seat again and open the board.
+  const resumeMatch = async (): Promise<void> => {
+    if (!signalRClient || !rejoinOffer) {
+      return;
+    }
+
+    setPending(true);
+    setError('');
+    try {
+      setJoinedRoomCode(rejoinOffer.roomCode);
+      joinedRoomCodeRef.current = rejoinOffer.roomCode;
+      signalRClient.setAutoRejoin(true);
+      const result = await signalRClient.rejoinStored();
+      if (result?.status === 'OK' || result?.status === 'EXPIRED') {
+        setRoomCodeInput(rejoinOffer.roomCode);
+        openBoardMode();
+      } else {
+        resetRoomState();
+        setError('Das Match ist nicht mehr verfügbar.');
+      }
+    } finally {
+      setRejoinOffer(null);
+      setPending(false);
+    }
   };
 
   // mode 'create' opens a new room on the server, 'join' enters an existing one.
@@ -451,6 +547,7 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
 
   useEffect(() => {
     matchFoundHandlerRef.current = (matchFound) => void handleMatchFound(matchFound);
+    resetRoomStateRef.current = resetRoomState;
     isSearchingRef.current = queueStartedAt !== null;
   });
 
@@ -482,6 +579,7 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
     setPending(true);
     setError('');
     try {
+      clearRejoinData();
       await signalRClient.leaveRoom(joinedRoomCode);
     } catch (leaveError) {
       // The room may already be gone on the server. We leave locally either way.
@@ -651,6 +749,7 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
         canSubmitChoice={isConnected}
         chatInput={chatInput}
         chatMessages={chatMessages}
+        connectionLostAt={connectionLostAt}
         connectionStatus={connectionStatus}
         currentPrompt={currentPrompt}
         error={error}
@@ -668,12 +767,24 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
           void submitChoice(option, selectedCardInstanceId, targetCardInstanceId)
         }
         pending={pending}
+        showReconnected={showReconnected}
       />
     );
   }
 
   return (
     <section className="match-page">
+      {rejoinOffer && !joinedRoomCode && (
+        <div className="match-rejoin-card" role="status">
+          <div>
+            <strong>Laufendes Match gefunden</strong>
+            <span>Raum {rejoinOffer.roomCode} – dein Platz ist noch frei.</span>
+          </div>
+          <button className="ui-button" disabled={pending} onClick={() => void resumeMatch()} type="button">
+            Zurück ins Match
+          </button>
+        </div>
+      )}
       <LobbyPanel
         canCreate={canCreate}
         canJoin={canJoin}

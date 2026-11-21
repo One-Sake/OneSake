@@ -11,7 +11,7 @@ export interface ChangelogEntry {
 export const CHANGELOG: ChangelogEntry[] = [
   {
     version: '0.5.0',
-    date: '2026-11-20',
+    date: '2026-11-21',
     title: 'Quick Match, Ranked, Meta und neues Spielfeld',
     items: [
       'Quick Match: ein Klick, und du wirst automatisch einem Gegner zugeteilt.',
@@ -29,6 +29,7 @@ export const CHANGELOG: ChangelogEntry[] = [
       'Handkarten und DON!! per Drag & Drop spielen.',
       'Log/Chat-Leiste lässt sich in der Breite ziehen und einklappen.',
       'Eigene Kartenrückseiten für Deck, Leben und DON!!.',
+      'Zurück ins Match nach Verbindungsabbruch: dein Platz bleibt 90 Sekunden frei, auch nach dem Neuladen der Seite.',
     ],
   },
   {

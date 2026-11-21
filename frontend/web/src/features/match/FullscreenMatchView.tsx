@@ -13,6 +13,7 @@ import type {
 import { BountyChangeBanner } from './BountyChangeBanner';
 import { ChoiceBar } from './ChoiceBar';
 import { ConnectionStatusBadge } from './ConnectionStatusBadge';
+import { ReconnectBanner } from './ReconnectBanner';
 import { CollapsedFeed, FeedSplitter } from './FeedSplitter';
 import { clampFeedWidth, getFeedMaxWidth, loadFeedWidth, saveFeedWidth } from './feedWidth';
 import { MatchFeed } from './MatchFeed';
@@ -60,6 +61,8 @@ interface FullscreenMatchViewProps {
   canSubmitChoice: boolean;
   chatInput: string;
   chatMessages: ChatMessageDto[];
+  // Local time when our connection dropped while in the room (null = connected).
+  connectionLostAt: number | null;
   connectionStatus: ConnectionStatus;
   currentPrompt: ChoicePromptDto | null;
   error: string;
@@ -75,6 +78,7 @@ interface FullscreenMatchViewProps {
   onStartMatch: () => void;
   onSubmitChoice: (option: string, selectedCardInstanceId?: string, targetCardInstanceId?: string) => void;
   pending: boolean;
+  showReconnected: boolean;
 }
 
 export function FullscreenMatchView({
@@ -83,6 +87,7 @@ export function FullscreenMatchView({
   canSubmitChoice,
   chatInput,
   chatMessages,
+  connectionLostAt,
   connectionStatus,
   currentPrompt,
   error,
@@ -98,6 +103,7 @@ export function FullscreenMatchView({
   onStartMatch,
   onSubmitChoice,
   pending,
+  showReconnected,
 }: FullscreenMatchViewProps) {
   // Only used below 1024px, where the feed is a slide-in overlay.
   const [feedOpen, setFeedOpen] = useState(false);
@@ -146,6 +152,7 @@ export function FullscreenMatchView({
     'match-fullscreen__stage',
     isDesktop ? 'is-desktop' : '',
     isDesktop && feedCollapsed ? 'is-feed-collapsed' : '',
+    connectionLostAt !== null ? 'is-offline' : '',
   ]
     .filter(Boolean)
     .join(' ');
@@ -222,6 +229,12 @@ export function FullscreenMatchView({
       <div className="match-fullscreen__orientation-notice" role="note">
         Bitte Ger&auml;t quer halten f&uuml;r die beste Spielerfahrung.
       </div>
+
+      <ReconnectBanner
+        graceMs={gameState?.viewerReconnectGraceMs}
+        lostAt={connectionLostAt}
+        showReconnected={showReconnected}
+      />
 
       {error && <p className="match-fullscreen__error" role="alert">{error}</p>}
 

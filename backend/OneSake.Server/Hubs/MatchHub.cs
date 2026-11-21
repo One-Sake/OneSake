@@ -123,6 +123,24 @@ public class MatchHub : Hub
         await base.OnDisconnectedAsync(exception);
     }
 
+    // After a page reload: is the stored seat still there? Does not take the seat.
+    public RejoinResultDto CheckRejoin(string roomCode, string playerId, string rejoinToken)
+    {
+        var normalizedRoomCode = NormalizeRoomCode(roomCode);
+        var status = _roomManager.Get(normalizedRoomCode)?.CheckRejoin(playerId, rejoinToken) ?? RejoinStatus.Invalid;
+        return new RejoinResultDto
+        {
+            Status = status switch
+            {
+                RejoinStatus.Ok => "OK",
+                RejoinStatus.Expired => "EXPIRED",
+                _ => "INVALID"
+            },
+            RoomCode = normalizedRoomCode,
+            PlayerId = status == RejoinStatus.Invalid ? string.Empty : playerId
+        };
+    }
+
     // Back to the own seat after a lost connection or a page reload (token from SeatAssigned).
     public async Task<RejoinResultDto> RejoinRoom(string roomCode, string playerId, string rejoinToken)
     {
@@ -148,6 +166,7 @@ public class MatchHub : Hub
 
                 // Only the final result: the seat is lost, no actions are possible.
                 await Clients.Caller.SendAsync("StateSnapshot", outcome.FinalState);
+                await Clients.Caller.SendAsync("Resync", outcome.Resync);
                 return new RejoinResultDto { Status = "EXPIRED", RoomCode = normalizedRoomCode, PlayerId = playerId };
         }
 

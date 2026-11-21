@@ -19,6 +19,20 @@ zusätzlich Screenshots mit laufendem Backend gemacht werden (siehe Liste unten)
 | [2026-11-20_06-tools.png](2026-11-20_06-tools.png) | Captain Tools: Mulligan-Trainer und Wahrscheinlichkeitsrechner |
 | [2026-11-20_07-profile.png](2026-11-20_07-profile.png) | Captain Profile mit WANTED-Steckbrief |
 
+## Stand 2026-11-21 – Reconnect
+
+Aufgenommen mit Playwright (Chromium, 1280 × 760, zwei Browser-Kontexte), Backend lokal mit
+verkürzter Schonfrist (`Match__ReconnectGraceSeconds=25`), Testdeck ohne Kartenbilder.
+
+| Datei | Zeigt |
+|-------|-------|
+| [2026-11-21_01-reconnect-banner.png](2026-11-21_01-reconnect-banner.png) | Eigene Verbindung weg: Banner „Verbindung verloren – verbinde neu … (0:24)“, Board ausgegraut |
+| [2026-11-21_02-gegner-getrennt-countdown.png](2026-11-21_02-gegner-getrennt-countdown.png) | Gegner getrennt: „Getrennt · 0:25“ am Namensschild, Log-Eintrag |
+| [2026-11-21_03-wieder-verbunden.png](2026-11-21_03-wieder-verbunden.png) | Nach dem Rejoin: „Wieder verbunden ✓“ |
+| [2026-11-21_04-zurueck-ins-match.png](2026-11-21_04-zurueck-ins-match.png) | Nach dem Neuladen: Karte „Laufendes Match gefunden – Zurück ins Match“ |
+| [2026-11-21_05-sieg-gegner-getrennt.png](2026-11-21_05-sieg-gegner-getrennt.png) | Frist abgelaufen, Sicht des Gewinners: „Gegner hat die Verbindung verloren – Sieg“ |
+| [2026-11-21_06-niederlage-verbindung.png](2026-11-21_06-niederlage-verbindung.png) | Frist abgelaufen, Sicht des Getrennten nach der Rückkehr: „Verbindung verloren – Niederlage“ |
+
 ## Noch aufzunehmen (mit laufendem Backend)
 
 - Deckbuilder mit Karten, Filtern und fertigem Deck

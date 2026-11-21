@@ -28,6 +28,8 @@ import { getManualItems, MANUAL_DECISION_KINDS, RUNNING_PHASES } from './manualI
 import type { ManualContext, ManualItem, ManualTarget } from './manualItems';
 import { ManualViewDialog } from './ManualViewDialog';
 import { TriggerOrderOverlay } from './TriggerOrderOverlay';
+import { getGameOverReason } from '../matchFormatters';
+import { OfflineBadge } from './OfflineBadge';
 import { useBoardMetrics } from './useBoardMetrics';
 import { useHandDrag } from './useHandDrag';
 import type { DragItem, DropTarget } from './useHandDrag';
@@ -901,6 +903,7 @@ export function MatchBoard({
           <div className="match-player-plate" style={getPlateStyle(opponent)}>
             <span>Opponent</span>
             <strong>{opponent?.displayName || 'Waiting...'}</strong>
+            <OfflineBadge player={opponent} />
           </div>
           <div className="match-opponent-hand" aria-label={`Opponent hand: ${opponentHandCount} cards`} role="img">
             {Array.from({ length: Math.min(opponentHandCount, MAX_OPPONENT_HAND_BACKS) }, (_, index) => (
@@ -1048,6 +1051,9 @@ export function MatchBoard({
       {isGameOver && (
         <div className="match-board-game-over" role="status">
           {gameState?.winnerPlayerId ? (didWin ? 'Victory!' : 'Defeat') : 'Game Over'}
+          {getGameOverReason(gameState?.endReason, didWin) && (
+            <small className="match-board-game-over__reason">{getGameOverReason(gameState?.endReason, didWin)}</small>
+          )}
           {canReportBug && (
             <button className="match-board-game-over__bug" onClick={() => setBugReportOpen(true)} type="button">
               🐞 Fehler melden
