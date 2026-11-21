@@ -58,6 +58,17 @@ Stand der Tests: 274 grün, 6 übersprungen (offene Regelfragen F1–F6). 5000 S
   Bilder `frontend/web/src/assets/cards/{card-back,don-back,don-front}.webp` fehlen noch (Fallback
   aktiv, README im Ordner).
 
+## Nachtrag 21.11. (zweite Sitzung): Reconnect und Zug-Timer
+
+Auf logic (noch nicht auf dev/main):
+
+- Stabile Spieler-ID pro Platz + Rejoin-Token, RejoinRoom/CheckRejoin, Schonfrist 90 s, Budget 180 s.
+- Serverseitiger Zug-Timer mit Zeitbank, automatische Entscheidungen bei Ablauf, Endgrund TIMEOUT.
+- Regeln: docs/turn-timer.md, Konfiguration: docs/deployment.md (Abschnitt „Reconnect und Zug-Timer“).
+- Bekannt, nicht behoben: Entscheidet der Würfelgewinner sehr schnell, bleibt beim Gegner das
+  Würfel-Overlay stehen (DiceRoll.tsx, Animation überschreibt den Schritt „announce“).
+- Ein Server-Neustart beendet laufende Matches weiterhin (Plätze liegen nur im Speicher).
+
 ## Nützliche Befehle
 
 ```bash

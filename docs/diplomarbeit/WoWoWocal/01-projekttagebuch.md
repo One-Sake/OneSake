@@ -311,6 +311,17 @@ Keine Commits. Sprint 3 wurde ab 06.10.2026 geplant.
   zwei Timeouts → Niederlage `TIMEOUT` bei beiden; Counter läuft ab → Kampf geht ohne Counter weiter.
 - Screenshots: `screenshots/2026-11-21_07-timer-normal.png` bis `screenshots/2026-11-21_11-antwortzeit-counter.png`
 
+### 2026-11-21 12:47 – Konfiguration dokumentiert, Abschluss Reconnect/Timer 🤖
+- Commit „Document the reconnect and turn timer settings“: Alle neuen Werte (`Match:ReconnectGraceSeconds`,
+  `Match:ReconnectBudgetSeconds`, `Match:LobbyReconnectGraceSeconds`, `Match:Timer:*`) mit Standardwerten
+  und Beispiel für kurze Testwerte in `docs/deployment.md`; Nachtrag in `docs/handoff.md`.
+- **Gesamtprüfung:** `dotnet build`/`dotnet test` grün (300 Tests, 6 übersprungen wie bisher),
+  `npm run lint`/`npm run build` grün, Simulator-Smoke wie in CI (200 Partien, 0 Fehler),
+  Playwright-Szenarien a)–e) grün.
+- **Überlegung/Grenze:** Die Plätze liegen nur im Speicher des Servers. Ein Neustart (Deployment) beendet
+  laufende Matches weiterhin – dafür bräuchte es eine gemeinsame Speicherung (z. B. Redis), was für den
+  aktuellen Ein-Server-Betrieb zu viel Aufwand wäre.
+
 <!-- Neue Einträge unten anfügen. Vorlage:
 
 ### JJJJ-MM-TT HH:MM – Titel ★/👥/🤖
