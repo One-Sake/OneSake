@@ -125,6 +125,22 @@ export function FxSettingsMenu() {
             />
             Vibration bei Treffern (Handy)
           </label>
+
+          <label className="fx-settings__check">
+            <input
+              checked={settings.autoPassCounter}
+              onChange={(event) => updateFxSettings({ autoPassCounter: event.target.checked })}
+              type="checkbox"
+            />
+            <span>
+              Auto-Pass Counter
+              <small className="fx-settings__note">
+                Passt von selbst, wenn keine Counter-Karte nutzbar ist (mit kurzer zufälliger Pause).
+              </small>
+            </span>
+          </label>
+
+          <p className="fx-settings__note">Tastenkürzel: <kbd>?</kbd></p>
         </div>
       )}
     </div>

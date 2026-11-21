@@ -325,6 +325,37 @@ Keine Commits. Sprint 3 wurde ab 06.10.2026 geplant.
   Töne im Match, stumm = keine Töne bei zwei Zugwechseln, Einstellungen nach dem Neuladen erhalten.
 - Screenshot: `screenshots/2026-11-21_33-sound-einstellungen.png`
 
+### 2026-11-21 18:20 – Tastenkürzel, Auto-Pass, Hinweise; Leistung ★ 🤖
+- Commit „Add keyboard shortcuts, auto pass and board hints“: Tastenkürzel (nur wenn kein Eingabefeld
+  aktiv ist): Leertaste = Zug beenden (zweimal drücken oder 400 ms halten), A = Angriff, D = DON!!,
+  E = Effekt, Tab = nächste eigene Feldkarte, 1–9 = Handkarte auswählen (Enter spielt sie), Enter =
+  im Dialog bestätigen, Esc = abbrechen, ? = Übersicht. Kleine Kürzel-Hinweise auf den Buttons
+  (nur Desktop, für Screenreader ausgeblendet). Auto-Pass: Block-Schritt ohne möglichen Blocker
+  (öffentliche Information) nach 0,7 s; Counter-Schritt nur mit selbst eingeschaltetem
+  „Auto-Pass Counter“ und zufälliger Pause von 0,8–1,6 s. „End Turn“ leuchtet, wenn nichts Sinnvolles
+  mehr möglich ist (nur Hinweis). Gegnerkarten zeigen beim Hover Mini-Icons (🛡 Blocker, 💀 On K.O.,
+  ✦ Trigger …).
+- **Leistung:** Messung mit Playwright im Handy-Querformat (844 × 390) und 4-facher CPU-Drosselung
+  (Chrome DevTools Protocol) auf dem Produktions-Build. Erst lag die Erkennung im React-Commit bei bis zu
+  355 ms, weil direkt nach den DOM-Änderungen Positionen gelesen wurden (erzwungenes Layout). Jetzt liest
+  die Erkennung keine Positionen mehr, Animationen starten im nächsten Animation-Frame, Positionen werden
+  nach dem Zeichnen gemerkt: Erkennung max. 1,5 ms, Animationsschritt max. 7 ms, in ~2100 Frames mit
+  laufender Animation nur 0–1 Frame über 50 ms (50,1 ms). Pulsierende Ränder animieren nur noch die
+  `opacity` einer Leucht-Ebene statt `box-shadow` (das hätte jeden Frame neu gezeichnet).
+  Messmarken `fx-snapshot`, `fx-step`, `fx-boxes` sind im DevTools-Performance-Panel sichtbar.
+- **Geprüft:** Tastenkürzel im Browser (Hilfe, 1/Enter, Tab/D, Leertaste zweimal und halten);
+  mit `prefers-reduced-motion` 8 Züge gespielt – keine einzige bewegte Animation, Board voll bedienbar.
+- **Probleme/Lessons Learned:** (1) Der pulsierende „End Turn“ hat sich anfangs skaliert – ein ständig
+  bewegtes Klickziel (Playwright wartete vergeblich auf „stabil“); jetzt pulsiert nur das Leuchten.
+  (2) Die Text-Einblendungen stiegen auch im reduzierten Modus auf – jetzt nur Ein-/Ausblenden.
+  (3) **Befund am Server:** Auf `dev` schickt der Server den Counter- und Block-Schritt gar nicht, wenn
+  nichts nutzbar ist. Der Angreifer merkt dann am sofortigen Schaden, dass keine Counter auf der Hand sind –
+  genau das Informationsleck, das der Auto-Pass vermeiden soll. Der Client-Schalter greift deshalb derzeit
+  praktisch nie; die eigentliche Lösung (Counter-Schritt immer senden oder serverseitig kurz warten) ist
+  eine Backend-Änderung und war nicht Teil dieses Auftrags.
+- Screenshots: `screenshots/2026-11-21_34-tastenkuerzel.png`, `…_35-leertaste-bestaetigen.png`,
+  `…_36-gegnerkarte-hinweise.png`, `…_37-zug-beenden-hinweis.png`
+
 <!-- Neue Einträge unten anfügen. Vorlage:
 
 ### JJJJ-MM-TT HH:MM – Titel ★/👥/🤖

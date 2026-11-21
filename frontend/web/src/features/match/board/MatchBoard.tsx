@@ -10,8 +10,12 @@ import type {
 } from '../../../types/realtime';
 import { AttackArrow } from '../fx/AttackArrow';
 import { FxLayer } from '../fx/FxLayer';
+import { getCardHints } from '../fx/cardHints';
 import { GameOverScreen } from '../fx/GameOverScreen';
+import { HotkeyHelp } from '../fx/HotkeyHelp';
 import { TurnBanner } from '../fx/TurnBanner';
+import { useAutoPass } from '../fx/useAutoPass';
+import { useMatchHotkeys } from '../fx/useMatchHotkeys';
 import { useFxSettings } from '../fx/fxSettings';
 import { useBoardFx } from '../fx/useBoardFx';
 import { boardZones, CHARACTER_SLOT_COUNT } from './boardLayout';
@@ -540,6 +544,55 @@ export function MatchBoard({
     }
   }
 
+  function startAttack(): void {
+    if (canStartAttack && selectedCard) {
+      setMode({ kind: 'attack', attackerId: selectedCard.instanceId });
+    }
+  }
+
+  // ---------- Keyboard, auto pass, hints ----------
+
+  const selectableFieldCards = localFieldCards.filter((card) => card.category !== 'Stage' || card.canActivate);
+  const hotkeys = useMatchHotkeys(frameRef, {
+    canEndTurn: isMainAction && hasOption(myPrompt, 'END_TURN'),
+    endTurn: () => submit('END_TURN'),
+    canAttack: canStartAttack,
+    startAttack,
+    canGiveDon,
+    giveDon,
+    canActivate: canActivateSelected,
+    activate: () => selectedCard && submit('ACTIVATE', selectedCard.instanceId),
+    cancel: () => {
+      setMode({ kind: 'idle' });
+      setSelectedCardId('');
+    },
+    selectNextFieldCard: () => {
+      if (!isMainAction || selectableFieldCards.length === 0) {
+        return false;
+      }
+
+      const index = selectableFieldCards.findIndex((card) => card.instanceId === selectedCardId);
+      setMode({ kind: 'idle' });
+      setSelectedCardId(selectableFieldCards[(index + 1) % selectableFieldCards.length].instanceId);
+      return true;
+    },
+  });
+
+  const autoPassNotice = useAutoPass({
+    promptId: myPrompt?.choiceId ?? '',
+    promptKind: myPrompt?.kind ?? '',
+    canBlock: localFieldCards.some(canBlockWith),
+    canCounter: localHandCards.some(canCounterWith),
+    submit: (option) => submit(option),
+  });
+
+  // Nothing useful is left: no affordable card, no attacker, no DON!!, no ability. Only a hint.
+  const nothingLeftToDo =
+    isMainAction &&
+    !localHandCards.some(canPlayFromHand) &&
+    !localFieldCards.some((card) => card.canAttack || card.canActivate) &&
+    (localPlayer?.activeDonCount ?? 0) === 0;
+
   // ---------- Rendering helpers ----------
 
   function renderFieldCard(card: CardInstanceDto, side: BoardSide) {
@@ -549,6 +602,7 @@ export function MatchBoard({
         clickable
         onClick={() => (side === 'player' ? handleOwnCardClick(card) : handleOpponentCardClick(card))}
         onInspect={() => setInspectedCard(card)}
+        hints={side === 'opponent' ? getCardHints(card) : undefined}
         onPreview={handlePreview}
         size="slot"
         stateClassName={getCardStateClassName(card, side)}
@@ -703,7 +757,11 @@ export function MatchBoard({
   }
 
   const opponentHandCount = opponent?.handCount ?? 0;
-  const hint = dragNotice || getHint();
+  const hint =
+    dragNotice ||
+    (hotkeys.endTurnArmed ? 'Leertaste nochmal drücken (oder halten): Zug beenden' : '') ||
+    autoPassNotice ||
+    getHint();
   const showActions = isMainAction || isBlockStep || isCounterStep || mode.kind === 'replace';
 
   const frameStyle = {
@@ -772,6 +830,7 @@ export function MatchBoard({
                   <button disabled={!canGiveDon} onClick={giveDon} type="button">
                     Give DON!!
                     <small>+1000</small>
+                    <kbd aria-hidden="true" className="fx-kbd">D</kbd>
                   </button>
                   <button
                     className={mode.kind === 'attack' ? 'is-active' : ''}
@@ -787,6 +846,7 @@ export function MatchBoard({
                     type="button"
                   >
                     {mode.kind === 'attack' ? 'Cancel Attack' : 'Attack'}
+                    <kbd aria-hidden="true" className="fx-kbd">{mode.kind === 'attack' ? 'Esc' : 'A'}</kbd>
                   </button>
                   <button
                     disabled={!canActivateSelected}
@@ -795,6 +855,7 @@ export function MatchBoard({
                   >
                     Activate
                     <small>Effect</small>
+                    <kbd aria-hidden="true" className="fx-kbd">E</kbd>
                   </button>
                 </>
               )}
@@ -814,8 +875,14 @@ export function MatchBoard({
                 </button>
               )}
               {isMainAction && (
-                <button className="match-actions__end-turn" onClick={() => submit('END_TURN')} type="button">
+                <button
+                  className={`match-actions__end-turn${nothingLeftToDo ? ' is-suggested' : ''}`}
+                  onClick={() => submit('END_TURN')}
+                  title={nothingLeftToDo ? 'Keine sinnvolle Aktion mehr möglich' : undefined}
+                  type="button"
+                >
                   End Turn
+                  <kbd aria-hidden="true" className="fx-kbd">Leer</kbd>
                 </button>
               )}
             </div>
@@ -870,6 +937,8 @@ export function MatchBoard({
       )}
 
       <TurnBanner frameRef={frameRef} gameState={gameState} />
+
+      {hotkeys.helpOpen && <HotkeyHelp onClose={hotkeys.closeHelp} />}
 
       <FxLayer ref={fxLayerRef} />
       {mode.kind === 'attack' && <AttackArrow attackerId={mode.attackerId} frameRef={frameRef} />}

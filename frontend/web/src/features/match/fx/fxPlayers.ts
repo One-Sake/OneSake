@@ -83,6 +83,13 @@ const isField = (zone: Zone | undefined) => zone === 'character' || zone === 'st
 
 // ---------- Building blocks ----------
 
+// Positions are read when a step runs (in an animation frame), not while React commits.
+type LazyBox = Box | (() => Box | null);
+
+function resolve(box: LazyBox): Box | null {
+  return typeof box === 'function' ? box() : box;
+}
+
 function escapeHtml(text: string): string {
   return text.replace(/[&<>"']/g, (char) => `&#${char.charCodeAt(0)};`);
 }
@@ -125,8 +132,8 @@ function revealBox(env: FxEnv): Box {
 function revealAndFly(
   env: FxEnv,
   card: CardInstanceDto,
-  from: Box,
-  to: Box,
+  lazyFrom: LazyBox,
+  lazyTo: LazyBox,
   options: { label?: string; glow?: boolean; target?: HTMLElement | null; recent?: boolean },
 ): void {
   const target = options.target ?? null;
@@ -137,7 +144,9 @@ function revealAndFly(
   env.queue.enqueue(
     (context) => {
       sound(context, options.glow ? 'event' : 'play');
-      if (context.reduced) {
+      const from = resolve(lazyFrom);
+      const to = resolve(lazyTo);
+      if (context.reduced || !from || !to) {
         flash(target, options.glow ? 'gold' : 'good');
         return [];
       }
@@ -179,13 +188,14 @@ function revealAndFly(
 }
 
 // A copy flies from "from" to the real card (hidden until it lands).
-function flyToCard(env: FxEnv, from: Box, target: HTMLElement, group?: string): void {
+function flyToCard(env: FxEnv, lazyFrom: LazyBox, target: HTMLElement, group?: string): void {
   target.dataset.fxHidden = '1';
   env.queue.enqueue(
     (context) => {
       sound(context, group?.startsWith('draw') ? 'draw' : 'play');
       const to = boxOf(env.layer, target);
-      if (context.reduced || !to) {
+      const from = resolve(lazyFrom);
+      if (context.reduced || !to || !from) {
         return [];
       }
 
@@ -204,13 +214,14 @@ function flyToCard(env: FxEnv, from: Box, target: HTMLElement, group?: string): 
 }
 
 // A Life card turns over on its way into the hand.
-function flipToCard(env: FxEnv, from: Box, target: HTMLElement): void {
+function flipToCard(env: FxEnv, lazyFrom: LazyBox, target: HTMLElement): void {
   target.dataset.fxHidden = '1';
   env.queue.enqueue(
     (context) => {
       sound(context, 'life');
       const to = boxOf(env.layer, target);
-      if (context.reduced || !to) {
+      const from = resolve(lazyFrom);
+      if (context.reduced || !to || !from) {
         return [];
       }
 
@@ -240,10 +251,11 @@ function flipToCard(env: FxEnv, from: Box, target: HTMLElement): void {
 }
 
 // A card shown big in the middle with a label (e.g. "TRIGGER"), then it fades out.
-function revealOnly(env: FxEnv, card: CardInstanceDto | null, from: Box, label: string): void {
+function revealOnly(env: FxEnv, card: CardInstanceDto | null, lazyFrom: LazyBox, label: string): void {
   env.queue.enqueue((context) => {
     sound(context, 'event');
     const center = revealBox(env);
+    const from = resolve(lazyFrom) ?? center;
     const element = card
       ? faceCopy(env, context, center, card, 'fx-card--glow')
       : place(env.layer, context, center, 'fx-card fx-card--back fx-card--glow');
@@ -272,14 +284,16 @@ function revealOnly(env: FxEnv, card: CardInstanceDto | null, from: Box, label: 
 }
 
 // Card backs fly from one box to another (opponent draws, cards we cannot see).
-function flyBacks(env: FxEnv, from: Box, to: Box, count: number, group: string, variant: 'card' | 'don' = 'card'): void {
+function flyBacks(env: FxEnv, lazyFrom: LazyBox, lazyTo: LazyBox, count: number, group: string, variant: 'card' | 'don' = 'card'): void {
   for (let index = 0; index < count; index += 1) {
     env.queue.enqueue((context) => {
       if (index === 0) {
         sound(context, variant === 'don' ? 'don' : group.startsWith('olife') ? 'life' : 'draw');
       }
 
-      if (context.reduced) {
+      const from = resolve(lazyFrom);
+      const to = resolve(lazyTo);
+      if (context.reduced || !from || !to) {
         return [];
       }
 
@@ -299,6 +313,11 @@ function popText(env: FxEnv, context: FxContext, box: Box, text: string, classNa
     `fx-pop ${className}`,
   );
   element.textContent = text;
+  if (context.reduced) {
+    // No movement: the text only fades in and out.
+    return animate(element, [{ opacity: 0 }, { opacity: 1, offset: 0.2 }, { opacity: 1, offset: 0.8 }, { opacity: 0 }], context, ms);
+  }
+
   return animate(
     element,
     [
@@ -504,8 +523,7 @@ export function snapshotFx(previous: GameStateDto, next: GameStateDto, env: FxEn
 
       const card = now.cards.get(id)!;
       const target = cardElement(env.frame, id);
-      const to = boxOf(env.layer, target);
-      if (!target || !to) {
+      if (!target) {
         return;
       }
 
@@ -515,12 +533,12 @@ export function snapshotFx(previous: GameStateDto, next: GameStateDto, env: FxEn
           return;
         }
 
-        const from = env.previousBoxes.get(id) ?? cardBoxIn(env, 'player', old.zones.get(id) === 'hand' ? 'hand' : 'life');
+        const from = env.previousBoxes.get(id) ?? (() => cardBoxIn(env, 'player', old.zones.get(id) === 'hand' ? 'hand' : 'life'));
         flyToCard(env, from, target);
         return;
       }
 
-      revealAndFly(env, card, cardBoxIn(env, 'opponent', 'hand'), to, { target, recent: true });
+      revealAndFly(env, card, () => cardBoxIn(env, 'opponent', 'hand'), () => boxOf(env.layer, target), { target, recent: true });
     });
 
     // Events: new in the trash, were in a hand (or a hidden hand) before.
@@ -531,9 +549,8 @@ export function snapshotFx(previous: GameStateDto, next: GameStateDto, env: FxEn
         return;
       }
 
-      const trash = cardBoxIn(env, side, 'trash');
-      const start = env.previousBoxes.get(id) ?? cardBoxIn(env, side, 'hand');
-      revealAndFly(env, card, start, trash, { glow: true });
+      const start = env.previousBoxes.get(id) ?? (() => cardBoxIn(env, side, 'hand'));
+      revealAndFly(env, card, start, () => cardBoxIn(env, side, 'trash'), { glow: true });
     });
 
     // Draws: new hand cards that were nowhere visible (cards from the Life area are shown elsewhere).
@@ -541,14 +558,14 @@ export function snapshotFx(previous: GameStateDto, next: GameStateDto, env: FxEn
       const drawn = [...now.zones.entries()].filter(([id, zone]) => zone === 'hand' && !old.zones.has(id)).map(([id]) => id);
       const fromLife = drawn.slice(0, lifeLost);
       const fromDeck = drawn.slice(lifeLost);
-      const life = cardBoxIn(env, 'player', 'life');
+      const life = () => cardBoxIn(env, 'player', 'life');
       fromLife.forEach((id) => {
         const target = cardElement(env.frame, id);
         if (target) {
           flipToCard(env, life, target);
         }
       });
-      const deck = cardBoxIn(env, 'player', 'deck');
+      const deck = () => cardBoxIn(env, 'player', 'deck');
       fromDeck.forEach((id) => {
         const target = cardElement(env.frame, id);
         if (target) {
@@ -561,12 +578,12 @@ export function snapshotFx(previous: GameStateDto, next: GameStateDto, env: FxEn
       // Drawn cards leave the deck and enter the hand (Life cards enter the hand without the deck).
       const draws = Math.min(deckDrop, handGrowth, 5);
       if (draws > 0) {
-        flyBacks(env, cardBoxIn(env, 'opponent', 'deck'), cardBoxIn(env, 'opponent', 'hand'), draws, `odraw-${groupSeq}`);
+        flyBacks(env, () => cardBoxIn(env, 'opponent', 'deck'), () => cardBoxIn(env, 'opponent', 'hand'), draws, `odraw-${groupSeq}`);
       }
 
       const lifeToHand = Math.min(lifeLost, Math.max(0, handGrowth - Math.max(0, draws)));
       if (lifeToHand > 0) {
-        flyBacks(env, cardBoxIn(env, 'opponent', 'life'), cardBoxIn(env, 'opponent', 'hand'), lifeToHand, `olife-${groupSeq}`);
+        flyBacks(env, () => cardBoxIn(env, 'opponent', 'life'), () => cardBoxIn(env, 'opponent', 'hand'), lifeToHand, `olife-${groupSeq}`);
       }
     }
 
@@ -621,13 +638,15 @@ export function snapshotFx(previous: GameStateDto, next: GameStateDto, env: FxEn
     const donAfter = (after[side]?.activeDonCount ?? 0) + (after[side]?.restedDonCount ?? 0);
     const donFromDeck = Math.min(donAfter - donBefore, (before[side]?.donDeckCount ?? 0) - (after[side]?.donDeckCount ?? 0), 3);
     if (donFromDeck > 0) {
-      const size = cardSize(env.layer);
-      const small = (box: Box) => ({ x: box.x + (box.w - size.w * 0.6) / 2, y: box.y + (box.h - size.h * 0.6) / 2, w: size.w * 0.6, h: size.h * 0.6 });
-      const deckZone = zoneBox(env, side, 'donDeck');
-      const area = zoneBox(env, side, 'donArea');
-      if (deckZone && area) {
-        flyBacks(env, small(deckZone), small(area), donFromDeck, `don-${side}-${groupSeq}`, 'don');
-      }
+      const small = (box: Box) => {
+        const size = cardSize(env.layer);
+        return { x: box.x + (box.w - size.w * 0.6) / 2, y: box.y + (box.h - size.h * 0.6) / 2, w: size.w * 0.6, h: size.h * 0.6 };
+      };
+      const lazySmall = (kind: string) => () => {
+        const zone = zoneBox(env, side, kind);
+        return zone ? small(zone) : null;
+      };
+      flyBacks(env, lazySmall('donDeck'), lazySmall('donArea'), donFromDeck, `don-${side}-${groupSeq}`, 'don');
     }
 
     // Power changes on the field (effects, counters, DON!!): the badge swells green or red.
@@ -656,7 +675,6 @@ export function snapshotFx(previous: GameStateDto, next: GameStateDto, env: FxEn
 
       const card = now.cards.get(id)!;
       const box = env.previousBoxes.get(id);
-      const trash = cardBoxIn(env, side, 'trash');
       if (box) {
         recentlyChanged = { ids: [...recentlyChanged.ids, id], at: performance.now() };
         env.queue.enqueue((context) => {
@@ -665,7 +683,7 @@ export function snapshotFx(previous: GameStateDto, next: GameStateDto, env: FxEn
             return [];
           }
 
-          return shatter(env, context, card, box, trash);
+          return shatter(env, context, card, box, cardBoxIn(env, side, 'trash'));
         });
       }
     });

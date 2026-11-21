@@ -56,6 +56,8 @@ export function useBoardFx({ currentPrompt, frameRef, gameState, layerRef, logEv
   // Layout effect: runs after React put the new state into the DOM, before the browser paints,
   // so a card that is about to fly in can be hidden without flickering.
   useLayoutEffect(() => {
+    // User Timing (DevTools performance panel): how long the fx work of a snapshot takes.
+    const startedAt = performance.now();
     const previous = previousState.current;
     previousState.current = gameState;
     const context = env();
@@ -68,10 +70,22 @@ export function useBoardFx({ currentPrompt, frameRef, gameState, layerRef, logEv
       }
     }
 
+    try {
+      performance.measure('fx-snapshot', { start: startedAt, end: performance.now() });
+    } catch {
+      // User Timing is optional.
+    }
+
     // Remember where every card is now, for cards that leave the DOM with the next state.
-    const layer = layerRef.current;
-    const frame = frameRef.current;
-    if (layer && frame) {
+    // Read in the next animation frame: the layout is up to date then, no extra layout in the commit.
+    const frameRequest = requestAnimationFrame(() => {
+      const layer = layerRef.current;
+      const frame = frameRef.current;
+      if (!layer || !frame) {
+        return;
+      }
+
+      const measuredAt = performance.now();
       const next = new Map<string, Box>();
       frame.querySelectorAll<HTMLElement>('[data-fx-card]').forEach((element) => {
         const box = boxOf(layer, element);
@@ -80,7 +94,13 @@ export function useBoardFx({ currentPrompt, frameRef, gameState, layerRef, logEv
         }
       });
       boxes.current = next;
-    }
+      try {
+        performance.measure('fx-boxes', { start: measuredAt, end: performance.now() });
+      } catch {
+        // User Timing is optional.
+      }
+    });
+    return () => cancelAnimationFrame(frameRequest);
     // Only a new game state starts animations.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameState]);

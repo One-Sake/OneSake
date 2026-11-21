@@ -114,6 +114,9 @@ Commit-Beschreibungen, Dokumentation. Stand: 2026-11-20.
 | CSS-Grid-Board mit `--card-w` und `ResizeObserver` | Passt auf jedes Gerät | Festes Hintergrundbild |
 | `prefers-reduced-motion` überall respektiert | Barrierefreiheit | – |
 | Eigener Branch `logic` für die Regel-Engine | Großer Umbau, ohne `dev` zu blockieren | Alles auf `dev` |
+| Auto-Pass nur bei öffentlichen Informationen, Counter-Auto-Pass nur auf Wunsch mit zufälliger Pause (21.11.) | Sofortiges Passen beim Counter würde verraten, dass keine Counter auf der Hand sind | Immer automatisch passen (Informationsleck), nie automatisch (mehr Leerlauf) |
+| Tastenkürzel mit Bestätigung für „Zug beenden“ (zweimal Leertaste oder 400 ms halten) (21.11.) | Schneller am Desktop, aber kein versehentliches Zugende | Einfacher Druck (zu riskant), keine Kürzel |
+| Positionen nie im React-Commit lesen, Animationen im nächsten Frame starten (21.11.) | Kein erzwungenes Layout: Erkennung von bis zu 355 ms auf 1,5 ms (4× gedrosselt) | Alles im Layout-Effekt (einfacher, aber ruckelt am Handy) |
 | Sounds mit der Web Audio API synthetisiert, keine Audiodateien (21.11.) | Keine Lizenzfragen, keine Downloads, Lautstärke zentral steuerbar | Audiodateien (Rechte, Ladezeit), keine Sounds |
 | Effekt-Ziele aus Kartennamen im Log und Power-Änderungen ableiten (21.11.) | Rein optisch, keine Server-Änderung nötig | Ziele vom Server mitschicken (genauer, aber Backend-Änderung) |
 | Spielereignisse aus dem Vergleich zweier Snapshots erkennen (21.11.) | Funktioniert ohne Änderung an Server und DTOs; Logs liefern nur Text | Strukturierte Ereignisse vom Server (Backend-Änderung, nicht Teil dieses Auftrags) |

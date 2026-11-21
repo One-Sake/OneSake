@@ -270,22 +270,47 @@
 .fx-mode-fast .match-card-view {
   transition:
     rotate 0.28s cubic-bezier(0.22, 1, 0.36, 1),
-    scale 0.28s cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 0.2s,
-    box-shadow 0.2s;
+    scale 0.28s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Attack mode: valid targets glow and pulse, the target arrow follows the pointer. */
-.fx-mode-normal .match-board__side--opponent .match-card-view.is-targetable,
-.fx-mode-fast .match-board__side--opponent .match-card-view.is-targetable {
-  animation: fx-target-pulse 1s ease-in-out infinite;
+/* Attack mode: valid targets pulse. Pulses only animate the opacity of a glow layer
+   (no box-shadow animation: that would repaint every frame). */
+.match-board__side--opponent .match-card-view.is-targetable::after,
+.match-card-view.can-attack::after {
+  position: absolute;
+  inset: -3px;
+  z-index: 3;
+  border-radius: inherit;
+  content: '';
+  opacity: 0;
+  pointer-events: none;
 }
 
-@keyframes fx-target-pulse {
+.match-board__side--opponent .match-card-view.is-targetable::after {
+  box-shadow:
+    0 0 0 3px rgb(255 214 102 / 95%),
+    0 0 22px rgb(255 196 64 / 70%);
+}
+
+.match-card-view.can-attack::after {
+  box-shadow:
+    0 0 0 2px rgb(95 224 180 / 95%),
+    0 0 20px rgb(95 224 180 / 65%);
+}
+
+.fx-mode-normal .match-board__side--opponent .match-card-view.is-targetable::after,
+.fx-mode-fast .match-board__side--opponent .match-card-view.is-targetable::after {
+  animation: fx-glow-pulse 1s ease-in-out infinite;
+}
+
+.fx-mode-normal .match-card-view.can-attack::after,
+.fx-mode-fast .match-card-view.can-attack::after {
+  animation: fx-glow-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes fx-glow-pulse {
   50% {
-    box-shadow:
-      0 0 0 3px rgb(255 214 102 / 95%),
-      0 0 22px rgb(255 196 64 / 70%);
+    opacity: 1;
   }
 }
 
@@ -340,19 +365,7 @@
   background: #e0443a;
 }
 
-/* Cards that can attack right now: a fine pulsing edge. */
-.fx-mode-normal .match-card-view.can-attack,
-.fx-mode-fast .match-card-view.can-attack {
-  animation: fx-can-attack 1.6s ease-in-out infinite;
-}
 
-@keyframes fx-can-attack {
-  50% {
-    box-shadow:
-      0 0 0 2px rgb(95 224 180 / 95%),
-      0 0 20px rgb(95 224 180 / 65%);
-  }
-}
 /* ---------- Turn banner ---------- */
 
 .fx-turn-banner {
@@ -670,10 +683,15 @@
 @media (prefers-reduced-motion: reduce) {
   .fx-turn-banner,
   .fx-game-over__card,
-  .fx-game-over__veil,
-  .fx-mode-normal .match-card-view.can-attack,
-  .fx-mode-normal .match-board__side--opponent .match-card-view.is-targetable {
+  .fx-game-over__veil {
     animation-name: fx-fade-short;
+  }
+
+  /* Glows stay visible but do not pulse. */
+  .fx-mode-normal .match-card-view.can-attack::after,
+  .fx-mode-normal .match-board__side--opponent .match-card-view.is-targetable::after {
+    animation: none;
+    opacity: 0.6;
   }
 
   .fx-game-over__particles {
@@ -705,4 +723,185 @@
   color: #9db5bd;
   font-size: 0.8rem;
   text-align: right;
+}
+/* ---------- Keyboard hints, help, card hints ---------- */
+
+/* Small key hints on the action buttons - only where a keyboard is likely. */
+.fx-kbd {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .match-actions .fx-kbd {
+    display: inline-block;
+    margin-left: 6px;
+    border: 1px solid currentColor;
+    border-radius: 4px;
+    padding: 0 4px;
+    font-family: inherit;
+    font-size: 0.62rem;
+    font-weight: 800;
+    line-height: 1.4;
+    opacity: 0.65;
+    vertical-align: middle;
+  }
+}
+
+/* "End Turn" glows stronger when nothing useful is left to do (only a hint). */
+.match-actions .match-actions__end-turn.is-suggested {
+  box-shadow:
+    0 0 0 3px rgb(255 224 138 / 90%),
+    0 0 34px rgb(255 196 64 / 85%);
+}
+
+/* The glow pulses on a layer behind the label; the button itself never moves (easy to click). */
+.match-actions .match-actions__end-turn.is-suggested {
+  position: relative;
+}
+
+.match-actions .match-actions__end-turn.is-suggested::after {
+  position: absolute;
+  inset: -5px;
+  border-radius: inherit;
+  box-shadow: 0 0 26px 6px rgb(255 214 102 / 85%);
+  content: '';
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.fx-mode-normal .match-actions .match-actions__end-turn.is-suggested::after,
+.fx-mode-fast .match-actions .match-actions__end-turn.is-suggested::after {
+  animation: fx-end-turn 1.4s ease-in-out infinite;
+}
+
+@keyframes fx-end-turn {
+  50% {
+    opacity: 1;
+  }
+}
+
+.fx-hotkeys {
+  position: absolute;
+  inset: 0;
+  z-index: 85;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+  background: rgb(2 6 12 / 60%);
+}
+
+.fx-hotkeys__panel {
+  width: min(440px, 100%);
+  max-height: 100%;
+  overflow: auto;
+  border: 1px solid rgb(240 191 56 / 50%);
+  border-radius: 14px;
+  padding: 16px 18px;
+  color: #e7f0f3;
+  background: rgb(10 20 31 / 97%);
+  box-shadow: 0 18px 42px rgb(0 0 0 / 55%);
+}
+
+.fx-hotkeys__panel header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.fx-hotkeys__panel h2 {
+  margin: 0;
+  color: #ffe08a;
+  font-size: 1.1rem;
+}
+
+.fx-hotkeys__panel header button {
+  min-width: 36px;
+  min-height: 36px;
+  border: 0;
+  border-radius: 8px;
+  color: #e7f0f3;
+  background: rgb(255 255 255 / 8%);
+  cursor: pointer;
+}
+
+.fx-hotkeys__panel dl {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+}
+
+.fx-hotkeys__panel dl div {
+  display: grid;
+  grid-template-columns: 7.5em 1fr;
+  align-items: center;
+  gap: 10px;
+}
+
+.fx-hotkeys__panel dd {
+  margin: 0;
+  font-size: 0.88rem;
+}
+
+.fx-hotkeys kbd,
+.fx-settings__note kbd {
+  border: 1px solid rgb(255 255 255 / 35%);
+  border-bottom-width: 3px;
+  border-radius: 5px;
+  padding: 1px 7px;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 800;
+  background: rgb(255 255 255 / 8%);
+}
+
+.fx-settings__note {
+  display: block;
+  margin: 2px 0 0;
+  color: #9db5bd;
+  font-size: 0.74rem;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+/* Hints on opponent cards: icons appear on hover or keyboard focus. */
+.fx-card-hints {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  max-width: calc(100% - 6px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s;
+}
+
+.fx-card-hints span {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  border-radius: 999px;
+  padding: 1px 5px;
+  color: #ffffff;
+  font-size: 0.68rem;
+  background: rgb(8 14 22 / 88%);
+  box-shadow: 0 0 0 1px rgb(240 191 56 / 55%);
+}
+
+.fx-card-hints small {
+  display: none;
+  font-size: 0.6rem;
+  font-weight: 800;
+}
+
+.match-card-view:hover .fx-card-hints,
+.match-card-view:focus-visible .fx-card-hints {
+  opacity: 1;
+}
+
+.match-card-view:hover .fx-card-hints small {
+  display: inline;
 }

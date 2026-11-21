@@ -75,6 +75,17 @@ Playwright wie oben.
 |-------|-------|
 | [2026-11-21_33-sound-einstellungen.png](2026-11-21_33-sound-einstellungen.png) | Zahnrad: Animationen, Sound an/aus, Lautstärke-Regler, Vibration |
 
+## Tastenkürzel und Hinweise
+
+Playwright wie oben.
+
+| Datei | Zeigt |
+|-------|-------|
+| [2026-11-21_34-tastenkuerzel.png](2026-11-21_34-tastenkuerzel.png) | „?“ öffnet die Übersicht aller Tastenkürzel |
+| [2026-11-21_35-leertaste-bestaetigen.png](2026-11-21_35-leertaste-bestaetigen.png) | Einmal Leertaste: Hinweis „nochmal drücken (oder halten)“, der Zug endet erst beim zweiten Druck |
+| [2026-11-21_36-gegnerkarte-hinweise.png](2026-11-21_36-gegnerkarte-hinweise.png) | Hover über eine Gegnerkarte: Mini-Icon „✦ [Trigger]“ |
+| [2026-11-21_37-zug-beenden-hinweis.png](2026-11-21_37-zug-beenden-hinweis.png) | Keine sinnvolle Aktion mehr: „End Turn“ leuchtet stärker; Kürzel D / A / E / Leer auf den Buttons |
+
 ## Noch aufzunehmen (mit laufendem Backend)
 
 - Deckbuilder mit Karten, Filtern und fertigem Deck

@@ -19,6 +19,8 @@ interface MatchCardViewProps {
   onInspect?: () => void;
   // Called with the card when the mouse enters it, and with null when it leaves.
   onPreview?: (card: CardInstanceDto | null) => void;
+  // Small icons shown on hover, e.g. "Hat [Blocker]" on opponent cards.
+  hints?: { icon: string; label: string }[];
 }
 
 function hasPower(card: CardInstanceDto): boolean {
@@ -30,6 +32,7 @@ export function MatchCardView({
   card,
   clickable = false,
   disabled = false,
+  hints,
   onClick,
   onInspect,
   onPreview,
@@ -145,6 +148,17 @@ export function MatchCardView({
         </>
       )}
 
+      {hints && hints.length > 0 && (
+        <span className="fx-card-hints" aria-hidden="true">
+          {hints.map((hint) => (
+            <span key={hint.label} title={hint.label}>
+              {hint.icon}
+              <small>{hint.label}</small>
+            </span>
+          ))}
+        </span>
+      )}
+
       {showStats && size !== 'inspect' && (
         <span className="match-card-view__stats" aria-hidden="true">
           {size === 'hand' && typeof card.cost === 'number' && card.category !== 'Leader' && (
@@ -166,7 +180,8 @@ export function MatchCardView({
     </>
   );
 
-  const label = ariaLabel ?? `${card.name} (${card.cardId})`;
+  const hintText = hints?.length ? `, ${hints.map((hint) => hint.label).join(', ')}` : '';
+  const label = ariaLabel ?? `${card.name} (${card.cardId})${hintText}`;
   // Lets the animation layer find the card (not for the big inspect view).
   const fxProps = size === 'inspect' ? {} : { 'data-fx-card': card.instanceId };
 

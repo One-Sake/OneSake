@@ -42,11 +42,20 @@ export class FxQueue {
   private watchdog: number | undefined;
   // Each step run has its own id, so a late 'finished' of a skipped step changes nothing.
   private runId = 0;
+  private startScheduled = false;
 
   enqueue(step: FxStep, group?: string, cleanup?: () => void): void {
     this.steps.push({ step, group, cleanup });
-    if (!this.busy) {
-      this.next();
+    // Start in the next animation frame, never inside a React commit: reading positions there
+    // would force an extra synchronous layout.
+    if (!this.busy && !this.startScheduled) {
+      this.startScheduled = true;
+      requestAnimationFrame(() => {
+        this.startScheduled = false;
+        if (!this.busy) {
+          this.next();
+        }
+      });
     }
   }
 
@@ -121,6 +130,7 @@ export class FxQueue {
       onCleanup: (cleanup) => this.cleanups.push(cleanup),
     };
 
+    const startedAt = performance.now();
     const animations: Animation[] = [];
     for (const entry of batch) {
       if (entry.cleanup) {
@@ -133,6 +143,12 @@ export class FxQueue {
         // An animation must never break the match.
         console.warn('[OneSake] fx step failed', error);
       }
+    }
+
+    try {
+      performance.measure('fx-step', { start: startedAt, end: performance.now() });
+    } catch {
+      // User Timing is optional.
     }
 
     this.running = animations;
