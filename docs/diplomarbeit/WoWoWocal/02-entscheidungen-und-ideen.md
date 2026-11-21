@@ -67,6 +67,15 @@ Commit-Beschreibungen, Dokumentation. Stand: 2026-11-20.
 | Vollständige Effektabdeckung, richtige Trigger-Reihenfolge | – | Branch `logic` |
 | Usability-Test: bestehende Lösung vs. OneSake am Handy | – | Projektauftrag Phase 5 |
 | Demo-Video, Abnahme | – | Projektauftrag Phase 5 |
+| Zug-Timer mit Zeitbank | – | Roadmap 21.11. (`04-roadmap-und-alleinstellungsmerkmale.md`) |
+| Spiel-Gefühl: Animationen, Sounds, Tastenkürzel, Auto-Pass | – | Roadmap 21.11. |
+| Tutorial und KI-Gegner mit Schwierigkeitsgraden | – | Roadmap 21.11. |
+| Replay-Viewer mit „Was wäre wenn?“ (ab beliebiger Stelle selbst weiterspielen) | – | Roadmap 21.11. – Alleinstellungsmerkmal |
+| Coach nach dem Match („verpasster Lethal“) und tägliches Lethal-Puzzle | – | Roadmap 21.11. – Alleinstellungsmerkmal |
+| Deck-Labor: eigenes Deck per Bot-Simulation gegen die Meta testen | – | Roadmap 21.11. – Alleinstellungsmerkmal |
+| Ränge mit One-Piece-Titeln, Banden (Crews), teilbarer Steckbrief | – | Roadmap 21.11. |
+| Streamer-/Turnier-Modus (Caster-Ansicht, OBS-Overlay, Swiss-Turniere) | – | Roadmap 21.11. |
+| Deutsch und Englisch | – | Roadmap 21.11. |
 
 ### 2.3 Verworfen oder geändert
 

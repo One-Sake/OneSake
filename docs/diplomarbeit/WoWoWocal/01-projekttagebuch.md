@@ -214,6 +214,16 @@ Keine Commits. Sprint 3 wurde ab 06.10.2026 geplant.
   Ordner verhindern, dass Teamkollegen (oder ihre KI-Agenten) in dieselben Dateien schreiben.
   Nur der „Was ist neu“-Changelog in der App bleibt gemeinsam.
 
+### 2026-11-21 – Roadmap und Alleinstellungsmerkmale festgehalten 🤖
+- Neue Datei `04-roadmap-und-alleinstellungsmerkmale.md`: was nach den vier Logik-Prompts
+  (Ereignis-System, Determinismus/Aufzeichnung, Bot-Simulation, Karten nach Meta) noch fehlt,
+  welche Ideen OneSake von anderen OPTCG-Simulatoren abheben (Deck-Labor, Coach,
+  „Was wäre wenn?“-Replay, Lethal-Puzzle, Banden/Titel, Streamer-/Turnier-Modus) und eine
+  empfohlene Reihenfolge. Neue Ideen in `02-entscheidungen-und-ideen.md` (2.2 Offen) eingetragen.
+- **Überlegung:** Die Ideen bauen bewusst auf der deterministischen Engine, der Bot-Simulation und
+  den Meta-Daten auf – das ist schwer nachzumachen und gut in der Diplomarbeit vorzuführen.
+  Grundlagen (Reconnect, Timer, Spiel-Gefühl) kommen trotzdem zuerst, weil ohne sie niemand lange spielt.
+
 <!-- Neue Einträge unten anfügen. Vorlage:
 
 ### JJJJ-MM-TT HH:MM – Titel ★/👥/🤖

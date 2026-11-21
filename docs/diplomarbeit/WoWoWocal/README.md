@@ -12,6 +12,7 @@ Anwendung sichtbar verändert hat.
 | [01-projekttagebuch.md](01-projekttagebuch.md) | Chronologisches Projekttagebuch mit Datum/Uhrzeit, Commit, Person und Überlegungen |
 | [02-entscheidungen-und-ideen.md](02-entscheidungen-und-ideen.md) | Alle Ideen (umgesetzt, offen, verworfen), Architektur- und Designentscheidungen, Abweichungen vom Projektauftrag, Risiken, Lessons Learned |
 | [03-kapitel-bausteine.md](03-kapitel-bausteine.md) | Vorschlag für die Gliederung der Arbeit und welche Quellen/Belege zu welchem Kapitel passen |
+| [04-roadmap-und-alleinstellungsmerkmale.md](04-roadmap-und-alleinstellungsmerkmale.md) | Was nach den Logik-Prompts noch fehlt, Ideen, die OneSake von anderen Simulatoren abheben, und empfohlene Reihenfolge |
 | [screenshots/](screenshots/README.md) | Screenshots mit Datum (Dateiname `JJJJ-MM-TT_nr-name.png`) |
 
 Weitere Quellen im Repository:
