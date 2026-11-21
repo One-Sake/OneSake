@@ -105,6 +105,7 @@ Commit-Beschreibungen, Dokumentation. Stand: 2026-11-20.
 | CSS-Grid-Board mit `--card-w` und `ResizeObserver` | Passt auf jedes Gerät | Festes Hintergrundbild |
 | `prefers-reduced-motion` überall respektiert | Barrierefreiheit | – |
 | Eigener Branch `logic` für die Regel-Engine | Großer Umbau, ohne `dev` zu blockieren | Alles auf `dev` |
+| Reconnect-Schonfrist 90 s + Budget 180 s pro Match, Lobby 30 s (21.11.) | Funkloch/App-Wechsel am Handy kostet nicht mehr das Match; Budget verhindert Zeitschinden; Werte konfigurierbar | Kein Reconnect (bisher), unbegrenzte Frist (Gegner wartet ewig), Pausieren auf Wunsch |
 | Stabile Spieler-ID pro Platz + geheimes Rejoin-Token (21.11.) | Die Verbindungs-ID ändert sich bei jedem Reconnect; das Token beweist, dass man auf diesen Platz gehört | Gast-ID (nicht geheim, gilt für alle Tabs), Verbindungs-ID behalten (kein Reconnect möglich) |
 
 ## 4. UX- und Designüberlegungen

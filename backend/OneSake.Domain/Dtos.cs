@@ -19,6 +19,8 @@ public record PlayerStateDto
     public string PlayerId { get; init; } = string.Empty;
     public string DisplayName { get; init; } = string.Empty;
     public bool Connected { get; init; }
+    // Set while the player is disconnected: the seat is kept until this time (then the player loses).
+    public long? DisconnectedUntilUnixMs { get; init; }
     public int DeckCount { get; init; }
     public int HandCount { get; init; }
     public int LifeCount { get; init; }
@@ -167,6 +169,10 @@ public record GameStateDto
 
     // Number of recorded decisions in this match ("atSeq" of a bug report). Not the seed.
     public int RecordedInputs { get; init; }
+
+    // Server time when the snapshot was made. Clients compute countdowns with the offset to their
+    // own clock, so a wrong phone clock does not matter.
+    public long ServerTimeUnixMs { get; init; }
 }
 
 public record DiceRollDto
@@ -265,6 +271,25 @@ public record SeatAssignedDto
     public string RoomCode { get; init; } = string.Empty;
     public string PlayerId { get; init; } = string.Empty;
     public string RejoinToken { get; init; } = string.Empty;
+}
+
+// Answer of RejoinRoom. Status: "OK", "EXPIRED" (deadline over, match lost) or "INVALID".
+public record RejoinResultDto
+{
+    public string Status { get; init; } = string.Empty;
+    public string RoomCode { get; init; } = string.Empty;
+    public string PlayerId { get; init; } = string.Empty;
+}
+
+// Sent to a player after a rejoin: everything the client lost (the state comes as StateSnapshot).
+public record ResyncDto
+{
+    public string RoomCode { get; init; } = string.Empty;
+    public string PlayerId { get; init; } = string.Empty;
+    public IReadOnlyList<LogEventDto> LogEvents { get; init; } = [];
+    public IReadOnlyList<ChatMessageDto> ChatMessages { get; init; } = [];
+    // All decisions this player still has to make, oldest first.
+    public IReadOnlyList<ChoicePromptDto> ChoicePrompts { get; init; } = [];
 }
 
 // Sent to both players when Quick Match found an opponent.

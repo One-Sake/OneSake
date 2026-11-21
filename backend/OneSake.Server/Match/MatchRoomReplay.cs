@@ -48,6 +48,9 @@ public sealed class MatchRoomReplay : IReplayTarget
             RecordedInputKinds.Leave => Room.RemovePlayer(
                 playerId,
                 input.Payload.TryGetProperty("endReason", out var reason) ? reason.GetString() ?? MatchEndReasons.Disconnect : MatchEndReasons.Disconnect),
+            // Connection events change nothing in the game.
+            RecordedInputKinds.Disconnect or RecordedInputKinds.Reconnect => null,
+            RecordedInputKinds.DisconnectTimeout => Room.ApplyDisconnectTimeout(playerId),
             _ => throw new InvalidOperationException($"Unknown input kind '{input.Kind}'.")
         };
 

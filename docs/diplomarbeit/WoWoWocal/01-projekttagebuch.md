@@ -228,6 +228,26 @@ Keine Commits. Sprint 3 wurde ab 06.10.2026 geplant.
 - **Probleme/Lessons Learned:** Viele Tests rufen `JoinPlayer("p1")` direkt auf. Damit sie unverändert
   bleiben, gilt dort „Spieler-ID = Verbindung“; nur der Hub nutzt die neue Methode `JoinConnection`.
 
+### 2026-11-21 01:55 – Reconnect im Backend ★ 🤖
+- Commit „Keep the seat of a disconnected player for a grace period“: Bricht die Verbindung im
+  laufenden Match ab, bleibt der Platz 90 s reserviert (`Match:ReconnectGraceSeconds`). Pro Spieler und
+  Match gibt es zusätzlich ein Gesamtbudget von 180 s (`Match:ReconnectBudgetSeconds`); ist es fast
+  aufgebraucht (< 1 s), verliert man sofort. Neue Hub-Methode `RejoinRoom(roomCode, playerId, token)`
+  (Token-Vergleich in konstanter Zeit) – danach bekommt der Spieler Snapshot, alle offenen Entscheidungen
+  und die letzten Log-/Chat-Einträge (`Resync`). Läuft die Frist ab, endet das Match mit Niederlage
+  `DISCONNECT` (zählt im Ranked). In der Lobby gilt eine Frist von 30 s, nach dem Spielende wird der
+  Platz wie bisher sofort frei. Ein `MatchDeadlineService` prüft jede Sekunde alle Räume.
+  Die Uhr kommt über `IClock`, damit Tests die Zeit vorspulen können (12 neue Tests).
+- **Überlegung:** Am Handy reicht schon ein App-Wechsel, damit der Browser die Verbindung kappt – bisher
+  war das Match dann sofort verloren. Die Frist ist ein Kompromiss: lang genug für ein Funkloch, kurz genug,
+  dass der Gegner nicht ewig wartet. Das Budget verhindert, dass jemand durch ständiges Trennen Zeit schindet.
+  Disconnect/Reconnect landen als Meta-Ereignisse in der Aufzeichnung, der Fristablauf als Eingabe
+  `DISCONNECT_TIMEOUT` – so bleibt das Replay deterministisch.
+- **Probleme/Lessons Learned:** Nach einem Neuladen kommt die neue Verbindung oft an, *bevor* der Server
+  merkt, dass die alte weg ist. Deshalb übernimmt ein gültiger Rejoin den Platz auch von einer noch
+  „lebenden“ Verbindung. Außerdem kann man das Budget nie „genau auf 0“ verbrauchen (die Frist endet
+  genau dann) – darum zählt weniger als 1 s Rest als aufgebraucht.
+
 <!-- Neue Einträge unten anfügen. Vorlage:
 
 ### JJJJ-MM-TT HH:MM – Titel ★/👥/🤖

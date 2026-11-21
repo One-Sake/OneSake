@@ -11,10 +11,14 @@ public sealed class MatchRoomManager
     private readonly Dictionary<string, MatchRoom> _rooms = new(StringComparer.OrdinalIgnoreCase);
     // Creates the dice for each new room (fixed values only in Development, see Program.cs).
     private readonly Func<IDiceRoller> _diceRollerFactory;
+    private readonly MatchRoomOptions _options;
+    private readonly IClock _clock;
 
-    public MatchRoomManager(Func<IDiceRoller>? diceRollerFactory = null)
+    public MatchRoomManager(Func<IDiceRoller>? diceRollerFactory = null, MatchRoomOptions? options = null, IClock? clock = null)
     {
         _diceRollerFactory = diceRollerFactory ?? (() => CryptoDiceRoller.Instance);
+        _options = options ?? new MatchRoomOptions();
+        _clock = clock ?? SystemClock.Instance;
     }
 
     public MatchRoom Create(string roomCode)
@@ -26,7 +30,7 @@ public sealed class MatchRoomManager
                 throw new InvalidOperationException($"Room {roomCode} already exists.");
             }
 
-            var createdRoom = new MatchRoom(roomCode, diceRoller: _diceRollerFactory());
+            var createdRoom = new MatchRoom(roomCode, diceRoller: _diceRollerFactory(), options: _options, clock: _clock);
             _rooms[roomCode] = createdRoom;
             return createdRoom;
         }
@@ -45,7 +49,7 @@ public sealed class MatchRoomManager
             }
             while (_rooms.ContainsKey(roomCode));
 
-            room = new MatchRoom(roomCode, isQuickMatch: true, diceRoller: _diceRollerFactory());
+            room = new MatchRoom(roomCode, isQuickMatch: true, diceRoller: _diceRollerFactory(), options: _options, clock: _clock);
             _rooms[roomCode] = room;
         }
 
@@ -71,6 +75,14 @@ public sealed class MatchRoomManager
         {
             _rooms.TryGetValue(roomCode, out var room);
             return room;
+        }
+    }
+
+    public IReadOnlyList<MatchRoom> GetAllRooms()
+    {
+        lock (_sync)
+        {
+            return _rooms.Values.ToArray();
         }
     }
 

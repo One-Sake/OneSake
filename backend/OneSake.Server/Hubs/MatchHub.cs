@@ -108,13 +108,61 @@ public class MatchHub : Hub
     {
         _matchmakingQueue.Remove(Context.ConnectionId);
 
+        // The seat is kept for a grace period (MatchRoom.Disconnect), the player can come back with
+        // RejoinRoom. Leaving on purpose (LeaveRoom, Concede) is still immediate.
         foreach (var room in _roomManager.GetRoomsForConnection(Context.ConnectionId))
         {
-            await RemoveFromRoom(room);
+            var update = room.Disconnect(Context.ConnectionId);
+            if (update is not null)
+            {
+                await PublishMatchUpdate(room.RoomCode, update);
+            }
         }
 
         await BroadcastRoomList();
         await base.OnDisconnectedAsync(exception);
+    }
+
+    // Back to the own seat after a lost connection or a page reload (token from SeatAssigned).
+    public async Task<RejoinResultDto> RejoinRoom(string roomCode, string playerId, string rejoinToken)
+    {
+        var normalizedRoomCode = NormalizeRoomCode(roomCode);
+        var room = _roomManager.Get(normalizedRoomCode);
+        var invalid = new RejoinResultDto { Status = "INVALID", RoomCode = normalizedRoomCode };
+        if (room is null)
+        {
+            return invalid;
+        }
+
+        var outcome = room.Rejoin(playerId, rejoinToken, Context.ConnectionId);
+        switch (outcome.Status)
+        {
+            case RejoinStatus.Invalid:
+                return invalid;
+
+            case RejoinStatus.Expired:
+                if (outcome.Update is not null)
+                {
+                    await PublishMatchUpdate(normalizedRoomCode, outcome.Update);
+                }
+
+                // Only the final result: the seat is lost, no actions are possible.
+                await Clients.Caller.SendAsync("StateSnapshot", outcome.FinalState);
+                return new RejoinResultDto { Status = "EXPIRED", RoomCode = normalizedRoomCode, PlayerId = playerId };
+        }
+
+        // A connection can only be in one room; a running Quick Match search ends.
+        _matchmakingQueue.Remove(Context.ConnectionId);
+        if (outcome.PreviousConnectionId is not null)
+        {
+            await Groups.RemoveFromGroupAsync(outcome.PreviousConnectionId, normalizedRoomCode);
+        }
+
+        await Groups.AddToGroupAsync(Context.ConnectionId, normalizedRoomCode);
+        await PublishMatchUpdate(normalizedRoomCode, outcome.Update!);
+        await Clients.Caller.SendAsync("Resync", outcome.Resync);
+        await BroadcastRoomList();
+        return new RejoinResultDto { Status = "OK", RoomCode = normalizedRoomCode, PlayerId = playerId };
     }
 
     public async Task StartMatch(string roomCode)
@@ -197,6 +245,7 @@ public class MatchHub : Hub
             TsUnixMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
         };
 
+        room.AddChatMessage(chatMessage);
         await Clients.Group(normalizedRoomCode).SendAsync("ChatMessage", chatMessage);
 
         var logEvent = room.CreateLogEvent("CHAT", $"Player {senderId}: {normalizedText}");

@@ -108,13 +108,24 @@ public sealed class MatchRoom
     private readonly DateTimeOffset _createdAtUtc;
     private DateTimeOffset _lastActivityUtc;
 
-    public MatchRoom(string roomCode, bool isQuickMatch = false, IDiceRoller? diceRoller = null, ulong? seed = null)
+    private readonly IClock _clock;
+    private readonly MatchRoomOptions _options;
+
+    public MatchRoom(
+        string roomCode,
+        bool isQuickMatch = false,
+        IDiceRoller? diceRoller = null,
+        ulong? seed = null,
+        MatchRoomOptions? options = null,
+        IClock? clock = null)
     {
         _roomCode = roomCode;
         IsQuickMatch = isQuickMatch;
         _customDiceRoller = diceRoller;
         _fixedSeed = seed;
-        _createdAtUtc = DateTimeOffset.UtcNow;
+        _options = options ?? new MatchRoomOptions();
+        _clock = clock ?? SystemClock.Instance;
+        _createdAtUtc = _clock.UtcNow;
         _lastActivityUtc = _createdAtUtc;
         _context = new RoomContext(this);
         _resolver = new EffectResolver(_context, _events);
@@ -159,7 +170,15 @@ public sealed class MatchRoom
     {
         public required string PlayerId { get; init; }
         public required string RejoinToken { get; init; }
+        // null while the player is disconnected.
         public string? ConnectionId { get; set; }
+        public DateTimeOffset? DisconnectedAtUtc { get; set; }
+        // The seat is lost when the player is not back by then.
+        public DateTimeOffset? GraceDeadlineUtc { get; set; }
+        // Disconnected time in this match so far (Match:ReconnectBudgetSeconds).
+        public TimeSpan BudgetUsed { get; set; }
+        // The deadline ran out during the match: the player lost and can only look at the result.
+        public bool Expired { get; set; }
     }
 
     // Seats by player ID.
@@ -239,10 +258,17 @@ public sealed class MatchRoom
     {
         lock (_sync)
         {
+            return RemovePlayerCore(playerId, endReason) ? CreateUpdate() : null;
+        }
+    }
+
+    private bool RemovePlayerCore(string playerId, string endReason)
+    {
+        {
             var player = _players.FirstOrDefault(entry => entry.PlayerId == playerId);
             if (player is null)
             {
-                return null;
+                return false;
             }
 
             _seats.Remove(playerId);
@@ -276,7 +302,211 @@ public sealed class MatchRoom
                 CreateLogEvent("MATCH_ABORTED", "Match ended because a player left.");
             }
 
+            return true;
+        }
+    }
+
+    #endregion
+
+    #region RECONNECT
+
+    private bool IsMatchRunning => _phase is not (MatchPhase.Lobby or MatchPhase.GameOver);
+
+    // The connection of a player dropped. In a running match the seat is kept for a grace period
+    // (limited by the reconnect budget), in the lobby for a shorter time. After the game it is freed.
+    public MatchUpdate? Disconnect(string connectionId)
+    {
+        lock (_sync)
+        {
+            var seat = _seats.Values.FirstOrDefault(entry => entry.ConnectionId == connectionId);
+            if (seat is null)
+            {
+                return null;
+            }
+
+            if (_phase == MatchPhase.GameOver)
+            {
+                return RemovePlayer(seat.PlayerId);
+            }
+
+            var player = GetPlayerSlot(seat.PlayerId);
+            var now = _clock.UtcNow;
+            seat.ConnectionId = null;
+            seat.DisconnectedAtUtc = now;
+            player.Connected = false;
+
+            if (_phase == MatchPhase.Lobby)
+            {
+                seat.GraceDeadlineUtc = now + _options.LobbyReconnectGrace;
+                CreateLogEvent("PLAYER_DISCONNECTED", $"{player.DisplayName} hat die Verbindung verloren.");
+                return CreateUpdate();
+            }
+
+            var budgetLeft = _options.ReconnectBudget - seat.BudgetUsed;
+            var grace = budgetLeft < _options.ReconnectGrace ? budgetLeft : _options.ReconnectGrace;
+            // Less than a second left counts as used up: the seat is lost right away.
+            if (grace < TimeSpan.FromSeconds(1))
+            {
+                grace = TimeSpan.Zero;
+            }
+
+            seat.GraceDeadlineUtc = now + grace;
+            CreateLogEvent(
+                "PLAYER_DISCONNECTED",
+                $"📡 {player.DisplayName} hat die Verbindung verloren – wartet bis zu {(int)Math.Ceiling(grace.TotalSeconds)} s.");
+            // Only a meta event: the game state does not change, the replay skips it.
+            Record(player, RecordedInputKinds.Disconnect, new { graceMs = (long)grace.TotalMilliseconds });
+
+            // No budget left: the seat is lost right away.
+            ApplyExpiredDeadlines(now);
             return CreateUpdate();
+        }
+    }
+
+    // A player comes back with the player ID and the secret token of the seat (new connection).
+    // Also works when the server has not noticed the old connection is gone: the new one takes over.
+    public RejoinOutcome Rejoin(string playerId, string rejoinToken, string connectionId)
+    {
+        lock (_sync)
+        {
+            if (!_seats.TryGetValue(playerId ?? string.Empty, out var seat) || !TokensMatch(seat.RejoinToken, rejoinToken))
+            {
+                return new RejoinOutcome(RejoinStatus.Invalid);
+            }
+
+            var now = _clock.UtcNow;
+            // The deadline may be over before the background service noticed it.
+            ApplyExpiredDeadlines(now);
+            var player = GetPlayerSlot(playerId!);
+
+            if (seat.Expired)
+            {
+                // Too late: the match is lost. The player may still see the result.
+                return new RejoinOutcome(RejoinStatus.Expired, CreateUpdate(), FinalState: CreateStateSnapshot(playerId));
+            }
+
+            var previousConnectionId = seat.ConnectionId;
+            if (seat.DisconnectedAtUtc is { } disconnectedAt)
+            {
+                seat.BudgetUsed += now - disconnectedAt;
+            }
+
+            seat.ConnectionId = connectionId;
+            seat.DisconnectedAtUtc = null;
+            seat.GraceDeadlineUtc = null;
+            player.Connected = true;
+            CreateLogEvent("PLAYER_RECONNECTED", $"📶 {player.DisplayName} ist wieder verbunden.");
+            if (IsMatchRunning)
+            {
+                Record(player, RecordedInputKinds.Reconnect, new { });
+            }
+
+            var update = CreateUpdate();
+            var resync = new ResyncDto
+            {
+                RoomCode = _roomCode,
+                PlayerId = playerId!,
+                LogEvents = _recentLog.ToArray(),
+                ChatMessages = _recentChat.ToArray(),
+                // Every decision this player still has to make (in the order they were asked).
+                ChoicePrompts = _openChoicePrompts.Values
+                    .Where(prompt => prompt.PlayerId == playerId)
+                    .OrderBy(PromptNumber)
+                    .ToArray()
+            };
+
+            return new RejoinOutcome(
+                RejoinStatus.Ok,
+                update,
+                resync,
+                PreviousConnectionId: previousConnectionId == connectionId ? null : previousConnectionId);
+        }
+    }
+
+    // Called every second by MatchDeadlineService. Returns an update when something changed.
+    public MatchUpdate? Tick()
+    {
+        lock (_sync)
+        {
+            return ApplyExpiredDeadlines(_clock.UtcNow) ? CreateUpdate() : null;
+        }
+    }
+
+    // Seats whose reconnect deadline ran out: in a running match the player loses (DISCONNECT),
+    // in the lobby the seat is freed.
+    private bool ApplyExpiredDeadlines(DateTimeOffset now)
+    {
+        var changed = false;
+        foreach (var seat in _seats.Values.ToList())
+        {
+            if (seat.ConnectionId is not null || seat.Expired || seat.GraceDeadlineUtc is not { } deadline || now < deadline)
+            {
+                continue;
+            }
+
+            if (_phase == MatchPhase.Lobby)
+            {
+                changed |= RemovePlayerCore(seat.PlayerId, MatchEndReasons.Disconnect);
+                continue;
+            }
+
+            seat.Expired = true;
+            changed = true;
+            if (IsMatchRunning)
+            {
+                ForfeitByDisconnect(GetPlayerSlot(seat.PlayerId));
+            }
+        }
+
+        return changed;
+    }
+
+    // Also used by the replay (input DISCONNECT_TIMEOUT), so it must not depend on the connection.
+    private void ForfeitByDisconnect(PlayerState player)
+    {
+        var winner = GetPlayerSlot(GetOtherPlayerId(player.PlayerId));
+        CreateLogEvent("DISCONNECT_TIMEOUT", $"⌛ {player.DisplayName} ist nicht rechtzeitig zurückgekommen.");
+        EndGame(winner, $"{winner.DisplayName} gewinnt – {player.DisplayName} hat die Verbindung verloren.", MatchEndReasons.Disconnect);
+        Record(player, RecordedInputKinds.DisconnectTimeout, new { });
+    }
+
+    // Replay of a recorded DISCONNECT_TIMEOUT.
+    public MatchUpdate ApplyDisconnectTimeout(string playerId)
+    {
+        lock (_sync)
+        {
+            if (IsMatchRunning)
+            {
+                ForfeitByDisconnect(GetPlayerSlot(playerId));
+            }
+
+            return CreateUpdate();
+        }
+    }
+
+    private static bool TokensMatch(string expected, string? actual)
+    {
+        // Constant-time comparison, so the answer time tells nothing about the token.
+        return CryptographicOperations.FixedTimeEquals(
+            System.Text.Encoding.UTF8.GetBytes(expected),
+            System.Text.Encoding.UTF8.GetBytes(actual ?? string.Empty));
+    }
+
+    // Last log entries and chat messages, sent again after a rejoin.
+    private const int RecentLogSize = 80;
+    private const int RecentChatSize = 40;
+    private readonly List<LogEventDto> _recentLog = [];
+    private readonly List<ChatMessageDto> _recentChat = [];
+
+    public void AddChatMessage(ChatMessageDto message)
+    {
+        lock (_sync)
+        {
+            _recentChat.Add(message);
+            if (_recentChat.Count > RecentChatSize)
+            {
+                _recentChat.RemoveAt(0);
+            }
         }
     }
 
@@ -377,9 +607,23 @@ public sealed class MatchRoom
                 throw new InvalidOperationException("The match is already running.");
             }
 
+            if (_seats.Values.Any(seat => seat.ConnectionId is null))
+            {
+                throw new InvalidOperationException("Both players must be connected to start.");
+            }
+
+            foreach (var seat in _seats.Values)
+            {
+                seat.BudgetUsed = TimeSpan.Zero;
+                seat.Expired = false;
+                seat.DisconnectedAtUtc = null;
+                seat.GraceDeadlineUtc = null;
+            }
+
+            _recentLog.Clear();
             _turnNumber = 1;
             _phase = MatchPhase.TurnOrder;
-            _matchStartedAtUtc = DateTimeOffset.UtcNow;
+            _matchStartedAtUtc = _clock.UtcNow;
             _resultReported = false;
             _pendingResult = null;
             _activePlayerId = string.Empty;
@@ -606,10 +850,16 @@ public sealed class MatchRoom
                 Text = text,
                 TurnNumber = _turnNumber,
                 Phase = _phase,
-                TsUnixMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
+                TsUnixMs = _clock.UtcNow.ToUnixTimeMilliseconds()
             };
 
             _pendingLogEvents.Add(logEvent);
+            _recentLog.Add(logEvent);
+            if (_recentLog.Count > RecentLogSize)
+            {
+                _recentLog.RemoveAt(0);
+            }
+
             return logEvent;
         }
     }
@@ -1565,7 +1815,7 @@ public sealed class MatchRoom
         _pendingResult = new MatchResultData(
             _roomCode,
             _matchStartedAtUtc,
-            DateTimeOffset.UtcNow,
+            _clock.UtcNow,
             _turnNumber,
             endReason,
             new MatchPlayerResult(winner.GuestId, winner.DisplayName, winner.LeaderCardId),
@@ -1582,7 +1832,7 @@ public sealed class MatchRoom
     #region SNAPSHOTS
     private MatchUpdate CreateUpdate()
     {
-        _lastActivityUtc = DateTimeOffset.UtcNow;
+        _lastActivityUtc = _clock.UtcNow;
 
         // The match is over (won, or aborted because a player left): the recording is complete.
         if (_recorder is { IsFinished: false } && _phase is MatchPhase.GameOver or MatchPhase.Lobby)
@@ -1630,7 +1880,8 @@ public sealed class MatchRoom
                     .ToArray(),
                 TurnOrderRoll = CreateTurnOrderSnapshot(),
                 IsRanked = IsQuickMatch,
-                RecordedInputs = _recorder?.InputCount ?? 0
+                RecordedInputs = _recorder?.InputCount ?? 0,
+                ServerTimeUnixMs = _clock.UtcNow.ToUnixTimeMilliseconds()
             };
         }
     }
@@ -1663,6 +1914,10 @@ public sealed class MatchRoom
             PlayerId = player.PlayerId,
             DisplayName = player.DisplayName,
             Connected = player.Connected,
+            DisconnectedUntilUnixMs = _seats.TryGetValue(player.PlayerId, out var seat)
+                && seat.ConnectionId is null && !seat.Expired && seat.GraceDeadlineUtc is { } deadline
+                    ? deadline.ToUnixTimeMilliseconds()
+                    : null,
             DeckCount = player.DeckCount,
             HandCount = player.HandCount,
             LifeCount = player.LifeCount,
@@ -1736,7 +1991,7 @@ public sealed class MatchRoom
             kind,
             MatchRecordingJson.ToPayload(payload),
             ComputeStateHash(),
-            DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
+            _clock.UtcNow.ToUnixTimeMilliseconds());
     }
 
     // The recording of the running or last match (for bug reports). Never sent to clients.
@@ -1918,6 +2173,23 @@ public sealed class MatchRoom
 
     #endregion
 }
+
+public enum RejoinStatus
+{
+    Ok,
+    // The reconnect deadline is over: the match is lost, only the result can be shown.
+    Expired,
+    // Unknown seat or wrong token.
+    Invalid
+}
+
+public sealed record RejoinOutcome(
+    RejoinStatus Status,
+    MatchUpdate? Update = null,
+    ResyncDto? Resync = null,
+    GameStateDto? FinalState = null,
+    // The connection that held the seat before (it is replaced by the new one).
+    string? PreviousConnectionId = null);
 
 public sealed record MatchUpdate
 {
