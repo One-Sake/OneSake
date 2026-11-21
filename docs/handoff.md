@@ -60,7 +60,8 @@ Stand der Tests: 274 grün, 6 übersprungen (offene Regelfragen F1–F6). 5000 S
 
 ## Nachtrag 21.11. (zweite Sitzung): Reconnect und Zug-Timer
 
-Auf logic (noch nicht auf dev/main):
+Seit dem 21.11. auf `logic`, `dev` und `main` (zusammen mit den Match-Animationen, Sounds und
+Tastenkürzeln von `dev`, siehe `frontend/web/src/features/match/fx/`):
 
 - Stabile Spieler-ID pro Platz + Rejoin-Token, RejoinRoom/CheckRejoin, Schonfrist 90 s, Budget 180 s.
 - Serverseitiger Zug-Timer mit Zeitbank, automatische Entscheidungen bei Ablauf, Endgrund TIMEOUT.

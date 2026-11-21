@@ -106,6 +106,7 @@ export function MatchHand({
       aria-label={`Your hand, ${cards.length} cards`}
       className={handClassName}
       data-drop-zone="hand"
+      data-fx-zone="player-hand"
       role="group"
     >
       {cards.map((card, index) => {

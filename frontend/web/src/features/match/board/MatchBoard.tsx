@@ -5,9 +5,20 @@ import type {
   CardInstanceDto,
   ChoicePromptDto,
   GameStateDto,
+  LogEventDto,
   ManualActionDto,
   PlayerStateDto,
 } from '../../../types/realtime';
+import { AttackArrow } from '../fx/AttackArrow';
+import { FxLayer } from '../fx/FxLayer';
+import { getCardHints } from '../fx/cardHints';
+import { GameOverScreen } from '../fx/GameOverScreen';
+import { HotkeyHelp } from '../fx/HotkeyHelp';
+import { TurnBanner } from '../fx/TurnBanner';
+import { useAutoPass } from '../fx/useAutoPass';
+import { useMatchHotkeys } from '../fx/useMatchHotkeys';
+import { useFxSettings } from '../fx/fxSettings';
+import { useBoardFx } from '../fx/useBoardFx';
 import { boardZones, CHARACTER_SLOT_COUNT } from './boardLayout';
 import { BoardSlot, CardStack, ManualDotsButton } from './BoardSlot';
 import { BugReportDialog } from './BugReportDialog';
@@ -54,6 +65,12 @@ interface MatchBoardProps {
   canSubmitChoice: boolean;
   currentPrompt: ChoicePromptDto | null;
   joinedRoomCode?: string;
+  // Log entries drive some animations (attack powers, triggers, effects).
+  logEvents?: LogEventDto[];
+  // Game over screen: bounty change of a ranked match, "Revanche-Tisch erstellen", "Zurück zur Lobby".
+  bountyChange?: number | null;
+  onRematch?: () => void;
+  onLeaveRoom?: () => void;
   onSubmitChoice: (option: string, selectedCardInstanceId?: string, targetCardInstanceId?: string) => void;
   pending: boolean;
   // Shown in the middle of the board, between both Character rows (e.g. the Keep/Mulligan prompt).
@@ -135,13 +152,17 @@ function isZoneFilled(zone: BoardZoneDefinition, player: PlayerStateDto | null):
 
 export function MatchBoard({
   activePlayerId,
+  bountyChange = null,
   canSubmitChoice,
   currentPrompt,
   gameState,
   joinedRoomCode = '',
+  logEvents = [],
   midlineContent,
+  onLeaveRoom,
   onManualAction,
   onPreviewCard,
+  onRematch,
   onSubmitOrder,
   onSubmitChoice,
   pending,
@@ -160,6 +181,9 @@ export function MatchBoard({
   const [bugReportOpen, setBugReportOpen] = useState(false);
   const dragNoticeTimer = useRef<number>();
   const metrics = useBoardMetrics(frameRef);
+  const fxLayerRef = useRef<HTMLDivElement>(null);
+  const fxSettings = useFxSettings();
+  useBoardFx({ currentPrompt, frameRef, gameState, layerRef: fxLayerRef, logEvents });
 
   const visiblePlayers = getVisiblePlayers(gameState);
   const localPlayer = visiblePlayers.player;
@@ -678,6 +702,55 @@ export function MatchBoard({
     }
   }
 
+  function startAttack(): void {
+    if (canStartAttack && selectedCard) {
+      setMode({ kind: 'attack', attackerId: selectedCard.instanceId });
+    }
+  }
+
+  // ---------- Keyboard, auto pass, hints ----------
+
+  const selectableFieldCards = localFieldCards.filter((card) => card.category !== 'Stage' || card.canActivate);
+  const hotkeys = useMatchHotkeys(frameRef, {
+    canEndTurn: isMainAction && hasOption(myPrompt, 'END_TURN'),
+    endTurn: () => submit('END_TURN'),
+    canAttack: canStartAttack,
+    startAttack,
+    canGiveDon,
+    giveDon,
+    canActivate: canActivateSelected,
+    activate: () => selectedCard && submit('ACTIVATE', selectedCard.instanceId),
+    cancel: () => {
+      setMode({ kind: 'idle' });
+      setSelectedCardId('');
+    },
+    selectNextFieldCard: () => {
+      if (!isMainAction || selectableFieldCards.length === 0) {
+        return false;
+      }
+
+      const index = selectableFieldCards.findIndex((card) => card.instanceId === selectedCardId);
+      setMode({ kind: 'idle' });
+      setSelectedCardId(selectableFieldCards[(index + 1) % selectableFieldCards.length].instanceId);
+      return true;
+    },
+  });
+
+  const autoPassNotice = useAutoPass({
+    promptId: myPrompt?.choiceId ?? '',
+    promptKind: myPrompt?.kind ?? '',
+    canBlock: localFieldCards.some(canBlockWith),
+    canCounter: localHandCards.some(canCounterWith),
+    submit: (option) => submit(option),
+  });
+
+  // Nothing useful is left: no affordable card, no attacker, no DON!!, no ability. Only a hint.
+  const nothingLeftToDo =
+    isMainAction &&
+    !localHandCards.some(canPlayFromHand) &&
+    !localFieldCards.some((card) => card.canAttack || card.canActivate) &&
+    (localPlayer?.activeDonCount ?? 0) === 0;
+
   // ---------- Rendering helpers ----------
 
   function renderFieldCard(card: CardInstanceDto, side: BoardSide) {
@@ -686,6 +759,7 @@ export function MatchBoard({
         <MatchCardView
           card={card}
           clickable
+          hints={side === 'opponent' ? getCardHints(card) : undefined}
           onClick={() => (side === 'player' ? handleOwnCardClick(card) : handleOpponentCardClick(card))}
           onInspect={() => setInspectedCard(card)}
           onMenu={getCardMenuHandler(card)}
@@ -871,7 +945,11 @@ export function MatchBoard({
   }
 
   const opponentHandCount = opponent?.handCount ?? 0;
-  const hint = dragNotice || getHint();
+  const hint =
+    dragNotice ||
+    (hotkeys.endTurnArmed ? 'Leertaste nochmal drücken (oder halten): Zug beenden' : '') ||
+    autoPassNotice ||
+    getHint();
   const canToggleManual = isRunning && Boolean(onManualAction);
   // "Fehler melden" during the match and on the game over screen.
   const canReportBug = Boolean(joinedRoomCode) && (isRunning || isGameOver);
@@ -891,6 +969,7 @@ export function MatchBoard({
     'match-board-frame',
     metrics && metrics.cardWidth < SMALL_CARD_W ? 'is-small-cards' : '',
     manualMode && canManual ? 'is-manual-mode' : '',
+    `fx-mode-${fxSettings.animations}`,
   ]
     .filter(Boolean)
     .join(' ');
@@ -907,7 +986,12 @@ export function MatchBoard({
             <OfflineBadge player={opponent} />
             <PlayerClock playerId={opponent?.playerId} timer={gameState?.timer} />
           </div>
-          <div className="match-opponent-hand" aria-label={`Opponent hand: ${opponentHandCount} cards`} role="img">
+          <div
+            className="match-opponent-hand"
+            aria-label={`Opponent hand: ${opponentHandCount} cards`}
+            data-fx-zone="opponent-hand"
+            role="img"
+          >
             {Array.from({ length: Math.min(opponentHandCount, MAX_OPPONENT_HAND_BACKS) }, (_, index) => (
               <span
                 key={index}
@@ -964,6 +1048,7 @@ export function MatchBoard({
                   <button disabled={!canGiveDon} onClick={giveDon} type="button">
                     Give DON!!
                     <small>+1000</small>
+                    <kbd aria-hidden="true" className="fx-kbd">D</kbd>
                   </button>
                   <button
                     className={mode.kind === 'attack' ? 'is-active' : ''}
@@ -979,6 +1064,7 @@ export function MatchBoard({
                     type="button"
                   >
                     {mode.kind === 'attack' ? 'Cancel Attack' : 'Attack'}
+                    <kbd aria-hidden="true" className="fx-kbd">{mode.kind === 'attack' ? 'Esc' : 'A'}</kbd>
                   </button>
                   <button
                     disabled={!canActivateSelected}
@@ -987,6 +1073,7 @@ export function MatchBoard({
                   >
                     Activate
                     <small>Effect</small>
+                    <kbd aria-hidden="true" className="fx-kbd">E</kbd>
                   </button>
                 </>
               )}
@@ -1006,8 +1093,14 @@ export function MatchBoard({
                 </button>
               )}
               {isMainAction && (
-                <button className="match-actions__end-turn" onClick={() => submit('END_TURN')} type="button">
+                <button
+                  className={`match-actions__end-turn${nothingLeftToDo ? ' is-suggested' : ''}`}
+                  onClick={() => submit('END_TURN')}
+                  title={nothingLeftToDo ? 'Keine sinnvolle Aktion mehr möglich' : undefined}
+                  type="button"
+                >
                   End Turn
+                  <kbd aria-hidden="true" className="fx-kbd">Leer</kbd>
                 </button>
               )}
             </div>
@@ -1053,19 +1146,31 @@ export function MatchBoard({
         renderCardExtra={renderCardDots}
       />
 
-      {isGameOver && (
-        <div className="match-board-game-over" role="status">
-          {gameState?.winnerPlayerId ? (didWin ? 'Victory!' : 'Defeat') : 'Game Over'}
-          {getGameOverReason(gameState?.endReason, didWin) && (
-            <small className="match-board-game-over__reason">{getGameOverReason(gameState?.endReason, didWin)}</small>
-          )}
-          {canReportBug && (
-            <button className="match-board-game-over__bug" onClick={() => setBugReportOpen(true)} type="button">
-              🐞 Fehler melden
-            </button>
-          )}
-        </div>
+      {isGameOver && gameState && (
+        <GameOverScreen
+          bountyChange={bountyChange}
+          extraActions={
+            canReportBug ? (
+              <button className="fx-game-over__bug" onClick={() => setBugReportOpen(true)} type="button">
+                🐞 Fehler melden
+              </button>
+            ) : null
+          }
+          gameState={gameState}
+          localPlayer={localPlayer}
+          onLeaveRoom={onLeaveRoom}
+          onRematch={onRematch}
+          opponent={opponent}
+          reason={getGameOverReason(gameState.endReason, didWin)}
+        />
       )}
+
+      <TurnBanner frameRef={frameRef} gameState={gameState} />
+
+      {hotkeys.helpOpen && <HotkeyHelp onClose={hotkeys.closeHelp} />}
+
+      <FxLayer ref={fxLayerRef} />
+      {mode.kind === 'attack' && <AttackArrow attackerId={mode.attackerId} frameRef={frameRef} />}
 
       <DragGhost ref={handDrag.ghostRef} cardWidth={metrics?.cardWidth ?? 80} view={handDrag.view} />
 

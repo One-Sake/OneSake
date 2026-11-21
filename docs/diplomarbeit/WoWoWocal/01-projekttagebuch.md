@@ -322,6 +322,163 @@ Keine Commits. Sprint 3 wurde ab 06.10.2026 geplant.
   laufende Matches weiterhin – dafür bräuchte es eine gemeinsame Speicherung (z. B. Redis), was für den
   aktuellen Ein-Server-Betrieb zu viel Aufwand wäre.
 
+### 2026-11-21 – Roadmap und Alleinstellungsmerkmale festgehalten 🤖
+- Neue Datei `04-roadmap-und-alleinstellungsmerkmale.md`: was nach den vier Logik-Prompts
+  (Ereignis-System, Determinismus/Aufzeichnung, Bot-Simulation, Karten nach Meta) noch fehlt,
+  welche Ideen OneSake von anderen OPTCG-Simulatoren abheben (Deck-Labor, Coach,
+  „Was wäre wenn?“-Replay, Lethal-Puzzle, Banden/Titel, Streamer-/Turnier-Modus) und eine
+  empfohlene Reihenfolge. Neue Ideen in `02-entscheidungen-und-ideen.md` (2.2 Offen) eingetragen.
+- **Überlegung:** Die Ideen bauen bewusst auf der deterministischen Engine, der Bot-Simulation und
+  den Meta-Daten auf – das ist schwer nachzumachen und gut in der Diplomarbeit vorzuführen.
+  Grundlagen (Reconnect, Timer, Spiel-Gefühl) kommen trotzdem zuerst, weil ohne sie niemand lange spielt.
+
+### 2026-11-21 13:25 – Animations-System für das Match ★ 🤖
+- Commit „Add an animation layer and queue to the match board“: neuer Ordner
+  `frontend/web/src/features/match/fx/` mit `fxQueue.ts` (Warteschlange: nacheinander, ab 4 wartenden
+  Animationen doppelte Geschwindigkeit, Überspringen bei Klick/Taste), `FxLayer.tsx` (Overlay über dem
+  Board, `pointer-events: none`), `useBoardFx.ts` (vergleicht zwei Snapshots und liest neue Log-Einträge),
+  `fxDom.ts` (fliegende Kopien, nur `transform`/`opacity`) und Zahnrad-Menü „Animationen: Normal /
+  Schnell / Aus“ (localStorage mit try/catch, bei `prefers-reduced-motion` standardmäßig „Aus“).
+  Karten und Zonen tragen `data-fx-card` / `data-fx-zone`, damit die Animationen ihre Positionen finden.
+- **Überlegung:** Der neue Spielzustand wird **sofort** übernommen, die Animation ist nur eine Schicht
+  darüber (eine Kopie fliegt dorthin, wo die Karte schon liegt). So ist das Board nie falsch, Eingaben
+  werden nie blockiert und ein Klick springt einfach ans Ende. Alternative wäre, den Zustand erst nach
+  der Animation zu zeigen (wie viele TCG-Clients) – dann wartet man auf Animationen und es kann zu
+  Abweichungen zwischen Anzeige und Server kommen. Animiert wird mit der Web Animations API
+  (`element.animate`), weil man damit jede Animation sofort beenden kann; keine neue Bibliothek.
+- **Probleme/Lessons Learned:** Die Topbar schneidet überstehende Inhalte ab – das Menü liegt deshalb
+  `fixed` unter dem Zahnrad. Wartende Animationen verstecken ihre Zielkarte schon beim Einreihen; damit
+  diese nie unsichtbar bleibt, führt „Überspringen“ jeden wartenden Schritt kurz aus und räumt auf.
+- Screenshot: `screenshots/2026-11-21_20-match-einstellungen.png`
+
+### 2026-11-21 14:05 – Animationen: Ziehen, Spielen, Events ★ 🤖
+- Commit „Animate drawing, playing and Event cards“: Gezogene Karten fliegen vom Deck in die Hand
+  (Gegner: Kartenrücken in die Gegnerhand). Spielt der Gegner eine Karte, wird sie 0,6 s groß in der
+  Mitte gezeigt und fliegt dann in ihren Slot; danach bleibt sie 2 s leicht markiert. Eigene Karten
+  per Klick bekommen dieselbe Landung wie bei Drag & Drop (bei Drag & Drop bleibt die bestehende
+  Landung). Events (auch [Counter]-Events) erscheinen groß mit goldenem Leuchten und fliegen in den Trash.
+- **Überlegung:** Die Ereignisse werden aus dem Vergleich zweier Snapshots erkannt (welche Karte ist
+  neu auf dem Feld, im Trash, in der Hand), weil die Log-Einträge auf `dev` nur Text enthalten.
+  Die echte Karte liegt schon an ihrem Platz und ist nur unsichtbar, bis die Kopie landet.
+- **Geprüft:** Playwright-Bot spielt mit zwei Browsern ein Match über die echte Oberfläche und nimmt
+  bei bestimmten Ereignissen Bildfolgen auf (Screenshot alle 100 ms).
+- **Probleme/Lessons Learned:** Karten im Effekt-Dialog tragen dieselbe Karten-ID wie auf dem Board –
+  sie werden bei der Positionssuche ausgeschlossen. Das Bild einer noch nie gezeigten Gegnerkarte lädt
+  erst während des Reveals; bis dahin ist der Kartenname zu sehen. Ein Reveal wird höchstens um 30 %
+  beschleunigt, damit man die Karte lesen kann.
+- Bildfolgen: `screenshots/2026-11-21_21-bildfolge-gegner-spielt-karte.png`,
+  `screenshots/2026-11-21_22-bildfolge-gegner-spielt-event.png`
+
+### 2026-11-21 14:50 – Animationen: Angriff, Block, Counter, Treffer, K.O., Life ★ 🤖
+- Commit „Animate attacks, blocks, counters, hits, K.O.s and Life cards“:
+  Beim Wählen des Angriffsziels läuft ein geschwungener goldener Zielpfeil (SVG) von der angreifenden
+  Karte zum Mauszeiger/Finger, gültige Ziele pulsieren. Nach dem Angriff springt der Angreifer Richtung
+  Ziel und zurück, das Resten dreht sich animiert, über dem Ziel erscheint „5000 ⚔ 5000“. Block: der
+  Blocker gleitet kurz vor, Schild-Symbol. Counter: „+2000“ steigt grün auf, die Power zählt hoch.
+  Treffer: Leader wackelt, roter Rand, am Handy `navigator.vibrate(30)` (abschaltbar). K.O.: die Karte
+  zerfällt in 12 Splitter, ein blasser Geist fliegt in den Trash. Life: die Karte dreht sich auf dem Weg
+  in die Hand um (Gegner: Rückseite). [Trigger]: die Karte erscheint groß mit „TRIGGER“.
+- **Überlegung:** Angriff, Block und Counter lassen sich direkt am `battle`-Objekt im Snapshot ablesen
+  (neuer Angreifer = Angriff, anderes Ziel = Block, höherer Counter-Bonus = Counter). Der K.O. ist ein
+  Character, der vom Feld in den Trash wechselt. Die Splitter nutzen das Kartenbild als Hintergrund –
+  keine Bilddateien nötig.
+- **Probleme/Lessons Learned:** Die Karte-Dialoge liegen im selben Stapelkontext wie das Board; die
+  fx-Schicht liegt deshalb darüber (sie fängt keine Klicks ab). Während ein gegnerischer [Trigger]
+  aufgelöst wird, liegt die Karte in keiner Zone – sie wird über den Namen im Log gefunden.
+- Bildfolgen: `screenshots/2026-11-21_23-bildfolge-angriff-zielpfeil.png`,
+  `…_24-bildfolge-angriff.png`, `…_25-bildfolge-ko.png`, `…_26-bildfolge-life-trigger.png`,
+  `…_27-bildfolge-counter.png`
+
+### 2026-11-21 15:30 – Animationen: DON!!, Refresh, Effekte, Power ★ 🤖
+- Commit „Animate DON!!, refresh, effects and power changes“: DON!! anlegen – eine DON!!-Karte fliegt
+  aus der Cost-Area auf die Karte, „+1000“ steigt auf. DON!!-Phase – neue DON!!-Karten fliegen vom
+  DON!!-Deck in die Cost-Area. Refresh – alle gerestete Karten drehen sich gleichzeitig zurück (CSS-Übergang
+  auf `rotate`/`scale`). Effekt löst aus – die Quelle bekommt einen goldenen Puls, Linien führen zu den
+  Karten, die der Effekt nennt oder gerade verändert hat. Power – das Power-Feld bläht sich kurz auf,
+  grün bei Plus, rot bei Minus; geänderte Power bleibt grün/rot, beim Hover steht die Basis-Power
+  im Tooltip. Angriffsbereite Karten haben einen feinen pulsierenden Rand.
+- **Überlegung:** Effekt-Logs beginnen mit „Kartenname: …“ – daraus wird die Quelle gelesen. Ziele
+  stehen nicht strukturiert im Log; deshalb werden genannte Kartennamen und Karten mit gerade geänderter
+  Power als Ziel genommen (kann in seltenen Fällen ungenau sein, ist aber rein optisch).
+- **Probleme/Lessons Learned:** Das Power-Feld fängt keine Mauszeiger-Ereignisse – der Basis-Power-Tooltip
+  sitzt deshalb auf der Karte selbst.
+- Bildfolgen: `screenshots/2026-11-21_28-bildfolge-don.png`, `…_29-bildfolge-effekt.png`
+
+### 2026-11-21 16:10 – Zugwechsel-Banner und Spielende-Screen ★ 🤖
+- Commit „Show a turn banner and a new game over screen“: Bei jedem Zugwechsel läuft 0,9 s ein Banner
+  quer über das Board – „DEIN ZUG“ in Gold bzw. „ZUG DES GEGNERS“ gedämpft, mit Zugnummer; danach leuchtet
+  die eigene Aktionsleiste kurz auf. Spielende: „SIEG“ mit Goldkonfetti bzw. „NIEDERLAGE“ mit dunklem
+  Schleier, darunter beide Spieler mit Leader, Zahl der Züge, Modus und – bei Ranked – die
+  Kopfgeld-Änderung. Buttons „Revanche-Tisch erstellen“ (bestehender Erstellen-Ablauf mit neuem Code)
+  und „Zurück zur Lobby“.
+- **Überlegung:** Die Kopfgeld-Abfrage war im `BountyChangeBanner` versteckt; sie steckt jetzt im Hook
+  `useBountyChange`, den Banner und Spielende-Screen gemeinsam nutzen (eine Abfrage statt zwei). Der
+  Banner hält Eingaben nicht auf (`pointer-events: none`).
+- **Probleme/Lessons Learned:** Der Test-Bot hat den Sieg zuerst bei einem abgewehrten Angriff
+  aufgenommen – die Aufnahme wird jetzt wiederholt, bis das Spiel wirklich vorbei ist.
+- Bildfolgen/Screenshots: `screenshots/2026-11-21_30-bildfolge-zugwechsel.png`,
+  `…_31-bildfolge-sieg.png`, `…_32-niederlage.png`
+
+### 2026-11-21 16:45 – Sounds im Match ★ 🤖
+- Commit „Add synthesized match sounds“: `fx/sounds.ts` erzeugt alle Klänge mit der Web Audio API
+  (Oszillatoren und gefiltertes Rauschen): Karte ziehen, Karte spielen, Event, Angriff (Whoosh),
+  Treffer, Block (Schild), Counter, K.O., Life verloren, DON!!, Zugwechsel (eigener/gegnerischer),
+  Sieg, Niederlage und ein Timer-Tick für später. Im Zahnrad: „Sound an“ und Lautstärke-Regler
+  (Standard: an, 50 %), gespeichert in localStorage. Der Klang startet mit seinem Animationsschritt;
+  beim Überspringen bleibt es still.
+- **Überlegung:** Synthetisierte Klänge statt Audiodateien – keine Lizenzfragen, keine Downloads, sehr
+  klein, und sie passen automatisch zur Lautstärke. Der AudioContext wird erst nach dem ersten Klick oder
+  Tastendruck erzeugt (Browser-Regel, und niemand wird beim Öffnen der Seite überrascht).
+- **Geprüft:** Playwright zählt AudioContexts und gestartete Töne: 0 vor der ersten Interaktion,
+  Töne im Match, stumm = keine Töne bei zwei Zugwechseln, Einstellungen nach dem Neuladen erhalten.
+- Screenshot: `screenshots/2026-11-21_33-sound-einstellungen.png`
+
+### 2026-11-21 18:20 – Tastenkürzel, Auto-Pass, Hinweise; Leistung ★ 🤖
+- Commit „Add keyboard shortcuts, auto pass and board hints“: Tastenkürzel (nur wenn kein Eingabefeld
+  aktiv ist): Leertaste = Zug beenden (zweimal drücken oder 400 ms halten), A = Angriff, D = DON!!,
+  E = Effekt, Tab = nächste eigene Feldkarte, 1–9 = Handkarte auswählen (Enter spielt sie), Enter =
+  im Dialog bestätigen, Esc = abbrechen, ? = Übersicht. Kleine Kürzel-Hinweise auf den Buttons
+  (nur Desktop, für Screenreader ausgeblendet). Auto-Pass: Block-Schritt ohne möglichen Blocker
+  (öffentliche Information) nach 0,7 s; Counter-Schritt nur mit selbst eingeschaltetem
+  „Auto-Pass Counter“ und zufälliger Pause von 0,8–1,6 s. „End Turn“ leuchtet, wenn nichts Sinnvolles
+  mehr möglich ist (nur Hinweis). Gegnerkarten zeigen beim Hover Mini-Icons (🛡 Blocker, 💀 On K.O.,
+  ✦ Trigger …).
+- **Leistung:** Messung mit Playwright im Handy-Querformat (844 × 390) und 4-facher CPU-Drosselung
+  (Chrome DevTools Protocol) auf dem Produktions-Build. Erst lag die Erkennung im React-Commit bei bis zu
+  355 ms, weil direkt nach den DOM-Änderungen Positionen gelesen wurden (erzwungenes Layout). Jetzt liest
+  die Erkennung keine Positionen mehr, Animationen starten im nächsten Animation-Frame, Positionen werden
+  nach dem Zeichnen gemerkt: Erkennung max. 1,5 ms, Animationsschritt max. 7 ms, in ~2100 Frames mit
+  laufender Animation nur 0–1 Frame über 50 ms (50,1 ms). Pulsierende Ränder animieren nur noch die
+  `opacity` einer Leucht-Ebene statt `box-shadow` (das hätte jeden Frame neu gezeichnet).
+  Messmarken `fx-snapshot`, `fx-step`, `fx-boxes` sind im DevTools-Performance-Panel sichtbar.
+- **Geprüft:** Tastenkürzel im Browser (Hilfe, 1/Enter, Tab/D, Leertaste zweimal und halten);
+  mit `prefers-reduced-motion` 8 Züge gespielt – keine einzige bewegte Animation, Board voll bedienbar.
+- **Probleme/Lessons Learned:** (1) Der pulsierende „End Turn“ hat sich anfangs skaliert – ein ständig
+  bewegtes Klickziel (Playwright wartete vergeblich auf „stabil“); jetzt pulsiert nur das Leuchten.
+  (2) Die Text-Einblendungen stiegen auch im reduzierten Modus auf – jetzt nur Ein-/Ausblenden.
+  (3) **Befund am Server:** Auf `dev` schickt der Server den Counter- und Block-Schritt gar nicht, wenn
+  nichts nutzbar ist. Der Angreifer merkt dann am sofortigen Schaden, dass keine Counter auf der Hand sind –
+  genau das Informationsleck, das der Auto-Pass vermeiden soll. Der Client-Schalter greift deshalb derzeit
+  praktisch nie; die eigentliche Lösung (Counter-Schritt immer senden oder serverseitig kurz warten) ist
+  eine Backend-Änderung und war nicht Teil dieses Auftrags.
+- Screenshots: `screenshots/2026-11-21_34-tastenkuerzel.png`, `…_35-leertaste-bestaetigen.png`,
+  `…_36-gegnerkarte-hinweise.png`, `…_37-zug-beenden-hinweis.png`
+
+### 2026-11-21 15:28 – dev und logic zusammengeführt, alles auf main ★ 🤖
+- Merge von `dev` (Animationen, Sounds, Tastenkürzel) in `logic` (Reconnect, Zug-Timer, Manueller Modus,
+  Aufzeichnung), danach `logic` → `dev` → `main` (Deployment).
+- **Konflikte:** vor allem `MatchBoard.tsx` – beide Branches haben das Board erweitert. Gelöst, indem beide
+  Funktionen erhalten bleiben: Manueller Modus und „Fehler melden“ aus `logic`, Animationen, Mini-Icons und
+  Tastenkürzel aus `dev`. Der neue Spielende-Screen zeigt jetzt zusätzlich den Endgrund aus `logic`
+  (z. B. „Zeit abgelaufen – Niederlage“, „Gegner hat die Verbindung verloren – Sieg“) und „Fehler melden“.
+  Doku und Changelog: beide Seiten behalten, zeitlich sortiert.
+- **Geprüft (zusammengeführter Stand):** `dotnet build`/`dotnet test` grün (300 Tests, 6 übersprungen),
+  Simulator-Smoke 200/200, `npm run lint`/`npm run build` grün; Playwright mit zwei Browsern:
+  Reconnect a)–c), Timer d)–e), Animations-Bot über ein ganzes Match bis zum Sieg, Sounds, Tastenkürzel.
+- **Probleme/Lessons Learned:** Ein Test erwartete nach dem Neuladen den Startbildschirm – mit Reconnect
+  springt die App aber direkt zu „Zurück ins Match“. Die Funktionen der beiden Branches beeinflussen sich
+  also; deshalb wurde nach dem Merge alles noch einmal gemeinsam getestet.
+
 <!-- Neue Einträge unten anfügen. Vorlage:
 
 ### JJJJ-MM-TT HH:MM – Titel ★/👥/🤖

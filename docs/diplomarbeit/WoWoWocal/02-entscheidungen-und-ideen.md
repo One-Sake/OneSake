@@ -68,6 +68,15 @@ Commit-Beschreibungen, Dokumentation. Stand: 2026-11-20.
 | Vollständige Effektabdeckung, richtige Trigger-Reihenfolge | – | Branch `logic` |
 | Usability-Test: bestehende Lösung vs. OneSake am Handy | – | Projektauftrag Phase 5 |
 | Demo-Video, Abnahme | – | Projektauftrag Phase 5 |
+| Zug-Timer mit Zeitbank | – | Roadmap 21.11. (`04-roadmap-und-alleinstellungsmerkmale.md`) |
+| Spiel-Gefühl: Animationen, Sounds, Tastenkürzel, Auto-Pass | – | Roadmap 21.11. |
+| Tutorial und KI-Gegner mit Schwierigkeitsgraden | – | Roadmap 21.11. |
+| Replay-Viewer mit „Was wäre wenn?“ (ab beliebiger Stelle selbst weiterspielen) | – | Roadmap 21.11. – Alleinstellungsmerkmal |
+| Coach nach dem Match („verpasster Lethal“) und tägliches Lethal-Puzzle | – | Roadmap 21.11. – Alleinstellungsmerkmal |
+| Deck-Labor: eigenes Deck per Bot-Simulation gegen die Meta testen | – | Roadmap 21.11. – Alleinstellungsmerkmal |
+| Ränge mit One-Piece-Titeln, Banden (Crews), teilbarer Steckbrief | – | Roadmap 21.11. |
+| Streamer-/Turnier-Modus (Caster-Ansicht, OBS-Overlay, Swiss-Turniere) | – | Roadmap 21.11. |
+| Deutsch und Englisch | – | Roadmap 21.11. |
 
 ### 2.3 Verworfen oder geändert
 
@@ -115,6 +124,15 @@ Commit-Beschreibungen, Dokumentation. Stand: 2026-11-20.
 | Eigener Branch `logic` für die Regel-Engine | Großer Umbau, ohne `dev` zu blockieren | Alles auf `dev` |
 | Reconnect-Schonfrist 90 s + Budget 180 s pro Match, Lobby 30 s (21.11.) | Funkloch/App-Wechsel am Handy kostet nicht mehr das Match; Budget verhindert Zeitschinden; Werte konfigurierbar | Kein Reconnect (bisher), unbegrenzte Frist (Gegner wartet ewig), Pausieren auf Wunsch |
 | Stabile Spieler-ID pro Platz + geheimes Rejoin-Token (21.11.) | Die Verbindungs-ID ändert sich bei jedem Reconnect; das Token beweist, dass man auf diesen Platz gehört | Gast-ID (nicht geheim, gilt für alle Tabs), Verbindungs-ID behalten (kein Reconnect möglich) |
+
+| Auto-Pass nur bei öffentlichen Informationen, Counter-Auto-Pass nur auf Wunsch mit zufälliger Pause (21.11.) | Sofortiges Passen beim Counter würde verraten, dass keine Counter auf der Hand sind | Immer automatisch passen (Informationsleck), nie automatisch (mehr Leerlauf) |
+| Tastenkürzel mit Bestätigung für „Zug beenden“ (zweimal Leertaste oder 400 ms halten) (21.11.) | Schneller am Desktop, aber kein versehentliches Zugende | Einfacher Druck (zu riskant), keine Kürzel |
+| Positionen nie im React-Commit lesen, Animationen im nächsten Frame starten (21.11.) | Kein erzwungenes Layout: Erkennung von bis zu 355 ms auf 1,5 ms (4× gedrosselt) | Alles im Layout-Effekt (einfacher, aber ruckelt am Handy) |
+| Sounds mit der Web Audio API synthetisiert, keine Audiodateien (21.11.) | Keine Lizenzfragen, keine Downloads, Lautstärke zentral steuerbar | Audiodateien (Rechte, Ladezeit), keine Sounds |
+| Effekt-Ziele aus Kartennamen im Log und Power-Änderungen ableiten (21.11.) | Rein optisch, keine Server-Änderung nötig | Ziele vom Server mitschicken (genauer, aber Backend-Änderung) |
+| Spielereignisse aus dem Vergleich zweier Snapshots erkennen (21.11.) | Funktioniert ohne Änderung an Server und DTOs; Logs liefern nur Text | Strukturierte Ereignisse vom Server (Backend-Änderung, nicht Teil dieses Auftrags) |
+| Animationen als Schicht über dem sofort gültigen Zustand (21.11.) | Board ist immer korrekt, Eingaben werden nie blockiert, Klick überspringt | Zustand erst nach der Animation zeigen (Wartezeiten, Gefahr von Abweichungen) |
+| Web Animations API, nur `transform`/`opacity`, keine neue Bibliothek (21.11.) | Flüssig auch am Handy (GPU), jede Animation lässt sich sofort beenden | Animationsbibliothek (zusätzliche Abhängigkeit), CSS-Klassen mit Timern (schwer abzubrechen) |
 
 ## 4. UX- und Designüberlegungen
 
