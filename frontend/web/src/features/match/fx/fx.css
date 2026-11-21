@@ -353,3 +353,336 @@
       0 0 20px rgb(95 224 180 / 65%);
   }
 }
+/* ---------- Turn banner ---------- */
+
+.fx-turn-banner {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  z-index: 70;
+  display: grid;
+  place-items: center;
+  gap: 2px;
+  width: 100%;
+  padding: 14px 0;
+  pointer-events: none;
+  translate: 0 -50%;
+  animation: fx-turn-banner 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.fx-turn-banner strong {
+  font-family: var(--font-display, inherit);
+  font-size: clamp(1.6rem, 6cqw, 3.2rem);
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.fx-turn-banner span {
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.fx-turn-banner.is-mine {
+  color: #1a1207;
+  background: linear-gradient(90deg, transparent, rgb(240 191 56 / 92%) 18%, rgb(255 224 138 / 96%) 50%, rgb(240 191 56 / 92%) 82%, transparent);
+}
+
+.fx-turn-banner.is-theirs {
+  color: #c9d6dc;
+  background: linear-gradient(90deg, transparent, rgb(20 32 46 / 88%) 18%, rgb(32 48 66 / 92%) 50%, rgb(20 32 46 / 88%) 82%, transparent);
+}
+
+@keyframes fx-turn-banner {
+  0% {
+    opacity: 0;
+    transform: translateX(-12%) scaleY(0.6);
+  }
+
+  25% {
+    opacity: 1;
+    transform: translateX(0) scaleY(1);
+  }
+
+  75% {
+    opacity: 1;
+    transform: translateX(0) scaleY(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(12%) scaleY(0.9);
+  }
+}
+
+.fx-mode-fast .fx-turn-banner {
+  animation-duration: 0.55s;
+}
+
+.fx-mode-off .fx-turn-banner {
+  animation: fx-fade 0.9s linear both;
+}
+
+@keyframes fx-fade {
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  15%,
+  85% {
+    opacity: 1;
+  }
+}
+
+/* The own action bar glows for a moment after "DEIN ZUG". */
+.match-board-frame[data-fx-turn-glow] .match-actions button:not(:disabled) {
+  box-shadow:
+    0 0 0 2px rgb(255 214 102 / 80%),
+    0 0 18px rgb(255 196 64 / 60%);
+}
+
+/* ---------- Game over ---------- */
+
+.fx-game-over {
+  position: absolute;
+  inset: 0;
+  z-index: 72;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+}
+
+.fx-game-over__veil {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 45%, rgb(10 20 31 / 55%), rgb(4 8 14 / 88%));
+  animation: fx-fade-in 0.5s ease-out both;
+}
+
+.fx-game-over.is-lose .fx-game-over__veil {
+  background: radial-gradient(circle at 50% 45%, rgb(30 8 8 / 70%), rgb(2 3 6 / 94%));
+}
+
+@keyframes fx-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.fx-game-over__card {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(520px, 100%);
+  max-height: 100%;
+  overflow: auto;
+  border: 1px solid rgb(240 191 56 / 55%);
+  border-radius: 16px;
+  padding: clamp(14px, 3cqh, 26px);
+  color: #e7f0f3;
+  background: linear-gradient(170deg, rgb(24 40 58 / 96%), rgb(10 20 31 / 97%));
+  box-shadow: 0 24px 60px rgb(0 0 0 / 60%);
+  animation: fx-game-over-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.fx-game-over.is-lose .fx-game-over__card {
+  border-color: rgb(160 70 70 / 55%);
+}
+
+@keyframes fx-game-over-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.92);
+  }
+}
+
+.fx-game-over__title {
+  margin: 0;
+  font-size: clamp(2.2rem, 9cqh, 4rem);
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  line-height: 1;
+}
+
+.fx-game-over.is-win .fx-game-over__title {
+  color: #ffd25e;
+  text-shadow:
+    0 0 18px rgb(255 196 64 / 70%),
+    0 3px 0 #7a4c00;
+}
+
+.fx-game-over.is-lose .fx-game-over__title {
+  color: #c9b3b3;
+  text-shadow: 0 3px 0 #2a0c0c;
+}
+
+.fx-game-over__leaders {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.fx-game-over__leader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.fx-game-over__leader img,
+.fx-game-over__leader-blank {
+  width: 46px;
+  aspect-ratio: 63 / 88;
+  border-radius: 4px;
+  object-fit: cover;
+  background: #1f3a57;
+}
+
+.fx-game-over__leader div {
+  display: grid;
+  min-width: 0;
+  font-size: 0.8rem;
+}
+
+.fx-game-over__leader small {
+  color: #9db5bd;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.fx-game-over__leader strong,
+.fx-game-over__leader span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fx-game-over__vs {
+  color: #9db5bd;
+  font-weight: 900;
+}
+
+.fx-game-over__facts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+  margin: 0;
+}
+
+.fx-game-over__facts div {
+  display: grid;
+  justify-items: center;
+}
+
+.fx-game-over__facts dt {
+  color: #9db5bd;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.fx-game-over__facts dd {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 900;
+}
+
+.fx-game-over__facts .is-up dd {
+  color: #6dffb9;
+}
+
+.fx-game-over__facts .is-down dd {
+  color: #ff8a80;
+}
+
+.fx-game-over__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.fx-game-over__actions button {
+  min-height: 44px;
+  border: 1px solid rgb(255 255 255 / 25%);
+  border-radius: 999px;
+  padding: 0 18px;
+  color: #e7f0f3;
+  font-weight: 800;
+  background: rgb(255 255 255 / 8%);
+  cursor: pointer;
+}
+
+.fx-game-over__actions .fx-game-over__primary {
+  border-color: #ffe39b;
+  color: #1a1207;
+  background: linear-gradient(180deg, #ffe08a, #f0bf38);
+}
+
+.fx-game-over__particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.fx-game-over__particles span {
+  position: absolute;
+  top: -10px;
+  left: var(--x);
+  width: var(--size);
+  height: calc(var(--size) * 1.6);
+  border-radius: 2px;
+  background: linear-gradient(180deg, #ffe08a, #f0bf38);
+  box-shadow: 0 0 6px rgb(255 196 64 / 70%);
+  animation: fx-confetti 2.6s linear var(--delay) infinite;
+}
+
+@keyframes fx-confetti {
+  from {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg);
+  }
+
+  to {
+    opacity: 0.2;
+    transform: translate(var(--drift), 110cqh) rotate(540deg);
+  }
+}
+
+.fx-mode-off .fx-game-over__particles,
+.fx-mode-off .fx-game-over__card,
+.fx-mode-off .fx-game-over__veil {
+  animation: none;
+}
+
+.fx-mode-off .fx-game-over__particles {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-turn-banner,
+  .fx-game-over__card,
+  .fx-game-over__veil,
+  .fx-mode-normal .match-card-view.can-attack,
+  .fx-mode-normal .match-board__side--opponent .match-card-view.is-targetable {
+    animation-name: fx-fade-short;
+  }
+
+  .fx-game-over__particles {
+    display: none;
+  }
+}
+
+@keyframes fx-fade-short {
+  from {
+    opacity: 1;
+  }
+}

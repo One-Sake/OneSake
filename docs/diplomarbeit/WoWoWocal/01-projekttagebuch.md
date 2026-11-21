@@ -296,6 +296,21 @@ Keine Commits. Sprint 3 wurde ab 06.10.2026 geplant.
   sitzt deshalb auf der Karte selbst.
 - Bildfolgen: `screenshots/2026-11-21_28-bildfolge-don.png`, `…_29-bildfolge-effekt.png`
 
+### 2026-11-21 16:10 – Zugwechsel-Banner und Spielende-Screen ★ 🤖
+- Commit „Show a turn banner and a new game over screen“: Bei jedem Zugwechsel läuft 0,9 s ein Banner
+  quer über das Board – „DEIN ZUG“ in Gold bzw. „ZUG DES GEGNERS“ gedämpft, mit Zugnummer; danach leuchtet
+  die eigene Aktionsleiste kurz auf. Spielende: „SIEG“ mit Goldkonfetti bzw. „NIEDERLAGE“ mit dunklem
+  Schleier, darunter beide Spieler mit Leader, Zahl der Züge, Modus und – bei Ranked – die
+  Kopfgeld-Änderung. Buttons „Revanche-Tisch erstellen“ (bestehender Erstellen-Ablauf mit neuem Code)
+  und „Zurück zur Lobby“.
+- **Überlegung:** Die Kopfgeld-Abfrage war im `BountyChangeBanner` versteckt; sie steckt jetzt im Hook
+  `useBountyChange`, den Banner und Spielende-Screen gemeinsam nutzen (eine Abfrage statt zwei). Der
+  Banner hält Eingaben nicht auf (`pointer-events: none`).
+- **Probleme/Lessons Learned:** Der Test-Bot hat den Sieg zuerst bei einem abgewehrten Angriff
+  aufgenommen – die Aufnahme wird jetzt wiederholt, bis das Spiel wirklich vorbei ist.
+- Bildfolgen/Screenshots: `screenshots/2026-11-21_30-bildfolge-zugwechsel.png`,
+  `…_31-bildfolge-sieg.png`, `…_32-niederlage.png`
+
 <!-- Neue Einträge unten anfügen. Vorlage:
 
 ### JJJJ-MM-TT HH:MM – Titel ★/👥/🤖

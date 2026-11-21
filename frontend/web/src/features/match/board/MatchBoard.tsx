@@ -10,6 +10,8 @@ import type {
 } from '../../../types/realtime';
 import { AttackArrow } from '../fx/AttackArrow';
 import { FxLayer } from '../fx/FxLayer';
+import { GameOverScreen } from '../fx/GameOverScreen';
+import { TurnBanner } from '../fx/TurnBanner';
 import { useFxSettings } from '../fx/fxSettings';
 import { useBoardFx } from '../fx/useBoardFx';
 import { boardZones, CHARACTER_SLOT_COUNT } from './boardLayout';
@@ -49,6 +51,10 @@ interface MatchBoardProps {
   joinedRoomCode?: string;
   // Log entries drive some animations (attack powers, triggers, effects).
   logEvents?: LogEventDto[];
+  // Game over screen: bounty change of a ranked match, "Revanche-Tisch erstellen", "Zurück zur Lobby".
+  bountyChange?: number | null;
+  onRematch?: () => void;
+  onLeaveRoom?: () => void;
   onSubmitChoice: (option: string, selectedCardInstanceId?: string, targetCardInstanceId?: string) => void;
   pending: boolean;
   // Shown in the middle of the board, between both Character rows (e.g. the Keep/Mulligan prompt).
@@ -119,12 +125,15 @@ function isZoneFilled(zone: BoardZoneDefinition, player: PlayerStateDto | null):
 
 export function MatchBoard({
   activePlayerId,
+  bountyChange = null,
   canSubmitChoice,
   currentPrompt,
   gameState,
   logEvents = [],
   midlineContent,
+  onLeaveRoom,
   onPreviewCard,
+  onRematch,
   onSubmitChoice,
   pending,
 }: MatchBoardProps) {
@@ -849,11 +858,18 @@ export function MatchBoard({
         onPreview={handlePreview}
       />
 
-      {isGameOver && (
-        <div className="match-board-game-over" role="status">
-          {gameState?.winnerPlayerId ? (didWin ? 'Victory!' : 'Defeat') : 'Game Over'}
-        </div>
+      {isGameOver && gameState && (
+        <GameOverScreen
+          bountyChange={bountyChange}
+          gameState={gameState}
+          localPlayer={localPlayer}
+          onLeaveRoom={onLeaveRoom}
+          onRematch={onRematch}
+          opponent={opponent}
+        />
       )}
+
+      <TurnBanner frameRef={frameRef} gameState={gameState} />
 
       <FxLayer ref={fxLayerRef} />
       {mode.kind === 'attack' && <AttackArrow attackerId={mode.attackerId} frameRef={frameRef} />}

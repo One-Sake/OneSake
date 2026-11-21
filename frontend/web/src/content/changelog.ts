@@ -30,6 +30,7 @@ export const CHANGELOG: ChangelogEntry[] = [
       'Log/Chat-Leiste lässt sich in der Breite ziehen und einklappen.',
       'Eigene Kartenrückseiten für Deck, Leben und DON!!.',
       'Animationen im Match: gezogene und gespielte Karten fliegen an ihren Platz, Karten des Gegners und Events werden groß gezeigt (Einstellung über das Zahnrad: Normal, Schnell, Aus).',
+      'Zugwechsel-Banner „DEIN ZUG“ / „ZUG DES GEGNERS“ und neuer Spielende-Screen mit Kopfgeld, Revanche-Tisch und Zurück zur Lobby.',
     ],
   },
   {

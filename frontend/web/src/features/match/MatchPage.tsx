@@ -463,6 +463,15 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
     [signalRClient],
   );
 
+  // Game over: a new table with a fresh code (the old room keeps its code), same deck and name.
+  const createRematchTable = (): void => {
+    setGameState(null);
+    setCurrentPrompt(null);
+    setChatMessages([]);
+    setLogEvents([]);
+    void enterRoom('create', createRoomCode());
+  };
+
   const createRoom = (): void => {
     const roomCode = roomCodeInput.trim() || createRoomCode();
     void enterRoom('create', roomCode);
@@ -638,6 +647,7 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
         onChatInputChange={setChatInput}
         onExitBoard={exitBoardMode}
         onLeaveRoom={() => void leaveRoom()}
+        onRematch={createRematchTable}
         onSendChat={sendChat}
         onStartMatch={() => void startMatch()}
         onSubmitChoice={(option, selectedCardInstanceId, targetCardInstanceId) =>

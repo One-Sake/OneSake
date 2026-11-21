@@ -57,6 +57,16 @@ Kontaktblätter wie oben.
 | [2026-11-21_28-bildfolge-don.png](2026-11-21_28-bildfolge-don.png) | DON!! an den Leader (Sicht des Gegners): DON!!-Karte fliegt auf den Leader, „+1000“ |
 | [2026-11-21_29-bildfolge-effekt.png](2026-11-21_29-bildfolge-effekt.png) | Otama [On Play] −2000: nach der Auswahl goldener Puls an der Quelle und Linie zum Ziel, Power rot |
 
+## Bildfolgen: Zugwechsel und Spielende
+
+Kontaktblätter wie oben.
+
+| Datei | Zeigt |
+|-------|-------|
+| [2026-11-21_30-bildfolge-zugwechsel.png](2026-11-21_30-bildfolge-zugwechsel.png) | „DEIN ZUG · Zug 2“ läuft über das Board, danach leuchtet die Aktionsleiste |
+| [2026-11-21_31-bildfolge-sieg.png](2026-11-21_31-bildfolge-sieg.png) | Letzter Treffer, dann „SIEG“ mit Goldkonfetti, Leader, Zügen und Kopfgeld (+฿ 20.000, kommt nach ~1,5 s vom Server) |
+| [2026-11-21_32-niederlage.png](2026-11-21_32-niederlage.png) | „NIEDERLAGE“ mit dunklem Schleier, Kopfgeld −฿ 20.000, Revanche-Tisch / Zurück zur Lobby |
+
 ## Noch aufzunehmen (mit laufendem Backend)
 
 - Deckbuilder mit Karten, Filtern und fertigem Deck

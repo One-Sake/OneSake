@@ -20,6 +20,7 @@ import { MatchBoard } from './board/MatchBoard';
 import { MatchCardPreview } from './board/MatchCardPreview';
 import { DiceRoll } from './dice/DiceRoll';
 import { formatPhase } from './matchFormatters';
+import { useBountyChange } from './useBountyChange';
 import { FxSettingsMenu } from './fx/FxSettingsMenu';
 import './fx/fx.css';
 
@@ -70,6 +71,8 @@ interface FullscreenMatchViewProps {
   onChatInputChange: (value: string) => void;
   onExitBoard: () => void;
   onLeaveRoom: () => void;
+  // Game over: open a new table for a rematch.
+  onRematch?: () => void;
   onSendChat: (event: FormEvent) => void;
   onStartMatch: () => void;
   onSubmitChoice: (option: string, selectedCardInstanceId?: string, targetCardInstanceId?: string) => void;
@@ -91,6 +94,7 @@ export function FullscreenMatchView({
   onChatInputChange,
   onExitBoard,
   onLeaveRoom,
+  onRematch,
   onSendChat,
   onStartMatch,
   onSubmitChoice,
@@ -118,6 +122,7 @@ export function FullscreenMatchView({
     players.find((player) => player.playerId === gameState?.viewerPlayerId) ?? players[0] ?? null;
   const hasOpponent = players.some((player) => player.playerId !== viewerPlayer?.playerId);
   const statusMessages: string[] = [];
+  const bountyChange = useBountyChange(gameState);
 
   // Everything in the feed counts as read while it is visible.
   useEffect(() => {
@@ -275,11 +280,14 @@ export function FullscreenMatchView({
                 pending={pending}
               />
             }
+            bountyChange={bountyChange}
+            onLeaveRoom={onLeaveRoom}
             onPreviewCard={setPreviewCard}
+            onRematch={onRematch}
             onSubmitChoice={onSubmitChoice}
             pending={pending}
           />
-          <BountyChangeBanner gameState={gameState} />
+          <BountyChangeBanner change={bountyChange} hidden={gameState?.phase === 'GameOver'} />
           <DiceRoll
             canSubmitChoice={canSubmitChoice}
             currentPrompt={currentPrompt}
