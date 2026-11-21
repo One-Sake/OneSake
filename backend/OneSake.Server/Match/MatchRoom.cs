@@ -119,8 +119,10 @@ public sealed class MatchRoom
         IDiceRoller? diceRoller = null,
         ulong? seed = null,
         MatchRoomOptions? options = null,
-        IClock? clock = null)
+        IClock? clock = null,
+        TimerMode timerMode = TimerMode.Off)
     {
+        TimerMode = timerMode;
         _roomCode = roomCode;
         IsQuickMatch = isQuickMatch;
         _customDiceRoller = diceRoller;
@@ -163,6 +165,9 @@ public sealed class MatchRoom
 
     // Quick Match rooms are private and do not appear in the public room list.
     public bool IsQuickMatch { get; }
+
+    // Off for tests, replays and the simulator (only explicit TIMEOUT inputs).
+    public TimerMode TimerMode { get; }
 
     #region ROOM MEMBERSHIP
 
@@ -475,7 +480,10 @@ public sealed class MatchRoom
     {
         lock (_sync)
         {
-            return ApplyExpiredDeadlines(_clock.UtcNow) ? CreateUpdate() : null;
+            var now = _clock.UtcNow;
+            var changed = ApplyExpiredDeadlines(now);
+            changed |= CheckTimer(now);
+            return changed ? CreateUpdate() : null;
         }
     }
 
@@ -577,7 +585,8 @@ public sealed class MatchRoom
                 MaxPlayers = MaxPlayers,
                 Phase = _phase,
                 PlayerNames = _players.Select(player => player.DisplayName).ToArray(),
-                CreatedAtUnixMs = _createdAtUtc.ToUnixTimeMilliseconds()
+                CreatedAtUnixMs = _createdAtUtc.ToUnixTimeMilliseconds(),
+                TimerMode = TimerModeName(TimerMode)
             };
         }
     }
@@ -668,6 +677,7 @@ public sealed class MatchRoom
             }
 
             _recentLog.Clear();
+            ResetTimer();
             _turnNumber = 1;
             _phase = MatchPhase.TurnOrder;
             _matchStartedAtUtc = _clock.UtcNow;
@@ -776,6 +786,19 @@ public sealed class MatchRoom
     {
         lock (_sync)
         {
+            var player = ApplyChoice(submission);
+
+            // Only valid decisions are recorded (invalid ones throw and change nothing).
+            Record(player, RecordedInputKinds.Choice, submission with { PlayerId = string.Empty });
+            return CreateUpdate();
+        }
+    }
+
+    // Checks and runs one decision. Throws (and changes nothing) when it is not allowed.
+    // Used by SubmitChoice and by the automatic decisions when the time ran out.
+    private PlayerState ApplyChoice(ChoiceSubmissionDto submission)
+    {
+        {
             if (!_openChoicePrompts.TryGetValue(submission.ChoiceId, out var prompt))
             {
                 throw new InvalidOperationException("Choice prompt was not found.");
@@ -854,9 +877,7 @@ public sealed class MatchRoom
                     throw new InvalidOperationException($"Unsupported choice kind '{prompt.Kind}'.");
             }
 
-            // Only valid decisions are recorded (invalid ones throw above and change nothing).
-            Record(player, RecordedInputKinds.Choice, submission with { PlayerId = string.Empty });
-            return CreateUpdate();
+            return player;
         }
     }
 
@@ -1175,6 +1196,11 @@ public sealed class MatchRoom
             {
                 _endTurnAction.Execute(player, _phase, _activePlayerId);
                 _openChoicePrompts.Remove(prompt.ChoiceId);
+                // Ended in time by the player: the streak of turn timeouts starts again.
+                if (!_autoDeciding)
+                {
+                    _turnTimeouts[player.PlayerId] = 0;
+                }
 
                 EnterEndPhase(player);
 
@@ -1720,6 +1746,7 @@ public sealed class MatchRoom
     private void BeginTurn(PlayerState player)
     {
         _activePlayerId = player.PlayerId;
+        _turnTimeLeft = Scaled(_options.Timer.TurnSeconds);
         player.TurnsStarted += 1;
         _events.Publish(new TurnStarted(player.PlayerId, _turnNumber));
         EnterRefreshPhase(player);
@@ -1752,6 +1779,9 @@ public sealed class MatchRoom
             player.DonToActivateAtEndOfTurn = 0;
             CreateLogEvent("EFFECT", $"{player.DisplayName} sets {amount} DON!! as active.");
         }
+
+        // Time bank bonus after every own turn (up to the maximum).
+        AddTimeBankBonus(player.PlayerId);
 
         // Rule 6-6-1-3: effects that last "during this turn" end.
         EffectDurations.EndOfTurn(_context, _turnNumber);
@@ -1877,10 +1907,384 @@ public sealed class MatchRoom
 
     #endregion
 
+    #region TIMER
+
+    // The clock runs for one player at a time ("segment"): TURN for the turn player, RESPONSE for a
+    // decision of the other player, MULLIGAN for both, TURN_ORDER for the dice winner. The normal
+    // time of a segment is used first, then the time bank (TURN, RESPONSE). Everything is paused
+    // while a player is disconnected. Timeouts are decided by MatchRoom itself and recorded as
+    // TIMEOUT inputs, so a replay comes to the same result without a clock.
+    public const string TimerTurn = "TURN";
+    public const string TimerResponse = "RESPONSE";
+    public const string TimerMulligan = "MULLIGAN";
+    public const string TimerTurnOrder = "TURN_ORDER";
+
+    private sealed record TimerSegment(string Key, string PlayerId, string Kind, DateTimeOffset StartedAt, TimeSpan BaseLeft, bool UsesBank)
+    {
+        public DateTimeOffset BaseDeadline => StartedAt + BaseLeft;
+    }
+
+    private TimerSegment? _segment;
+    // The normal time left of the running turn (TURN segments of this turn share it).
+    private TimeSpan _turnTimeLeft;
+    // A paused segment keeps its time left when it starts again (same key).
+    private string? _pausedKey;
+    private TimeSpan _pausedBaseLeft;
+    private readonly Dictionary<string, TimeSpan> _timeBanks = new(StringComparer.Ordinal);
+    // Own turns in a row that ran out of time.
+    private readonly Dictionary<string, int> _turnTimeouts = new(StringComparer.Ordinal);
+    // True while the server decides for a player whose time ran out.
+    private bool _autoDeciding;
+
+    private static string TimerModeName(TimerMode mode) => mode switch
+    {
+        TimerMode.Relaxed => "RELAXED",
+        TimerMode.Off => "OFF",
+        _ => "STANDARD"
+    };
+
+    private TimeSpan Scaled(int seconds)
+    {
+        return TimeSpan.FromSeconds(Math.Max(0, seconds) * (TimerMode == TimerMode.Relaxed ? 2 : 1));
+    }
+
+    private void ResetTimer()
+    {
+        _segment = null;
+        _pausedKey = null;
+        _turnTimeLeft = Scaled(_options.Timer.TurnSeconds);
+        _timeBanks.Clear();
+        _turnTimeouts.Clear();
+        foreach (var player in _players)
+        {
+            _timeBanks[player.PlayerId] = Scaled(_options.Timer.TimeBankStartSeconds);
+            _turnTimeouts[player.PlayerId] = 0;
+        }
+    }
+
+    private TimeSpan TimeBank(string playerId) => _timeBanks.TryGetValue(playerId, out var bank) ? bank : TimeSpan.Zero;
+
+    private void AddTimeBankBonus(string playerId)
+    {
+        var bank = TimeBank(playerId) + Scaled(_options.Timer.TimeBankBonusSeconds);
+        var max = Scaled(_options.Timer.TimeBankMaxSeconds);
+        _timeBanks[playerId] = bank > max ? max : bank;
+    }
+
+    // Which clock should run in the current state? null = none (timer off, paused, no decision).
+    private (string Key, string PlayerId, string Kind, TimeSpan Base, bool UsesBank)? DesiredSegment()
+    {
+        if (TimerMode == TimerMode.Off || !IsMatchRunning || _seats.Values.Any(seat => seat.ConnectionId is null))
+        {
+            return null;
+        }
+
+        var prompts = _openChoicePrompts.Values.OrderBy(PromptNumber).ToList();
+        if (_phase == MatchPhase.TurnOrder)
+        {
+            var order = prompts.FirstOrDefault(prompt => prompt.Kind == TurnOrderDecisionKind);
+            return order is null ? null : ($"order:{order.ChoiceId}", order.PlayerId, TimerTurnOrder, Scaled(_options.Timer.TurnOrderSeconds), false);
+        }
+
+        if (_phase == MatchPhase.Mulligan)
+        {
+            return prompts.Any(prompt => prompt.Kind == MulliganDecisionKind)
+                ? ("mulligan", string.Empty, TimerMulligan, Scaled(_options.Timer.MulliganSeconds), false)
+                : null;
+        }
+
+        var response = prompts.FirstOrDefault(prompt => prompt.PlayerId != _activePlayerId);
+        if (response is not null)
+        {
+            return ($"response:{response.ChoiceId}", response.PlayerId, TimerResponse, Scaled(_options.Timer.ResponseSeconds), true);
+        }
+
+        return prompts.Any(prompt => prompt.PlayerId == _activePlayerId)
+            ? ($"turn:{_turnNumber}", _activePlayerId, TimerTurn, _turnTimeLeft, true)
+            : null;
+    }
+
+    private void SyncTimer(DateTimeOffset now)
+    {
+        var desired = DesiredSegment();
+        if (_segment is not null && (desired is null || desired.Value.Key != _segment.Key))
+        {
+            StopSegment(now);
+        }
+
+        if (_segment is null && desired is { } next)
+        {
+            var baseLeft = next.Key == _pausedKey ? _pausedBaseLeft : next.Base;
+            _segment = new TimerSegment(next.Key, next.PlayerId, next.Kind, now, baseLeft, next.UsesBank);
+        }
+    }
+
+    // Charges the used time: first the normal time, then the time bank.
+    private void StopSegment(DateTimeOffset now)
+    {
+        var segment = _segment!;
+        _segment = null;
+        var used = now - segment.StartedAt;
+        if (used < TimeSpan.Zero)
+        {
+            used = TimeSpan.Zero;
+        }
+
+        var baseUsed = used < segment.BaseLeft ? used : segment.BaseLeft;
+        var baseLeft = segment.BaseLeft - baseUsed;
+        if (segment.UsesBank && used > baseUsed)
+        {
+            var bank = TimeBank(segment.PlayerId) - (used - baseUsed);
+            _timeBanks[segment.PlayerId] = bank < TimeSpan.Zero ? TimeSpan.Zero : bank;
+        }
+
+        if (segment.Key == $"turn:{_turnNumber}" && segment.PlayerId == _activePlayerId)
+        {
+            _turnTimeLeft = baseLeft;
+        }
+
+        _pausedKey = segment.Key;
+        _pausedBaseLeft = baseLeft;
+    }
+
+    private DateTimeOffset SegmentEnd(TimerSegment segment)
+    {
+        return segment.BaseDeadline + (segment.UsesBank ? TimeBank(segment.PlayerId) : TimeSpan.Zero);
+    }
+
+    // Called by Tick: when the time (and the time bank) of the running clock is over, the server
+    // decides for the player. Returns true when something changed.
+    private bool CheckTimer(DateTimeOffset now)
+    {
+        SyncTimer(now);
+        var segment = _segment;
+        if (segment is null || now < SegmentEnd(segment) + TimeSpan.FromSeconds(Math.Max(0, _options.Timer.ToleranceSeconds)))
+        {
+            return false;
+        }
+
+        StopSegment(now);
+        if (segment.UsesBank)
+        {
+            _timeBanks[segment.PlayerId] = TimeSpan.Zero;
+        }
+
+        if (segment.Kind == TimerMulligan)
+        {
+            // Both players decide at the same time: everybody who has not decided keeps the hand.
+            foreach (var playerId in _openChoicePrompts.Values.Where(prompt => prompt.Kind == MulliganDecisionKind)
+                         .OrderBy(PromptNumber).Select(prompt => prompt.PlayerId).ToList())
+            {
+                ApplyTimeoutCore(playerId, TimerMulligan);
+            }
+        }
+        else
+        {
+            ApplyTimeoutCore(segment.PlayerId, segment.Kind);
+        }
+
+        _pausedKey = null;
+        return true;
+    }
+
+    // Replay of a recorded TIMEOUT input (and the same code path as a live timeout).
+    public MatchUpdate ApplyTimeout(string playerId, string kind)
+    {
+        lock (_sync)
+        {
+            ApplyTimeoutCore(playerId, kind);
+            return CreateUpdate();
+        }
+    }
+
+    // The time of a player ran out. The decisions are fixed and documented (docs/turn-timer.md):
+    // mulligan KEEP, turn order GO_FIRST, optional things are declined, a required choice takes the
+    // first valid option, the own turn ends. Two own turns in a row without time = defeat TIMEOUT.
+    private void ApplyTimeoutCore(string playerId, string kind)
+    {
+        if (!IsMatchRunning)
+        {
+            return;
+        }
+
+        var player = GetPlayerSlot(playerId);
+        var opponent = GetPlayerSlot(GetOtherPlayerId(playerId));
+
+        if (kind == TimerTurn)
+        {
+            _turnTimeouts[playerId] = (_turnTimeouts.TryGetValue(playerId, out var count) ? count : 0) + 1;
+            if (_turnTimeouts[playerId] >= 2)
+            {
+                CreateLogEvent("TIMEOUT", $"⏱ Zeit abgelaufen – {player.DisplayName}: zweiter Zug in Folge ohne Zeit.");
+                EndGame(opponent, $"{opponent.DisplayName} gewinnt – bei {player.DisplayName} ist die Zeit abgelaufen.", MatchEndReasons.Timeout);
+                Record(player, RecordedInputKinds.Timeout, new { kind });
+                return;
+            }
+        }
+
+        var text = kind switch
+        {
+            TimerTurn => "Zug beendet",
+            TimerMulligan => "Starthand behalten",
+            TimerTurnOrder => "beginnt selbst",
+            _ => "keine Reaktion"
+        };
+
+        _autoDeciding = true;
+        try
+        {
+            // A turn: decide everything that is open until the turn has ended. Otherwise only the
+            // decision that ran out of time (the next one gets its own time).
+            var turnNumber = _turnNumber;
+            for (var guard = 0; guard < 100 && IsMatchRunning; guard += 1)
+            {
+                var prompt = _openChoicePrompts.Values
+                    .Where(entry => entry.PlayerId == playerId)
+                    .Where(entry => kind != TimerMulligan || entry.Kind == MulliganDecisionKind)
+                    .OrderBy(PromptNumber)
+                    .FirstOrDefault();
+                if (prompt is null)
+                {
+                    break;
+                }
+
+                if (!AutoDecide(prompt))
+                {
+                    CreateLogEvent("TIMEOUT", $"⏱ {player.DisplayName}: keine gültige automatische Entscheidung für {prompt.Kind}.");
+                    break;
+                }
+
+                if (kind != TimerTurn || _turnNumber != turnNumber || _activePlayerId != playerId)
+                {
+                    break;
+                }
+            }
+        }
+        finally
+        {
+            _autoDeciding = false;
+        }
+
+        CreateLogEvent("TIMEOUT", $"⏱ Zeit abgelaufen – {player.DisplayName}: automatisch {text}.");
+        Record(player, RecordedInputKinds.Timeout, new { kind });
+    }
+
+    // Tries the automatic answers of a prompt in a fixed order; the first valid one is used.
+    private bool AutoDecide(ChoicePromptDto prompt)
+    {
+        foreach (var candidate in AutoAnswers(prompt))
+        {
+            try
+            {
+                ApplyChoice(candidate);
+                return true;
+            }
+            catch (InvalidOperationException)
+            {
+                // Not possible right now: try the next answer.
+            }
+        }
+
+        return false;
+    }
+
+    private static IEnumerable<ChoiceSubmissionDto> AutoAnswers(ChoicePromptDto prompt)
+    {
+        ChoiceSubmissionDto Answer(string option, string? card = null, IReadOnlyList<string>? order = null) => new()
+        {
+            ChoiceId = prompt.ChoiceId,
+            PlayerId = prompt.PlayerId,
+            SelectedOption = option,
+            SelectedCardInstanceId = card,
+            OrderedIds = order
+        };
+
+        switch (prompt.Kind)
+        {
+            case TurnOrderDecisionKind:
+                yield return Answer(GoFirstOption);
+                yield break;
+            case MulliganDecisionKind:
+                yield return Answer("KEEP");
+                yield break;
+            case MainActionKind:
+                yield return Answer("END_TURN");
+                yield break;
+            case BlockStepKind:
+                yield return Answer("NO_BLOCK");
+                yield break;
+            case CounterStepKind:
+                yield return Answer("PASS");
+                yield break;
+            case TriggerDecisionKind:
+                yield return Answer(DeclineTriggerOption);
+                yield break;
+            case ManualEffectKind:
+                yield return Answer(ManualDoneOption);
+                yield break;
+            case OrderTriggersKind:
+                // The order in which the effects were offered.
+                yield return Answer(OrderOption, order: prompt.Triggers.Select(trigger => trigger.Id).ToArray());
+                yield break;
+        }
+
+        // EFFECT_CHOICE: decline ("NO"), stop choosing ("DONE"), then the first card that can be
+        // chosen, then "YES", then every other option in the order they are offered.
+        var options = prompt.Options;
+        foreach (var option in new[] { EffectChoiceRequest.No, EffectChoiceRequest.Done })
+        {
+            if (options.Contains(option))
+            {
+                yield return Answer(option);
+            }
+        }
+
+        if (options.Contains(EffectChoiceRequest.Select))
+        {
+            foreach (var card in prompt.Cards)
+            {
+                yield return Answer(EffectChoiceRequest.Select, card.InstanceId);
+            }
+        }
+
+        foreach (var option in options.Where(option =>
+                     option is not (EffectChoiceRequest.No or EffectChoiceRequest.Done or EffectChoiceRequest.Select)))
+        {
+            yield return Answer(option);
+        }
+    }
+
+    private TimerDto? CreateTimerSnapshot()
+    {
+        var segment = _segment;
+        if (segment is null)
+        {
+            return null;
+        }
+
+        return new TimerDto
+        {
+            ActivePlayerId = segment.PlayerId,
+            Kind = segment.Kind,
+            DeadlineUnixMs = segment.BaseDeadline.ToUnixTimeMilliseconds(),
+            UsesTimeBank = segment.UsesBank,
+            UsingTimeBank = segment.UsesBank && _clock.UtcNow >= segment.BaseDeadline,
+            TimeBankMs = _players.ToDictionary(
+                player => player.PlayerId,
+                player => (long)TimeBank(player.PlayerId).TotalMilliseconds,
+                StringComparer.Ordinal),
+            Mode = TimerModeName(TimerMode)
+        };
+    }
+
+    #endregion
+
     #region SNAPSHOTS
     private MatchUpdate CreateUpdate()
     {
         _lastActivityUtc = _clock.UtcNow;
+        // Start, stop or pause the clock for the new state (before the snapshots are made).
+        SyncTimer(_lastActivityUtc);
 
         // The match is over (won, or aborted because a player left): the recording is complete.
         if (_recorder is { IsFinished: false } && _phase is MatchPhase.GameOver or MatchPhase.Lobby)
@@ -1931,7 +2335,9 @@ public sealed class MatchRoom
                 RecordedInputs = _recorder?.InputCount ?? 0,
                 ServerTimeUnixMs = _clock.UtcNow.ToUnixTimeMilliseconds(),
                 EndReason = _phase == MatchPhase.GameOver ? _endReason : null,
-                ViewerReconnectGraceMs = ViewerReconnectGraceMs(viewerPlayerId)
+                ViewerReconnectGraceMs = ViewerReconnectGraceMs(viewerPlayerId),
+                Timer = CreateTimerSnapshot(),
+                TimerMode = TimerModeName(TimerMode)
             };
         }
     }

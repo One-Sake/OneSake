@@ -6,6 +6,8 @@ public static class MatchEndReasons
     public const string DeckOut = "DECK_OUT";
     public const string Concede = "CONCEDE";
     public const string Disconnect = "DISCONNECT";
+    // Two own turns in a row ran out of time (turn time and time bank).
+    public const string Timeout = "TIMEOUT";
 }
 
 public sealed record MatchPlayerResult(string? GuestId, string DisplayName, string LeaderCardId);

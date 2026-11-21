@@ -104,6 +104,9 @@ Commit-Beschreibungen, Dokumentation. Stand: 2026-11-20.
 | Gemeinsames Designsystem `ui.css` | Einheitliches Aussehen | Jede Seite eigenes CSS |
 | CSS-Grid-Board mit `--card-w` und `ResizeObserver` | Passt auf jedes Gerät | Festes Hintergrundbild |
 | `prefers-reduced-motion` überall respektiert | Barrierefreiheit | – |
+| Zug-Timer serverseitig: 90 s Zug + Zeitbank 180 s (+10 s/Zug, max. 240 s), 25 s Antwortzeit, 2 s Toleranz (21.11.) | Niemand kann das Match endlos aufhalten; Zeitbank verzeiht einzelne lange Züge | Feste Zeit pro Aktion (zu hektisch), Zeit nur im Client (manipulierbar) |
+| Nur eine Uhr läuft (Schachuhr-Prinzip), Pause während Reconnect (21.11.) | Fair: Wer auf den Gegner wartet, verliert keine Zeit | Beide Uhren gleichzeitig |
+| Auto-Aktion bei Timeout: ablehnen bzw. erste gültige Option, Zug beenden; 2 Zug-Timeouts in Folge = Niederlage `TIMEOUT` (21.11.) | Vorhersagbar und deterministisch (Replay identisch) | Zufällige Auswahl, sofortige Niederlage beim ersten Timeout |
 | Countdowns mit Serverzeit-Offset (21.11.) | Falsch gehende Handyuhren verfälschen keine Fristen | Lokale Uhr (ungenau), nur Restsekunden schicken (springt bei Lag) |
 | Rejoin-Daten in sessionStorage **und** localStorage (21.11.) | Neuladen und App neu öffnen funktionieren; Daten werden nach Spielende gelöscht | Nur sessionStorage (App neu öffnen ginge nicht), Cookie |
 | Eigener Branch `logic` für die Regel-Engine | Großer Umbau, ohne `dev` zu blockieren | Alles auf `dev` |

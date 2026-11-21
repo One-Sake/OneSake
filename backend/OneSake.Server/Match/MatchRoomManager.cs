@@ -21,7 +21,8 @@ public sealed class MatchRoomManager
         _clock = clock ?? SystemClock.Instance;
     }
 
-    public MatchRoom Create(string roomCode)
+    // Private tables choose their timer (Standard, Relaxed, Off).
+    public MatchRoom Create(string roomCode, TimerMode timerMode = TimerMode.Standard)
     {
         lock (_sync)
         {
@@ -30,7 +31,7 @@ public sealed class MatchRoomManager
                 throw new InvalidOperationException($"Room {roomCode} already exists.");
             }
 
-            var createdRoom = new MatchRoom(roomCode, diceRoller: _diceRollerFactory(), options: _options, clock: _clock);
+            var createdRoom = new MatchRoom(roomCode, diceRoller: _diceRollerFactory(), options: _options, clock: _clock, timerMode: timerMode);
             _rooms[roomCode] = createdRoom;
             return createdRoom;
         }
@@ -49,7 +50,8 @@ public sealed class MatchRoomManager
             }
             while (_rooms.ContainsKey(roomCode));
 
-            room = new MatchRoom(roomCode, isQuickMatch: true, diceRoller: _diceRollerFactory(), options: _options, clock: _clock);
+            // Ranked: the timer is always on.
+            room = new MatchRoom(roomCode, isQuickMatch: true, diceRoller: _diceRollerFactory(), options: _options, clock: _clock, timerMode: TimerMode.Standard);
             _rooms[roomCode] = room;
         }
 

@@ -270,6 +270,25 @@ Keine Commits. Sprint 3 wurde ab 06.10.2026 geplant.
   40 Sekunden auf – kürzer als die Schonfrist.
 - Screenshots: `screenshots/2026-11-21_01-reconnect-banner.png` bis `screenshots/2026-11-21_06-niederlage-verbindung.png`
 
+### 2026-11-21 13:05 – Zug-Timer im Backend ★ 🤖
+- Commit „Add a server-side turn timer with a time bank“: 90 s pro Zug, danach die persönliche
+  Zeitbank (Start 180 s, +10 s nach jedem eigenen Zug, max. 240 s); 25 s Antwortzeit für Block, Counter,
+  Trigger usw.; Mulligan 30 s und Würfelentscheidung 20 s ohne Zeitbank; 2 s Toleranz für Lag. Läuft die
+  Zeit ab, entscheidet der Server automatisch in einer festen, dokumentierten Reihenfolge
+  (`docs/turn-timer.md`), z. B. Counter → `PASS`, eigener Zug → Zug beenden. Zwei eigene Züge in Folge
+  ohne Zeit = Niederlage mit neuem Endgrund `TIMEOUT`. Modi Standard / Entspannt (doppelt) / Aus,
+  Quick Match immer Standard. Der Snapshot enthält jetzt `timer` (wessen Uhr, Art, Frist, Zeitbanken).
+  11 neue Tests mit der Fake-Uhr (u. a. Zeitbank, Counter-Timeout, Pause bei Disconnect, Replay).
+- **Überlegung:** Es läuft immer nur *eine* Uhr – wie bei einer Schachuhr. Während der Gegner über
+  einen Counter nachdenkt, steht die Zugzeit des Angreifers. Die automatische Entscheidung lehnt immer
+  ab, wo es geht („nichts tun“ ist am wenigsten überraschend), und nimmt sonst die erste gültige
+  Option – so ist das Ergebnis vorhersagbar und im Replay identisch. Alternativen: Zufällige Auswahl
+  (nicht deterministisch), sofortige Niederlage beim ersten Timeout (zu hart bei kurzem Lag).
+- **Probleme/Lessons Learned:** Die Logik von `SubmitChoice` musste in „prüfen/ausführen“ und
+  „aufzeichnen“ geteilt werden, damit ein Timeout als *ein* Input `TIMEOUT` aufgezeichnet wird und das
+  Replay ihn mit demselben Code nachspielt. In den Tests fiel auf, dass hier niemand im eigenen ersten
+  Zug angreifen darf – der Counter-Test greift deshalb in Zug 3 an.
+
 <!-- Neue Einträge unten anfügen. Vorlage:
 
 ### JJJJ-MM-TT HH:MM – Titel ★/👥/🤖

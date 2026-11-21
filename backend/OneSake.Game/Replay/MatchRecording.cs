@@ -60,6 +60,8 @@ public static class RecordedInputKinds
     public const string Reconnect = "RECONNECT";
     // The reconnect deadline ran out: the player loses (end reason DISCONNECT).
     public const string DisconnectTimeout = "DISCONNECT_TIMEOUT";
+    // The time ran out: the server decided automatically. Payload: { "kind": "TURN" | "RESPONSE" | ... }.
+    public const string Timeout = "TIMEOUT";
 }
 
 public static class MatchRecordingJson

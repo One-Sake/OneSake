@@ -32,10 +32,10 @@ public sealed class SessionMatch
     public List<MatchUpdate> Updates { get; } = [];
 
     // Both players in the lobby with decks, the match is not started.
-    public static SessionMatch CreateLobby(MatchRoomOptions? options = null, bool isQuickMatch = false, ulong seed = 7)
+    public static SessionMatch CreateLobby(MatchRoomOptions? options = null, bool isQuickMatch = false, ulong seed = 7, TimerMode timer = TimerMode.Off)
     {
         var clock = new FakeClock();
-        var room = new MatchRoom("SESS", isQuickMatch, seed: seed, options: options, clock: clock);
+        var room = new MatchRoom("SESS", isQuickMatch, seed: seed, options: options, clock: clock, timerMode: timer);
         var (_, alice) = room.JoinConnection("conn-a", "Alice", "11111111-1111-4111-8111-111111111111");
         var (_, bob) = room.JoinConnection("conn-b", "Bob", "22222222-2222-4222-8222-222222222222");
         room.SetPlayerDeck(alice.PlayerId, Deck());
@@ -44,9 +44,9 @@ public sealed class SessionMatch
     }
 
     // Started match: the dice winner lets Alice go first; with mulligan both players keep.
-    public static SessionMatch StartInMain(MatchRoomOptions? options = null, bool isQuickMatch = false, ulong seed = 7)
+    public static SessionMatch StartInMain(MatchRoomOptions? options = null, bool isQuickMatch = false, ulong seed = 7, TimerMode timer = TimerMode.Off)
     {
-        var match = CreateLobby(options, isQuickMatch, seed);
+        var match = CreateLobby(options, isQuickMatch, seed, timer);
         match.Remember(match.Room.StartMatch());
         var order = match.Prompt("TURN_ORDER_DECISION");
         match.Submit(order, order.PlayerId == match.Alice.PlayerId ? "GO_FIRST" : "GO_SECOND");

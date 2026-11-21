@@ -51,6 +51,9 @@ public sealed class MatchRoomReplay : IReplayTarget
             // Connection events change nothing in the game.
             RecordedInputKinds.Disconnect or RecordedInputKinds.Reconnect => null,
             RecordedInputKinds.DisconnectTimeout => Room.ApplyDisconnectTimeout(playerId),
+            RecordedInputKinds.Timeout => Room.ApplyTimeout(
+                playerId,
+                input.Payload.TryGetProperty("kind", out var kind) ? kind.GetString() ?? string.Empty : string.Empty),
             _ => throw new InvalidOperationException($"Unknown input kind '{input.Kind}'.")
         };
 

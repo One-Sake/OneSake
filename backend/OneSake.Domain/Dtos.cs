@@ -179,6 +179,30 @@ public record GameStateDto
 
     // How long the viewer's seat is kept after a lost connection (for the "reconnecting" countdown).
     public long? ViewerReconnectGraceMs { get; init; }
+
+    // Turn timer (null: no timer running, e.g. timer off, lobby, or paused while a player is disconnected).
+    public TimerDto? Timer { get; init; }
+
+    // "STANDARD", "RELAXED" or "OFF".
+    public string TimerMode { get; init; } = "OFF";
+}
+
+// The running clock. The server decides; the client only shows the countdown.
+public record TimerDto
+{
+    // Whose clock runs ("" for the mulligan: both players at the same time).
+    public string ActivePlayerId { get; init; } = string.Empty;
+    // "TURN", "RESPONSE", "MULLIGAN" or "TURN_ORDER".
+    public string Kind { get; init; } = string.Empty;
+    // End of the normal time (server time). After that the time bank runs (if the kind has one).
+    public long DeadlineUnixMs { get; init; }
+    // True when this kind can use the time bank (turn and response).
+    public bool UsesTimeBank { get; init; }
+    // True when the normal time is already over at the time of the snapshot.
+    public bool UsingTimeBank { get; init; }
+    // Time bank of every player (for the running player: what was left when this clock started).
+    public IReadOnlyDictionary<string, long> TimeBankMs { get; init; } = new Dictionary<string, long>();
+    public string Mode { get; init; } = "STANDARD";
 }
 
 public record DiceRollDto
@@ -268,6 +292,8 @@ public record RoomSummaryDto
     public MatchPhase Phase { get; init; } = MatchPhase.Lobby;
     public IReadOnlyList<string> PlayerNames { get; init; } = [];
     public long CreatedAtUnixMs { get; init; }
+    // "STANDARD", "RELAXED" or "OFF".
+    public string TimerMode { get; init; } = "STANDARD";
 }
 
 // Sent only to the player who took the seat. The token lets the player come back to the seat
