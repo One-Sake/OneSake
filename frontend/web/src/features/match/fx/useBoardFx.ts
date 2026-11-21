@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { RefObject } from 'react';
 
 import type { ChoicePromptDto, GameStateDto, LogEventDto } from '../../../types/realtime';
-import { boxOf, type Box } from './fxDom';
+import { boxOf, isOnBoard, type Box } from './fxDom';
 import { logFx, promptFx, snapshotFx, type FxEnv } from './fxPlayers';
 import { FxQueue } from './fxQueue';
 import { getFxSettings } from './fxSettings';
@@ -75,7 +75,7 @@ export function useBoardFx({ currentPrompt, frameRef, gameState, layerRef, logEv
       const next = new Map<string, Box>();
       frame.querySelectorAll<HTMLElement>('[data-fx-card]').forEach((element) => {
         const box = boxOf(layer, element);
-        if (box && element.dataset.fxCard) {
+        if (box && element.dataset.fxCard && isOnBoard(element)) {
           next.set(element.dataset.fxCard, box);
         }
       });

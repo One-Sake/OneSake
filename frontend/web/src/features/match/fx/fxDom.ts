@@ -19,7 +19,13 @@ export function cardElement(root: ParentNode | null, instanceId: string): HTMLEl
     return null;
   }
 
-  return root.querySelector<HTMLElement>(`[data-fx-card="${CSS.escape(instanceId)}"]`);
+  // Cards in dialogs (effect choice) show the same card again - only the one on the board counts.
+  const matches = root.querySelectorAll<HTMLElement>(`[data-fx-card="${CSS.escape(instanceId)}"]`);
+  return [...matches].find((element) => isOnBoard(element)) ?? null;
+}
+
+export function isOnBoard(element: Element): boolean {
+  return !element.closest('.effect-choice-overlay, .fx-layer');
 }
 
 export function zoneElement(root: ParentNode | null, side: string, kind: string): HTMLElement | null {

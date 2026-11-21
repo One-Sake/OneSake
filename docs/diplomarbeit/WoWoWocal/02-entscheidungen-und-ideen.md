@@ -114,6 +114,7 @@ Commit-Beschreibungen, Dokumentation. Stand: 2026-11-20.
 | CSS-Grid-Board mit `--card-w` und `ResizeObserver` | Passt auf jedes Gerät | Festes Hintergrundbild |
 | `prefers-reduced-motion` überall respektiert | Barrierefreiheit | – |
 | Eigener Branch `logic` für die Regel-Engine | Großer Umbau, ohne `dev` zu blockieren | Alles auf `dev` |
+| Spielereignisse aus dem Vergleich zweier Snapshots erkennen (21.11.) | Funktioniert ohne Änderung an Server und DTOs; Logs liefern nur Text | Strukturierte Ereignisse vom Server (Backend-Änderung, nicht Teil dieses Auftrags) |
 | Animationen als Schicht über dem sofort gültigen Zustand (21.11.) | Board ist immer korrekt, Eingaben werden nie blockiert, Klick überspringt | Zustand erst nach der Animation zeigen (Wartezeiten, Gefahr von Abweichungen) |
 | Web Animations API, nur `transform`/`opacity`, keine neue Bibliothek (21.11.) | Flüssig auch am Handy (GPU), jede Animation lässt sich sofort beenden | Animationsbibliothek (zusätzliche Abhängigkeit), CSS-Klassen mit Timern (schwer abzubrechen) |
 

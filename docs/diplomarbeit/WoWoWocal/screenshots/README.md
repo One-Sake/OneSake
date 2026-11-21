@@ -27,6 +27,15 @@ Playwright (Chromium, 1280 × 760, zwei Browser), lokales Backend von `dev`, rot
 |-------|-------|
 | [2026-11-21_20-match-einstellungen.png](2026-11-21_20-match-einstellungen.png) | Zahnrad im Match: Animationen Normal / Schnell / Aus, Vibration |
 
+## Bildfolgen: Ziehen, Spielen, Events
+
+Kontaktblätter: 10 Bilder im Abstand von ~100 ms (Zeit links oben), Sicht des Gegners.
+
+| Datei | Zeigt |
+|-------|-------|
+| [2026-11-21_21-bildfolge-gegner-spielt-karte.png](2026-11-21_21-bildfolge-gegner-spielt-karte.png) | Gegner spielt eine Character-Karte: groß in der Mitte, dann in den Slot, danach kurz markiert |
+| [2026-11-21_22-bildfolge-gegner-spielt-event.png](2026-11-21_22-bildfolge-gegner-spielt-event.png) | Gegner nutzt ein [Counter]-Event: großer Reveal mit Goldleuchten, dann in den Trash |
+
 ## Noch aufzunehmen (mit laufendem Backend)
 
 - Deckbuilder mit Karten, Filtern und fertigem Deck

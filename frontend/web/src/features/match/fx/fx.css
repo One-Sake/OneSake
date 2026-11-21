@@ -155,3 +155,57 @@
   height: 18px;
   accent-color: #f0bf38;
 }
+
+/* ---------- Copies of cards (draw, play, reveal) ---------- */
+
+.fx-card--face {
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 25%);
+  background: #13263a;
+}
+
+.fx-card--face img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fx-card__name {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  height: 100%;
+  padding: 6%;
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+/* Event reveal: golden glow around the card. */
+.fx-card--glow {
+  box-shadow:
+    0 0 0 2px rgb(255 214 102 / 90%),
+    0 0 34px 8px rgb(255 196 64 / 65%),
+    0 18px 40px rgb(0 0 0 / 55%);
+}
+
+.fx-card__label {
+  position: absolute;
+  bottom: 8%;
+  left: 50%;
+  border-radius: 999px;
+  padding: 3px 10px;
+  color: #1a1207;
+  font-size: 0.8rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  background: linear-gradient(90deg, #ffe08a, #f0bf38);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 45%);
+  translate: -50% 0;
+}

@@ -243,6 +243,24 @@ Keine Commits. Sprint 3 wurde ab 06.10.2026 geplant.
   diese nie unsichtbar bleibt, führt „Überspringen“ jeden wartenden Schritt kurz aus und räumt auf.
 - Screenshot: `screenshots/2026-11-21_20-match-einstellungen.png`
 
+### 2026-11-21 14:05 – Animationen: Ziehen, Spielen, Events ★ 🤖
+- Commit „Animate drawing, playing and Event cards“: Gezogene Karten fliegen vom Deck in die Hand
+  (Gegner: Kartenrücken in die Gegnerhand). Spielt der Gegner eine Karte, wird sie 0,6 s groß in der
+  Mitte gezeigt und fliegt dann in ihren Slot; danach bleibt sie 2 s leicht markiert. Eigene Karten
+  per Klick bekommen dieselbe Landung wie bei Drag & Drop (bei Drag & Drop bleibt die bestehende
+  Landung). Events (auch [Counter]-Events) erscheinen groß mit goldenem Leuchten und fliegen in den Trash.
+- **Überlegung:** Die Ereignisse werden aus dem Vergleich zweier Snapshots erkannt (welche Karte ist
+  neu auf dem Feld, im Trash, in der Hand), weil die Log-Einträge auf `dev` nur Text enthalten.
+  Die echte Karte liegt schon an ihrem Platz und ist nur unsichtbar, bis die Kopie landet.
+- **Geprüft:** Playwright-Bot spielt mit zwei Browsern ein Match über die echte Oberfläche und nimmt
+  bei bestimmten Ereignissen Bildfolgen auf (Screenshot alle 100 ms).
+- **Probleme/Lessons Learned:** Karten im Effekt-Dialog tragen dieselbe Karten-ID wie auf dem Board –
+  sie werden bei der Positionssuche ausgeschlossen. Das Bild einer noch nie gezeigten Gegnerkarte lädt
+  erst während des Reveals; bis dahin ist der Kartenname zu sehen. Ein Reveal wird höchstens um 30 %
+  beschleunigt, damit man die Karte lesen kann.
+- Bildfolgen: `screenshots/2026-11-21_21-bildfolge-gegner-spielt-karte.png`,
+  `screenshots/2026-11-21_22-bildfolge-gegner-spielt-event.png`
+
 <!-- Neue Einträge unten anfügen. Vorlage:
 
 ### JJJJ-MM-TT HH:MM – Titel ★/👥/🤖
