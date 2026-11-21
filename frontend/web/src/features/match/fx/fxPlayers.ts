@@ -396,6 +396,65 @@ function shatter(env: FxEnv, context: FxContext, card: CardInstanceDto, box: Box
   return animations;
 }
 
+// Gold ring that pulses over a card (an effect of this card starts).
+function pulse(env: FxEnv, context: FxContext, box: Box): Animation {
+  const ring = place(env.layer, context, { x: box.x - 6, y: box.y - 6, w: box.w + 12, h: box.h + 12 }, 'fx-pulse');
+  return animate(
+    ring,
+    [
+      { transform: 'scale(0.85)', opacity: 0 },
+      { transform: 'scale(1)', opacity: 1, offset: 0.35 },
+      { transform: 'scale(1.18)', opacity: 0 },
+    ],
+    context,
+    600,
+  );
+}
+
+// A thin golden line from an effect's source to one of its targets.
+function line(env: FxEnv, context: FxContext, from: Box, to: Box): Animation {
+  const x1 = from.x + from.w / 2;
+  const y1 = from.y + from.h / 2;
+  const x2 = to.x + to.w / 2;
+  const y2 = to.y + to.h / 2;
+  const length = Math.hypot(x2 - x1, y2 - y1);
+  const element = place(env.layer, context, { x: x1, y: y1 - 2, w: length, h: 4 }, 'fx-line');
+  element.style.transformOrigin = '0 50%';
+  const angle = Math.atan2(y2 - y1, x2 - x1);
+  return animate(
+    element,
+    [
+      { transform: `rotate(${angle}rad) scaleX(0)`, opacity: 1 },
+      { transform: `rotate(${angle}rad) scaleX(1)`, opacity: 1, offset: 0.5 },
+      { transform: `rotate(${angle}rad) scaleX(1)`, opacity: 0 },
+    ],
+    context,
+    600,
+    { delay: 120 },
+  );
+}
+
+// Power badge: short swell, green for more, red for less.
+function powerPop(element: HTMLElement | null, up: boolean, context: FxContext): Animation[] {
+  const badge = element?.querySelector<HTMLElement>('.match-card-stat--power');
+  if (!badge) {
+    return [];
+  }
+
+  badge.dataset.fxPower = up ? 'up' : 'down';
+  context.onCleanup(() => {
+    window.setTimeout(() => delete badge.dataset.fxPower, 400);
+  });
+  if (context.reduced) {
+    return [];
+  }
+
+  return [animate(badge, [{ transform: 'scale(1)' }, { transform: 'scale(1.45)', offset: 0.35 }, { transform: 'scale(1)' }], context, 420, { fill: 'none' })];
+}
+
+// Cards whose power changed or that were K.O.'d just now (targets for effect lines).
+let recentlyChanged: { ids: string[]; at: number } = { ids: [], at: 0 };
+
 function dragLandingRunning(): boolean {
   return Boolean(document.querySelector('.match-drag-ghost.is-landing, .match-drag-ghost.is-landed'));
 }
@@ -492,6 +551,83 @@ export function snapshotFx(previous: GameStateDto, next: GameStateDto, env: FxEn
       }
     }
 
+    // DON!! given to a card: a DON!! card flies from the cost area onto it.
+    now.cards.forEach((card, id) => {
+      const oldCard = old.cards.get(id);
+      const added = (card.attachedDon ?? 0) - (oldCard?.attachedDon ?? 0);
+      if (!oldCard || !isField(now.zones.get(id)) || added <= 0) {
+        return;
+      }
+
+      env.queue.enqueue((context) => {
+        const target = cardElement(env.frame, id);
+        const to = boxOf(env.layer, target);
+        if (!target || !to) {
+          return [];
+        }
+
+        if (side === 'opponent') {
+          markRecent(target);
+        }
+
+        const animations = [popText(env, context, to, `+${added * 1000}`, 'fx-pop--counter', 650)];
+        if (context.reduced) {
+          flash(target, 'gold');
+          return animations;
+        }
+
+        const size = cardSize(env.layer);
+        const donBox = { x: to.x + to.w / 2 - size.w * 0.3, y: to.y + to.h / 2 - size.h * 0.3, w: size.w * 0.6, h: size.h * 0.6 };
+        const from = zoneBox(env, side, 'donArea') ?? donBox;
+        const don = place(env.layer, context, donBox, 'fx-card fx-card--back fx-card--don');
+        animations.push(
+          animate(
+            don,
+            [
+              { transform: offset({ ...from, w: donBox.w, h: donBox.h }, donBox), opacity: 1 },
+              { transform: 'none', opacity: 1, offset: 0.75 },
+              { transform: 'scale(0.6)', opacity: 0 },
+            ],
+            context,
+            420,
+          ),
+        );
+        return animations;
+      });
+    });
+
+    // DON!! phase: new DON!! cards fly from the DON!! deck into the cost area.
+    const donBefore = (before[side]?.activeDonCount ?? 0) + (before[side]?.restedDonCount ?? 0);
+    const donAfter = (after[side]?.activeDonCount ?? 0) + (after[side]?.restedDonCount ?? 0);
+    const donFromDeck = Math.min(donAfter - donBefore, (before[side]?.donDeckCount ?? 0) - (after[side]?.donDeckCount ?? 0), 3);
+    if (donFromDeck > 0) {
+      const size = cardSize(env.layer);
+      const small = (box: Box) => ({ x: box.x + (box.w - size.w * 0.6) / 2, y: box.y + (box.h - size.h * 0.6) / 2, w: size.w * 0.6, h: size.h * 0.6 });
+      const deckZone = zoneBox(env, side, 'donDeck');
+      const area = zoneBox(env, side, 'donArea');
+      if (deckZone && area) {
+        flyBacks(env, small(deckZone), small(area), donFromDeck, `don-${side}-${groupSeq}`, 'don');
+      }
+    }
+
+    // Power changes on the field (effects, counters, DON!!): the badge swells green or red.
+    const changed: string[] = [];
+    now.cards.forEach((card, id) => {
+      const oldCard = old.cards.get(id);
+      if (!oldCard || !isField(now.zones.get(id)) || !isField(old.zones.get(id))) {
+        return;
+      }
+
+      const difference = (card.power ?? 0) - (oldCard.power ?? 0);
+      if (difference !== 0) {
+        changed.push(id);
+        env.queue.enqueue((context) => powerPop(cardElement(env.frame, id), difference > 0, context), `power-${groupSeq}`);
+      }
+    });
+    if (changed.length > 0) {
+      recentlyChanged = { ids: [...recentlyChanged.ids, ...changed], at: performance.now() };
+    }
+
     // K.O.: a Character went from the field into the trash.
     now.zones.forEach((zone, id) => {
       if (zone !== 'trash' || old.zones.get(id) !== 'character') {
@@ -502,6 +638,7 @@ export function snapshotFx(previous: GameStateDto, next: GameStateDto, env: FxEn
       const box = env.previousBoxes.get(id);
       const trash = cardBoxIn(env, side, 'trash');
       if (box) {
+        recentlyChanged = { ids: [...recentlyChanged.ids, id], at: performance.now() };
         env.queue.enqueue((context) => (context.reduced ? [] : shatter(env, context, card, box, trash)));
       }
     });
@@ -641,6 +778,11 @@ export function logFx(event: LogEventDto, state: GameStateDto | null, env: FxEnv
     return;
   }
 
+  if (event.type.startsWith('EFFECT') || event.type === 'ACTIVATE') {
+    effectFx(event, state, env);
+    return;
+  }
+
   // "Bob reveals Carrot and activates its [Trigger]." - our own trigger is shown with the prompt.
   const trigger = event.type === 'TRIGGER' ? /^(.*) reveals (.+) and activates its \[Trigger\]/.exec(event.text) : null;
   if (trigger) {
@@ -649,6 +791,56 @@ export function logFx(event: LogEventDto, state: GameStateDto | null, env: FxEnv
       revealOnly(env, findCardByName(state, trigger[2]), cardBoxIn(env, 'opponent', 'life'), 'TRIGGER');
     }
   }
+}
+
+// "Nami: Alice draws 1 card." / "Alice activates Hyogoro." - the source pulses, lines go to the
+// cards the effect named or just changed.
+function effectFx(event: LogEventDto, state: GameStateDto, env: FxEnv): void {
+  if (/conditions are not met|cannot be paid|must be resolved manually/.test(event.text)) {
+    return;
+  }
+
+  const sourceName = event.type === 'ACTIVATE'
+    ? /activates (.+)\.$/.exec(event.text)?.[1]
+    : /^([^:]+):/.exec(event.text)?.[1];
+  if (!sourceName) {
+    return;
+  }
+
+  const field = state.players.flatMap((player) => [player.leader, player.stage, ...player.boardCards]).filter(
+    (card): card is CardInstanceDto => Boolean(card),
+  );
+  const source = field.find((card) => card.name === sourceName);
+  if (!source) {
+    return;
+  }
+
+  const rest = event.text.slice(sourceName.length);
+  const named = field.filter((card) => card.instanceId !== source.instanceId && rest.includes(card.name)).map((card) => card.instanceId);
+  const recent = performance.now() - recentlyChanged.at < 800 ? recentlyChanged.ids : [];
+  const targets = [...new Set([...named, ...recent])].filter((id) => id !== source.instanceId).slice(0, 4);
+
+  env.queue.enqueue((context) => {
+    const element = cardElement(env.frame, source.instanceId);
+    const from = boxOf(env.layer, element);
+    if (!from) {
+      return [];
+    }
+
+    if (context.reduced) {
+      flash(element, 'gold');
+      return [];
+    }
+
+    const animations = [pulse(env, context, from)];
+    targets.forEach((id) => {
+      const to = boxOf(env.layer, cardElement(env.frame, id));
+      if (to) {
+        animations.push(line(env, context, from, to));
+      }
+    });
+    return animations;
+  });
 }
 
 // A new prompt for us (e.g. a [Trigger] decision shows the card big in the middle).

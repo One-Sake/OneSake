@@ -311,3 +311,45 @@
   fill: #ffd25e;
   filter: drop-shadow(0 0 6px rgb(255 196 64 / 75%));
 }
+/* ---------- DON!!, effects, power ---------- */
+
+.fx-pulse {
+  border: 3px solid #ffd25e;
+  border-radius: 10px;
+  box-shadow:
+    0 0 18px rgb(255 196 64 / 75%),
+    inset 0 0 12px rgb(255 196 64 / 45%);
+}
+
+.fx-line {
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgb(255 214 102 / 95%), rgb(255 214 102 / 35%));
+  box-shadow: 0 0 8px rgb(255 196 64 / 70%);
+}
+
+/* Changed power: green for more, red for less (base power in the tooltip). */
+.match-card-stat--power.is-boosted,
+.match-card-stat--power[data-fx-power='up'] {
+  color: #04210f;
+  background: #6dffb9;
+}
+
+.match-card-stat--power.is-reduced,
+.match-card-stat--power[data-fx-power='down'] {
+  color: #ffffff;
+  background: #e0443a;
+}
+
+/* Cards that can attack right now: a fine pulsing edge. */
+.fx-mode-normal .match-card-view.can-attack,
+.fx-mode-fast .match-card-view.can-attack {
+  animation: fx-can-attack 1.6s ease-in-out infinite;
+}
+
+@keyframes fx-can-attack {
+  50% {
+    box-shadow:
+      0 0 0 2px rgb(95 224 180 / 95%),
+      0 0 20px rgb(95 224 180 / 65%);
+  }
+}

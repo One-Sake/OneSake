@@ -48,6 +48,15 @@ Kontaktblätter wie oben. Der Bot spielt beide Seiten über die echte Oberfläch
 | [2026-11-21_26-bildfolge-life-trigger.png](2026-11-21_26-bildfolge-life-trigger.png) | Life verloren mit [Trigger] (Sicht des Gegners): Karte groß mit „TRIGGER“ |
 | [2026-11-21_27-bildfolge-counter.png](2026-11-21_27-bildfolge-counter.png) | Counter: „+1000“ steigt über dem Ziel auf, Power zählt hoch |
 
+## Bildfolgen: DON!! und Effekte
+
+Kontaktblätter wie oben.
+
+| Datei | Zeigt |
+|-------|-------|
+| [2026-11-21_28-bildfolge-don.png](2026-11-21_28-bildfolge-don.png) | DON!! an den Leader (Sicht des Gegners): DON!!-Karte fliegt auf den Leader, „+1000“ |
+| [2026-11-21_29-bildfolge-effekt.png](2026-11-21_29-bildfolge-effekt.png) | Otama [On Play] −2000: nach der Auswahl goldener Puls an der Quelle und Linie zum Ziel, Power rot |
+
 ## Noch aufzunehmen (mit laufendem Backend)
 
 - Deckbuilder mit Karten, Filtern und fertigem Deck

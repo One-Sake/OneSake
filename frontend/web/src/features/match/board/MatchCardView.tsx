@@ -54,8 +54,19 @@ export function MatchCardView({
     .filter(Boolean)
     .join(' ');
 
-  const power = card.power ?? card.basePower ?? 0;
+  const power =card.power ?? card.basePower ?? 0;
   const powerBoosted = power > (card.basePower ?? power);
+  const powerReduced = power < (card.basePower ?? power);
+  const powerClassName = [
+    'match-card-stat match-card-stat--power',
+    powerBoosted ? 'is-boosted' : '',
+    powerReduced ? 'is-reduced' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+  // Hover: the base power of a card whose power changed.
+  const powerTitle =
+    (powerBoosted || powerReduced) && size !== 'inspect' ? `Power ${power} (Basis ${card.basePower ?? 0})` : undefined;
 
   // ---------- Inspect (right click / long press) and hover preview ----------
 
@@ -140,7 +151,7 @@ export function MatchCardView({
             <span className="match-card-stat match-card-stat--cost">{card.cost}</span>
           )}
           {hasPower(card) && power > 0 && (
-            <span className={powerBoosted ? 'match-card-stat match-card-stat--power is-boosted' : 'match-card-stat match-card-stat--power'}>
+            <span className={powerClassName}>
               {power}
             </span>
           )}
@@ -166,6 +177,7 @@ export function MatchCardView({
         className={className}
         disabled={disabled}
         onClick={handleClick}
+        title={powerTitle}
         type="button"
         {...fxProps}
         {...interactionProps}
@@ -176,7 +188,7 @@ export function MatchCardView({
   }
 
   return (
-    <span aria-label={label} className={className} role="img" {...fxProps} {...interactionProps}>
+    <span aria-label={label} className={className} role="img" title={powerTitle} {...fxProps} {...interactionProps}>
       {content}
     </span>
   );

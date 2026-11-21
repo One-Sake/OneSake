@@ -281,6 +281,21 @@ Keine Commits. Sprint 3 wurde ab 06.10.2026 geplant.
   `…_24-bildfolge-angriff.png`, `…_25-bildfolge-ko.png`, `…_26-bildfolge-life-trigger.png`,
   `…_27-bildfolge-counter.png`
 
+### 2026-11-21 15:30 – Animationen: DON!!, Refresh, Effekte, Power ★ 🤖
+- Commit „Animate DON!!, refresh, effects and power changes“: DON!! anlegen – eine DON!!-Karte fliegt
+  aus der Cost-Area auf die Karte, „+1000“ steigt auf. DON!!-Phase – neue DON!!-Karten fliegen vom
+  DON!!-Deck in die Cost-Area. Refresh – alle gerestete Karten drehen sich gleichzeitig zurück (CSS-Übergang
+  auf `rotate`/`scale`). Effekt löst aus – die Quelle bekommt einen goldenen Puls, Linien führen zu den
+  Karten, die der Effekt nennt oder gerade verändert hat. Power – das Power-Feld bläht sich kurz auf,
+  grün bei Plus, rot bei Minus; geänderte Power bleibt grün/rot, beim Hover steht die Basis-Power
+  im Tooltip. Angriffsbereite Karten haben einen feinen pulsierenden Rand.
+- **Überlegung:** Effekt-Logs beginnen mit „Kartenname: …“ – daraus wird die Quelle gelesen. Ziele
+  stehen nicht strukturiert im Log; deshalb werden genannte Kartennamen und Karten mit gerade geänderter
+  Power als Ziel genommen (kann in seltenen Fällen ungenau sein, ist aber rein optisch).
+- **Probleme/Lessons Learned:** Das Power-Feld fängt keine Mauszeiger-Ereignisse – der Basis-Power-Tooltip
+  sitzt deshalb auf der Karte selbst.
+- Bildfolgen: `screenshots/2026-11-21_28-bildfolge-don.png`, `…_29-bildfolge-effekt.png`
+
 <!-- Neue Einträge unten anfügen. Vorlage:
 
 ### JJJJ-MM-TT HH:MM – Titel ★/👥/🤖
