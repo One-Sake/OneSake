@@ -96,7 +96,13 @@ export function MatchHand({
     .join(' ');
 
   return (
-    <div ref={handRef} aria-label={`Your hand, ${cards.length} cards`} className={handClassName} role="group">
+    <div
+      ref={handRef}
+      aria-label={`Your hand, ${cards.length} cards`}
+      className={handClassName}
+      data-fx-zone="player-hand"
+      role="group"
+    >
       {cards.map((card, index) => {
         const offset = index - center;
         const style = {

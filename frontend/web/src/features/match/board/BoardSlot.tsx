@@ -27,6 +27,7 @@ export function BoardSlot({ children, dropClassName = '', dropTarget, filled = f
       className={`board-zone board-zone--${toClassName(zone.kind)}${filled ? ' is-filled' : ''}${dropClassName}`}
       data-card-id={dropTarget?.cardId}
       data-drop-zone={dropTarget?.zone}
+      data-fx-zone={`${side}-${zone.kind}`}
       role="group"
     >
       <span className="board-zone__label" aria-hidden="true">

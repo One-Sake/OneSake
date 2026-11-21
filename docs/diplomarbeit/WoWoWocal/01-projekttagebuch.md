@@ -224,6 +224,25 @@ Keine Commits. Sprint 3 wurde ab 06.10.2026 geplant.
   den Meta-Daten auf – das ist schwer nachzumachen und gut in der Diplomarbeit vorzuführen.
   Grundlagen (Reconnect, Timer, Spiel-Gefühl) kommen trotzdem zuerst, weil ohne sie niemand lange spielt.
 
+### 2026-11-21 13:25 – Animations-System für das Match ★ 🤖
+- Commit „Add an animation layer and queue to the match board“: neuer Ordner
+  `frontend/web/src/features/match/fx/` mit `fxQueue.ts` (Warteschlange: nacheinander, ab 4 wartenden
+  Animationen doppelte Geschwindigkeit, Überspringen bei Klick/Taste), `FxLayer.tsx` (Overlay über dem
+  Board, `pointer-events: none`), `useBoardFx.ts` (vergleicht zwei Snapshots und liest neue Log-Einträge),
+  `fxDom.ts` (fliegende Kopien, nur `transform`/`opacity`) und Zahnrad-Menü „Animationen: Normal /
+  Schnell / Aus“ (localStorage mit try/catch, bei `prefers-reduced-motion` standardmäßig „Aus“).
+  Karten und Zonen tragen `data-fx-card` / `data-fx-zone`, damit die Animationen ihre Positionen finden.
+- **Überlegung:** Der neue Spielzustand wird **sofort** übernommen, die Animation ist nur eine Schicht
+  darüber (eine Kopie fliegt dorthin, wo die Karte schon liegt). So ist das Board nie falsch, Eingaben
+  werden nie blockiert und ein Klick springt einfach ans Ende. Alternative wäre, den Zustand erst nach
+  der Animation zu zeigen (wie viele TCG-Clients) – dann wartet man auf Animationen und es kann zu
+  Abweichungen zwischen Anzeige und Server kommen. Animiert wird mit der Web Animations API
+  (`element.animate`), weil man damit jede Animation sofort beenden kann; keine neue Bibliothek.
+- **Probleme/Lessons Learned:** Die Topbar schneidet überstehende Inhalte ab – das Menü liegt deshalb
+  `fixed` unter dem Zahnrad. Wartende Animationen verstecken ihre Zielkarte schon beim Einreihen; damit
+  diese nie unsichtbar bleibt, führt „Überspringen“ jeden wartenden Schritt kurz aus und räumt auf.
+- Screenshot: `screenshots/2026-11-21_20-match-einstellungen.png`
+
 <!-- Neue Einträge unten anfügen. Vorlage:
 
 ### JJJJ-MM-TT HH:MM – Titel ★/👥/🤖

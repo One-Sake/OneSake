@@ -1,0 +1,157 @@
+/* Match effects: overlay layer, flying copies, highlights. Only transform/opacity are animated. */
+
+.fx-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 22;
+  overflow: hidden;
+  pointer-events: none;
+  contain: layout style;
+}
+
+.fx-layer > * {
+  position: absolute;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.fx-card {
+  border-radius: var(--card-corner-radius, 5px);
+  box-shadow: 0 10px 26px rgb(0 0 0 / 45%);
+}
+
+.fx-card > .match-card-view {
+  pointer-events: none;
+}
+
+.fx-card--back {
+  border: 1px solid rgb(240 191 56 / 45%);
+  background:
+    repeating-linear-gradient(45deg, rgb(255 255 255 / 6%) 0 4px, transparent 4px 9px),
+    linear-gradient(160deg, #1f3a57, #0c1a29);
+}
+
+.fx-card--don {
+  border-color: rgb(255 210 94 / 75%);
+  background: linear-gradient(160deg, #f6d36b, #b37a16);
+}
+
+/* The real card while its copy is flying. */
+[data-fx-hidden] {
+  opacity: 0 !important;
+}
+
+/* Short highlights - also shown with animations off. */
+[data-fx-flash] {
+  outline: 3px solid var(--fx-flash-color, #ffd25e);
+  outline-offset: 2px;
+  transition: outline-color 0.2s;
+}
+
+[data-fx-flash='hit'] {
+  --fx-flash-color: #ff5a4e;
+}
+
+[data-fx-flash='good'] {
+  --fx-flash-color: #5fe0b4;
+}
+
+/* The opponent's last action stays marked for a moment. */
+[data-fx-recent] {
+  box-shadow:
+    0 0 0 2px rgb(140 200 255 / 85%),
+    0 0 16px rgb(140 200 255 / 55%) !important;
+}
+
+/* ---------- Settings (gear in the top bar) ---------- */
+
+.fx-settings {
+  position: relative;
+}
+
+.fx-settings__button {
+  min-width: 38px;
+  font-size: 1.05rem;
+}
+
+.fx-settings__panel {
+  position: fixed;
+  z-index: 120;
+  display: grid;
+  gap: 12px;
+  width: min(280px, 86vw);
+  border: 1px solid rgb(240 191 56 / 40%);
+  border-radius: 12px;
+  padding: 14px;
+  color: #e7f0f3;
+  background: rgb(10 20 31 / 97%);
+  box-shadow: 0 18px 42px rgb(0 0 0 / 55%);
+}
+
+.fx-settings__group {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+.fx-settings__group legend,
+.fx-settings__label {
+  margin-bottom: 4px;
+  color: #9db5bd;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.fx-settings__segments {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  border-radius: 9px;
+  padding: 3px;
+  background: rgb(255 255 255 / 6%);
+}
+
+.fx-settings__segments label {
+  display: grid;
+  place-items: center;
+  min-height: 34px;
+  border-radius: 7px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.fx-settings__segments label.is-active {
+  color: #1a1207;
+  background: #f0bf38;
+}
+
+.fx-settings__segments input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.fx-settings__segments label:has(input:focus-visible) {
+  outline: 2px solid #ffe39b;
+}
+
+.fx-settings__check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  color: #e7f0f3;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+
+.fx-settings__check input {
+  width: 18px;
+  height: 18px;
+  accent-color: #f0bf38;
+}

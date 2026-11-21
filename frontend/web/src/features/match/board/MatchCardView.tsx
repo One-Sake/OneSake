@@ -156,6 +156,8 @@ export function MatchCardView({
   );
 
   const label = ariaLabel ?? `${card.name} (${card.cardId})`;
+  // Lets the animation layer find the card (not for the big inspect view).
+  const fxProps = size === 'inspect' ? {} : { 'data-fx-card': card.instanceId };
 
   if (clickable) {
     return (
@@ -165,6 +167,7 @@ export function MatchCardView({
         disabled={disabled}
         onClick={handleClick}
         type="button"
+        {...fxProps}
         {...interactionProps}
       >
         {content}
@@ -173,7 +176,7 @@ export function MatchCardView({
   }
 
   return (
-    <span aria-label={label} className={className} role="img" {...interactionProps}>
+    <span aria-label={label} className={className} role="img" {...fxProps} {...interactionProps}>
       {content}
     </span>
   );

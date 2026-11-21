@@ -5,8 +5,12 @@ import type {
   CardInstanceDto,
   ChoicePromptDto,
   GameStateDto,
+  LogEventDto,
   PlayerStateDto,
 } from '../../../types/realtime';
+import { FxLayer } from '../fx/FxLayer';
+import { useFxSettings } from '../fx/fxSettings';
+import { useBoardFx } from '../fx/useBoardFx';
 import { boardZones, CHARACTER_SLOT_COUNT } from './boardLayout';
 import { BoardSlot, CardStack } from './BoardSlot';
 import type { BoardSide, BoardZoneDefinition } from './boardTypes';
@@ -42,6 +46,8 @@ interface MatchBoardProps {
   canSubmitChoice: boolean;
   currentPrompt: ChoicePromptDto | null;
   joinedRoomCode?: string;
+  // Log entries drive some animations (attack powers, triggers, effects).
+  logEvents?: LogEventDto[];
   onSubmitChoice: (option: string, selectedCardInstanceId?: string, targetCardInstanceId?: string) => void;
   pending: boolean;
   // Shown in the middle of the board, between both Character rows (e.g. the Keep/Mulligan prompt).
@@ -115,6 +121,7 @@ export function MatchBoard({
   canSubmitChoice,
   currentPrompt,
   gameState,
+  logEvents = [],
   midlineContent,
   onPreviewCard,
   onSubmitChoice,
@@ -129,6 +136,9 @@ export function MatchBoard({
   const [dragNotice, setDragNotice] = useState('');
   const dragNoticeTimer = useRef<number>();
   const metrics = useBoardMetrics(frameRef);
+  const fxLayerRef = useRef<HTMLDivElement>(null);
+  const fxSettings = useFxSettings();
+  useBoardFx({ currentPrompt, frameRef, gameState, layerRef: fxLayerRef, logEvents });
 
   const visiblePlayers = getVisiblePlayers(gameState);
   const localPlayer = visiblePlayers.player;
@@ -695,8 +705,13 @@ export function MatchBoard({
         }
       : null),
   } as CSSProperties;
-  const frameClassName =
-    metrics && metrics.cardWidth < SMALL_CARD_W ? 'match-board-frame is-small-cards' : 'match-board-frame';
+  const frameClassName = [
+    'match-board-frame',
+    metrics && metrics.cardWidth < SMALL_CARD_W ? 'is-small-cards' : '',
+    `fx-mode-${fxSettings.animations}`,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <div ref={frameRef} className={frameClassName} style={frameStyle}>
@@ -708,7 +723,12 @@ export function MatchBoard({
             <span>Opponent</span>
             <strong>{opponent?.displayName || 'Waiting...'}</strong>
           </div>
-          <div className="match-opponent-hand" aria-label={`Opponent hand: ${opponentHandCount} cards`} role="img">
+          <div
+            className="match-opponent-hand"
+            aria-label={`Opponent hand: ${opponentHandCount} cards`}
+            data-fx-zone="opponent-hand"
+            role="img"
+          >
             {Array.from({ length: Math.min(opponentHandCount, MAX_OPPONENT_HAND_BACKS) }, (_, index) => (
               <span
                 key={index}
@@ -833,6 +853,8 @@ export function MatchBoard({
           {gameState?.winnerPlayerId ? (didWin ? 'Victory!' : 'Defeat') : 'Game Over'}
         </div>
       )}
+
+      <FxLayer ref={fxLayerRef} />
 
       <DragGhost ref={handDrag.ghostRef} cardWidth={metrics?.cardWidth ?? 80} view={handDrag.view} />
 

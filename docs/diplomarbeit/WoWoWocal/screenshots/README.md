@@ -19,6 +19,14 @@ zusätzlich Screenshots mit laufendem Backend gemacht werden (siehe Liste unten)
 | [2026-11-20_06-tools.png](2026-11-20_06-tools.png) | Captain Tools: Mulligan-Trainer und Wahrscheinlichkeitsrechner |
 | [2026-11-20_07-profile.png](2026-11-20_07-profile.png) | Captain Profile mit WANTED-Steckbrief |
 
+## Stand 2026-11-21 – Match-Animationen (Branch dev)
+
+Playwright (Chromium, 1280 × 760, zwei Browser), lokales Backend von `dev`, rotes OP01-Testdeck. Nummern ab `_20`, damit sie nicht mit den Bildern vom Branch `logic` kollidieren.
+
+| Datei | Zeigt |
+|-------|-------|
+| [2026-11-21_20-match-einstellungen.png](2026-11-21_20-match-einstellungen.png) | Zahnrad im Match: Animationen Normal / Schnell / Aus, Vibration |
+
 ## Noch aufzunehmen (mit laufendem Backend)
 
 - Deckbuilder mit Karten, Filtern und fertigem Deck

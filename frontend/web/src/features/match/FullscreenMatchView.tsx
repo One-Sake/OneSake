@@ -20,6 +20,8 @@ import { MatchBoard } from './board/MatchBoard';
 import { MatchCardPreview } from './board/MatchCardPreview';
 import { DiceRoll } from './dice/DiceRoll';
 import { formatPhase } from './matchFormatters';
+import { FxSettingsMenu } from './fx/FxSettingsMenu';
+import './fx/fx.css';
 
 // These prompts are answered directly on the board (click cards / action bar).
 const BOARD_HANDLED_PROMPT_KINDS = ['MAIN_ACTION', 'BLOCK_STEP', 'COUNTER_STEP'];
@@ -186,6 +188,7 @@ export function FullscreenMatchView({
           </div>
         )}
         <ConnectionStatusBadge status={connectionStatus} />
+        <FxSettingsMenu />
         {canShowStartMatch && (
           <button
             className="match-fullscreen__toggle match-fullscreen__toggle--primary"
@@ -262,6 +265,7 @@ export function FullscreenMatchView({
             currentPrompt={currentPrompt}
             gameState={gameState}
             joinedRoomCode={joinedRoomCode}
+            logEvents={logEvents}
             midlineContent={
               <ChoiceBar
                 boardHandledKinds={BOARD_HANDLED_PROMPT_KINDS}
