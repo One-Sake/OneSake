@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { updateFxSettings, useFxSettings, type AnimationMode } from './fxSettings';
+import { playSound } from './sounds';
 
 const ANIMATION_OPTIONS: { value: AnimationMode; label: string }[] = [
   { value: 'normal', label: 'Normal' },
@@ -88,6 +89,33 @@ export function FxSettingsMenu() {
               ))}
             </div>
           </fieldset>
+
+          <div className="fx-settings__group">
+            <span className="fx-settings__label">Sound</span>
+            <label className="fx-settings__check">
+              <input
+                checked={!settings.soundMuted}
+                onChange={(event) => updateFxSettings({ soundMuted: !event.target.checked })}
+                type="checkbox"
+              />
+              Sound an
+            </label>
+            <label className="fx-settings__volume">
+              <span>Lautstärke</span>
+              <input
+                aria-label="Lautstärke"
+                disabled={settings.soundMuted}
+                max={100}
+                min={0}
+                onChange={(event) => updateFxSettings({ volume: Number(event.target.value) / 100 })}
+                onPointerUp={() => playSound('play')}
+                step={5}
+                type="range"
+                value={Math.round(settings.volume * 100)}
+              />
+              <output>{Math.round(settings.volume * 100)} %</output>
+            </label>
+          </div>
 
           <label className="fx-settings__check">
             <input

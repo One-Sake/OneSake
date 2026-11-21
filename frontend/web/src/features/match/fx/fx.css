@@ -686,3 +686,23 @@
     opacity: 1;
   }
 }
+/* Volume slider in the settings. */
+.fx-settings__volume {
+  display: grid;
+  grid-template-columns: auto 1fr 3.2em;
+  align-items: center;
+  gap: 8px;
+  color: #e7f0f3;
+  font-size: 0.85rem;
+}
+
+.fx-settings__volume input {
+  width: 100%;
+  accent-color: #f0bf38;
+}
+
+.fx-settings__volume output {
+  color: #9db5bd;
+  font-size: 0.8rem;
+  text-align: right;
+}

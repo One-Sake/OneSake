@@ -17,6 +17,14 @@ import {
 } from './fxDom';
 import type { FxContext, FxQueue } from './fxQueue';
 import type { FxSettings } from './fxSettings';
+import { playSound, type SoundName } from './sounds';
+
+// Sounds start with their animation step (not while skipping).
+function sound(context: FxContext, name: SoundName): void {
+  if (!context.silent) {
+    playSound(name);
+  }
+}
 
 // Everything an animation needs to know about the board.
 export interface FxEnv {
@@ -128,6 +136,7 @@ function revealAndFly(
 
   env.queue.enqueue(
     (context) => {
+      sound(context, options.glow ? 'event' : 'play');
       if (context.reduced) {
         flash(target, options.glow ? 'gold' : 'good');
         return [];
@@ -174,6 +183,7 @@ function flyToCard(env: FxEnv, from: Box, target: HTMLElement, group?: string): 
   target.dataset.fxHidden = '1';
   env.queue.enqueue(
     (context) => {
+      sound(context, group?.startsWith('draw') ? 'draw' : 'play');
       const to = boxOf(env.layer, target);
       if (context.reduced || !to) {
         return [];
@@ -198,6 +208,7 @@ function flipToCard(env: FxEnv, from: Box, target: HTMLElement): void {
   target.dataset.fxHidden = '1';
   env.queue.enqueue(
     (context) => {
+      sound(context, 'life');
       const to = boxOf(env.layer, target);
       if (context.reduced || !to) {
         return [];
@@ -231,6 +242,7 @@ function flipToCard(env: FxEnv, from: Box, target: HTMLElement): void {
 // A card shown big in the middle with a label (e.g. "TRIGGER"), then it fades out.
 function revealOnly(env: FxEnv, card: CardInstanceDto | null, from: Box, label: string): void {
   env.queue.enqueue((context) => {
+    sound(context, 'event');
     const center = revealBox(env);
     const element = card
       ? faceCopy(env, context, center, card, 'fx-card--glow')
@@ -263,6 +275,10 @@ function revealOnly(env: FxEnv, card: CardInstanceDto | null, from: Box, label: 
 function flyBacks(env: FxEnv, from: Box, to: Box, count: number, group: string, variant: 'card' | 'don' = 'card'): void {
   for (let index = 0; index < count; index += 1) {
     env.queue.enqueue((context) => {
+      if (index === 0) {
+        sound(context, variant === 'don' ? 'don' : group.startsWith('olife') ? 'life' : 'draw');
+      }
+
       if (context.reduced) {
         return [];
       }
@@ -318,6 +334,8 @@ function shake(element: HTMLElement | null, context: FxContext): Animation[] {
     return [];
   }
 
+  sound(context, 'hit');
+
   flash(element, 'hit', 600);
   if (context.reduced) {
     return [];
@@ -343,6 +361,7 @@ function shake(element: HTMLElement | null, context: FxContext): Animation[] {
 
 // K.O.: the card breaks into pieces, then a pale ghost flies into the trash.
 function shatter(env: FxEnv, context: FxContext, card: CardInstanceDto, box: Box, trash: Box): Animation[] {
+  sound(context, 'ko');
   const animations: Animation[] = [];
   const columns = 3;
   const rows = 4;
@@ -570,6 +589,7 @@ export function snapshotFx(previous: GameStateDto, next: GameStateDto, env: FxEn
           markRecent(target);
         }
 
+        sound(context, 'don');
         const animations = [popText(env, context, to, `+${added * 1000}`, 'fx-pop--counter', 650)];
         if (context.reduced) {
           flash(target, 'gold');
@@ -639,7 +659,14 @@ export function snapshotFx(previous: GameStateDto, next: GameStateDto, env: FxEn
       const trash = cardBoxIn(env, side, 'trash');
       if (box) {
         recentlyChanged = { ids: [...recentlyChanged.ids, id], at: performance.now() };
-        env.queue.enqueue((context) => (context.reduced ? [] : shatter(env, context, card, box, trash)));
+        env.queue.enqueue((context) => {
+          if (context.reduced) {
+            sound(context, 'ko');
+            return [];
+          }
+
+          return shatter(env, context, card, box, trash);
+        });
       }
     });
 
@@ -683,6 +710,8 @@ function battleFx(previous: GameStateDto, next: GameStateDto, env: FxEnv): void 
         markRecent(attacker);
       }
 
+      sound(context, 'attack');
+
       const animations = [popText(env, context, to, `${battle.attackerPower} ⚔ ${battle.targetPower}`, 'fx-pop--battle', 900)];
       if (context.reduced) {
         flash(attacker, 'gold');
@@ -720,6 +749,7 @@ function battleFx(previous: GameStateDto, next: GameStateDto, env: FxEnv): void 
         return [];
       }
 
+      sound(context, 'block');
       const animations = [popText(env, context, blockerBox, '🛡', 'fx-pop--shield', 700)];
       if (!context.reduced && oldTarget) {
         const dx = (oldTarget.x - blockerBox.x) * 0.3;
@@ -752,6 +782,7 @@ function battleFx(previous: GameStateDto, next: GameStateDto, env: FxEnv): void 
       }
 
       flash(target, 'good');
+      sound(context, 'counter');
       const plus = popText(env, context, box, `+${bonus}`, 'fx-pop--counter', 800);
       const power = place(env.layer, context, { x: box.x, y: box.y + box.h - 26, w: box.w, h: 24 }, 'fx-pop fx-pop--power');
       countUp(power, before.targetPower, battle.targetPower, 500 * Math.max(context.speed, 0.3), (value) => String(value));

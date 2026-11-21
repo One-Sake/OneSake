@@ -12,6 +12,8 @@ export interface FxContext {
   speed: number;
   // Only highlights, no movement (animations "off" or prefers-reduced-motion).
   reduced: boolean;
+  // True while skipping: no sounds (otherwise everything would sound at once).
+  silent: boolean;
   // Lets a step register clean-up work (remove copies, show hidden cards) that also runs on skip.
   onCleanup: (cleanup: () => void) => void;
 }
@@ -59,7 +61,8 @@ export class FxQueue {
       const entry = this.steps.shift()!;
       const cleanups: (() => void)[] = [];
       try {
-        const animations = entry.step({ speed: 0.001, reduced: true, onCleanup: (cleanup) => cleanups.push(cleanup) }) ?? [];
+        const animations =
+          entry.step({ speed: 0.001, reduced: true, silent: true, onCleanup: (cleanup) => cleanups.push(cleanup) }) ?? [];
         animations.forEach((animation) => {
           try {
             animation.finish();
@@ -114,6 +117,7 @@ export class FxQueue {
     const context: FxContext = {
       speed: this.speedFactor(),
       reduced: settings.animations === 'off',
+      silent: false,
       onCleanup: (cleanup) => this.cleanups.push(cleanup),
     };
 

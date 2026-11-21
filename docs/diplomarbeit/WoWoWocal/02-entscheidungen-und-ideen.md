@@ -114,6 +114,7 @@ Commit-Beschreibungen, Dokumentation. Stand: 2026-11-20.
 | CSS-Grid-Board mit `--card-w` und `ResizeObserver` | Passt auf jedes Gerät | Festes Hintergrundbild |
 | `prefers-reduced-motion` überall respektiert | Barrierefreiheit | – |
 | Eigener Branch `logic` für die Regel-Engine | Großer Umbau, ohne `dev` zu blockieren | Alles auf `dev` |
+| Sounds mit der Web Audio API synthetisiert, keine Audiodateien (21.11.) | Keine Lizenzfragen, keine Downloads, Lautstärke zentral steuerbar | Audiodateien (Rechte, Ladezeit), keine Sounds |
 | Effekt-Ziele aus Kartennamen im Log und Power-Änderungen ableiten (21.11.) | Rein optisch, keine Server-Änderung nötig | Ziele vom Server mitschicken (genauer, aber Backend-Änderung) |
 | Spielereignisse aus dem Vergleich zweier Snapshots erkennen (21.11.) | Funktioniert ohne Änderung an Server und DTOs; Logs liefern nur Text | Strukturierte Ereignisse vom Server (Backend-Änderung, nicht Teil dieses Auftrags) |
 | Animationen als Schicht über dem sofort gültigen Zustand (21.11.) | Board ist immer korrekt, Eingaben werden nie blockiert, Klick überspringt | Zustand erst nach der Animation zeigen (Wartezeiten, Gefahr von Abweichungen) |

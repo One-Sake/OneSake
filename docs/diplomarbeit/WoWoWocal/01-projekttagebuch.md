@@ -311,6 +311,20 @@ Keine Commits. Sprint 3 wurde ab 06.10.2026 geplant.
 - Bildfolgen/Screenshots: `screenshots/2026-11-21_30-bildfolge-zugwechsel.png`,
   `…_31-bildfolge-sieg.png`, `…_32-niederlage.png`
 
+### 2026-11-21 16:45 – Sounds im Match ★ 🤖
+- Commit „Add synthesized match sounds“: `fx/sounds.ts` erzeugt alle Klänge mit der Web Audio API
+  (Oszillatoren und gefiltertes Rauschen): Karte ziehen, Karte spielen, Event, Angriff (Whoosh),
+  Treffer, Block (Schild), Counter, K.O., Life verloren, DON!!, Zugwechsel (eigener/gegnerischer),
+  Sieg, Niederlage und ein Timer-Tick für später. Im Zahnrad: „Sound an“ und Lautstärke-Regler
+  (Standard: an, 50 %), gespeichert in localStorage. Der Klang startet mit seinem Animationsschritt;
+  beim Überspringen bleibt es still.
+- **Überlegung:** Synthetisierte Klänge statt Audiodateien – keine Lizenzfragen, keine Downloads, sehr
+  klein, und sie passen automatisch zur Lautstärke. Der AudioContext wird erst nach dem ersten Klick oder
+  Tastendruck erzeugt (Browser-Regel, und niemand wird beim Öffnen der Seite überrascht).
+- **Geprüft:** Playwright zählt AudioContexts und gestartete Töne: 0 vor der ersten Interaktion,
+  Töne im Match, stumm = keine Töne bei zwei Zugwechseln, Einstellungen nach dem Neuladen erhalten.
+- Screenshot: `screenshots/2026-11-21_33-sound-einstellungen.png`
+
 <!-- Neue Einträge unten anfügen. Vorlage:
 
 ### JJJJ-MM-TT HH:MM – Titel ★/👥/🤖
