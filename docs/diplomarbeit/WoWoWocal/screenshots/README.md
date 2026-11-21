@@ -36,6 +36,18 @@ Kontaktblätter: 10 Bilder im Abstand von ~100 ms (Zeit links oben), Sicht des G
 | [2026-11-21_21-bildfolge-gegner-spielt-karte.png](2026-11-21_21-bildfolge-gegner-spielt-karte.png) | Gegner spielt eine Character-Karte: groß in der Mitte, dann in den Slot, danach kurz markiert |
 | [2026-11-21_22-bildfolge-gegner-spielt-event.png](2026-11-21_22-bildfolge-gegner-spielt-event.png) | Gegner nutzt ein [Counter]-Event: großer Reveal mit Goldleuchten, dann in den Trash |
 
+## Bildfolgen: Kampf
+
+Kontaktblätter wie oben. Der Bot spielt beide Seiten über die echte Oberfläche.
+
+| Datei | Zeigt |
+|-------|-------|
+| [2026-11-21_23-bildfolge-angriff-zielpfeil.png](2026-11-21_23-bildfolge-angriff-zielpfeil.png) | Angriffsziel wählen: goldener Zielpfeil folgt dem Mauszeiger, gültige Ziele leuchten |
+| [2026-11-21_24-bildfolge-angriff.png](2026-11-21_24-bildfolge-angriff.png) | Angriff aus Sicht des Verteidigers: Ausfallschritt, Drehung beim Resten, „5000 ⚔ 5000“ |
+| [2026-11-21_25-bildfolge-ko.png](2026-11-21_25-bildfolge-ko.png) | K.O. (Bild 6–8): Karte zerfällt in Splitter, Geist fliegt in den Trash |
+| [2026-11-21_26-bildfolge-life-trigger.png](2026-11-21_26-bildfolge-life-trigger.png) | Life verloren mit [Trigger] (Sicht des Gegners): Karte groß mit „TRIGGER“ |
+| [2026-11-21_27-bildfolge-counter.png](2026-11-21_27-bildfolge-counter.png) | Counter: „+1000“ steigt über dem Ziel auf, Power zählt hoch |
+
 ## Noch aufzunehmen (mit laufendem Backend)
 
 - Deckbuilder mit Karten, Filtern und fertigem Deck

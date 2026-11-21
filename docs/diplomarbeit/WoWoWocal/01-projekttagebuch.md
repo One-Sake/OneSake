@@ -261,6 +261,26 @@ Keine Commits. Sprint 3 wurde ab 06.10.2026 geplant.
 - Bildfolgen: `screenshots/2026-11-21_21-bildfolge-gegner-spielt-karte.png`,
   `screenshots/2026-11-21_22-bildfolge-gegner-spielt-event.png`
 
+### 2026-11-21 14:50 – Animationen: Angriff, Block, Counter, Treffer, K.O., Life ★ 🤖
+- Commit „Animate attacks, blocks, counters, hits, K.O.s and Life cards“:
+  Beim Wählen des Angriffsziels läuft ein geschwungener goldener Zielpfeil (SVG) von der angreifenden
+  Karte zum Mauszeiger/Finger, gültige Ziele pulsieren. Nach dem Angriff springt der Angreifer Richtung
+  Ziel und zurück, das Resten dreht sich animiert, über dem Ziel erscheint „5000 ⚔ 5000“. Block: der
+  Blocker gleitet kurz vor, Schild-Symbol. Counter: „+2000“ steigt grün auf, die Power zählt hoch.
+  Treffer: Leader wackelt, roter Rand, am Handy `navigator.vibrate(30)` (abschaltbar). K.O.: die Karte
+  zerfällt in 12 Splitter, ein blasser Geist fliegt in den Trash. Life: die Karte dreht sich auf dem Weg
+  in die Hand um (Gegner: Rückseite). [Trigger]: die Karte erscheint groß mit „TRIGGER“.
+- **Überlegung:** Angriff, Block und Counter lassen sich direkt am `battle`-Objekt im Snapshot ablesen
+  (neuer Angreifer = Angriff, anderes Ziel = Block, höherer Counter-Bonus = Counter). Der K.O. ist ein
+  Character, der vom Feld in den Trash wechselt. Die Splitter nutzen das Kartenbild als Hintergrund –
+  keine Bilddateien nötig.
+- **Probleme/Lessons Learned:** Die Karte-Dialoge liegen im selben Stapelkontext wie das Board; die
+  fx-Schicht liegt deshalb darüber (sie fängt keine Klicks ab). Während ein gegnerischer [Trigger]
+  aufgelöst wird, liegt die Karte in keiner Zone – sie wird über den Namen im Log gefunden.
+- Bildfolgen: `screenshots/2026-11-21_23-bildfolge-angriff-zielpfeil.png`,
+  `…_24-bildfolge-angriff.png`, `…_25-bildfolge-ko.png`, `…_26-bildfolge-life-trigger.png`,
+  `…_27-bildfolge-counter.png`
+
 <!-- Neue Einträge unten anfügen. Vorlage:
 
 ### JJJJ-MM-TT HH:MM – Titel ★/👥/🤖

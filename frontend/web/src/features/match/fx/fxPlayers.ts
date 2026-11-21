@@ -11,6 +11,7 @@ import {
   NORMAL_MS,
   offset,
   place,
+  vibrate,
   zoneElement,
   type Box,
 } from './fxDom';
@@ -192,6 +193,72 @@ function flyToCard(env: FxEnv, from: Box, target: HTMLElement, group?: string): 
   );
 }
 
+// A Life card turns over on its way into the hand.
+function flipToCard(env: FxEnv, from: Box, target: HTMLElement): void {
+  target.dataset.fxHidden = '1';
+  env.queue.enqueue(
+    (context) => {
+      const to = boxOf(env.layer, target);
+      if (context.reduced || !to) {
+        return [];
+      }
+
+      const element = place(env.layer, context, to, 'fx-card');
+      const clone = target.cloneNode(true) as HTMLElement;
+      clone.removeAttribute('data-fx-card');
+      clone.removeAttribute('data-fx-hidden');
+      element.appendChild(clone);
+      return [
+        animate(
+          element,
+          [
+            { transform: `${offset(from, to)} rotateY(180deg)`, opacity: 0.6 },
+            { transform: `${offset(from, to)} translateY(-20px) rotateY(90deg)`, opacity: 1, offset: 0.35 },
+            { transform: 'none', opacity: 1 },
+          ],
+          context,
+          480,
+        ),
+      ];
+    },
+    undefined,
+    () => {
+      delete target.dataset.fxHidden;
+    },
+  );
+}
+
+// A card shown big in the middle with a label (e.g. "TRIGGER"), then it fades out.
+function revealOnly(env: FxEnv, card: CardInstanceDto | null, from: Box, label: string): void {
+  env.queue.enqueue((context) => {
+    const center = revealBox(env);
+    const element = card
+      ? faceCopy(env, context, center, card, 'fx-card--glow')
+      : place(env.layer, context, center, 'fx-card fx-card--back fx-card--glow');
+    const tag = document.createElement('span');
+    tag.className = 'fx-card__label fx-card__label--trigger';
+    tag.textContent = label;
+    element.appendChild(tag);
+    if (context.reduced) {
+      return [animate(element, [{ opacity: 1 }, { opacity: 1, offset: 0.8 }, { opacity: 0 }], context, 700)];
+    }
+
+    return [
+      animate(
+        element,
+        [
+          { transform: `${offset(from, center)} rotateY(180deg)`, opacity: 0.5 },
+          { transform: 'none', opacity: 1, offset: 0.3 },
+          { transform: 'scale(1.03)', opacity: 1, offset: 0.8 },
+          { transform: 'scale(1.1)', opacity: 0 },
+        ],
+        context,
+        (1000 * Math.max(context.speed, 0.7)) / context.speed,
+      ),
+    ];
+  });
+}
+
 // Card backs fly from one box to another (opponent draws, cards we cannot see).
 function flyBacks(env: FxEnv, from: Box, to: Box, count: number, group: string, variant: 'card' | 'don' = 'card'): void {
   for (let index = 0; index < count; index += 1) {
@@ -204,6 +271,129 @@ function flyBacks(env: FxEnv, from: Box, to: Box, count: number, group: string, 
       return [fly(element, from, to, context, NORMAL_MS, { delay: index * 70 })];
     }, group);
   }
+}
+
+// A short text that rises over a box and fades out ("+2000", "7000 ⚔ 5000", shield).
+function popText(env: FxEnv, context: FxContext, box: Box, text: string, className: string, ms = 700): Animation {
+  const width = Math.max(box.w * 1.6, 90);
+  const element = place(
+    env.layer,
+    context,
+    { x: box.x + box.w / 2 - width / 2, y: box.y + box.h * 0.25, w: width, h: 30 },
+    `fx-pop ${className}`,
+  );
+  element.textContent = text;
+  return animate(
+    element,
+    [
+      { transform: 'translateY(8px) scale(0.7)', opacity: 0, offset: 0 },
+      { transform: 'translateY(-6px) scale(1.08)', opacity: 1, offset: 0.25 },
+      { transform: 'translateY(-14px) scale(1)', opacity: 1, offset: 0.75 },
+      { transform: 'translateY(-24px) scale(1)', opacity: 0, offset: 1 },
+    ],
+    context,
+    ms,
+  );
+}
+
+// The number in a popup counts from one value to another (e.g. the power after a counter).
+function countUp(element: HTMLElement, from: number, to: number, ms: number, format: (value: number) => string): void {
+  const started = performance.now();
+  const step = (now: number) => {
+    if (!element.isConnected) {
+      return;
+    }
+
+    const progress = Math.min(1, (now - started) / ms);
+    element.textContent = format(Math.round((from + (to - from) * progress) / 100) * 100);
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    }
+  };
+  requestAnimationFrame(step);
+}
+
+function shake(element: HTMLElement | null, context: FxContext): Animation[] {
+  if (!element) {
+    return [];
+  }
+
+  flash(element, 'hit', 600);
+  if (context.reduced) {
+    return [];
+  }
+
+  return [
+    animate(
+      element,
+      [
+        { transform: 'translateX(0)' },
+        { transform: 'translateX(-7px) rotate(-2deg)' },
+        { transform: 'translateX(6px) rotate(2deg)' },
+        { transform: 'translateX(-4px)' },
+        { transform: 'translateX(3px)' },
+        { transform: 'translateX(0)' },
+      ],
+      context,
+      380,
+      { easing: 'linear', fill: 'none' },
+    ),
+  ];
+}
+
+// K.O.: the card breaks into pieces, then a pale ghost flies into the trash.
+function shatter(env: FxEnv, context: FxContext, card: CardInstanceDto, box: Box, trash: Box): Animation[] {
+  const animations: Animation[] = [];
+  const columns = 3;
+  const rows = 4;
+  const image = card.imageUrl ? `url("${card.imageUrl.replace(/"/g, '%22')}")` : '';
+  for (let row = 0; row < rows; row += 1) {
+    for (let column = 0; column < columns; column += 1) {
+      const piece = place(
+        env.layer,
+        context,
+        { x: box.x + (column * box.w) / columns, y: box.y + (row * box.h) / rows, w: box.w / columns, h: box.h / rows },
+        'fx-shard',
+      );
+      if (image) {
+        piece.style.backgroundImage = image;
+        piece.style.backgroundSize = `${box.w}px ${box.h}px`;
+        piece.style.backgroundPosition = `${(-column * box.w) / columns}px ${(-row * box.h) / rows}px`;
+      }
+
+      const dx = (column - (columns - 1) / 2) * 26 + (Math.random() - 0.5) * 18;
+      const dy = (row - (rows - 1) / 2) * 20 + 18 + Math.random() * 14;
+      const turn = (Math.random() - 0.5) * 140;
+      animations.push(
+        animate(
+          piece,
+          [
+            { transform: 'none', opacity: 1 },
+            { transform: `translate(${dx}px, ${dy}px) rotate(${turn}deg) scale(0.6)`, opacity: 0 },
+          ],
+          context,
+          420,
+          { easing: 'cubic-bezier(0.2, 0.6, 0.4, 1)' },
+        ),
+      );
+    }
+  }
+
+  const ghost = faceCopy(env, context, trash, card, 'fx-card--ghost');
+  animations.push(
+    animate(
+      ghost,
+      [
+        { transform: offset(box, trash), opacity: 0 },
+        { transform: offset(box, trash), opacity: 0.55, offset: 0.35 },
+        { transform: 'none', opacity: 0 },
+      ],
+      context,
+      520,
+      { delay: 120 },
+    ),
+  );
+  return animations;
 }
 
 function dragLandingRunning(): boolean {
@@ -271,7 +461,15 @@ export function snapshotFx(previous: GameStateDto, next: GameStateDto, env: FxEn
     // Draws: new hand cards that were nowhere visible (cards from the Life area are shown elsewhere).
     if (side === 'player') {
       const drawn = [...now.zones.entries()].filter(([id, zone]) => zone === 'hand' && !old.zones.has(id)).map(([id]) => id);
+      const fromLife = drawn.slice(0, lifeLost);
       const fromDeck = drawn.slice(lifeLost);
+      const life = cardBoxIn(env, 'player', 'life');
+      fromLife.forEach((id) => {
+        const target = cardElement(env.frame, id);
+        if (target) {
+          flipToCard(env, life, target);
+        }
+      });
       const deck = cardBoxIn(env, 'player', 'deck');
       fromDeck.forEach((id) => {
         const target = cardElement(env.frame, id);
@@ -287,19 +485,175 @@ export function snapshotFx(previous: GameStateDto, next: GameStateDto, env: FxEn
       if (draws > 0) {
         flyBacks(env, cardBoxIn(env, 'opponent', 'deck'), cardBoxIn(env, 'opponent', 'hand'), draws, `odraw-${groupSeq}`);
       }
+
+      const lifeToHand = Math.min(lifeLost, Math.max(0, handGrowth - Math.max(0, draws)));
+      if (lifeToHand > 0) {
+        flyBacks(env, cardBoxIn(env, 'opponent', 'life'), cardBoxIn(env, 'opponent', 'hand'), lifeToHand, `olife-${groupSeq}`);
+      }
+    }
+
+    // K.O.: a Character went from the field into the trash.
+    now.zones.forEach((zone, id) => {
+      if (zone !== 'trash' || old.zones.get(id) !== 'character') {
+        return;
+      }
+
+      const card = now.cards.get(id)!;
+      const box = env.previousBoxes.get(id);
+      const trash = cardBoxIn(env, side, 'trash');
+      if (box) {
+        env.queue.enqueue((context) => (context.reduced ? [] : shatter(env, context, card, box, trash)));
+      }
+    });
+
+    // Damage: the Leader shakes, flashes red, and the phone vibrates when we are hit.
+    if (lifeLost > 0) {
+      const leader = after[side]?.leader;
+      env.queue.enqueue((context) => {
+        if (side === 'player') {
+          vibrate(30, env.settings.vibration);
+        }
+
+        return shake(cardElement(env.frame, leader?.instanceId ?? ''), context);
+      });
     }
   }
+
+  battleFx(previous, next, env);
+}
+
+// Attack, block and counter, read from the battle in the snapshot.
+function battleFx(previous: GameStateDto, next: GameStateDto, env: FxEnv): void {
+  const before = previous.battle ?? null;
+  const battle = next.battle ?? null;
+  if (!battle) {
+    return;
+  }
+
+  const isNewBattle = !before || before.attackerInstanceId !== battle.attackerInstanceId;
+  if (isNewBattle) {
+    const attackerSide = sideOf(next, battle.attackerPlayerId, env.viewerId);
+    env.queue.enqueue((context) => {
+      const attacker = cardElement(env.frame, battle.attackerInstanceId);
+      const target = cardElement(env.frame, battle.targetInstanceId);
+      const from = boxOf(env.layer, attacker);
+      const to = boxOf(env.layer, target);
+      if (!attacker || !from || !to) {
+        return [];
+      }
+
+      if (attackerSide === 'opponent') {
+        markRecent(attacker);
+      }
+
+      const animations = [popText(env, context, to, `${battle.attackerPower} ⚔ ${battle.targetPower}`, 'fx-pop--battle', 900)];
+      if (context.reduced) {
+        flash(attacker, 'gold');
+        return animations;
+      }
+
+      // Lunge: the attacker jumps part of the way towards the target and back.
+      const dx = (to.x + to.w / 2 - (from.x + from.w / 2)) * 0.35;
+      const dy = (to.y + to.h / 2 - (from.y + from.h / 2)) * 0.35;
+      animations.push(
+        animate(
+          attacker,
+          [
+            { transform: 'translate(0, 0)' },
+            { transform: `translate(${dx}px, ${dy}px) scale(1.08)`, offset: 0.45 },
+            { transform: 'translate(0, 0)' },
+          ],
+          context,
+          380,
+          { fill: 'none', easing: 'cubic-bezier(0.3, 0, 0.3, 1)' },
+        ),
+      );
+      return animations;
+    });
+    return;
+  }
+
+  // Block: the target changed to the blocker.
+  if (before && before.targetInstanceId !== battle.targetInstanceId) {
+    env.queue.enqueue((context) => {
+      const blocker = cardElement(env.frame, battle.targetInstanceId);
+      const blockerBox = boxOf(env.layer, blocker);
+      const oldTarget = boxOf(env.layer, cardElement(env.frame, before.targetInstanceId));
+      if (!blocker || !blockerBox) {
+        return [];
+      }
+
+      const animations = [popText(env, context, blockerBox, '🛡', 'fx-pop--shield', 700)];
+      if (!context.reduced && oldTarget) {
+        const dx = (oldTarget.x - blockerBox.x) * 0.3;
+        const dy = (oldTarget.y - blockerBox.y) * 0.3;
+        animations.push(
+          animate(
+            blocker,
+            [{ transform: 'translate(0, 0)' }, { transform: `translate(${dx}px, ${dy}px)`, offset: 0.4 }, { transform: 'translate(0, 0)' }],
+            context,
+            420,
+            { fill: 'none' },
+          ),
+        );
+      } else {
+        flash(blocker, 'good');
+      }
+
+      return animations;
+    });
+  }
+
+  // Counter: "+2000" rises over the target and the power counts up.
+  const bonus = battle.counterBonus - (before?.counterBonus ?? 0);
+  if (before && bonus > 0) {
+    env.queue.enqueue((context) => {
+      const target = cardElement(env.frame, battle.targetInstanceId);
+      const box = boxOf(env.layer, target);
+      if (!box) {
+        return [];
+      }
+
+      flash(target, 'good');
+      const plus = popText(env, context, box, `+${bonus}`, 'fx-pop--counter', 800);
+      const power = place(env.layer, context, { x: box.x, y: box.y + box.h - 26, w: box.w, h: 24 }, 'fx-pop fx-pop--power');
+      countUp(power, before.targetPower, battle.targetPower, 500 * Math.max(context.speed, 0.3), (value) => String(value));
+      return [plus, animate(power, [{ opacity: 0 }, { opacity: 1, offset: 0.15 }, { opacity: 1, offset: 0.85 }, { opacity: 0 }], context, 800)];
+    });
+  }
+}
+
+// A card with this name somewhere on the board (for its image). While a [Trigger] resolves, the
+// card itself is in no zone - another copy, or at least the name, is shown.
+function findCardByName(state: GameStateDto, name: string): CardInstanceDto {
+  const cards = state.players.flatMap((player) => [
+    ...player.boardCards,
+    ...player.trashCards,
+    ...player.handCards,
+    ...(player.stage ? [player.stage] : []),
+  ]);
+  return cards.find((card) => card.name === name) ?? { instanceId: '', cardId: '', name };
 }
 
 // Log entries add what a snapshot cannot show (who attacked with which power, triggers, effects).
 export function logFx(event: LogEventDto, state: GameStateDto | null, env: FxEnv): void {
-  void event;
-  void state;
-  void env;
+  if (!state) {
+    return;
+  }
+
+  // "Bob reveals Carrot and activates its [Trigger]." - our own trigger is shown with the prompt.
+  const trigger = event.type === 'TRIGGER' ? /^(.*) reveals (.+) and activates its \[Trigger\]/.exec(event.text) : null;
+  if (trigger) {
+    const players = playersBySide(state, env.viewerId);
+    if (players.opponent && trigger[1] === players.opponent.displayName) {
+      revealOnly(env, findCardByName(state, trigger[2]), cardBoxIn(env, 'opponent', 'life'), 'TRIGGER');
+    }
+  }
 }
 
 // A new prompt for us (e.g. a [Trigger] decision shows the card big in the middle).
 export function promptFx(prompt: ChoicePromptDto, env: FxEnv): void {
-  void prompt;
-  void env;
+  if (prompt.kind === 'TRIGGER_DECISION') {
+    revealOnly(env, prompt.cards?.[0] ?? null, cardBoxIn(env, 'player', 'life'), 'TRIGGER');
+  }
 }

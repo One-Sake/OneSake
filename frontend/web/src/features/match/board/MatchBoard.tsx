@@ -8,6 +8,7 @@ import type {
   LogEventDto,
   PlayerStateDto,
 } from '../../../types/realtime';
+import { AttackArrow } from '../fx/AttackArrow';
 import { FxLayer } from '../fx/FxLayer';
 import { useFxSettings } from '../fx/fxSettings';
 import { useBoardFx } from '../fx/useBoardFx';
@@ -855,6 +856,7 @@ export function MatchBoard({
       )}
 
       <FxLayer ref={fxLayerRef} />
+      {mode.kind === 'attack' && <AttackArrow attackerId={mode.attackerId} frameRef={frameRef} />}
 
       <DragGhost ref={handDrag.ghostRef} cardWidth={metrics?.cardWidth ?? 80} view={handDrag.view} />
 

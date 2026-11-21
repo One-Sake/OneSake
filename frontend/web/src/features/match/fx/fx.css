@@ -3,7 +3,8 @@
 .fx-layer {
   position: absolute;
   inset: 0;
-  z-index: 22;
+  /* Above the card dialogs (74/76): a [Trigger] reveal shows for a moment over the dialog. */
+  z-index: 80;
   overflow: hidden;
   pointer-events: none;
   contain: layout style;
@@ -208,4 +209,105 @@
   background: linear-gradient(90deg, #ffe08a, #f0bf38);
   box-shadow: 0 4px 12px rgb(0 0 0 / 45%);
   translate: -50% 0;
+}
+
+/* ---------- Battle ---------- */
+
+.fx-pop {
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 900;
+  white-space: nowrap;
+  text-shadow: 0 2px 6px rgb(0 0 0 / 80%);
+}
+
+.fx-pop--battle {
+  border-radius: 999px;
+  color: #ffe9a8;
+  background: rgb(20 10 4 / 78%);
+  box-shadow: 0 0 0 1px rgb(240 191 56 / 60%);
+}
+
+.fx-pop--counter {
+  color: #6dffb9;
+  font-size: 1.35rem;
+}
+
+.fx-pop--power {
+  color: #6dffb9;
+  font-size: 1.1rem;
+}
+
+.fx-pop--shield {
+  font-size: 1.8rem;
+}
+
+.fx-shard {
+  border-radius: 2px;
+  background-color: #2a3e55;
+  background-repeat: no-repeat;
+  box-shadow: 0 0 6px rgb(255 120 80 / 50%);
+}
+
+.fx-card--ghost {
+  filter: grayscale(1) brightness(1.6);
+  mix-blend-mode: screen;
+}
+
+.fx-card__label--trigger {
+  font-size: 1rem;
+  background: linear-gradient(90deg, #ffb35e, #ff6b3d);
+}
+
+[data-fx-flash='gold'] {
+  --fx-flash-color: #ffd25e;
+}
+
+/* Resting and standing up are animated (individual rotate/scale, GPU). */
+.fx-mode-normal .match-card-view,
+.fx-mode-fast .match-card-view {
+  transition:
+    rotate 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    scale 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+/* Attack mode: valid targets glow and pulse, the target arrow follows the pointer. */
+.fx-mode-normal .match-board__side--opponent .match-card-view.is-targetable,
+.fx-mode-fast .match-board__side--opponent .match-card-view.is-targetable {
+  animation: fx-target-pulse 1s ease-in-out infinite;
+}
+
+@keyframes fx-target-pulse {
+  50% {
+    box-shadow:
+      0 0 0 3px rgb(255 214 102 / 95%),
+      0 0 22px rgb(255 196 64 / 70%);
+  }
+}
+
+.fx-arrow {
+  position: absolute;
+  inset: 0;
+  z-index: 23;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.fx-arrow path {
+  fill: none;
+  stroke: #ffd25e;
+  stroke-width: 5;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 6px rgb(255 196 64 / 75%));
+}
+
+.fx-arrow polygon {
+  fill: #ffd25e;
+  filter: drop-shadow(0 0 6px rgb(255 196 64 / 75%));
 }
