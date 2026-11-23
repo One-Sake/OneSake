@@ -34,6 +34,43 @@ public class CardsController : ControllerBase
         return Ok(sets);
     }
 
+    // GET /cards/don
+    // Liefert die DON!! Karten aus der Datenbank. Ist noch keine da, wird die Standard-Karte importiert.
+    [HttpGet("don")]
+    public async Task<IActionResult> GetDonCards()
+    {
+        var donFromDatabase = await _cardQueryService.GetDonCardsAsync();
+
+        if (donFromDatabase.Count > 0)
+        {
+            return Ok(donFromDatabase);
+        }
+
+        var importResult = await _cardImportService.ImportDonCardsAsync();
+
+        if (importResult.TotalFromApi == 0)
+        {
+            return NotFound("No DON!! cards found.");
+        }
+
+        return Ok(await _cardQueryService.GetDonCardsAsync());
+    }
+
+    // POST /cards/import/don
+    // Importiert die Standard DON!! Karte. Mit ?all=true werden alle Varianten importiert (spaeter fuer Belohnungen).
+    [HttpPost("import/don")]
+    public async Task<IActionResult> ImportDonCards([FromQuery] bool all = false)
+    {
+        var result = await _cardImportService.ImportDonCardsAsync(standardOnly: !all);
+
+        if (result.TotalFromApi == 0)
+        {
+            return NotFound("No DON!! cards found.");
+        }
+
+        return Ok(result);
+    }
+
     // GET /cards/OP01-001
     [HttpGet("{id}")]
     public async Task<IActionResult> GetCardsById(string id)

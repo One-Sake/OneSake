@@ -23,11 +23,25 @@ public class CardQueryService
         return cards.Select(MapToDto).ToList();
     }
 
-    public async Task<List<CardDto>> GetSetByIdAsync(string setId)
+    // DON!! Karten (Standard + spaeter Varianten). Standard-Karte zuerst.
+    public async Task<List<CardDto>> GetDonCardsAsync()
     {
         var cards = await _dbContext.Cards
             .AsNoTracking()
-            .Where(card => card.SetId == setId)
+            .Where(card => card.Type == CardImportService.DonCardType)
+            .OrderBy(card => card.CardName != CardImportService.StandardDonCardName)
+            .ThenBy(card => card.CardName)
+            .ToListAsync();
+
+        return cards.Select(MapToDto).ToList();
+    }
+
+    public async Task<List<CardDto>> GetSetByIdAsync(string setId)
+    {
+        // DON!! Karten haben zwar eine set_id (zB. "P"), gehoeren aber nicht in die Set-Listen vom Deckbuilder.
+        var cards = await _dbContext.Cards
+            .AsNoTracking()
+            .Where(card => card.SetId == setId && card.Type != CardImportService.DonCardType)
             .OrderBy(card => card.CardId)
             .ToListAsync();
 
@@ -68,6 +82,7 @@ public class CardQueryService
     {
         return await _dbContext.Cards
             .AsNoTracking()
+            .Where(card => card.Type != CardImportService.DonCardType)
             .GroupBy(card => new
             {
                 card.SetId,

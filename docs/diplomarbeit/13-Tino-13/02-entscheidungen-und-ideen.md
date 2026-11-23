@@ -13,6 +13,7 @@ Stand: 2026-11-23.
 | Sperre nach 5 Fehlversuchen (15 Min.) + Rate Limit pro IP | 23.11. | gegen Passwort-Raten |
 | „Auf allen Geräten abmelden“ (SecurityStamp) | 23.11. | auch nach Passwortänderung/Reset automatisch |
 | Gast-Verlauf beim Registrieren übernehmen | 23.11. | nur der erste Account bekommt eine Gast-ID |
+| Standard DON!! Karte in der Datenbank | 23.11. | Import von optcgapi über `POST /cards/import/don`, abrufbar über `GET /cards/don` |
 
 ### 1.2 Offen
 
@@ -23,6 +24,7 @@ Stand: 2026-11-23.
 | Optionale E-Mail als zweiter Weg zur Wiederherstellung | nur falls Spieler ihren Code oft verlieren |
 | Admin-Reset für Spieler, die Passwort und Code verloren haben | braucht einen Nachweis, wem der Account gehört |
 | Bestehende SignalR-Verbindungen nach „Überall abmelden“ sofort trennen | heute gilt die neue Sitzung erst ab der nächsten Verbindung |
+| Alle DON!! Varianten als Belohnungen/Schätze für Spieler | geplant; der Import ist mit `POST /cards/import/don?all=true` schon vorbereitet |
 
 ### 1.3 Verworfen
 
@@ -48,6 +50,7 @@ Stand: 2026-11-23.
 | Handgeschriebene Migration `AddAccounts` beibehalten | `has-pending-model-changes` meldet keine Abweichung zum Modell | Migration mit `dotnet ef migrations add` neu erzeugen |
 | Build/Tests/`dotnet ef` lokal im SDK-Container | Smart App Control blockiert unsignierte DLLs unter Windows und soll an bleiben | Smart App Control ausschalten (nicht umkehrbar) |
 | Nach Registrieren/Reset zurück auf „Anmelden“ | sonst zeigt das Profil nach dem Abmelden das falsche Formular | |
+| DON!! Karten in der bestehenden Tabelle `Cards` mit Type „DON!!“ | keine eigene Tabelle und keine Migration nötig; DON wird über den Type aus den Set-Listen gefiltert | eigene Tabelle `DonCards` (braucht Migration) |
 
 ## 3. Abweichungen vom Projektauftrag
 

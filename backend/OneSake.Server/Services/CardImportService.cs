@@ -55,6 +55,66 @@ public class CardImportService
         return new CardImportResult(setId, cardsFromApi.Count, imported, skipped);
     }
 
+    // Kartentyp, den optcgapi fuer alle DON!! Karten liefert.
+    public const string DonCardType = "DON!!";
+
+    // Name der normalen DON!! Karte. Alle anderen Eintraege sind Varianten (zB. "DON!! Card (Egghead)").
+    public const string StandardDonCardName = "DON!! Card";
+
+    // Importiert DON!! Karten. Zurzeit nur die Standard-Karte, spaeter (standardOnly: false)
+    // alle Varianten, zB. als Belohnungen.
+    public async Task<CardImportResult> ImportDonCardsAsync(bool standardOnly = true)
+    {
+        var donCardsFromApi = await _cardService.GetAllDonCardsAsync();
+
+        var selected = standardOnly
+            ? donCardsFromApi.Where(IsStandardDon).ToList()
+            : donCardsFromApi;
+
+        if (selected.Count == 0)
+        {
+            return new CardImportResult(DonCardType, 0, 0, 0);
+        }
+
+        var imported = 0;
+        var skipped = 0;
+
+        foreach (var donDto in selected)
+        {
+            // DON!! Karten haben kein card_set_id, daher dient card_image_id (zB. don_8) als CardId.
+            if (string.IsNullOrWhiteSpace(donDto.CardImageId))
+            {
+                skipped++;
+                continue;
+            }
+
+            var alreadyExists = await _dbContext.Cards
+                .AnyAsync(card => card.CardId == donDto.CardImageId);
+
+            if (alreadyExists)
+            {
+                skipped++;
+                continue;
+            }
+
+            var card = MapToEntity(donDto);
+            card.CardId = donDto.CardImageId;
+            card.Type = DonCardType;
+
+            _dbContext.Cards.Add(card);
+            imported++;
+        }
+
+        await _dbContext.SaveChangesAsync();
+
+        return new CardImportResult(DonCardType, selected.Count, imported, skipped);
+    }
+
+    private static bool IsStandardDon(CardDto dto)
+    {
+        return dto.Type == DonCardType && dto.CardName.Trim() == StandardDonCardName;
+    }
+
     private static Card MapToEntity(CardDto dto)
     {
         return new Card

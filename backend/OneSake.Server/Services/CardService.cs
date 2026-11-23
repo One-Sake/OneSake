@@ -69,6 +69,29 @@ public class CardService
         }
     }
 
+    private List<CardDto>? _donCache;
+
+    // Holt alle DON!! Karten (Standard + alle Varianten) von der externen API.
+    // DON!! Karten haben kein "card_set_id", ihre eindeutige ID steht in "card_image_id" (zB. don_8).
+    public async Task<List<CardDto>> GetAllDonCardsAsync()
+    {
+        if (_donCache != null) return _donCache;
+
+        try
+        {
+            var cards = await _http.GetFromJsonAsync<List<CardDto>>("https://optcgapi.com/api/allDonCards/") ?? new List<CardDto>();
+
+            _donCache = cards;
+
+            return cards;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+            return new List<CardDto>();
+        }
+    }
+
 }
 
 

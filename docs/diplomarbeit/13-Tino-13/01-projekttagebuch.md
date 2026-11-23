@@ -63,6 +63,20 @@ Chronologische Dokumentation der eigenen Arbeitsschritte mit Zeitstempeln und Ü
 - Screenshot: `screenshots/2026-11-23_01-login.png` (Login-Bereich im Profil),
   `screenshots/2026-11-23_02-recovery-code.png` (Code nach der Registrierung).
 
+### 2026-11-23 18:12 – Standard DON!! Karte in die Datenbank importieren ★ 🤖
+- `feat: Standard DON!! Karte von optcgapi importieren` Die Standard DON!! Karte wird von optcgapi
+  (`/api/allDonCards/`) in die Tabelle `Cards` importiert. Neue Endpoints: `GET /cards/don` und
+  `POST /cards/import/don` (mit `?all=true` für alle Varianten). Lokal getestet: Build grün,
+  324 Tests bestanden (6 übersprungen, 0 fehlgeschlagen), der Import liefert `don_8` „DON!! Card“.
+- **Überlegung:** Im Spiel werden DON bisher nur gezählt. Später sollen alle DON-Varianten als
+  Belohnungen und Schätze für Spieler vorhanden sein. Vorerst reicht die Standard-Karte, deshalb
+  importiert der Endpoint ohne Parameter nur diese eine.
+- **Probleme/Lessons Learned:**
+  - DON-Einträge haben kein `card_set_id`, daher dient `card_image_id` (`don_8`) als `CardId`.
+  - DON-Karten haben `set_id` „P“. Sie werden deshalb aus `/cards/sets` und `/cards/set/{id}`
+    herausgefiltert, damit sie im Deckbuilder nicht bei den Promos landen.
+  - Migrationen laufen beim Serverstart nicht automatisch, sondern über `dotnet ef database update`.
+
 <!-- Neue Einträge unten anfügen. Vorlage:
 
 ### JJJJ-MM-TT HH:MM – Titel ★/👥/🤖

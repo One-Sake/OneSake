@@ -4,3 +4,19 @@ GET {{OneSake.Server_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+# Standard DON!! Karte von optcgapi in die Datenbank importieren
+POST {{OneSake.Server_HostAddress}}/cards/import/don
+
+###
+
+# Alle DON!! Varianten importieren (spaeter fuer Belohnungen)
+# POST {{OneSake.Server_HostAddress}}/cards/import/don?all=true
+
+###
+
+# DON!! Karten aus der Datenbank lesen
+GET {{OneSake.Server_HostAddress}}/cards/don
+Accept: application/json
+
+###
