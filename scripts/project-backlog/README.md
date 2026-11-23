@@ -17,7 +17,14 @@ und ordnet die vorhandenen Issues ein. Grundlage ist die Git-Historie und der Pr
 |----------|-----------------------|-------------------------------------------------------------|--------------|
 | Sprint 1 | 17.04. – 10.05.2026   | Repo, Workflow, CI/CD, Karten-API, Vertical Slice           | abgeschlossen |
 | Sprint 2 | 11.05. – 07.06.2026   | Deckbuilder, Tools, Match-Oberfläche, PostgreSQL            | abgeschlossen |
-| Sprint 3 | ab 06.10.2026         | Server-Liste, echte OPTCG-Regeln, Konten und Decks in der DB | laufend       |
+| Sprint 3 | 06.10. – 12.11.2026   | Server-Liste, echte OPTCG-Regeln, neues Spielbrett          | abgeschlossen |
+| Sprint 4 | 13.11. – 19.11.2026   | Quick Match, Ranked, Meta, Effekt-Engine                    | abgeschlossen |
+| Sprint 5 | 20.11. – 23.11.2026   | Regel-Engine, Reconnect, Zug-Timer, Spielgefühl, Konten     | abgeschlossen |
+| Sprint 6 | 24.11. – 20.12.2026   | Decks am Konto, Berries, Produktion, Abnahme-Vorbereitung   | geplant       |
+
+> Das Skript deckt nur Sprint 1–3 ab (Stand 09.11.2026). Sprint 3 bis 6 und die User Stories ab #58 wurden
+> am 23.11.2026 direkt auf GitHub angelegt und sind in [docs/sprints/](../../docs/sprints/README.md) dokumentiert.
+> Neue Stories bitte dort und als Issue anlegen, nicht mehr über dieses Skript.
 
 Neue User Stories: UserStory #16 – #57 (Fortsetzung der bestehenden #1 – #15).
 Abgeschlossene Stories enthalten Zeitraum und Commits, offene Stories liegen in Sprint 3 oder im Backlog

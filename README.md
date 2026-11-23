@@ -18,6 +18,10 @@ npm install
 
 npm run dev
 
+## Projektstand
+
+Sprints, User Stories, Product Backlog und Definition of Done: [docs/sprints/](docs/sprints/README.md)
+
 ## Workflow (dev + main)
 1. `git checkout dev && git pull`
 2. Commit and push your branch
