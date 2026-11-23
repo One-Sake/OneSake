@@ -65,7 +65,11 @@ Commit-Beschreibungen, Dokumentation. Stand: 2026-11-20.
 | Automatisierte Frontend-Tests | #49 | Qualität |
 | Einladungslink teilen, App installierbar (PWA) | #51 | Projektauftrag (Web/PWA) |
 | Alle Kartenversionen inkl. Alt-Arts | #56 | Community-Wunsch |
-| Vollständige Effektabdeckung, richtige Trigger-Reihenfolge | – | Branch `logic` |
+| Vollständige Effektabdeckung, richtige Trigger-Reihenfolge | – | Branch `logic`, Arbeitsplan `docs/spiellogik-plan.md` (23.11.) |
+| Nur fertige (geprüfte) Karten in Ranked/Quick Match, Status im Deckbuilder | – | Plan A6 (23.11.), wie XMage/Forge |
+| Effekt-Orakel im Simulator (prüft die Wirkung jedes Effektschritts) | – | Plan 6.1 (23.11.) |
+| Review-Ansicht mit Rückübersetzung Skript → Text | – | Plan A8 (23.11.) |
+| KI-Entwürfe für Kartenskripte (mit Review und Test) | – | Plan A9 (23.11.) – Entscheidung im Team offen |
 | Usability-Test: bestehende Lösung vs. OneSake am Handy | – | Projektauftrag Phase 5 |
 | Demo-Video, Abnahme | – | Projektauftrag Phase 5 |
 | Zug-Timer mit Zeitbank | – | Roadmap 21.11. (`04-roadmap-und-alleinstellungsmerkmale.md`) |
@@ -91,6 +95,8 @@ Commit-Beschreibungen, Dokumentation. Stand: 2026-11-20.
 | Vorschau-Scroll-Änderung im Deckbuilder | 19.05. (`d43399e`) | Nach 5 Minuten zurückgenommen (Verschlechterung) |
 | Eigene Tier-Liste im Meta-Tab | 18.11. | Anbieter liefert keine Tiers; keine eigenen Bewertungen erfinden |
 | „Nur Choices, kein Drag & Drop“ (Projektauftrag, Risiken) | 20.11. | Drag & Drop zusätzlich eingeführt, weil es sich natürlicher anfühlt; Server-Validierung bleibt gleich |
+| Manueller Effekt-Modus als Dauerlösung („Effekt bitte manuell ausführen“) | 23.11. | Online zwischen Fremden nicht fair spielbar; andere Simulatoren sperren nicht umgesetzte Karten → nur noch Übergang, später entfernt (Plan A6) |
+| Parser allein weiter ausbauen | 23.11. | 1.115 unverstandene Textteile als langer Schwanz (häufigstes Muster nur 48×) → Hybrid aus Parser-Entwurf, Review und Test (Plan A1) |
 | Ranked/MMR „out of scope“ (Projektauftrag 3.2) | 18.11. | Doch umgesetzt (ELO + Kopfgeld) als Motivation, solange Berries/Shop fehlen |
 
 ## 3. Architektur- und Technikentscheidungen
@@ -120,6 +126,9 @@ Commit-Beschreibungen, Dokumentation. Stand: 2026-11-20.
 | Timer bei privaten Tischen wählbar: Standard / Entspannt / Aus; Ranked immer Standard (21.11.) | Freundschaftsspiele und Lernpartien ohne Zeitdruck, Ranked fair für alle | Timer überall Pflicht, gar kein Timer |
 | Timer-Farbe nach Gesamtrestzeit (Zeit + Zeitbank), Tick-Geräusch abschaltbar (21.11.) | Kein unnötiger Stress, solange noch Zeitbank da ist; Ton ist optional | Farbe nur nach Zugzeit |
 | Countdowns mit Serverzeit-Offset (21.11.) | Falsch gehende Handyuhren verfälschen keine Fristen | Lokale Uhr (ungenau), nur Restsekunden schicken (springt bei Lag) |
+| Effekte hybrid wie MTG Arena: Parser-Entwurf → menschliches Review → Kartentest (23.11.) | Texte sind normiert, Parser trifft viel; nur Review + Test garantieren Korrektheit | Nur Parser; jede Karte als C#-Klasse (XMage); Lua-Skripte (EDOPro) |
+| Effektmodell v2 als Baum, Ereignis-Pipeline mit Ersatz-Effekten (23.11.) | Deckt „Choose one“, „If you do“, „When …“, „instead“ ab; Aufbau wie XMage/Forge | Flache Schrittliste erweitern |
+| Kartentext im Repo einfrieren, CI statt stillem Hash-Fallback (23.11.) | Abweichende DB-Texte schalten sonst unbemerkt alle Effekte ab | Laufzeit-Hash-Vergleich |
 | Rejoin-Daten in sessionStorage **und** localStorage (21.11.) | Neuladen und App neu öffnen funktionieren; Daten werden nach Spielende gelöscht | Nur sessionStorage (App neu öffnen ginge nicht), Cookie |
 | Eigener Branch `logic` für die Regel-Engine | Großer Umbau, ohne `dev` zu blockieren | Alles auf `dev` |
 | Reconnect-Schonfrist 90 s + Budget 180 s pro Match, Lobby 30 s (21.11.) | Funkloch/App-Wechsel am Handy kostet nicht mehr das Match; Budget verhindert Zeitschinden; Werte konfigurierbar | Kein Reconnect (bisher), unbegrenzte Frist (Gegner wartet ewig), Pausieren auf Wunsch |

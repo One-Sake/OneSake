@@ -493,6 +493,25 @@ Keine Commits. Sprint 3 wurde ab 06.10.2026 geplant.
   Vorschlag: im Deploy-Skript `set -e` (bricht bei Fehlern ab) und die CI zusätzlich mit dem SDK des
   Servers bauen lassen.
 
+### 2026-11-23 18:20 – Arbeitsplan für die vollautomatische Spiellogik ★ 🤖
+- Neues Dokument `docs/spiellogik-plan.md` (Branch `logic`): Ziel „jede Karte führt ihren Effekt
+  automatisch und regelkonform aus“, mit messbarer Definition of Done (D1–D6), Analyse, Vergleich mit
+  anderen Simulatoren, Architektur-Entscheidungen A1–A9 und Phasen 0–6 als Checklisten.
+- **Anlass:** Beim eigenen Test hat kein Effekt funktioniert (Activate: Main, Search, End of Turn).
+  Analyse: nur 13 von 2.496 Karten sind geprüft, 1.040 manuell; in den 16 Meta-Decks sind 105 von
+  210 Karten manuell. Vermutete Ursache für „gar nichts geht“: Kartentext in der Datenbank (Import Mai)
+  weicht vom Hash im Skript (erzeugt November) ab → Karte wird still `manual`. Noch zu prüfen (Phase 0).
+- **Überlegung:** Vergleich mit MTG Arena (Parser + Entwickler, ca. 80 % automatisch), EDOPro (Lua pro
+  Karte), XMage (Java-Klasse pro Karte), Forge (Skriptdatei pro Karte). Gemeinsam: Regelkern und Karten
+  getrennt, alles über Ereignisse, jede Karte geprüft und getestet, nicht umgesetzte Karten sind
+  **nicht spielbar**. Gewählt: Hybrid wie MTG Arena (Parser-Entwurf → Review → Test), Effektmodell als
+  Baum, Kartentests als Daten, Ausbau in Wellen nach Wichtigkeit (Starter/Leader → Meta-Decks → Rest).
+  Verworfen: nur Parser weiter ausbauen (langer Schwanz, falsche Effekte bleiben unbemerkt) und alle
+  Karten in C# schreiben (zu viel Aufwand).
+- **Geprüft:** .NET 8 SDK lokal installiert, `dotnet test` grün (324 bestanden, 6 übersprungen).
+- **Lessons Learned:** Eine grüne Simulation heißt nicht, dass die Effekte stimmen – die Bots prüfen nur
+  den Spielzustand. Deshalb braucht es zusätzlich ein „Effekt-Orakel“ und Kartentests.
+
 <!-- Neue Einträge unten anfügen. Vorlage:
 
 ### JJJJ-MM-TT HH:MM – Titel ★/👥/🤖
