@@ -112,7 +112,7 @@ server. A script only runs if that text has the same hash as the script file. Th
 same request for every card script and reports what the game really does with each card:
 
 ```
-dotnet run --project backend/OneSake.CardScriptGen -- --check-backend https://api.onesake.world
+dotnet run --project backend/OneSake.CardScriptGen -- --check-backend <Backend-URL>
 dotnet run --project backend/OneSake.CardScriptGen -- --check-texts cards.json --set OP04
 ```
 

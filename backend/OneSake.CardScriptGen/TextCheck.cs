@@ -5,7 +5,7 @@ using OneSake.Game.Effects;
 
 // Phase 0 of docs/spiellogik-plan.md: why do card effects not run in real matches?
 //
-//   dotnet run --project backend/OneSake.CardScriptGen -- --check-backend https://api.onesake.world [--set OP04] [--report <file>]
+//   dotnet run --project backend/OneSake.CardScriptGen -- --check-backend <Backend-URL> [--set OP04] [--report <file>]
 //   dotnet run --project backend/OneSake.CardScriptGen -- --check-texts <cards.json or optcgapi URL> [--set OP04] [--report <file>]
 //
 // In a match the browser loads every deck card from GET /cards/{id} and sends its text to the
@@ -54,9 +54,18 @@ static class TextCheck
 
         Console.WriteLine($"{scripts.Count} card scripts to check.");
 
-        var delivered = backend is not null
-            ? await LoadFromBackendAsync(backend, scripts.Select(file => file.CardId).ToList())
-            : await LoadFromTextsAsync(textSource!);
+        Dictionary<string, CardData> delivered;
+        try
+        {
+            delivered = backend is not null
+                ? await LoadFromBackendAsync(backend, scripts.Select(file => file.CardId).ToList())
+                : await LoadFromTextsAsync(textSource!);
+        }
+        catch (InvalidOperationException exception)
+        {
+            Console.WriteLine(exception.Message);
+            return 1;
+        }
 
         var results = scripts.Select(file => Classify(file, delivered.GetValueOrDefault(file.CardId))).ToList();
         var report = BuildReport(backend ?? textSource!, results);
@@ -115,6 +124,18 @@ static class TextCheck
     private static async Task<Dictionary<string, CardData>> LoadFromBackendAsync(string backend, IReadOnlyList<string> cardIds)
     {
         using var http = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
+
+        // Stop at once when the backend cannot be reached (wrong URL), instead of 2,500 failed requests.
+        try
+        {
+            using var probe = await http.GetAsync($"{backend}/cards/{Uri.EscapeDataString(cardIds[0])}");
+        }
+        catch (Exception exception) when (exception is HttpRequestException or TaskCanceledException)
+        {
+            throw new InvalidOperationException(
+                $"The backend {backend} cannot be reached ({exception.Message}). Check the URL: it is the address the game sends its /cards requests to.");
+        }
+
         var bodies = new ConcurrentDictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         var failures = new ConcurrentBag<string>();
         var done = 0;
