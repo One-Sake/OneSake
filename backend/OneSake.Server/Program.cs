@@ -1,10 +1,12 @@
 using System.Text.Json.Serialization;
+using OneSake.Server.Auth;
 using OneSake.Server.Hubs;
 using OneSake.Server.Match;
 using OneSake.Server.Services;
 using Microsoft.EntityFrameworkCore;
 using OneSake.Persistence;
 using System.Net;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuredCorsOrigins = builder.Configuration
@@ -43,6 +45,9 @@ builder.Services
 builder.Services.AddSingleton<OneSake.Server.Services.Meta.MetaService>();
 builder.Services.AddScoped<CardImportService>();
 builder.Services.AddScoped<CardQueryService>();
+
+// Player accounts: login cookie, "forgot password" with a recovery code, rate limit (see docs/deployment.md).
+builder.Services.AddOneSakeAuth(builder.Configuration, builder.Environment);
 
 // Enables Swagger (API documentation UI)
 builder.Services.AddEndpointsApiExplorer();
@@ -122,9 +127,21 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Behind Nginx: take the real client IP and scheme from X-Forwarded-For/-Proto. Only proxies on the
+// same machine (loopback) are trusted by default. Without it the login rate limit would see every
+// player as 127.0.0.1.
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
+
 app.UseHttpsRedirection(); // Redirekt Http zu Https ( derzeit aber optional ) 
 
 app.UseCors("AllowFrontend"); // Enable Cors
+
+app.UseAuthentication(); // Reads the login cookie (also for the SignalR hub)
+app.UseAuthorization();
+app.UseRateLimiter(); // Limits login attempts per IP
 
 app.MapControllers(); // Controllers Map 
 

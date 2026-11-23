@@ -11,7 +11,7 @@ export interface ChangelogEntry {
 export const CHANGELOG: ChangelogEntry[] = [
   {
     version: '0.5.0',
-    date: '2026-11-21',
+    date: '2026-11-23',
     title: 'Quick Match, Ranked, Meta und neues Spielfeld',
     items: [
       'Quick Match: ein Klick, und du wirst automatisch einem Gegner zugeteilt.',
@@ -36,6 +36,7 @@ export const CHANGELOG: ChangelogEntry[] = [
       'Zugwechsel-Banner „DEIN ZUG“ / „ZUG DES GEGNERS“ und neuer Spielende-Screen mit Kopfgeld, Revanche-Tisch und Zurück zur Lobby.',
       'Sounds im Match (selbst erzeugt, ohne Audiodateien) mit Lautstärke-Regler und Stummschalten im Zahnrad.',
       'Tastenkürzel im Match (Leertaste, A, D, E, Tab, 1–9, Enter, Esc, ? für die Übersicht) und Hinweise: Kein-Blocker-Schritt wird übersprungen, „Auto-Pass Counter“ optional, „Zug beenden“ leuchtet, wenn nichts mehr geht.',
+      'Login mit Benutzername und Passwort im Profil: deine Matches und dein Kopfgeld gehören dann deinem Account. Bei „Passwort vergessen“ hilft der Wiederherstellungscode, den du beim Registrieren bekommst. Ranked zählt nur noch mit Account.',
     ],
   },
   {

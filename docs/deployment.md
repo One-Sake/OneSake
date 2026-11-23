@@ -146,8 +146,34 @@ Wird außerhalb von Development ignoriert.
 Match__FixedDiceRolls__0=3 Match__FixedDiceRolls__1=3 Match__FixedDiceRolls__2=5 Match__FixedDiceRolls__3=2
 ```
 
-## Hinweis zur Gast-ID
+## Login (Accounts)
 
-Match-Ergebnisse werden einer Gast-ID zugeordnet, die der Browser selbst erzeugt
-(`localStorage`, Schlüssel `onesake.guestId`). Das ist **keine** sichere Anmeldung.
-Ein echter Login folgt später.
+Spieler melden sich mit Benutzername und Passwort an (`/auth/...`, siehe `backend/OneSake.Server/Auth/`).
+Die Sitzung ist ein HttpOnly-Cookie (`onesake.auth`). Gäste können weiter ohne Account spielen;
+ihre Ergebnisse hängen an der Gast-ID im Browser (`localStorage`, Schlüssel `onesake.guestId`),
+die **nicht** sicher ist. Ranked zählt nur für eingeloggte Spieler.
+
+Migration einspielen (Tabelle `Accounts`):
+
+```bash
+cd backend
+dotnet ef database update --project OneSake.Persistence --startup-project OneSake.Server
+```
+
+Einstellungen (Abschnitt `Auth`, als Umgebungsvariablen `Auth__...`):
+
+| Schlüssel | Standard | Bedeutung |
+|-----------|----------|-----------|
+| `Auth__CookieSameSite` | `Lax` | `Lax`, wenn Frontend und API auf derselben Site liegen (`onesake.world` + `api.onesake.world`). `None` nur bei verschiedenen Sites, dann ist HTTPS Pflicht. |
+| `Auth__SessionDays` | `30` | Wie lange man angemeldet bleibt (gleitend, 1–90). |
+| `Auth__KeysDirectory` | – | Ordner für die Schlüssel, mit denen das Cookie verschlüsselt wird. **Auf dem Server setzen** (z. B. `/var/lib/onesake/keys`, nur für den Dienst-Benutzer lesbar), sonst sind nach einem Neustart eventuell alle abgemeldet. |
+
+Nginx muss die echte Client-IP weitergeben, sonst gilt das Login-Limit (10 Versuche pro Minute und IP)
+für alle Spieler zusammen:
+
+```nginx
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+proxy_set_header X-Forwarded-Proto $scheme;
+```
+
+Das Backend vertraut diesen Headern nur von Proxys auf demselben Rechner (Loopback).

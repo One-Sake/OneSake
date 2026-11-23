@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import { getCurrentAccount, type AccountDto } from '../../api/authApi';
 import { getGuestId } from '../../api/guestId';
 import { getPlayerBounty, type PlayerBountyDto } from '../../api/leaderboardApi';
 import { getPlayerStats, type PlayerStatsDto } from '../../api/statsApi';
 import { loadStoredDecks } from '../deckbuilder/utils/deckStorage';
+import { AccountPanel } from './AccountPanel';
 import { BountyPoster } from './BountyPoster';
 import { LeaderStatsList, LeaderThumb, RecentMatchList } from './ProfileMatchStats';
 import { useCardImages } from './useCardImages';
@@ -41,7 +43,10 @@ export function ProfilePage({ onOpenMatch }: ProfilePageProps) {
   const [isGuestActive, setIsGuestActive] = useState(() => loadGuestName() !== DEFAULT_GUEST_NAME);
   const [isEditingName, setIsEditingName] = useState(false);
 
-  const displayName = guestName.trim() || DEFAULT_GUEST_NAME;
+  // Logged-in account (null = guest). The session is a cookie, so this is asked from the server.
+  const [account, setAccount] = useState<AccountDto | null>(null);
+
+  const displayName = account?.username ?? (guestName.trim() || DEFAULT_GUEST_NAME);
 
   const loadStats = useCallback(() => {
     let isCancelled = false;
@@ -92,6 +97,30 @@ export function ProfilePage({ onOpenMatch }: ProfilePageProps) {
   }, []);
 
   useEffect(() => loadBounty(), [loadBounty]);
+
+  useEffect(() => {
+    let isCancelled = false;
+    getCurrentAccount()
+      .then((current) => {
+        if (!isCancelled) {
+          setAccount(current);
+        }
+      })
+      .catch(() => {
+        // Server not reachable: the profile works as a guest, the stats show their own error.
+      });
+
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
+
+  // After login/logout the statistics belong to somebody else.
+  const handleAccountChange = (next: AccountDto | null): void => {
+    setAccount(next);
+    loadStats();
+    loadBounty();
+  };
   const bounty = bountyState.status === 'ready' ? bountyState.bounty : null;
 
   const stats = statsState.status === 'ready' ? statsState.stats : null;
@@ -137,7 +166,7 @@ export function ProfilePage({ onOpenMatch }: ProfilePageProps) {
     }
   };
 
-  const isShowingName = isGuestActive && !isEditingName;
+  const isShowingName = account !== null || (isGuestActive && !isEditingName);
 
   return (
     <section className="profile-page ui-page">
@@ -148,9 +177,9 @@ export function ProfilePage({ onOpenMatch }: ProfilePageProps) {
         </div>
         <span
           aria-label="Profile status"
-          className={`ui-badge profile-status-badge ${isGuestActive ? 'ui-badge--success' : ''}`}
+          className={`ui-badge profile-status-badge ${account || isGuestActive ? 'ui-badge--success' : ''}`}
         >
-          {isGuestActive ? 'Guest Active' : 'Guest Ready'}
+          {account ? 'Account' : isGuestActive ? 'Guest Active' : 'Guest Ready'}
         </span>
       </header>
 
@@ -185,38 +214,39 @@ export function ProfilePage({ onOpenMatch }: ProfilePageProps) {
             )}
           </div>
 
-          <p className="profile-rank">Rookie Pirate · Local demo only</p>
+          <p className="profile-rank">Rookie Pirate · {account ? 'Account' : 'Gast in diesem Browser'}</p>
 
           <div className="profile-badge-row" aria-label="Profile badges">
             <span>Starter Deckhand</span>
             <span>East Blue Trial</span>
           </div>
 
-          <div className="profile-actions">
-            {isShowingName ? (
-              <button className="ui-btn-secondary" onClick={() => setIsEditingName(true)} type="button">
-                Edit Name
-              </button>
-            ) : (
-              <button
-                className="ui-btn-primary ui-btn-primary--compact"
-                onClick={continueAsGuest}
-                type="button"
-              >
-                <span>Continue as Guest</span>
-              </button>
-            )}
-            <button className="ui-btn-ghost" disabled type="button">
-              Login coming soon
-            </button>
-            {isGuestActive && (
-              <button className="ui-link ui-link--danger" onClick={logoutGuest} type="button">
-                Logout Guest
-              </button>
-            )}
-          </div>
+          {!account && (
+            <div className="profile-actions">
+              {isShowingName ? (
+                <button className="ui-btn-secondary" onClick={() => setIsEditingName(true)} type="button">
+                  Edit Name
+                </button>
+              ) : (
+                <button
+                  className="ui-btn-primary ui-btn-primary--compact"
+                  onClick={continueAsGuest}
+                  type="button"
+                >
+                  <span>Continue as Guest</span>
+                </button>
+              )}
+              {isGuestActive && (
+                <button className="ui-link ui-link--danger" onClick={logoutGuest} type="button">
+                  Logout Guest
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </section>
+
+      <AccountPanel account={account} onAccountChange={handleAccountChange} />
 
       <BountyPoster
         bounty={bounty}
@@ -233,7 +263,7 @@ export function ProfilePage({ onOpenMatch }: ProfilePageProps) {
             <h2 className="ui-heading" id="profile-stats-title">
               Captain Log
             </h2>
-            <span className="ui-badge profile-header-badge">Gast-ID</span>
+            <span className="ui-badge profile-header-badge">{account ? 'Account' : 'Gast-ID'}</span>
           </div>
           <div className="profile-stat-grid">
             {profileStats.map((stat) => (

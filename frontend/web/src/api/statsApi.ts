@@ -1,6 +1,6 @@
 import { getBackendBaseUrl } from './backendUrl';
 
-// Mirrors the backend PlayerStatsDto (GET /stats/player/{guestId}).
+// Mirrors the backend PlayerStatsDto (GET /stats/me).
 export interface LeaderStatsDto {
   leaderCardId: string;
   matches: number;
@@ -32,8 +32,11 @@ export interface PlayerStatsDto {
   recent: RecentMatchDto[];
 }
 
+// Own statistics: the account when logged in (cookie), otherwise the guest ID of this browser.
 export async function getPlayerStats(guestId: string): Promise<PlayerStatsDto> {
-  const response = await fetch(`${getBackendBaseUrl()}/stats/player/${encodeURIComponent(guestId)}`);
+  const response = await fetch(`${getBackendBaseUrl()}/stats/me?guestId=${encodeURIComponent(guestId)}`, {
+    credentials: 'include',
+  });
 
   if (!response.ok) {
     throw new Error(`Stats request failed (${response.status}).`);

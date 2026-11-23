@@ -35,7 +35,8 @@ export interface PlayerBountyDto {
 export const BOUNTY_PER_POINT = 1000;
 
 async function getJson<T>(path: string): Promise<T> {
-  const response = await fetch(`${getBackendBaseUrl()}${path}`);
+  // The login cookie goes along, so /leaderboard/me knows the account.
+  const response = await fetch(`${getBackendBaseUrl()}${path}`, { credentials: 'include' });
   if (!response.ok) {
     throw new Error(`Request failed (${response.status}).`);
   }
@@ -47,8 +48,9 @@ export function getLeaderboard(limit = 100): Promise<LeaderboardEntryDto[]> {
   return getJson(`/leaderboard?limit=${limit}`);
 }
 
+// Own bounty: the account when logged in, otherwise the guest ID of this browser.
 export function getPlayerBounty(guestId: string): Promise<PlayerBountyDto> {
-  return getJson(`/leaderboard/player/${encodeURIComponent(guestId)}`);
+  return getJson(`/leaderboard/me?guestId=${encodeURIComponent(guestId)}`);
 }
 
 // 1250000 -> "฿ 1.250.000"

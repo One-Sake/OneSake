@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.SignalR;
 using OneSake.Domain;
+using OneSake.Server.Auth;
 using OneSake.Server.Match;
 using OneSake.Server.Services;
 
@@ -10,15 +11,18 @@ public class MatchHub : Hub
     private readonly MatchRoomManager _roomManager;
     private readonly MatchmakingQueue _matchmakingQueue;
     private readonly MatchUpdatePublisher _publisher;
+    private readonly IAccountStore _accounts;
 
     public MatchHub(
         MatchRoomManager roomManager,
         MatchmakingQueue matchmakingQueue,
-        MatchUpdatePublisher publisher)
+        MatchUpdatePublisher publisher,
+        IAccountStore accounts)
     {
         _roomManager = roomManager;
         _matchmakingQueue = matchmakingQueue;
         _publisher = publisher;
+        _accounts = accounts;
     }
 
     private const int MaxRoomCodeLength = 12;
@@ -33,7 +37,7 @@ public class MatchHub : Hub
     {
         var normalizedRoomCode = NormalizeRoomCode(roomCode);
         var room = RunRoomAction(() => _roomManager.Create(normalizedRoomCode));
-        await JoinExistingRoom(room, normalizedRoomCode, displayName, GetConnectionGuestId());
+        await JoinExistingRoom(room, normalizedRoomCode, displayName, await ResolveConnectionPlayerIdAsync());
     }
 
     // Private table with a chosen timer: "STANDARD", "RELAXED" or "OFF". CreateRoom stays for older
@@ -48,28 +52,43 @@ public class MatchHub : Hub
         };
         var normalizedRoomCode = NormalizeRoomCode(roomCode);
         var room = RunRoomAction(() => _roomManager.Create(normalizedRoomCode, mode));
-        await JoinExistingRoom(room, normalizedRoomCode, displayName, GetConnectionGuestId());
+        await JoinExistingRoom(room, normalizedRoomCode, displayName, await ResolveConnectionPlayerIdAsync());
     }
 
     public async Task JoinRoom(string roomCode, string displayName)
     {
         var normalizedRoomCode = NormalizeRoomCode(roomCode);
         var room = GetExistingRoom(normalizedRoomCode);
-        await JoinExistingRoom(room, normalizedRoomCode, displayName, GetConnectionGuestId());
+        await JoinExistingRoom(room, normalizedRoomCode, displayName, await ResolveConnectionPlayerIdAsync());
     }
 
-    // The client sends its guest ID in the hub URL (/matchHub?guestId=...).
+    // Logged in: the player ID always comes from the login cookie (Context.User), never from the client.
+    // Guest: the guest ID from the hub URL (/matchHub?guestId=...), unless an account has taken it over.
     // SignalR does not support optional hub method parameters, so a third argument on
     // CreateRoom/JoinRoom would break older clients. Without the query value the ID is null.
-    // NOT secure authentication - see GuestIdValidator.
-    private string? GetConnectionGuestId()
+    private Task<string?> ResolveConnectionPlayerIdAsync()
     {
         var guestId = Context.GetHttpContext()?.Request.Query["guestId"].ToString();
-        return GuestIdValidator.Normalize(guestId);
+        return PlayerIdentity.ResolveAsync(Context.User, guestId, IsTakenByAccountAsync);
+    }
+
+    // Without the database the guest plays without statistics (safe side), the match still works.
+    private async Task<bool> IsTakenByAccountAsync(string playerId)
+    {
+        try
+        {
+            return await _accounts.IsPlayerIdTakenAsync(playerId);
+        }
+        catch (Exception exception) when (exception is not OperationCanceledException)
+        {
+            return true;
+        }
     }
 
     // Quick Match: waits in the queue or, if somebody is already waiting, creates a private
     // room for both players and sends them "MatchFound". Each client then sets its deck as usual.
+    // The guestId parameter stays for older clients but is ignored: ranked games (rating/bounty)
+    // only count for logged-in players, otherwise anybody could play on somebody else's rating.
     public async Task JoinQueue(string displayName, string? guestId)
     {
         // Searching for a match means leaving the current room.
@@ -82,7 +101,7 @@ public class MatchHub : Hub
         var entry = new QueueEntry(
             Context.ConnectionId,
             displayName ?? string.Empty,
-            GuestIdValidator.Normalize(guestId) ?? GetConnectionGuestId());
+            AuthClaims.GetPlayerId(Context.User));
         var pair = _matchmakingQueue.Enqueue(entry);
 
         if (pair is not null)

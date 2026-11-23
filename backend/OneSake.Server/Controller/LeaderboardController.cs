@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using OneSake.Persistence;
 using OneSake.Persistence.Entities;
+using OneSake.Server.Auth;
 using OneSake.Server.Match;
 using OneSake.Server.Services;
 
@@ -47,12 +48,14 @@ public class LeaderboardController : ControllerBase
 
     private readonly OneSakeDbContext _dbContext;
     private readonly IMemoryCache _cache;
+    private readonly IAccountStore _accounts;
     private readonly ILogger<LeaderboardController> _logger;
 
-    public LeaderboardController(OneSakeDbContext dbContext, IMemoryCache cache, ILogger<LeaderboardController> logger)
+    public LeaderboardController(OneSakeDbContext dbContext, IMemoryCache cache, IAccountStore accounts, ILogger<LeaderboardController> logger)
     {
         _dbContext = dbContext;
         _cache = cache;
+        _accounts = accounts;
         _logger = logger;
     }
 
@@ -79,7 +82,21 @@ public class LeaderboardController : ControllerBase
     [HttpGet("player/{guestId}")]
     public async Task<ActionResult<PlayerBountyDto>> GetPlayer(string guestId, CancellationToken cancellationToken)
     {
-        var normalizedGuestId = GuestIdValidator.Normalize(guestId);
+        // An ID that belongs to an account is not public as a guest ID any more.
+        var playerId = await PlayerIdentity.ResolveAsync(null, guestId, id => _accounts.IsPlayerIdTakenAsync(id, cancellationToken));
+        return await LoadPlayerAsync(playerId, cancellationToken);
+    }
+
+    // GET /leaderboard/me?guestId=... - own bounty: the account when logged in, otherwise the guest ID.
+    [HttpGet("me")]
+    public async Task<ActionResult<PlayerBountyDto>> GetOwn([FromQuery] string? guestId, CancellationToken cancellationToken)
+    {
+        var playerId = await PlayerIdentity.ResolveAsync(User, guestId, id => _accounts.IsPlayerIdTakenAsync(id, cancellationToken));
+        return await LoadPlayerAsync(playerId, cancellationToken);
+    }
+
+    private async Task<ActionResult<PlayerBountyDto>> LoadPlayerAsync(string? normalizedGuestId, CancellationToken cancellationToken)
+    {
         var startRating = RatingCalculator.StartRating;
         var empty = new PlayerBountyDto(null, null, startRating, RatingCalculator.ToBounty(startRating), startRating, 0, 0, null, []);
         if (normalizedGuestId is null)

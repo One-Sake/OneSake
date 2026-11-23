@@ -15,6 +15,7 @@ public class OneSakeDbContext : DbContext
     public DbSet<PlayerRating> PlayerRatings => Set<PlayerRating>();
     public DbSet<MatchRecordingEntity> MatchRecordings => Set<MatchRecordingEntity>();
     public DbSet<BugReport> BugReports => Set<BugReport>();
+    public DbSet<Account> Accounts => Set<Account>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -86,6 +87,22 @@ public class OneSakeDbContext : DbContext
             entity.Property(r => r.Description).HasMaxLength(1000).IsRequired();
             entity.Property(r => r.Category).HasMaxLength(20).IsRequired();
             entity.Property(r => r.CardId).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<Account>(entity =>
+        {
+            entity.HasKey(a => a.Id);
+
+            // Every username and every player ID exists only once.
+            entity.HasIndex(a => a.NormalizedUsername).IsUnique();
+            entity.HasIndex(a => a.PlayerId).IsUnique();
+
+            entity.Property(a => a.Username).HasMaxLength(20).IsRequired();
+            entity.Property(a => a.NormalizedUsername).HasMaxLength(20).IsRequired();
+            entity.Property(a => a.PasswordHash).HasMaxLength(200).IsRequired();
+            entity.Property(a => a.RecoveryCodeHash).HasMaxLength(200).IsRequired();
+            entity.Property(a => a.SecurityStamp).HasMaxLength(64).IsRequired();
+            entity.Property(a => a.PlayerId).HasMaxLength(36).IsRequired();
         });
 
         modelBuilder.Entity<PlayerRating>(entity =>
