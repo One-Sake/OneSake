@@ -531,6 +531,13 @@ Keine Commits. Sprint 3 wurde ab 06.10.2026 geplant.
   Backend-Server (Python), eine absichtlich geänderte Karte wurde erkannt. Der echte Server
   (`api.onesake.world`) ist aus der Cloud-Umgebung gesperrt – Lauf durch WoWoWocal steht aus.
 
+### 2026-11-23 19:45 – Prüfwerkzeug: falsche Server-Adresse sofort melden 🤖
+- `0450fef` Erster Lauf auf dem eigenen PC: Die im Befehl angegebene Adresse `api.onesake.world` gibt es
+  nicht (geraten aus einem Beispiel in `docs/deployment.md`), alle 2.493 Anfragen schlugen fehl.
+  Das Werkzeug prüft jetzt zuerst eine Karte und bricht mit einer klaren Meldung ab.
+- **Lessons Learned:** Adressen nicht aus Beispielen ableiten; die echte Backend-Adresse steht nur
+  im Deployment (`VITE_BACKEND_URL`), nicht im Repo.
+
 <!-- Neue Einträge unten anfügen. Vorlage:
 
 ### JJJJ-MM-TT HH:MM – Titel ★/👥/🤖
