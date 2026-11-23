@@ -23,7 +23,7 @@ import { boardZones, CHARACTER_SLOT_COUNT } from './boardLayout';
 import { BoardSlot, CardStack, ManualDotsButton } from './BoardSlot';
 import { BugReportDialog } from './BugReportDialog';
 import type { BoardSide, BoardZoneDefinition } from './boardTypes';
-import { cardArtStyle } from './cardArt';
+import { useCardArtStyle } from './cardArt';
 import { CardInspectOverlay } from './CardInspectOverlay';
 import { DragGhost } from './DragGhost';
 import type { CardPile } from './CardInspectOverlay';
@@ -167,6 +167,7 @@ export function MatchBoard({
   onSubmitChoice,
   pending,
 }: MatchBoardProps) {
+  const cardArtStyle = useCardArtStyle();
   const [inspectedCard, setInspectedCard] = useState<CardInstanceDto | null>(null);
   const [inspectedPile, setInspectedPile] = useState<CardPile | null>(null);
   const [selectedCardId, setSelectedCardId] = useState('');

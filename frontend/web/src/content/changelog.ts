@@ -37,6 +37,7 @@ export const CHANGELOG: ChangelogEntry[] = [
       'Sounds im Match (selbst erzeugt, ohne Audiodateien) mit Lautstärke-Regler und Stummschalten im Zahnrad.',
       'Tastenkürzel im Match (Leertaste, A, D, E, Tab, 1–9, Enter, Esc, ? für die Übersicht) und Hinweise: Kein-Blocker-Schritt wird übersprungen, „Auto-Pass Counter“ optional, „Zug beenden“ leuchtet, wenn nichts mehr geht.',
       'Login mit Benutzername und Passwort im Profil: deine Matches und dein Kopfgeld gehören dann deinem Account. Bei „Passwort vergessen“ hilft der Wiederherstellungscode, den du beim Registrieren bekommst. Ranked zählt nur noch mit Account.',
+      'DON!!-Karten zeigen im Match jetzt das Bild der echten DON!! Karte.',
     ],
   },
   {

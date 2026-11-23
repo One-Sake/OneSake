@@ -14,6 +14,7 @@ Stand: 2026-11-23.
 | „Auf allen Geräten abmelden“ (SecurityStamp) | 23.11. | auch nach Passwortänderung/Reset automatisch |
 | Gast-Verlauf beim Registrieren übernehmen | 23.11. | nur der erste Account bekommt eine Gast-ID |
 | Standard DON!! Karte in der Datenbank | 23.11. | Import von optcgapi über `POST /cards/import/don`, abrufbar über `GET /cards/don` |
+| Standard DON!! Karte im Match anzeigen | 23.11. | Bild als DON-Vorderseite im Kostenbereich (aktiv und gerastet) und beim Ziehen; `don-front.webp` hat Vorrang |
 
 ### 1.2 Offen
 
@@ -25,6 +26,7 @@ Stand: 2026-11-23.
 | Admin-Reset für Spieler, die Passwort und Code verloren haben | braucht einen Nachweis, wem der Account gehört |
 | Bestehende SignalR-Verbindungen nach „Überall abmelden“ sofort trennen | heute gilt die neue Sitzung erst ab der nächsten Verbindung |
 | Alle DON!! Varianten als Belohnungen/Schätze für Spieler | geplant; der Import ist mit `POST /cards/import/don?all=true` schon vorbereitet |
+| DON!!-Bild über unser Backend cachen bzw. ausliefern | offen; heute lädt der Browser es direkt von optcgapi.com, wir sind also von dieser Seite abhängig |
 
 ### 1.3 Verworfen
 
@@ -51,10 +53,14 @@ Stand: 2026-11-23.
 | Build/Tests/`dotnet ef` lokal im SDK-Container | Smart App Control blockiert unsignierte DLLs unter Windows und soll an bleiben | Smart App Control ausschalten (nicht umkehrbar) |
 | Nach Registrieren/Reset zurück auf „Anmelden“ | sonst zeigt das Profil nach dem Abmelden das falsche Formular | |
 | DON!! Karten in der bestehenden Tabelle `Cards` mit Type „DON!!“ | keine eigene Tabelle und keine Migration nötig; DON wird über den Type aus den Set-Listen gefiltert | eigene Tabelle `DonCards` (braucht Migration) |
+| Im Match das offizielle DON!!-Artwork von optcgapi verwenden, direkt von optcgapi.com geladen | Team-Entscheidung: die echte DON!! Karte statt Platzhalter; bewusste Abweichung von der Regel in `frontend/web/src/assets/cards/README.md` (nur Bilder mit geklärten Rechten) | eigenes DON-Design als `don-front.webp`; Bild über unser Backend ausliefern |
 
 ## 3. Abweichungen vom Projektauftrag
 
 - Keine. Der Projektauftrag nennt „Auth (Guest/Account)“; beides gibt es jetzt.
+- Abweichung von einer Team-Regel (nicht vom Projektauftrag): Im Match wird das offizielle
+  DON!!-Artwork von optcgapi.com angezeigt, obwohl `frontend/web/src/assets/cards/README.md` nur
+  Bilder mit geklärten Rechten vorsieht. Als Team-Entscheidung festgehalten (siehe Entscheidungen).
 - Bewusste Einschränkung: Wer Passwort **und** Wiederherstellungscode verliert, kommt nicht mehr in
   seinen Account (keine E-Mail). Das ist der Preis für die Datensparsamkeit.
 

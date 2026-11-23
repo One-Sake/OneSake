@@ -1,4 +1,6 @@
+import { useEffect, useState } from 'react';
 import type { CSSProperties } from 'react';
+import { getDonCards } from '../../../api/cardsApi';
 
 // One place for the card back and DON!! images (see src/assets/cards/README.md).
 // The files are optional: import.meta.glob simply finds nothing when they are missing,
@@ -28,3 +30,61 @@ export const cardArtStyle = {
   // The DON!! front image already shows the name, so the text label is hidden.
   ...(cardArt.donFront ? { '--art-don-front': `url("${cardArt.donFront}")`, '--art-don-front-label': '""' } : null),
 } as CSSProperties;
+
+const STANDARD_DON_NAME = 'DON!! Card';
+
+let standardDonImage: string | null = null;
+let standardDonRequest: Promise<string | null> | null = null;
+
+// Loads the image of the standard DON!! card from the card API once per session.
+// Resolves to null when the API has no DON!! card or is not reachable (the board then keeps its fallback).
+function loadStandardDonImage(): Promise<string | null> {
+  if (!standardDonRequest) {
+    standardDonRequest = getDonCards()
+      .then((cards) => {
+        const standard = cards.find((card) => card.card_name === STANDARD_DON_NAME) ?? cards[0];
+        standardDonImage = standard?.card_image || null;
+        return standardDonImage;
+      })
+      .catch(() => {
+        // Do not cache failures, so the next match can try again.
+        standardDonRequest = null;
+        return null;
+      });
+  }
+
+  return standardDonRequest;
+}
+
+// cardArtStyle plus the standard DON!! card from the database as DON!! front.
+// A local don-front.webp (see README) still has priority over the database image.
+export function useCardArtStyle(): CSSProperties {
+  const [donImage, setDonImage] = useState<string | null>(standardDonImage);
+
+  useEffect(() => {
+    if (cardArt.donFront || donImage) {
+      return;
+    }
+
+    let active = true;
+    void loadStandardDonImage().then((image) => {
+      if (active && image) {
+        setDonImage(image);
+      }
+    });
+
+    return () => {
+      active = false;
+    };
+  }, [donImage]);
+
+  if (cardArt.donFront || !donImage) {
+    return cardArtStyle;
+  }
+
+  return {
+    ...cardArtStyle,
+    '--art-don-front': `url(${JSON.stringify(donImage)})`,
+    '--art-don-front-label': '""',
+  } as CSSProperties;
+}

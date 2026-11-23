@@ -17,7 +17,7 @@ import { ReconnectBanner } from './ReconnectBanner';
 import { CollapsedFeed, FeedSplitter } from './FeedSplitter';
 import { clampFeedWidth, getFeedMaxWidth, loadFeedWidth, saveFeedWidth } from './feedWidth';
 import { MatchFeed } from './MatchFeed';
-import { cardArtStyle } from './board/cardArt';
+import { useCardArtStyle } from './board/cardArt';
 import { MatchBoard } from './board/MatchBoard';
 import { MatchCardPreview } from './board/MatchCardPreview';
 import { DiceRoll } from './dice/DiceRoll';
@@ -113,6 +113,7 @@ export function FullscreenMatchView({
   pending,
   showReconnected,
 }: FullscreenMatchViewProps) {
+  const cardArtStyle = useCardArtStyle();
   // Only used below 1024px, where the feed is a slide-in overlay.
   const [feedOpen, setFeedOpen] = useState(false);
   // Desktop: the feed is a resizable column that can be collapsed to a thin strip.

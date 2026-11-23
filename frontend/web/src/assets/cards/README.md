@@ -22,3 +22,5 @@ Do not download or recreate official artwork for this folder.
 
 While a file is missing, the board shows a neutral OneSake fallback
 (navy card back with the OneSake name), and the build still works.
+Exception: without `don-front.webp`, the DON!! front uses the image of the standard DON!! card
+from the card API (`GET /cards/don`); only if that is not reachable does the fallback stay.

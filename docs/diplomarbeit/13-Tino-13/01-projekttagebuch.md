@@ -77,6 +77,26 @@ Chronologische Dokumentation der eigenen Arbeitsschritte mit Zeitstempeln und Ü
     herausgefiltert, damit sie im Deckbuilder nicht bei den Promos landen.
   - Migrationen laufen beim Serverstart nicht automatisch, sondern über `dotnet ef database update`.
 
+### 2026-11-23 18:34 – Standard DON!! Karte im Match anzeigen ★ 🤖
+- `feat: Standard DON!! Karte im Match anzeigen` Das Match-Board lädt einmal pro Sitzung
+  `GET /cards/don` und nutzt das Bild der Standard DON!! Karte als DON-Vorderseite (Kostenbereich
+  aktiv und gerastet, Drag-Ghost). Eine lokale `don-front.webp` hat Vorrang, ohne API bleibt
+  der Platzhalter. Neuer Hook `useCardArtStyle()` in `cardArt.ts`, verwendet in `MatchBoard`,
+  `FullscreenMatchView` und `DragGhost`. Lint und Build (inkl. `tsc`) ohne Fehler.
+- **Test:** Match mit zwei Spielern in Headless-Chrome (über das DevTools-Protokoll gesteuert) bis
+  Zug 4: aktive und gerastete DON zeigen auf beiden Seiten das echte Bild, `GET /cards/don` wurde pro
+  Spieler nur einmal aufgerufen. An Karten angelegte DON zeigt das Board weiterhin nur als Plakette
+  „DON x1“ an der Karte, nicht als eigene Karte – dort gibt es also kein Bild.
+- **Überlegung:** Das Team will die echte Standard DON!! Karte in Matches sehen statt eines
+  Platzhalters. Alternativen: ein eigenes DON-Design als `don-front.webp` (rechtlich einfacher) oder
+  das Bild über unser Backend ausliefern statt direkt von optcgapi.com.
+- **Probleme/Lessons Learned:**
+  - Das Bild wird direkt von optcgapi.com geladen. Ist die Seite nicht erreichbar, fehlt das Bild;
+    deshalb steht das Cachen über unser Backend als offene Idee in den Entscheidungen.
+  - Die Anfrage wird pro Sitzung nur einmal gestellt (gemeinsames Promise im Modul), auch wenn drei
+    Komponenten den Hook nutzen. Fehlschläge werden nicht gemerkt, damit das nächste Match es erneut versucht.
+- Screenshot: `screenshots/2026-11-23_03-don-karte-im-match.png` (Board mit DON im Kostenbereich).
+
 <!-- Neue Einträge unten anfügen. Vorlage:
 
 ### JJJJ-MM-TT HH:MM – Titel ★/👥/🤖

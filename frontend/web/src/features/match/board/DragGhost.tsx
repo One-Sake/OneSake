@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import type { CSSProperties } from 'react';
 import { createPortal } from 'react-dom';
 
-import { cardArtStyle } from './cardArt';
+import { useCardArtStyle } from './cardArt';
 import type { DragView } from './useHandDrag';
 import { MatchCardView } from './MatchCardView';
 
@@ -17,6 +17,8 @@ const GHOST_SCALE = 1.1;
 // The floating copy of the dragged card. It lives in document.body because the board
 // frame is a size container, which would otherwise be the reference for position: fixed.
 export const DragGhost = forwardRef<HTMLDivElement, DragGhostProps>(function DragGhost({ cardWidth, view }, ref) {
+  const cardArtStyle = useCardArtStyle();
+
   if (!view) {
     return null;
   }

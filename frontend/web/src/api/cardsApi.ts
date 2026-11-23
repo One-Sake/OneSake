@@ -22,3 +22,8 @@ export async function getCardsById(cardId: string): Promise<CardDto[]> {
 export async function getCardsBySetId(setId: string): Promise<CardDto[]> {
   return fetchCards(`set/${encodeURIComponent(setId.trim())}`);
 }
+
+// DON!! cards from the database (GET /cards/don). The standard "DON!! Card" comes first.
+export async function getDonCards(): Promise<CardDto[]> {
+  return fetchCards('don');
+}
