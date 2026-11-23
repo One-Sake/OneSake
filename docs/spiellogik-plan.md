@@ -63,6 +63,10 @@ ungeprüft.
    - Zeitpunkt „at the start of your turn“
 4. **Die Spiellogik liegt zum großen Teil in `MatchRoom.cs` (2.673 Zeilen, Server-Projekt).** Regeln, Netzwerk und Timer sind vermischt. Dadurch sind Regeltests teuer.
 5. **Die Simulation prüft nur den Spielzustand, nicht ob ein Effekt das Richtige tut.** Bei `manual`-Karten klicken die Bots nur „Erledigt“.
+6. **Der Server übernimmt die Kartendaten vom Browser.**
+   - Der Browser lädt jede Deckkarte über `GET /cards/{id}` und schickt Text, Kosten, Power und Counter mit (`matchDeckMapper.ts`). `MatchRoom.BuildMatchDeck` übernimmt diese Werte ungeprüft.
+   - Folge 1: Liefert `GET /cards/{id}` einen anderen Text als beim Erzeugen der Skripte, fällt die Karte auf `manual`. Liefert es gar keinen Text, hat die Karte im Spiel **überhaupt keinen Effekt**.
+   - Folge 2: Ein manipulierter Browser könnte z. B. eine Power von 99.000 schicken. Das ist eine Schummel-Lücke.
 
 ---
 
@@ -120,6 +124,11 @@ ungeprüft.
 | A7 | **Kartentests als Daten:** eine JSON-Datei pro Karte mit Aufbau, Aktionen und erwartetem Zustand, ausgeführt von einem einzigen Test-Runner. | Ein Test kostet so 2–5 Minuten statt 15. Das ist nötig, damit 2.500 Karten überhaupt machbar sind. | Ein C#-Test pro Karte: zu langsam zu schreiben. |
 | A8 | **Review-Ansicht mit Rückübersetzung:** Das Skript wird wieder als Text angezeigt (z. B. „K.O. bis zu 1 gegnerischen Character mit Kosten ≤ 2“), direkt neben dem Original. | Prüfen geht schneller und sicherer als JSON lesen. Fehler fallen sofort auf. | JSON von Hand vergleichen. |
 | A9 | **Optional: KI-Entwürfe** für Karten, die der Parser nicht versteht. Ein Sprachmodell schreibt JSON nach dem Schema, ein Mensch prüft es, der Test entscheidet. Die Entscheidung trifft das Team. | Beschleunigt den langen Schwanz. Durch Schema, Review und Test kommt kein ungeprüfter Effekt ins Spiel. | Nur von Hand schreiben. |
+| A10 | **Rückübersetzung mit exaktem Vergleich als automatischer Prüfer:** Aus dem Skript wird wieder der englische Kartentext erzeugt und mit dem Original verglichen (nach `EffectParser.Clean`). Gleich = automatisch geprüft. | OPTCG-Texte sind stark normiert. Der Vergleich läuft gegen den echten Text, nicht gegen einen selbst geschriebenen Test. So rutscht ein Missverständnis nicht durch. | Jede Karte von einem Menschen prüfen lassen |
+| A11 | **Bausteine statt Karten gründlich testen:** jeder Baustein (etwa 50–80) mit allen Grenzfällen und den passenden Regeln. Eine Karte ist korrekt, wenn ihre Bausteine korrekt sind **und** die Rückübersetzung exakt passt. | Kontrolliert werden müssen dann die Bausteine, nicht 2.500 Karten. | – |
+| A12 | **Zwei unabhängige Herleitungen pro Karte:** Parser-Entwurf und ein frisch, ohne Blick auf den Entwurf geschriebenes Skript. Nur bei Widerspruch prüft ein Mensch. | Zwei Fehler, die genau gleich aussehen, sind unwahrscheinlich. | – |
+| A13 | **Offizielle Q&A von Bandai als Tests:** die Antworten des Herstellers zu einzelnen Karten werden zu Kartentests. | Wahrheit von außen für die kniffligen Fälle. | Videos von Partien: zeigen nicht warum etwas passiert, enthalten Spielfehler und kaum Sonderfälle. |
+| A14 | **Kartendaten kommen vom Server, nicht vom Browser:** Der Browser schickt nur Karten-IDs und Anzahl. Text, Kosten, Power und Counter liest der Server selbst. | Behebt Befund 6: keine Schummel-Lücke, und der Text stimmt immer mit den Skripten überein. | Werte vom Browser übernehmen (heute) |
 
 ---
 
@@ -132,9 +141,10 @@ Jede Phase endet mit `dotnet build` und `dotnet test` grün und dem Simulator-Sm
 ### Phase 0 – Warum funktioniert kein Effekt? (sofort, 1–2 Tage)
 
 - [ ] 0.1 Diagnose-Ausgabe: Zu Matchbeginn loggt der Server pro Deck, wie viele Karten `verified`, `generated` oder `manual` sind und welche Karten wegen geändertem Text `manual` wurden.
-- [ ] 0.2 Werkzeug `CardScriptGen --check-texts <db|datei>`: vergleicht die Kartentexte der Datenbank mit den Hashes der Skripte und zählt die Abweichungen.
-- [ ] 0.3 Auf dem Server ausführen (oder einen DB-Export lokal prüfen). Ursache festhalten.
+- [x] 0.2 Werkzeug `CardScriptGen --check-backend <URL>` / `--check-texts <Datei>`: macht für jede Karte dieselbe Anfrage wie der Browser (`GET /cards/{id}`), vergleicht den Text mit dem Skript und zählt, was das Spiel wirklich mit der Karte macht. Bericht als `card-text-check.md`. (23.11.)
+- [ ] 0.3 Gegen den echten Server ausführen (aus dieser Umgebung ist `api.onesake.world` gesperrt, also durch WoWoWocal). Ergebnis hier eintragen.
 - [ ] 0.4 Ursache beheben, als Sofortlösung Hash-Vergleich ohne Formatierungsunterschiede. Die echte Lösung kommt mit A5 in Phase 2.
+- [ ] 0.6 Kartendaten serverseitig laden (A14): `MatchRoom` holt Text, Kosten, Power, Counter, Typen und Farbe pro Karten-ID aus der Datenbank. Die Werte vom Browser werden ignoriert.
 - [ ] 0.5 Die Karten aus dem Nutzertest (Activate: Main, Search, End of Turn) als Tests nachbauen. Dann mit zwei Browsern ein echtes Match spielen (Playwright) und die Effekte prüfen.
 
 **Abnahme:** Die gemeldeten Karten funktionieren im echten Match. Die Zahlen aus 0.1 stimmen mit der
@@ -182,6 +192,14 @@ grün.
   - schlägt einen Test-Entwurf pro Karte vor
   - Muster, die nur in einer Karte vorkommen, gehen nicht in den Parser, sondern in einen Override
 - [ ] 3.5 Abdeckungs-Bericht pro Deck, Set und Welle als Markdown, in der CI als Artefakt.
+- [ ] 3.7 Rückübersetzung mit exaktem Vergleich (A10) für alle Karten. Bericht: wie viele Karten passen genau. **Erste wichtige Messung:** daraus ergibt sich die Größe der Prüfliste.
+- [ ] 3.8 Zweite, unabhängige Herleitung pro Karte (A12). Vergleich beider Skripte, Widersprüche auf die Prüfliste.
+- [ ] 3.9 Bandai-Q&A sammeln und als Kartentests ablegen (A13). Vorher prüfen, ob die Seiten erreichbar sind.
+- [ ] 3.10 Prüfliste erzeugen. Darauf landen:
+  - Karten mit Abweichung in 3.7 oder Widerspruch in 3.8
+  - Karten mit `Custom`-Code oder Ersatz-Effekten
+  - Karten mit unklarer Q&A
+  - eine Stichprobe von 2–5 % der automatisch geprüften Karten
 - [ ] 3.6 *(Optional, A9)* KI-Entwurf: `CardScriptGen --draft-ai <ID>` schreibt einen v2-Entwurf als Override mit Status `generated`. Danach Review und Test wie immer.
 
 **Abnahme:** Eine Karte vom Entwurf bis `verified` dauert im Schnitt höchstens 10 Minuten
@@ -189,12 +207,13 @@ grün.
 
 ### Phase 4 – Karten in Wellen umsetzen
 
-Ablauf pro Karte, immer gleich:
+Ablauf pro Karte (Arbeitsteilung: Claude setzt um, ein Mensch bearbeitet nur die Prüfliste):
 
-1. Den Text aus `card-texts.json` und die Rückübersetzung vergleichen.
-2. Das Skript korrigieren (Override), bei Bedarf einen neuen Baustein oder einen `Custom`-Handler schreiben.
-3. Kartentest als JSON anlegen. Er deckt jede Fähigkeit ab sowie Grenzfälle wie „up to“ mit 0 Zielen, eine nicht bezahlbare Bedingung oder einen leeren Stapel.
-4. Status auf `verified` setzen. Die Baseline in `coverage-baseline.json` steigt.
+1. **Claude:** Skript korrigieren (Override), bei Bedarf neuer Baustein oder `Custom`-Handler. Ziel: Die Rückübersetzung passt exakt (3.7), beide Herleitungen stimmen überein (3.8).
+2. **Claude:** Kartentest als JSON anlegen. Er deckt jede Fähigkeit ab sowie Grenzfälle wie „up to“ mit 0 Zielen, eine nicht bezahlbare Bedingung oder einen leeren Stapel.
+3. **Automatisch:** Passen Rückübersetzung, zweite Herleitung und Test, wird die Karte `verified` (Notiz: „automatisch geprüft“).
+4. **Mensch:** nur Karten auf der Prüfliste (3.10) in der Review-Seite freigeben oder ablehnen.
+5. Die Baseline in `coverage-baseline.json` steigt.
 
 | Welle | Inhalt | Karten (ca.) | Warum zuerst |
 |---|---|---|---|
@@ -247,7 +266,8 @@ Neue Sets: Generator laufen lassen, die Karten sind bis zur Prüfung `generated`
 
 | Risiko | Gegenmaßnahme |
 |---|---|
-| 2.496 Karten sind viel. Bei 10 Minuten pro Karte sind es etwa 420 Stunden. | Wellen nach Wichtigkeit (W1+W2 ≈ 400–450 Karten ≈ 70 h). Werkzeuge aus Phase 3 zuerst. Optional KI-Entwürfe. Die Arbeit lässt sich im Team pro Set aufteilen. |
+| 2.496 Karten sind viel. Ein Mensch allein bräuchte bei 10 Minuten pro Karte etwa 420 Stunden. | Claude setzt die Karten um (geschätzt 50–100 einfache Karten pro Sitzung, also etwa 30–50 Sitzungen für alle). Die automatischen Prüfer (A10–A13) halten die Prüfliste klein. Geschätzt 10–20 % der Karten plus die Bausteine, also etwa 10–15 Stunden menschliche Prüfung statt 60–80. Die echte Zahl liefert Messung 3.7. Wellen nach Wichtigkeit. |
+| Claude versteht einen Kartentext falsch und schreibt Skript und Test mit demselben Fehler. | Der Test allein reicht nie: Rückübersetzung gegen den Originaltext (A10), unabhängige zweite Herleitung (A12), Bandai-Q&A (A13), Stichprobe durch Menschen. |
 | Regelfragen ohne klare Antwort | Offizielle Q&A und Rulings als Quelle, Entscheidung in `rules-open-questions.md` begründen |
 | Umbau bricht laufende Spiele | Kleine Schritte auf `logic`, Merge nach `dev` nur mit grünen Tests und Simulator |
 | Neue Sets und Errata | CI erkennt geänderte Texte (A5). Generator für neue Sets. Karten bleiben bis zur Prüfung nicht ranked-fähig. |
@@ -260,3 +280,4 @@ Neue Sets: Generator laufen lassen, die Karten sind bis zur Prüfung `generated`
 | Datum | Phase / Welle | verified | generated | manual | Bemerkung |
 |---|---|---|---|---|---|
 | 23.11.2026 | Start | 13 | 1.443 | 1.040 | Plan erstellt |
+| 23.11.2026 | Phase 0 | 13 | 1.443 | 1.040 | Prüfwerkzeug 0.2 fertig, Plan um A10–A14 ergänzt |

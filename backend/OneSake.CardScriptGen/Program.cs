@@ -10,6 +10,13 @@ using OneSake.Game.Effects;
 
 const string GeneratorVersion = "cardscriptgen-1";
 
+// Check mode (Phase 0 of docs/spiellogik-plan.md): compares the card texts a backend or a file
+// delivers with the card scripts. It writes nothing into CardScripts.
+if (args.Length > 0 && TextCheck.IsCheckCommand(args[0]))
+{
+    return await TextCheck.RunAsync(args);
+}
+
 var options = GeneratorOptions.Parse(args);
 if (options is null)
 {
@@ -160,29 +167,35 @@ static class CardSource
                 ? await http.GetStringAsync(source)
                 : await File.ReadAllTextAsync(source);
 
-            using var document = JsonDocument.Parse(json);
-            foreach (var element in document.RootElement.EnumerateArray())
-            {
-                var id = Read(element, "card_set_id").Trim().ToUpperInvariant();
-                var text = Read(element, "card_text");
-                if (id.Length == 0)
-                {
-                    continue;
-                }
-
-                // Prints can have different texts (errata, reprints). The game uses the base print
-                // (card_image_id == card ID, see pickBasePrint in matchDeckMapper.ts), so that one wins.
-                var isBasePrint = string.Equals(Read(element, "card_image_id").Trim(), id, StringComparison.OrdinalIgnoreCase);
-                if (cards.TryGetValue(id, out var known) && (known.IsBasePrint || (!isBasePrint && known.Text.Length > 0)))
-                {
-                    continue;
-                }
-
-                cards[id] = new CardData(id, text, NormalizeCategory(Read(element, "card_type")), isBasePrint);
-            }
+            AddCards(cards, json);
         }
 
         return cards;
+    }
+
+    // Adds the cards of one JSON array in the optcgapi format (also the format of GET /cards/{id}).
+    public static void AddCards(Dictionary<string, CardData> cards, string json)
+    {
+        using var document = JsonDocument.Parse(json);
+        foreach (var element in document.RootElement.EnumerateArray())
+        {
+            var id = Read(element, "card_set_id").Trim().ToUpperInvariant();
+            var text = Read(element, "card_text");
+            if (id.Length == 0)
+            {
+                continue;
+            }
+
+            // Prints can have different texts (errata, reprints). The game uses the base print
+            // (card_image_id == card ID, see pickBasePrint in matchDeckMapper.ts), so that one wins.
+            var isBasePrint = string.Equals(Read(element, "card_image_id").Trim(), id, StringComparison.OrdinalIgnoreCase);
+            if (cards.TryGetValue(id, out var known) && (known.IsBasePrint || (!isBasePrint && known.Text.Length > 0)))
+            {
+                continue;
+            }
+
+            cards[id] = new CardData(id, text, NormalizeCategory(Read(element, "card_type")), isBasePrint);
+        }
     }
 
     private static string Read(JsonElement element, string name)

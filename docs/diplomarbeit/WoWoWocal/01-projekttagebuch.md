@@ -512,6 +512,25 @@ Keine Commits. Sprint 3 wurde ab 06.10.2026 geplant.
 - **Lessons Learned:** Eine grüne Simulation heißt nicht, dass die Effekte stimmen – die Bots prüfen nur
   den Spielzustand. Deshalb braucht es zusätzlich ein „Effekt-Orakel“ und Kartentests.
 
+### 2026-11-23 19:25 – Phase 0: Prüfwerkzeug für Kartentexte, Plan um automatische Prüfer ergänzt ★ 🤖
+- `CardScriptGen --check-backend <URL>` (neu, `TextCheck.cs`): fragt für jede der 2.493 Karten
+  `GET /cards/{id}` ab – genau wie der Browser vor einem Match – und zählt, was das Spiel wirklich mit
+  der Karte macht (Skript läuft / wegen anderem Text manuell / gar kein Effekt). Bericht `card-text-check.md`.
+- **Befund:** Der Server übernimmt Text, Kosten, Power und Counter der Deckkarten **vom Browser**
+  (`matchDeckMapper.ts` → `MatchRoom.BuildMatchDeck`). Folgen: (1) weicht der Text vom Skript ab, wird
+  die Karte still „manuell“, fehlt er, hat sie gar keinen Effekt; (2) ein manipulierter Browser könnte
+  falsche Werte schicken. Neue Aufgabe 0.6 / Entscheidung A14: Kartendaten nur noch vom Server.
+- **Plan angepasst:** automatische Prüfer, damit möglichst wenig von Hand kontrolliert werden muss:
+  Rückübersetzung Skript → englischer Kartentext mit exaktem Vergleich (A10), Bausteine statt Karten
+  gründlich testen (A11), zwei unabhängige Herleitungen (A12), Bandai-Q&A als Tests (A13). Ein Mensch
+  bearbeitet nur noch eine Prüfliste (geschätzt 10–20 % der Karten).
+- **Überlegung:** Die Idee, die Logik aus YouTube-Videos zu lernen, wurde verworfen: Videos zeigen
+  nicht, *warum* etwas passiert, enthalten Spielfehler und kaum Sonderfälle; außerdem kann Claude
+  keine Videos ansehen. Text-Quellen (Regelwerk, Q&A) sind genauer.
+- **Geprüft:** Build ohne Warnungen; Prüfung gegen die Fixture-Datei und gegen einen nachgebauten
+  Backend-Server (Python), eine absichtlich geänderte Karte wurde erkannt. Der echte Server
+  (`api.onesake.world`) ist aus der Cloud-Umgebung gesperrt – Lauf durch WoWoWocal steht aus.
+
 <!-- Neue Einträge unten anfügen. Vorlage:
 
 ### JJJJ-MM-TT HH:MM – Titel ★/👥/🤖

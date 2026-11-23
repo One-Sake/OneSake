@@ -104,3 +104,19 @@ Rules: `generated` when the parser understands everything, otherwise `manual` (t
 texts go into `notes`). A `verified` file is only replaced when its card text changed; it then
 goes back to `generated` and the generator prints the card ID. At the end the generator prints
 the number of cards per status and set. Commit the data in its own commit.
+
+## Check the card texts of a backend
+
+In a match the browser loads every deck card from `GET /cards/{id}` and sends its text to the
+server. A script only runs if that text has the same hash as the script file. The check does the
+same request for every card script and reports what the game really does with each card:
+
+```
+dotnet run --project backend/OneSake.CardScriptGen -- --check-backend https://api.onesake.world
+dotnet run --project backend/OneSake.CardScriptGen -- --check-texts cards.json --set OP04
+```
+
+It only reads (GET) and writes the report `card-text-check.md` into the current folder: counts
+per result and set, every card with a different text (script text and delivered text), and the
+cards without text. A backend that does not have a card in its database asks optcgapi for it,
+like for the browser.
