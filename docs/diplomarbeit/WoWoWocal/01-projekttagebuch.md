@@ -512,6 +512,21 @@ Keine Commits. Sprint 3 wurde ab 06.10.2026 geplant.
 - **Lessons Learned:** Eine grüne Simulation heißt nicht, dass die Effekte stimmen – die Bots prüfen nur
   den Spielzustand. Deshalb braucht es zusätzlich ein „Effekt-Orakel“ und Kartentests.
 
+### 2026-11-23 18:30 – Sprints und User Stories für das DA-Review nachgetragen 👥 🤖
+- Gesamtes Repo und alle Commits seit dem Backlog-Skript (09.11.) durchgesehen und den Sprints zugeordnet.
+  Neuer Ordner `docs/sprints/` mit einer Datei pro Sprint (Ziel, Ergebnis, Backlog-Tabelle, Stories mit
+  Akzeptanzkriterien und Commits, Retrospektive), Übersicht mit Velocity, Product Backlog und Definition of Done.
+- **GitHub:** 32 neue User Stories (US58–US89, Issues #74–#105), davon 25 erledigt und geschlossen;
+  Sprint-Übersichten Sprint 4 (#106), Sprint 5 (#107), Sprint 6 (#108); Sprint 3 (#73) abgeschlossen.
+  Bestehende Stories aktualisiert: #59, #70, #24, #60, #65 erledigt; #22, #27, #55, #56, #57, #61, #62, #66, #68
+  mit Stand-Kommentar in Sprint 6 übertragen.
+- **Überlegung:** Seit Sprint 3 wurden keine Sprints mehr geführt. Sprint 3–5 wurden nachträglich nach
+  inhaltlichen Blöcken geschnitten: bis zum Board-Redesign (12.11.), der Feature-Block vom 18.11. (Quick Match,
+  Ranked, Meta, Effekt-Engine) und die Regel-Engine vom Branch `logic` bis zum DA-Review (23.11.).
+  Alternative wäre ein einziger großer Sprint 3 gewesen – unübersichtlich für das Review.
+- **Lessons Learned:** Die Doku lief der Entwicklung zwei Wochen hinterher. Deshalb verlangt `AGENTS.md` jetzt,
+  dass Sprint-Datei und Issue mit jedem Commit aktualisiert werden.
+
 ### 2026-11-23 19:25 – Phase 0: Prüfwerkzeug für Kartentexte, Plan um automatische Prüfer ergänzt ★ 🤖
 - `CardScriptGen --check-backend <URL>` (neu, `TextCheck.cs`): fragt für jede der 2.493 Karten
   `GET /cards/{id}` ab – genau wie der Browser vor einem Match – und zählt, was das Spiel wirklich mit

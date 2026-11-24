@@ -55,29 +55,26 @@ Commit-Beschreibungen, Dokumentation. Stand: 2026-11-20.
 
 | Idee | User Story | Herkunft |
 |------|------------|----------|
-| Konto registrieren / anmelden, Upgrade Gast → Konto | #42, #48, #52 | Projektauftrag 3.1 (6) |
+| Decks nach dem Login vom Server laden (Login selbst seit 23.11. fertig, 13-Tino-13) | #42, #48 | Projektauftrag 3.1 (6) – Sprint 6 |
 | Decks auf dem Server speichern (geräteübergreifend) | #43 | Projektauftrag |
 | Berries nach dem Match verdienen | #53 | Projektauftrag 3.1 (4) |
 | Shop mit Cosmetics (Alt Arts, Kartenhüllen, Hintergründe, Profilbilder), ausrüsten, im Match sichtbar | #50, #54, #55 | Projektauftrag Phase 4 |
-| Namen statt IDs im Chat/Log, Filter Chat/Aktionen | #44 | Projektauftrag 5.4 |
+| Filter Alle / Chat / Aktionen im Feed (Namen und gemeinsame Timeline seit 12.11. fertig) | #44 | Projektauftrag 5.4 |
 | Deckbuilder am Handy flüssig (Virtualisierung, Lazy Loading) | #45 | Projektauftrag 4.2 |
-| OPTCGSim-Importstring | #46 | Projektauftrag 3.1 (2) – teilweise durch Text-Export erfüllt |
 | Automatisierte Frontend-Tests | #49 | Qualität |
 | Einladungslink teilen, App installierbar (PWA) | #51 | Projektauftrag (Web/PWA) |
 | Alle Kartenversionen inkl. Alt-Arts | #56 | Community-Wunsch |
-| Vollständige Effektabdeckung, richtige Trigger-Reihenfolge | – | Branch `logic`, Arbeitsplan `docs/spiellogik-plan.md` (23.11.) |
+| Vollständige Effektabdeckung (Top-20-Meta-Karten verifizieren; Trigger-Reihenfolge seit 20.11. fertig), Arbeitsplan `docs/spiellogik-plan.md` (23.11.) | US84 | Branch `logic` – Sprint 6 |
 | Nur fertige (geprüfte) Karten in Ranked/Quick Match, Status im Deckbuilder | – | Plan A6 (23.11.), wie XMage/Forge |
 | Effekt-Orakel im Simulator (prüft die Wirkung jedes Effektschritts) | – | Plan 6.1 (23.11.) |
 | Review-Ansicht mit Rückübersetzung Skript → Text | – | Plan A8 (23.11.) |
 | KI-Entwürfe für Kartenskripte (mit Review und Test) | – | Plan A9 (23.11.) – Entscheidung im Team offen |
-| Usability-Test: bestehende Lösung vs. OneSake am Handy | – | Projektauftrag Phase 5 |
+| Usability-Test: bestehende Lösung vs. OneSake am Handy | US85 | Projektauftrag Phase 5 |
 | Demo-Video, Abnahme | – | Projektauftrag Phase 5 |
-| Zug-Timer mit Zeitbank | – | Roadmap 21.11. (`04-roadmap-und-alleinstellungsmerkmale.md`) |
-| Spiel-Gefühl: Animationen, Sounds, Tastenkürzel, Auto-Pass | – | Roadmap 21.11. |
-| Tutorial und KI-Gegner mit Schwierigkeitsgraden | – | Roadmap 21.11. |
-| Replay-Viewer mit „Was wäre wenn?“ (ab beliebiger Stelle selbst weiterspielen) | – | Roadmap 21.11. – Alleinstellungsmerkmal |
-| Coach nach dem Match („verpasster Lethal“) und tägliches Lethal-Puzzle | – | Roadmap 21.11. – Alleinstellungsmerkmal |
-| Deck-Labor: eigenes Deck per Bot-Simulation gegen die Meta testen | – | Roadmap 21.11. – Alleinstellungsmerkmal |
+| Tutorial und KI-Gegner mit Schwierigkeitsgraden | US86 | Roadmap 21.11. |
+| Replay-Viewer mit „Was wäre wenn?“ (ab beliebiger Stelle selbst weiterspielen) | US87 | Roadmap 21.11. – Alleinstellungsmerkmal |
+| Coach nach dem Match („verpasster Lethal“) und tägliches Lethal-Puzzle | US89 | Roadmap 21.11. – Alleinstellungsmerkmal |
+| Deck-Labor: eigenes Deck per Bot-Simulation gegen die Meta testen | US88 | Roadmap 21.11. – Alleinstellungsmerkmal |
 | Ränge mit One-Piece-Titeln, Banden (Crews), teilbarer Steckbrief | – | Roadmap 21.11. |
 | Streamer-/Turnier-Modus (Caster-Ansicht, OBS-Overlay, Swiss-Turniere) | – | Roadmap 21.11. |
 | Deutsch und Englisch | – | Roadmap 21.11. |
@@ -145,6 +142,7 @@ Commit-Beschreibungen, Dokumentation. Stand: 2026-11-20.
 | Spielereignisse aus dem Vergleich zweier Snapshots erkennen (21.11.) | Funktioniert ohne Änderung an Server und DTOs; Logs liefern nur Text | Strukturierte Ereignisse vom Server (Backend-Änderung, nicht Teil dieses Auftrags) |
 | Animationen als Schicht über dem sofort gültigen Zustand (21.11.) | Board ist immer korrekt, Eingaben werden nie blockiert, Klick überspringt | Zustand erst nach der Animation zeigen (Wartezeiten, Gefahr von Abweichungen) |
 | Web Animations API, nur `transform`/`opacity`, keine neue Bibliothek (21.11.) | Flüssig auch am Handy (GPU), jede Animation lässt sich sofort beenden | Animationsbibliothek (zusätzliche Abhängigkeit), CSS-Klassen mit Timern (schwer abzubrechen) |
+| Sprints 3–5 nachträglich aus der Git-Historie geschnitten, Sprint-Doku in `docs/sprints/` + GitHub-Issues, Pflege bei jedem Commit (23.11.) | Nachvollziehbarer Projektfortschritt für DA-Review und Diplomarbeit; Doku und Issues zeigen dasselbe | Nur GitHub-Issues (nicht im Repo versioniert), nur Projekttagebuch |
 
 ## 4. UX- und Designüberlegungen
 
