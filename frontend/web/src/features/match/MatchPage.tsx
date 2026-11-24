@@ -7,7 +7,6 @@ import {
   ChatMessageDto,
   ChoicePromptDto,
   ChoiceSubmissionDto,
-  ManualActionDto,
   GameStateDto,
   LogEventDto,
   MatchFoundDto,
@@ -718,25 +717,6 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
     }
   };
 
-  // Manual mode. Returns false when the server rejected the action (the error is shown).
-  const sendManualAction = async (action: ManualActionDto): Promise<boolean> => {
-    if (!joinedRoomCode || !isConnected || !signalRClient) {
-      return false;
-    }
-
-    setPending(true);
-    setError('');
-    try {
-      await signalRClient.manualAction(joinedRoomCode, action);
-      return true;
-    } catch (manualError) {
-      setError(toHubErrorMessage(manualError, 'Manual action failed.'));
-      return false;
-    } finally {
-      setPending(false);
-    }
-  };
-
   const sendChat = async (event: FormEvent): Promise<void> => {
     event.preventDefault();
 
@@ -776,7 +756,6 @@ export function MatchPage({ onImmersiveModeChange, onOpenDeckbuilder }: MatchPag
         onChatInputChange={setChatInput}
         onExitBoard={exitBoardMode}
         onLeaveRoom={() => void leaveRoom()}
-        onManualAction={sendManualAction}
         onSubmitOrder={(orderedIds) => void submitChoice('ORDER', undefined, undefined, orderedIds)}
 
         onRematch={createRematchTable}

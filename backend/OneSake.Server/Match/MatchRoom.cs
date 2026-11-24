@@ -25,29 +25,15 @@ public sealed class MatchRoom
     public const string TriggerDecisionKind = "TRIGGER_DECISION";
     public const string ActivateTriggerOption = "ACTIVATE";
     public const string DeclineTriggerOption = "DECLINE";
-    // An effect the engine cannot automate: the player resolves it with manual actions, then presses "Done".
-    public const string ManualEffectKind = "MANUAL_EFFECT";
-    public const string ManualDoneOption = "DONE";
     // Several effects of one player at the same time: the player chooses the order (rule 6-6-1-1-3).
     public const string OrderTriggersKind = "ORDER_TRIGGERS";
     public const string OrderOption = "ORDER";
-
-    // Players with one of these prompts open may use manual actions even when it is not their turn.
-    private static readonly HashSet<string> ManualDecisionKinds = new(StringComparer.Ordinal)
-    {
-        EffectChoiceKind,
-        CounterStepKind,
-        TriggerDecisionKind,
-        ManualEffectKind,
-        OrderTriggersKind
-    };
 
     // Card effects: actions report events, the EffectResolver resolves the activated effects in
     // the order of the rules. The continuation runs when all effects are resolved.
     private readonly GameEventBus _events = new();
     private readonly EffectResolver _resolver;
     private readonly RoomContext _context;
-    private readonly ManualActions _manualActions;
     private Action? _afterEffects;
     private int _damageLeft;
     private CardInstance? _pendingTriggerCard;
@@ -133,7 +119,6 @@ public sealed class MatchRoom
         _lastActivityUtc = _createdAtUtc;
         _context = new RoomContext(this);
         _resolver = new EffectResolver(_context, _events);
-        _manualActions = new ManualActions(_resolver.Engine);
     }
 
     // Gives the effect engine access to the running match.
@@ -730,7 +715,6 @@ public sealed class MatchRoom
                 player.TurnFlags.Clear();
                 player.DonToActivateAtEndOfTurn = 0;
                 player.LeaderDamagedAtZeroLife = false;
-                player.CloseManualView();
                 player.Connected = true;
             }
 
@@ -867,37 +851,11 @@ public sealed class MatchRoom
                     HandleTriggerDecision(normalizedOption, player);
                     break;
 
-                case ManualEffectKind:
-                    _openChoicePrompts.Remove(prompt.ChoiceId);
-                    CreateLogEvent("MANUAL", $"✋ {player.DisplayName}: Effekt von {prompt.SourceName} erledigt.");
-                    ContinueEffects(_resolver.ManualEffectDone(player.PlayerId));
-                    break;
-
                 default:
                     throw new InvalidOperationException($"Unsupported choice kind '{prompt.Kind}'.");
             }
 
             return player;
-        }
-    }
-
-    // Manual mode: the player resolves a card effect by hand. Every action is logged for both players.
-    public MatchUpdate ManualAction(string playerId, ManualActionDto action)
-    {
-        lock (_sync)
-        {
-            var player = GetPlayerSlot(playerId);
-            EnsureCanUseManualActions(player, action);
-            var opponent = GetPlayerSlot(GetOtherPlayerId(player.PlayerId));
-            // Checked before the action: a K.O. queues [On K.O.] abilities, that is not "busy".
-            var effectWasRunning = _resolver.IsBusy || _afterEffects is not null;
-
-            var text = _manualActions.Execute(action, player, opponent, _context);
-            CreateLogEvent("MANUAL", $"✋ {player.DisplayName} (manuell): {text}");
-            AfterManualAction(effectWasRunning);
-
-            Record(player, RecordedInputKinds.Manual, action with { TargetPlayerId = null });
-            return CreateUpdate();
         }
     }
 
@@ -1617,17 +1575,6 @@ public sealed class MatchRoom
                         Text = trigger.Text
                     }).ToArray());
                 return;
-
-            case ManualEffectNeeded manual:
-                CreateChoicePrompt(
-                    manual.PlayerId,
-                    ManualEffectKind,
-                    $"Effekt bitte manuell ausführen: {manual.Trigger.Text}",
-                    [ManualDoneOption],
-                    [ToCardInstanceDto(manual.Trigger.Source, _context.FindOwner(manual.Trigger.Source) ?? player!)],
-                    manual.Trigger.Source.Name,
-                    manual.Trigger.Text);
-                return;
         }
 
         var next = _afterEffects;
@@ -1673,70 +1620,6 @@ public sealed class MatchRoom
         _damageLeft = 0;
         _pendingTriggerCard = null;
         _triggerCardInResolution = null;
-    }
-
-    #endregion
-
-    #region MANUAL MODE
-
-    // Only the turn player, or a player who has to decide something right now (effect, counter,
-    // [Trigger], manual effect), may use manual actions. Closing an own deck view is always allowed.
-    private void EnsureCanUseManualActions(PlayerState player, ManualActionDto action)
-    {
-        var isRunning = _phase is MatchPhase.Refresh or MatchPhase.Draw or MatchPhase.Don or MatchPhase.Main or MatchPhase.End;
-        if (!isRunning)
-        {
-            throw new InvalidOperationException("Manual actions are only possible during a running match.");
-        }
-
-        if (string.Equals(action.Kind?.Trim(), ManualActionKinds.CloseView, StringComparison.OrdinalIgnoreCase))
-        {
-            return;
-        }
-
-        var hasDecision = _openChoicePrompts.Values.Any(prompt =>
-            prompt.PlayerId == player.PlayerId && ManualDecisionKinds.Contains(prompt.Kind));
-        if (player.PlayerId != _activePlayerId && !hasDecision)
-        {
-            throw new InvalidOperationException("Manual actions are only possible on your turn or while you have to decide something.");
-        }
-    }
-
-    // Same follow-up as after an automated effect: rule processing, then the triggered abilities.
-    private void AfterManualAction(bool effectWasRunning)
-    {
-        if (ProcessRules())
-        {
-            return;
-        }
-
-        // A running effect or an open "resolve manually" prompt continues later on its own
-        // (and then also runs abilities this action queued, e.g. [On K.O.]).
-        if (effectWasRunning)
-        {
-            return;
-        }
-
-        RunEffects(ResendOpenPrompts);
-    }
-
-    // Prompts can be outdated after a manual action (e.g. a new card can be played now).
-    // The main action prompt is created again, all other open prompts are sent again unchanged.
-    private void ResendOpenPrompts()
-    {
-        // In the order the prompts were created (dictionary order is not guaranteed).
-        foreach (var prompt in _openChoicePrompts.Values.OrderBy(PromptNumber).ToList())
-        {
-            if (prompt.Kind == MainActionKind)
-            {
-                _openChoicePrompts.Remove(prompt.ChoiceId);
-                CreateMainActionPrompt(GetPlayerSlot(prompt.PlayerId));
-            }
-            else if (!_pendingChoicePrompts.Contains(prompt))
-            {
-                _pendingChoicePrompts.Add(prompt);
-            }
-        }
     }
 
     #endregion
@@ -2219,9 +2102,6 @@ public sealed class MatchRoom
             case TriggerDecisionKind:
                 yield return Answer(DeclineTriggerOption);
                 yield break;
-            case ManualEffectKind:
-                yield return Answer(ManualDoneOption);
-                yield break;
             case OrderTriggersKind:
                 // The order in which the effects were offered.
                 yield return Answer(OrderOption, order: prompt.Triggers.Select(trigger => trigger.Id).ToArray());
@@ -2397,14 +2277,7 @@ public sealed class MatchRoom
             Stage = player.Stage is null ? null : ToCardInstanceDto(player.Stage, player),
             HandCards = isViewer ? player.Hand.Select(card => ToCardInstanceDto(card, player)).ToArray() : [],
             BoardCards = player.Characters.Select(card => ToCardInstanceDto(card, player)).ToArray(),
-            TrashCards = player.TrashCards.Select(card => ToCardInstanceDto(card, player)).ToArray(),
-            ManualView = isViewer && player.ManualViewKind.Length > 0
-                ? new ManualViewDto
-                {
-                    Kind = player.ManualViewKind,
-                    Cards = player.ManualViewCards.Select(card => ToCardInstanceDto(card, player)).ToArray()
-                }
-                : null
+            TrashCards = player.TrashCards.Select(card => ToCardInstanceDto(card, player)).ToArray()
         };
     }
 

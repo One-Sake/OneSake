@@ -77,8 +77,7 @@ public sealed class RuleScenario : IGameContext
     }
 
     // Resolves everything. Questions are answered automatically:
-    //   effect choice: "Yes" / select the first card / "Done", order: as offered (or by `order`),
-    //   manual effect: done.
+    //   effect choice: "Yes" / select the first card / "Done", order: as offered (or by `order`).
     public void Resolve(Func<OrderNeeded, IReadOnlyList<string>>? order = null, Func<EffectChoiceNeeded, (string Option, string? CardId)>? choose = null)
     {
         var request = Resolver.Run();
@@ -89,7 +88,6 @@ public sealed class RuleScenario : IGameContext
             {
                 EffectChoiceNeeded effect => Answer(effect, choose),
                 OrderNeeded orderNeeded => Resolver.AnswerOrder(orderNeeded.PlayerId, order?.Invoke(orderNeeded) ?? orderNeeded.Triggers.Select(trigger => trigger.Id).ToList()),
-                ManualEffectNeeded manual => Resolver.ManualEffectDone(manual.PlayerId),
                 _ => null
             };
         }

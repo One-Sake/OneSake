@@ -134,15 +134,13 @@ public static class MatchSimulator
 
                     try
                     {
-                        update = decision.Manual is { } manual
-                            ? room.ManualAction(playerId, manual)
-                            : room.SubmitChoice(decision.Choice!);
+                        update = room.SubmitChoice(decision.Choice!);
                         applied = decision;
                     }
                     catch (InvalidOperationException exception)
                     {
                         // The server does not accept it (rules a client cannot see) - choose again.
-                        var reason = $"{prompt.Kind} {decision.Choice?.SelectedOption ?? decision.Manual?.Kind}: {exception.Message}";
+                        var reason = $"{prompt.Kind} {decision.Choice?.SelectedOption}: {exception.Message}";
                         rejectionReasons[reason] = rejectionReasons.GetValueOrDefault(reason) + 1;
                         rejections += 1;
                         rejected.Add(decision.Key);
@@ -233,11 +231,6 @@ public static class MatchSimulator
             {
                 yield return new InvariantViolation(InvariantNames.ActionAfterGameOver, $"A {prompt.Kind} answer was accepted after the game ended.");
             }
-        }
-
-        if (Accepts(() => room.ManualAction(Seat1, new ManualActionDto { Kind = "DRAW", Amount = 1 })))
-        {
-            yield return new InvariantViolation(InvariantNames.ActionAfterGameOver, "A manual action was accepted after the game ended.");
         }
     }
 

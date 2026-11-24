@@ -21,7 +21,6 @@ public class RecordingTests
         Assert.Equal([1, 2], recording.Players.Select(player => player.Seat));
         Assert.Equal("BOT-LEADER", recording.Players[0].Deck.LeaderCardId);
         Assert.NotEmpty(recording.DiceRolls);
-        Assert.Contains(recording.Inputs, input => input.Kind == RecordedInputKinds.Manual);
         // No connection IDs in the recording.
         Assert.DoesNotContain("\"playerId\": \"a\"", MatchRecordingJson.Serialize(recording));
     }

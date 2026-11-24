@@ -6,7 +6,6 @@ import type {
   ChoicePromptDto,
   GameStateDto,
   LogEventDto,
-  ManualActionDto,
   PlayerStateDto,
 } from '../../../types/realtime';
 import { AttackArrow } from '../fx/AttackArrow';
@@ -20,7 +19,7 @@ import { useMatchHotkeys } from '../fx/useMatchHotkeys';
 import { useFxSettings } from '../fx/fxSettings';
 import { useBoardFx } from '../fx/useBoardFx';
 import { boardZones, CHARACTER_SLOT_COUNT } from './boardLayout';
-import { BoardSlot, CardStack, ManualDotsButton } from './BoardSlot';
+import { BoardSlot, CardStack } from './BoardSlot';
 import { BugReportDialog } from './BugReportDialog';
 import type { BoardSide, BoardZoneDefinition } from './boardTypes';
 import { useCardArtStyle } from './cardArt';
@@ -32,12 +31,6 @@ import { getLeaderColors } from '../leaderColors';
 import { EffectChoiceOverlay } from './EffectChoiceOverlay';
 import { MatchCardView } from './MatchCardView';
 import { MatchHand } from './MatchHand';
-import { ManualEffectBanner } from './ManualEffectBanner';
-import { ManualConfirm, ManualMenu } from './ManualMenu';
-import type { ManualMenuState } from './ManualMenu';
-import { getManualItems, MANUAL_DECISION_KINDS, RUNNING_PHASES } from './manualItems';
-import type { ManualContext, ManualItem, ManualTarget } from './manualItems';
-import { ManualViewDialog } from './ManualViewDialog';
 import { TriggerOrderOverlay } from './TriggerOrderOverlay';
 import { getGameOverReason } from '../matchFormatters';
 import { OfflineBadge } from './OfflineBadge';
@@ -52,6 +45,8 @@ const MAX_OPPONENT_HAND_BACKS = 12;
 // Below this card width the stack badges only show the number (no "DECK" / "LIFE" text).
 const SMALL_CARD_W = 60;
 const DRAG_NOTICE_MS = 2600;
+// Phases of a running match (the bug report button is shown in them).
+const RUNNING_PHASES = ['Refresh', 'Draw', 'Don', 'Main', 'End'];
 
 // What the player is doing right now on the board.
 type BoardMode =
@@ -77,18 +72,9 @@ interface MatchBoardProps {
   midlineContent?: ReactNode;
   // Called after a short hover delay with the hovered face-up card, and with null when the mouse leaves.
   onPreviewCard?: (card: CardInstanceDto | null) => void;
-  // Manual mode: resolve card effects by hand. Resolves to false when the server rejected the action.
-  onManualAction?: (action: ManualActionDto) => Promise<boolean>;
   // ORDER_TRIGGERS: the chosen order of simultaneous effects.
   onSubmitOrder?: (orderedIds: string[]) => void;
 }
-
-// Drag & drop from the field in manual mode: where the card goes.
-const FIELD_DROP_LABELS: Record<string, string> = {
-  trash: 'in den Trash legen',
-  hand: 'auf die Hand nehmen',
-  deck: 'unter das Deck legen',
-};
 
 function getVisiblePlayers(gameState: GameStateDto | null): Record<BoardSide, PlayerStateDto | null> {
   const players = gameState?.players ?? [];
@@ -160,7 +146,6 @@ export function MatchBoard({
   logEvents = [],
   midlineContent,
   onLeaveRoom,
-  onManualAction,
   onPreviewCard,
   onRematch,
   onSubmitOrder,
@@ -175,10 +160,6 @@ export function MatchBoard({
   const previewTimer = useRef<number>();
   const frameRef = useRef<HTMLDivElement>(null);
   const [dragNotice, setDragNotice] = useState('');
-  // Manual mode: the toggle shows the "⋯" buttons all the time (right click / long press always work).
-  const [manualMode, setManualMode] = useState(false);
-  const [manualMenu, setManualMenu] = useState<ManualMenuState | null>(null);
-  const [confirmMove, setConfirmMove] = useState<{ text: string; action: ManualActionDto } | null>(null);
   const [bugReportOpen, setBugReportOpen] = useState(false);
   const dragNoticeTimer = useRef<number>();
   const metrics = useBoardMetrics(frameRef);
@@ -211,85 +192,7 @@ export function MatchBoard({
     (card): card is CardInstanceDto => Boolean(card),
   );
 
-  // ---------- Manual mode (the server checks every action again) ----------
-
   const isRunning = RUNNING_PHASES.includes(String(gameState?.phase));
-  const ownPromptKind =
-    currentPrompt && currentPrompt.playerId === localPlayer?.playerId ? currentPrompt.kind : '';
-  const canManual =
-    Boolean(onManualAction) &&
-    isRunning &&
-    canSubmitChoice &&
-    (gameState?.activePlayerId === localPlayer?.playerId || MANUAL_DECISION_KINDS.includes(ownPromptKind));
-  const manualPrompt = ownPromptKind === 'MANUAL_EFFECT' ? currentPrompt : null;
-  const manualContext: ManualContext = {
-    characterCount: localPlayer?.boardCards.length ?? 0,
-    hasStage: Boolean(localPlayer?.stage),
-    isBattle: Boolean(battle),
-    activeDon: localPlayer?.activeDonCount ?? 0,
-    restedDon: localPlayer?.restedDonCount ?? 0,
-    donDeck: localPlayer?.donDeckCount ?? 0,
-    deckCount: localPlayer?.deckCount ?? 0,
-    lifeCount: localPlayer?.lifeCount ?? 0,
-    leaderId: localPlayer?.leader?.instanceId ?? '',
-  };
-
-  function runManualAction(action: ManualActionDto): void {
-    setManualMenu(null);
-    void onManualAction?.(action);
-  }
-
-  // Which manual actions fit this card: own hand, own or opponent field, own trash.
-  function getCardTarget(card: CardInstanceDto): ManualTarget | null {
-    const id = card.instanceId;
-    if (localHandCards.some((entry) => entry.instanceId === id)) {
-      return { kind: 'hand', card };
-    }
-
-    if (localFieldCards.some((entry) => entry.instanceId === id)) {
-      return { kind: 'field', card, own: true };
-    }
-
-    if (opponentFieldCards.some((entry) => entry.instanceId === id)) {
-      return { kind: 'field', card, own: false };
-    }
-
-    if (localPlayer?.trashCards.some((entry) => entry.instanceId === id)) {
-      return { kind: 'trash', card };
-    }
-
-    return null;
-  }
-
-  function getCardManualItems(card: CardInstanceDto): ManualItem[] {
-    const target = canManual ? getCardTarget(card) : null;
-    return target ? getManualItems(target, manualContext) : [];
-  }
-
-  // Returns the handler for right click / "⋯", or undefined when no manual action is allowed now.
-  function getMenuHandler(title: string, items: () => ManualItem[]): ((x: number, y: number) => void) | undefined {
-    if (!canManual) {
-      return undefined;
-    }
-
-    return (x, y) => {
-      window.clearTimeout(previewTimer.current);
-      onPreviewCard?.(null);
-      setManualMenu({ x, y, title, items: items() });
-    };
-  }
-
-  function getCardMenuHandler(card: CardInstanceDto) {
-    return getMenuHandler(card.name, () => [
-      { kind: 'open', label: 'Details ansehen', run: () => setInspectedCard(card) },
-      ...getCardManualItems(card),
-    ]);
-  }
-
-  function renderCardDots(card: CardInstanceDto) {
-    const onMenu = getCardMenuHandler(card);
-    return onMenu ? <ManualDotsButton label={`${card.name}: manuelle Aktionen`} onMenu={onMenu} /> : null;
-  }
 
   // Reset the local selection whenever a new prompt arrives.
   useEffect(() => {
@@ -400,11 +303,6 @@ export function MatchBoard({
   }
 
   function handleOwnCardClick(card: CardInstanceDto): void {
-    // The click that ends a manual drag from the field does nothing.
-    if (handDrag.shouldSuppressClick()) {
-      return;
-    }
-
     if (mode.kind === 'replace' && card.category === 'Character') {
       submit('PLAY_CARD', mode.handCardId, card.instanceId);
       return;
@@ -446,10 +344,6 @@ export function MatchBoard({
       return canDragDon && (target.zone === 'leader' || target.zone === 'character') && Boolean(target.cardId);
     }
 
-    if (item.kind === 'field') {
-      return canManual && target.zone in FIELD_DROP_LABELS;
-    }
-
     const card = item.card;
     if (canCounterWith(card)) {
       return target.zone === 'field';
@@ -486,20 +380,6 @@ export function MatchBoard({
         submit('ATTACH_DON', target.cardId);
       }
       return;
-    }
-
-    // Manual mode: not a normal game move, so it is confirmed first. The card flies back meanwhile.
-    if (item.kind === 'field') {
-      setConfirmMove({
-        text: `${item.card.name} ${FIELD_DROP_LABELS[target.zone]}?`,
-        action: {
-          kind: 'MOVE_CARD',
-          cardInstanceId: item.card.instanceId,
-          toZone: target.zone,
-          toPosition: target.zone === 'deck' ? 'bottom' : undefined,
-        },
-      });
-      return false;
     }
 
     const card = item.card;
@@ -638,10 +518,6 @@ export function MatchBoard({
       return 'Several effects at the same time: choose their order.';
     }
 
-    if (manualPrompt) {
-      return 'Resolve the effect by hand (right click or ⋯), then press Done.';
-    }
-
     if (mode.kind === 'attack') {
       const attacker = localFieldCards.find((entry) => entry.instanceId === mode.attackerId);
       return attacker?.canAttackOnlyCharacters
@@ -763,12 +639,10 @@ export function MatchBoard({
           hints={side === 'opponent' ? getCardHints(card) : undefined}
           onClick={() => (side === 'player' ? handleOwnCardClick(card) : handleOpponentCardClick(card))}
           onInspect={() => setInspectedCard(card)}
-          onMenu={getCardMenuHandler(card)}
           onPreview={handlePreview}
           size="slot"
           stateClassName={getCardStateClassName(card, side)}
         />
-        {renderCardDots(card)}
       </>
     );
   }
@@ -828,15 +702,11 @@ export function MatchBoard({
               const card = player?.boardCards?.[index];
               const target: DropTarget = { zone: 'character', slotIndex: index, cardId: card?.instanceId };
               const isOwn = side === 'player';
-              // Manual mode: own Characters can be dragged to the trash, hand or deck.
-              const fieldDragProps =
-                isOwn && card && manualMode && canManual ? handDrag.getSourceProps({ kind: 'field', card }) : null;
               return (
                 <div
                   key={card?.instanceId ?? `empty-${index}`}
                   className={`board-card-slot${isOwn ? getDropClassName(target) : ''}`}
                   {...(isOwn ? getDropAttributes(target) : null)}
-                  {...fieldDragProps}
                 >
                   {card && renderFieldCard(card, side)}
                 </div>
@@ -884,28 +754,7 @@ export function MatchBoard({
       return { zone: 'stage', cardId: player?.stage?.instanceId };
     }
 
-    // Manual drag & drop from the field.
-    if (zone.kind === 'trash' || zone.kind === 'deck') {
-      return { zone: zone.kind };
-    }
-
     return null;
-  }
-
-  // Manual actions for the own Deck, Life and DON!! zones.
-  function getZoneMenuHandler(zone: BoardZoneDefinition, side: BoardSide) {
-    if (side !== 'player') {
-      return undefined;
-    }
-
-    const targets: Partial<Record<string, ManualTarget>> = {
-      deck: { kind: 'deck' },
-      life: { kind: 'life' },
-      donDeck: { kind: 'don' },
-      donArea: { kind: 'don' },
-    };
-    const target = targets[zone.kind];
-    return target ? getMenuHandler(zone.label, () => getManualItems(target, manualContext)) : undefined;
   }
 
   function renderSide(side: BoardSide) {
@@ -925,7 +774,6 @@ export function MatchBoard({
               dropClassName={target ? getDropClassName(target) : ''}
               dropTarget={target}
               filled={isZoneFilled(zone, player)}
-              onMenu={getZoneMenuHandler(zone, side)}
               side={side}
               zone={zone}
             >
@@ -951,11 +799,10 @@ export function MatchBoard({
     (hotkeys.endTurnArmed ? 'Leertaste nochmal drücken (oder halten): Zug beenden' : '') ||
     autoPassNotice ||
     getHint();
-  const canToggleManual = isRunning && Boolean(onManualAction);
   // "Fehler melden" during the match and on the game over screen.
   const canReportBug = Boolean(joinedRoomCode) && (isRunning || isGameOver);
   const showActions =
-    isMainAction || isBlockStep || isCounterStep || mode.kind === 'replace' || canToggleManual || (canReportBug && !isGameOver);
+    isMainAction || isBlockStep || isCounterStep || mode.kind === 'replace' || (canReportBug && !isGameOver);
 
   const frameStyle = {
     ...cardArtStyle,
@@ -969,7 +816,6 @@ export function MatchBoard({
   const frameClassName = [
     'match-board-frame',
     metrics && metrics.cardWidth < SMALL_CARD_W ? 'is-small-cards' : '',
-    manualMode && canManual ? 'is-manual-mode' : '',
     `fx-mode-${fxSettings.animations}`,
   ]
     .filter(Boolean)
@@ -1031,17 +877,6 @@ export function MatchBoard({
                   type="button"
                 >
                   🐞 Fehler melden
-                </button>
-              )}
-              {canToggleManual && (
-                <button
-                  aria-pressed={manualMode}
-                  className={`match-actions__manual${manualMode ? ' is-active' : ''}`}
-                  onClick={() => setManualMode((value) => !value)}
-                  title="Manuelle Aktionen: Rechtsklick oder Long-Press auf Karten funktioniert immer"
-                  type="button"
-                >
-                  ✋ Manuell
                 </button>
               )}
               {isMainAction && (
@@ -1139,12 +974,10 @@ export function MatchBoard({
           shouldSuppressClick: handDrag.shouldSuppressClick,
         }}
         getAriaLabel={getHandCardAriaLabel}
-        getMenuHandler={getCardMenuHandler}
         getStateClassName={getHandCardStateClassName}
         onCardClick={handleHandCardClick}
         onInspect={setInspectedCard}
         onPreview={handlePreview}
-        renderCardExtra={renderCardDots}
       />
 
       {isGameOver && gameState && (
@@ -1177,15 +1010,7 @@ export function MatchBoard({
 
       <CardInspectOverlay
         card={inspectedCard}
-        manualDisabled={pending}
-        manualItems={inspectedCard ? getCardManualItems(inspectedCard) : []}
         onClose={closeInspect}
-        onManualAction={(action) => {
-          // The card may leave the zone, so the overlay closes.
-          setInspectedCard(null);
-          setInspectedPile(null);
-          runManualAction(action);
-        }}
         onSelectCard={setInspectedCard}
         pile={inspectedPile}
       />
@@ -1196,42 +1021,12 @@ export function MatchBoard({
         prompt={myPrompt?.kind === 'ORDER_TRIGGERS' ? myPrompt : null}
       />
 
-      <ManualEffectBanner
-        disabled={pending || !canSubmitChoice}
-        onDone={() => submit('DONE')}
-        prompt={manualPrompt}
-      />
-
-      <ManualViewDialog
-        disabled={pending || !canSubmitChoice}
-        onAction={(action) => onManualAction?.(action) ?? Promise.resolve(false)}
-        view={localPlayer?.manualView}
-      />
-
-      <ManualMenu
-        disabled={pending}
-        menu={manualMenu}
-        onAction={runManualAction}
-        onClose={() => setManualMenu(null)}
-      />
-
       <BugReportDialog
         atSeq={gameState?.recordedInputs ?? 0}
         cards={[...localHandCards, ...localFieldCards, ...opponentFieldCards, ...(localPlayer?.trashCards ?? []), ...(opponent?.trashCards ?? [])]}
         onClose={() => setBugReportOpen(false)}
         open={bugReportOpen}
         roomCode={joinedRoomCode}
-      />
-
-      <ManualConfirm
-        onCancel={() => setConfirmMove(null)}
-        onConfirm={() => {
-          if (confirmMove) {
-            runManualAction(confirmMove.action);
-          }
-          setConfirmMove(null);
-        }}
-        text={confirmMove?.text ?? null}
       />
 
       <EffectChoiceOverlay

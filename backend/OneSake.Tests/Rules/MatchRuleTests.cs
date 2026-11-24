@@ -67,13 +67,27 @@ public class MatchRuleTests
     }
 
     [Fact]
+    public void EffectThatIsNotAutomated_IsSkippedAndLogged()
+    {
+        // There is no manual mode: an effect text the engine cannot run is skipped (no prompt).
+        var (room, update) = Start(p1Card: Card("Singer", "[On Play] Sing a song for your opponent."));
+        var card = Me(update, "p1").HandCards[0].InstanceId;
+
+        update = Submit(room, GetPrompt(update, "p1"), "PLAY_CARD", card);
+
+        Assert.Contains(update.LogEvents, entry => entry.Type == "EFFECT_NOT_AUTOMATED" && entry.Text.Contains("Singer"));
+        Assert.Equal("MAIN_ACTION", GetPrompt(update, "p1").Kind);
+        Assert.Contains(Me(update, "p1").BoardCards, entry => entry.InstanceId == card);
+    }
+
+    [Fact]
     public void TwoEndOfTurnEffects_OpenAnOrderPrompt()
     {
         // Rule 6-6-1-1-3: the turn player chooses the order of several [End of Your Turn] effects.
-        var (room, update) = Start(p1Card: Card("Ender", "[End of Your Turn] Draw 1 card."));
+        var (room, update) = Start(p1Card: Card("Ender", "[End of Your Turn] Draw 1 card.", cost: 0));
         foreach (var card in Me(update, "p1").HandCards.Take(2).ToList())
         {
-            update = room.ManualAction("p1", new ManualActionDto { Kind = "MOVE_CARD", CardInstanceId = card.InstanceId, ToZone = "character" });
+            update = Submit(room, GetPrompt(update, "p1"), "PLAY_CARD", card.InstanceId);
         }
 
         update = Submit(room, GetPrompt(update, "p1"), "END_TURN");
@@ -114,7 +128,7 @@ public class MatchRuleTests
             p1Card: Card("Double", "[Double Attack] [On K.O.] Draw 1 card.", cost: 1),
             p2Card: Card("KO Trigger", "[Trigger] K.O. up to 1 of your opponent's Characters with a cost of 3 or less."));
         var attacker = Me(update, "p1").HandCards[0].InstanceId;
-        update = room.ManualAction("p1", new ManualActionDto { Kind = "MOVE_CARD", CardInstanceId = attacker, ToZone = "character" });
+        update = Submit(room, GetPrompt(update, "p1"), "PLAY_CARD", attacker);
         update = Submit(room, GetPrompt(update, "p1"), "END_TURN");
         update = Submit(room, GetPrompt(update, "p2"), "END_TURN");
 

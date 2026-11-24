@@ -44,7 +44,8 @@ public sealed class MatchRoomReplay : IReplayTarget
         {
             RecordedInputKinds.Choice => Room.SubmitChoice(
                 MatchRecordingJson.FromPayload<ChoiceSubmissionDto>(input.Payload) with { PlayerId = playerId }),
-            RecordedInputKinds.Manual => Room.ManualAction(playerId, MatchRecordingJson.FromPayload<ManualActionDto>(input.Payload)),
+            // Recordings from before the manual mode was removed cannot be replayed past such an input.
+            RecordedInputKinds.Manual => throw new InvalidOperationException("Manual actions were removed: this recording cannot be replayed."),
             RecordedInputKinds.Leave => Room.RemovePlayer(
                 playerId,
                 input.Payload.TryGetProperty("endReason", out var reason) ? reason.GetString() ?? MatchEndReasons.Disconnect : MatchEndReasons.Disconnect),

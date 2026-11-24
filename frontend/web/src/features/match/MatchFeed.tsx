@@ -20,16 +20,14 @@ type FeedItem =
   | { kind: 'log'; key: string; ts: number; event: LogEventDto }
   | { kind: 'chat'; key: string; ts: number; message: ChatMessageDto };
 
-// Manual actions and "resolve manually" notes stand out, so the opponent notices them at once.
-const MANUAL_EVENT_TYPES = ['MANUAL', 'EFFECT_MANUAL'];
-
-function isManualEvent(event: LogEventDto): boolean {
-  return MANUAL_EVENT_TYPES.includes(event.type);
+// An effect text that is not automated yet is skipped. The note stands out, so both players notice it.
+function isNotAutomatedEvent(event: LogEventDto): boolean {
+  return event.type === 'EFFECT_NOT_AUTOMATED';
 }
 
 function getLogClassName(event: LogEventDto): string {
-  if (isManualEvent(event)) {
-    return 'match-feed__log match-feed__log--manual';
+  if (isNotAutomatedEvent(event)) {
+    return 'match-feed__log match-feed__log--not-automated';
   }
 
   // "1/3: Zoro [On Play] ..." - the order in which simultaneous effects are resolved.
@@ -95,9 +93,9 @@ export function MatchFeed({
         {items.map((item) =>
           item.kind === 'log' ? (
             <p key={item.key} className={getLogClassName(item.event)}>
-              {isManualEvent(item.event) && !item.event.text.startsWith('✋') && (
-                <span aria-hidden="true" className="match-feed__hand">
-                  ✋{' '}
+              {isNotAutomatedEvent(item.event) && (
+                <span aria-hidden="true" className="match-feed__icon">
+                  ⚠{' '}
                 </span>
               )}
               <span>

@@ -8,7 +8,6 @@ import type {
   ChoicePromptDto,
   GameStateDto,
   LogEventDto,
-  ManualActionDto,
 } from '../../types/realtime';
 import { BountyChangeBanner } from './BountyChangeBanner';
 import { ChoiceBar } from './ChoiceBar';
@@ -27,7 +26,7 @@ import { FxSettingsMenu } from './fx/FxSettingsMenu';
 import './fx/fx.css';
 
 // These prompts are answered directly on the board (click cards / action bar).
-const BOARD_HANDLED_PROMPT_KINDS = ['MAIN_ACTION', 'BLOCK_STEP', 'COUNTER_STEP', 'MANUAL_EFFECT'];
+const BOARD_HANDLED_PROMPT_KINDS = ['MAIN_ACTION', 'BLOCK_STEP', 'COUNTER_STEP'];
 
 // From this width on the feed is a resizable column; below it is a slide-in overlay.
 const DESKTOP_QUERY = '(min-width: 1024px)';
@@ -75,7 +74,6 @@ interface FullscreenMatchViewProps {
   onChatInputChange: (value: string) => void;
   onExitBoard: () => void;
   onLeaveRoom: () => void;
-  onManualAction: (action: ManualActionDto) => Promise<boolean>;
   onSubmitOrder: (orderedIds: string[]) => void;
 
   // Game over: open a new table for a rematch.
@@ -103,7 +101,6 @@ export function FullscreenMatchView({
   onChatInputChange,
   onExitBoard,
   onLeaveRoom,
-  onManualAction,
   onSubmitOrder,
 
   onRematch,
@@ -301,7 +298,6 @@ export function FullscreenMatchView({
                 pending={pending}
               />
             }
-            onManualAction={onManualAction}
             onSubmitOrder={onSubmitOrder}
 
             bountyChange={bountyChange}

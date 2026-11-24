@@ -9,7 +9,6 @@ import {
   ChoicePromptDto,
   GameStateDto,
   LogEventDto,
-  ManualActionDto,
   MatchFoundDto,
   PlayerDeckSubmissionDto,
   RejoinResultDto,
@@ -354,12 +353,6 @@ export class SignalRClient {
   async submitChoice(roomCode: string, submission: ChoiceSubmissionDto): Promise<void> {
     await this.connect();
     await this.connection!.invoke('SubmitChoice', roomCode, submission);
-  }
-
-  // Manual mode: resolve a card effect by hand (move a card, K.O., +power ...).
-  async manualAction(roomCode: string, action: ManualActionDto): Promise<void> {
-    await this.connect();
-    await this.connection!.invoke('ManualAction', roomCode, action);
   }
 
   async sendChat(roomCode: string, text: string): Promise<void> {

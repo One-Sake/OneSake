@@ -4,31 +4,20 @@ using OneSake.Game.Randomness;
 namespace OneSake.Game.Simulation;
 
 // Chooses evenly among ALL valid decisions (targets, costs, order, counter, block, mulligan,
-// turn order). Sometimes it also uses a manual action. All randomness comes from the seeded IRandom.
+// turn order). All randomness comes from the seeded IRandom.
 public sealed class RandomBot : IBotPlayer
 {
     private readonly IRandom _random;
-    private readonly double _manualActionChance;
 
-    public RandomBot(IRandom random, double manualActionChance = 0.02)
+    public RandomBot(IRandom random)
     {
         _random = random;
-        _manualActionChance = manualActionChance;
     }
 
     public string Name => "random";
 
     public BotDecision Decide(BotView view, IReadOnlyCollection<string> rejected)
     {
-        if (view.Prompt.Kind == "MAIN_ACTION" && view.IsMyTurn && rejected.Count == 0 && Chance(_manualActionChance))
-        {
-            var manual = ManualActions(view);
-            if (manual.Count > 0)
-            {
-                return manual[_random.Next(manual.Count)];
-            }
-        }
-
         var candidates = ValidDecisions.For(view).Where(decision => !rejected.Contains(decision.Key)).ToList();
         if (candidates.Count == 0)
         {
@@ -46,35 +35,6 @@ public sealed class RandomBot : IBotPlayer
         }
 
         return decision;
-    }
-
-    private bool Chance(double probability) => _random.Next(10_000) < probability * 10_000;
-
-    // Harmless manual actions that are always allowed on the own turn.
-    private static List<BotDecision> ManualActions(BotView view)
-    {
-        var me = view.Me;
-        var actions = new List<BotDecision>
-        {
-            new() { Manual = new ManualActionDto { Kind = "SHUFFLE_DECK" } }
-        };
-
-        if (me.Leader is { } leader)
-        {
-            actions.Add(new BotDecision { Manual = new ManualActionDto { Kind = "MODIFY_POWER", CardInstanceId = leader.InstanceId, Amount = 1000, Duration = "turn" } });
-        }
-
-        if (me.HandCards.Count > 0)
-        {
-            actions.Add(new BotDecision { Manual = new ManualActionDto { Kind = "REVEAL_CARD", CardInstanceId = me.HandCards[0].InstanceId } });
-        }
-
-        if (me.ActiveDonCount > 0)
-        {
-            actions.Add(new BotDecision { Manual = new ManualActionDto { Kind = "DON_SET_REST", Amount = 1 } });
-        }
-
-        return actions;
     }
 }
 

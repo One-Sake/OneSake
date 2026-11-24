@@ -12,7 +12,7 @@ dotnet run --project backend/OneSake.Simulator -c Release -- --games 5000 --bots
 
 | Option | Bedeutung |
 |---|---|
-| `--bots random,greedy` | `RandomBot` (zufällig unter allen gültigen Entscheidungen, gelegentlich manuelle Aktionen), `GreedyBot` (teuerste Karte, DON!! auf den Leader, Angriff bei genug Power, Block bei tödlichem Angriff, Counter bei wenig Life) |
+| `--bots random,greedy` | `RandomBot` (zufällig unter allen gültigen Entscheidungen), `GreedyBot` (teuerste Karte, DON!! auf den Leader, Angriff bei genug Power, Block bei tödlichem Angriff, Counter bei wenig Life) |
 | `--decks meta,random` | `meta`: Decks aus `backend/OneSake.Tests/Decks/*.txt`, `random`: zufällige gültige Decks (Leader + 50 Karten seiner Farben) |
 | `--cards <datei>` | Kartendaten im optcgapi-Format. Standard: `ONESAKE_CARDS_JSON`, sonst die Fixture `backend/OneSake.Tests/Decks/cards-fixture.json` |
 | `--determinism-every 50` | Jede 50. Partie wird ein zweites Mal gespielt; der Endzustand muss gleich sein |

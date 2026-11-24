@@ -37,8 +37,7 @@ public sealed record RecordedPlayer
     public PlayerDeckSubmissionDto Deck { get; init; } = new();
 }
 
-// One decision of a player. Payload is the ChoiceSubmissionDto / ManualActionDto (without the
-// connection ID), StateHash the fingerprint of the state right after this input.
+// One decision of a player. Payload is the ChoiceSubmissionDto (without the connection ID), StateHash the fingerprint of the state right after this input.
 public sealed record RecordedInput
 {
     public int Seq { get; init; }
@@ -52,6 +51,7 @@ public sealed record RecordedInput
 public static class RecordedInputKinds
 {
     public const string Choice = "CHOICE";
+    // Manual mode (removed): only found in old recordings, they cannot be replayed past it.
     public const string Manual = "MANUAL";
     // The player left the running match (concede or disconnect). Payload: { "endReason": ... }.
     public const string Leave = "LEAVE";

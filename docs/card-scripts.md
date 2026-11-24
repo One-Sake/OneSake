@@ -53,7 +53,7 @@ a warning once.
 |-------------|---------|
 | `verified`  | Checked by hand and covered by a test (`[CardTest("...")]`). |
 | `generated` | The parser understood every part. Runs automatically, not checked by hand ("ungeprüft" in the card inspect overlay). |
-| `manual`    | Not everything is automated. Parts in `unsupportedTexts` open the "Effekt bitte manuell ausführen" prompt; the other abilities in `abilities` still run automatically, exactly like before the files existed. A file with an empty `abilities` list is completely manual. |
+| `manual`    | Not everything is automated. Parts in `unsupportedTexts` are **skipped** in the match (log entry `EFFECT_NOT_AUTOMATED` for both players, there is no manual mode); the other abilities in `abilities` still run automatically. A file with an empty `abilities` list has no working effect at all. |
 
 A card without any file (for example a new set before the generator ran) is parsed at runtime
 like before. It counts as `generated` and the server logs it once.

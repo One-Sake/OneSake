@@ -12,17 +12,17 @@ public sealed record EffectChoiceNeeded(EffectChoiceRequest Request) : ResolverR
 // The player has several effects at the same time and chooses the order.
 public sealed record OrderNeeded(string PlayerId, IReadOnlyList<PendingTrigger> Triggers) : ResolverRequest(PlayerId);
 
-// An effect text the engine cannot automate: the player resolves it by hand, then says "done".
-public sealed record ManualEffectNeeded(string PlayerId, PendingTrigger Trigger) : ResolverRequest(PlayerId);
-
 // Runs all effects of a match: events -> TriggerCollector -> TriggerQueue -> EffectEngine.
 // The EffectEngine resolves exactly one effect at a time; the queue decides which one is next.
 public sealed class EffectResolver
 {
     private const int MaxStepsPerRun = 1000;
 
+    // Log type of an effect text the engine cannot automate yet. It is skipped: there is no manual
+    // mode, so a player cannot give a card effects it does not have.
+    public const string NotAutomatedLogType = "EFFECT_NOT_AUTOMATED";
+
     private readonly IGameContext _context;
-    private PendingTrigger? _manualEffect;
     private bool _orderPending;
 
     public EffectResolver(IGameContext context, GameEventBus events)
@@ -43,7 +43,7 @@ public sealed class EffectResolver
     // the player, rule 8-6-2-1) is still resolved at once.
     public bool HoldNewEffects { get; set; }
 
-    public bool IsBusy => Engine.IsBusy || !Queue.IsEmpty || _manualEffect is not null || _orderPending;
+    public bool IsBusy => Engine.IsBusy || !Queue.IsEmpty || _orderPending;
 
     // Effects the player starts on purpose (Event [Main]/[Counter], [Trigger]).
     public void Activate(CardInstance card, string controllerId, EffectTiming timing)
@@ -72,11 +72,6 @@ public sealed class EffectResolver
             if (Engine.PendingChoice is { } pending)
             {
                 return new EffectChoiceNeeded(pending);
-            }
-
-            if (_manualEffect is not null)
-            {
-                return new ManualEffectNeeded(_manualEffect.ControllerId, _manualEffect);
             }
 
             // Rule 8-6-3: everything that became pending while the last effect resolved is one batch.
@@ -111,9 +106,8 @@ public sealed class EffectResolver
 
             if (trigger.Ability is null)
             {
-                _manualEffect = trigger;
-                _context.Log("EFFECT_MANUAL", $"{trigger.Source.Name}: \"{trigger.ManualText}\" is not automated - please resolve it manually.");
-                return new ManualEffectNeeded(trigger.ControllerId, trigger);
+                _context.Log(NotAutomatedLogType, $"{trigger.Source.Name}: \"{trigger.ManualText}\" is not automated yet - the effect is skipped.");
+                continue;
             }
 
             Engine.Enqueue(trigger.Ability, trigger.Source, trigger.ControllerId, alreadyChosen: trigger.StartedByPlayer);
@@ -146,22 +140,10 @@ public sealed class EffectResolver
         return Run();
     }
 
-    public ResolverRequest? ManualEffectDone(string playerId)
-    {
-        if (_manualEffect is null || _manualEffect.ControllerId != playerId)
-        {
-            throw new InvalidOperationException("There is no manual effect to finish.");
-        }
-
-        _manualEffect = null;
-        return Run();
-    }
-
     public void Clear()
     {
         Engine.Clear();
         Queue.Clear();
-        _manualEffect = null;
         _orderPending = false;
         HoldNewEffects = false;
     }

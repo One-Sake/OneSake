@@ -58,16 +58,6 @@ public sealed class PlayerState
     // Rule processing makes this player lose.
     public bool LeaderDamagedAtZeroLife { get; set; }
 
-    // Manual mode: deck cards only this player sees right now ("LOOK" or "SEARCH", empty when closed).
-    public string ManualViewKind { get; set; } = string.Empty;
-    public List<CardInstance> ManualViewCards { get; } = [];
-
-    public void CloseManualView()
-    {
-        ManualViewKind = string.Empty;
-        ManualViewCards.Clear();
-    }
-
     // All DON!! on the field: cost area (active + rested) and given to the Leader/Characters.
     public int DonOnField => ActiveDon + RestedDon + FieldCards().Sum(card => card.AttachedDon);
 

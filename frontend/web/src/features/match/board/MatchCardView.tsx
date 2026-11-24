@@ -17,8 +17,6 @@ interface MatchCardViewProps {
   onClick?: () => void;
   // Right click or long press opens the card inspect overlay.
   onInspect?: () => void;
-  // Manual mode: right click opens the context menu at this position instead of the inspect overlay.
-  onMenu?: (x: number, y: number) => void;
   // Called with the card when the mouse enters it, and with null when it leaves.
   onPreview?: (card: CardInstanceDto | null) => void;
   // Small icons shown on hover, e.g. "Hat [Blocker]" on opponent cards.
@@ -37,7 +35,6 @@ export function MatchCardView({
   hints,
   onClick,
   onInspect,
-  onMenu,
   onPreview,
   showStats = true,
   size,
@@ -77,12 +74,6 @@ export function MatchCardView({
   // ---------- Inspect (right click / long press) and hover preview ----------
 
   function handleContextMenu(event: MouseEvent): void {
-    if (onMenu) {
-      event.preventDefault();
-      onMenu(event.clientX, event.clientY);
-      return;
-    }
-
     if (!onInspect) {
       return;
     }

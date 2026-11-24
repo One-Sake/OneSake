@@ -845,7 +845,7 @@ export function logFx(event: LogEventDto, state: GameStateDto | null, env: FxEnv
 // "Nami: Alice draws 1 card." / "Alice activates Hyogoro." - the source pulses, lines go to the
 // cards the effect named or just changed.
 function effectFx(event: LogEventDto, state: GameStateDto, env: FxEnv): void {
-  if (/conditions are not met|cannot be paid|must be resolved manually/.test(event.text)) {
+  if (/conditions are not met|cannot be paid|is not automated yet/.test(event.text)) {
     return;
   }
 

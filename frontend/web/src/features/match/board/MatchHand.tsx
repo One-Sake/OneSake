@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import type { CSSProperties, PointerEvent, ReactNode } from 'react';
+import type { CSSProperties, PointerEvent } from 'react';
 
 import type { CardInstanceDto } from '../../../types/realtime';
 import { MatchCardView } from './MatchCardView';
@@ -24,9 +24,6 @@ interface MatchHandProps {
   onCardClick: (card: CardInstanceDto) => void;
   onInspect: (card: CardInstanceDto) => void;
   onPreview?: (card: CardInstanceDto | null) => void;
-  // Manual mode: context menu for a hand card (right click) and extra content like the "⋯" button.
-  getMenuHandler?: (card: CardInstanceDto) => ((x: number, y: number) => void) | undefined;
-  renderCardExtra?: (card: CardInstanceDto) => ReactNode;
 }
 
 function isTouchDevice(): boolean {
@@ -39,12 +36,10 @@ export function MatchHand({
   cards,
   drag,
   getAriaLabel,
-  getMenuHandler,
   getStateClassName,
   onCardClick,
   onInspect,
   onPreview,
-  renderCardExtra,
 }: MatchHandProps) {
   const [focusedCardId, setFocusedCardId] = useState('');
   const handRef = useRef<HTMLDivElement>(null);
@@ -136,12 +131,10 @@ export function MatchHand({
               clickable
               onClick={() => handleClick(card)}
               onInspect={() => handleInspect(card)}
-              onMenu={getMenuHandler?.(card)}
               onPreview={onPreview}
               size="hand"
               stateClassName={getStateClassName(card)}
             />
-            {renderCardExtra?.(card)}
           </div>
         );
       })}

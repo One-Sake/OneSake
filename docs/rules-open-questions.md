@@ -18,8 +18,8 @@ anpassen, den Test ausschreiben und `Skip` entfernen.
 
 ## Bekannte Lücken (Regeln klar, noch nicht umgesetzt)
 
-- **Ersatz-Effekte ("instead", 8-1-3-4):** Der Parser versteht sie nicht. Solche Karten
-  bekommen den Hinweis "Effekt bitte manuell ausführen".
+- **Ersatz-Effekte ("instead", 8-1-3-4):** Der Parser versteht sie nicht. Bei solchen Karten
+  wird der Effekt übersprungen (Log `EFFECT_NOT_AUTOMATED`), es gibt keinen manuellen Modus mehr.
 - **"until the start of your next turn" (6-2-1):** Das Modell kennt nur eine gemeinsame Dauer
   mit "until the end of your opponent's next turn". Sie endet am Ende des gegnerischen Zugs, also
   kurz vor der Refresh Phase.

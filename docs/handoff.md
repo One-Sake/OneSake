@@ -30,7 +30,7 @@
 | Bereich | Wo | Doku |
 |---|---|---|
 | Board: Feed-Splitter, Skalierung, Drag & Drop, Kartenrücken | `frontend/web/src/features/match/` | – |
-| Manueller Modus (Kontextmenü, ⋯, Deck ansehen/durchsuchen, „Effekt manuell ausführen“) | `OneSake.Game/Actions/ManualActions.cs`, `board/Manual*.tsx` | – |
+| ~~Manueller Modus (Kontextmenü, ⋯, Deck ansehen/durchsuchen, „Effekt manuell ausführen“)~~ – am 24.11.2026 entfernt (Schummel-Lücke); nicht automatisierte Effekte werden übersprungen und geloggt | – | `docs/spiellogik-plan.md` 5.3/5.4 |
 | Kartenskripte als geprüfte JSON-Daten (2493 Karten, 13 verified, Generator, Coverage-Test) | `OneSake.Game/CardScripts/`, `OneSake.CardScriptGen/` | `docs/card-scripts.md` |
 | Regel-Engine: Events, Trigger-Reihenfolge (Regel 8-6), Regelverarbeitung (Regel 9), ORDER_TRIGGERS | `OneSake.Game/Rules/` | `docs/rules-open-questions.md` |
 | Determinismus, Aufzeichnung, Replay, „Fehler melden“ | `OneSake.Game/Randomness`, `OneSake.Game/Replay`, `OneSake.ReplayTool/`, `/bugreports` | `docs/bug-reports.md` |

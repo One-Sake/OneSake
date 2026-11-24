@@ -10,16 +10,15 @@ public sealed record BotView(GameStateDto State, ChoicePromptDto Prompt, string 
     public bool IsMyTurn => State.ActivePlayerId == PlayerId;
 }
 
-// A decision: an answer to the open prompt, or a manual action (manual mode).
+// A decision: an answer to the open prompt.
 public sealed record BotDecision
 {
     public ChoiceSubmissionDto? Choice { get; init; }
-    public ManualActionDto? Manual { get; init; }
 
     // Used to remember rejected decisions (records with lists do not compare by value).
     public string Key => Choice is { } choice
         ? $"{choice.SelectedOption}|{choice.SelectedCardInstanceId}|{choice.TargetCardInstanceId}|{string.Join(',', choice.OrderedIds ?? [])}"
-        : $"manual|{Manual?.Kind}|{Manual?.CardInstanceId}|{Manual?.Amount}";
+        : string.Empty;
 
     public static BotDecision Answer(ChoicePromptDto prompt, string option, string? selected = null, string? target = null, IReadOnlyList<string>? order = null)
     {

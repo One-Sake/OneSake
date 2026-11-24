@@ -28,7 +28,7 @@ public static class StateHasher
     private static void AppendPlayer(StringBuilder text, PlayerState player, int seat)
     {
         text.Append($"seat {seat}: deck={player.DeckId} turns={player.TurnsStarted} don={player.DonDeckCount}/{player.ActiveDon}/{player.RestedDon} ")
-            .Append($"donEnd={player.DonToActivateAtEndOfTurn} damaged0={player.LeaderDamagedAtZeroLife} view={player.ManualViewKind}\n");
+            .Append($"donEnd={player.DonToActivateAtEndOfTurn} damaged0={player.LeaderDamagedAtZeroLife} view=\n");
         text.Append("flags: ").AppendJoin(',', player.TurnFlags.Order(StringComparer.Ordinal)).Append('\n');
         AppendCards(text, "leader", player.Leader is null ? [] : [player.Leader]);
         AppendCards(text, "stage", player.Stage is null ? [] : [player.Stage]);
@@ -37,7 +37,9 @@ public static class StateHasher
         AppendCards(text, "deck", player.DrawDeck);
         AppendCards(text, "life", player.LifeCards);
         AppendCards(text, "trash", player.TrashCards);
-        AppendCards(text, "viewed", player.ManualViewCards);
+        // "view=" and "viewed:" belonged to the removed manual mode. They stay (always empty), so
+        // recordings made before keep the same state hashes.
+        AppendCards(text, "viewed", []);
     }
 
     private static void AppendCards(StringBuilder text, string zone, IEnumerable<CardInstance> cards)

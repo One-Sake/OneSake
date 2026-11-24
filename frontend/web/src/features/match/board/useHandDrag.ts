@@ -12,10 +12,8 @@ import type { CardInstanceDto } from '../../../types/realtime';
 // The board decides with canDrop() which targets are valid and with onDrop() what is sent,
 // using the same handlers as the click controls.
 
-// 'field': manual mode only - a Character from the own field to the trash, hand or deck.
 export type DragItem =
   | { kind: 'hand'; card: CardInstanceDto }
-  | { kind: 'field'; card: CardInstanceDto }
   | { kind: 'don' };
 
 export interface DropTarget {

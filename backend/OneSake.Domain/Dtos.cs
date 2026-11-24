@@ -42,35 +42,6 @@ public record PlayerStateDto
     // BoardCards are the Characters in the Character area (max 5).
     public IReadOnlyList<CardInstanceDto> BoardCards { get; init; } = [];
     public IReadOnlyList<CardInstanceDto> TrashCards { get; init; } = [];
-    // Manual mode: cards only this player may see right now (top of the deck, deck search).
-    // Only filled in the snapshot for this player, null for the opponent.
-    public ManualViewDto? ManualView { get; init; }
-}
-
-public record ManualViewDto
-{
-    // "LOOK" (top N cards of the deck) or "SEARCH" (the whole deck).
-    public string Kind { get; init; } = string.Empty;
-    public IReadOnlyList<CardInstanceDto> Cards { get; init; } = [];
-}
-
-// Manual mode: a player resolves a card effect by hand (move a card, K.O., +power...).
-public record ManualActionDto
-{
-    // DRAW, MOVE_CARD, KO_CARD, RETURN_TO_HAND, RETURN_TO_DECK, SET_REST, SET_ACTIVE, MODIFY_POWER,
-    // MODIFY_COST, DON_ADD, DON_RETURN, DON_ATTACH, DON_SET_REST, DON_SET_ACTIVE, LOOK_TOP, SEARCH_DECK,
-    // CLOSE_VIEW, SHUFFLE_DECK, REVEAL_CARD, TRASH_FROM_HAND, LIFE_TO_HAND
-    public string Kind { get; init; } = string.Empty;
-    public string? CardInstanceId { get; init; }
-    // Zones: hand, character, stage, leader, trash, deck, life. For DON!!: active, rested.
-    public string? FromZone { get; init; }
-    public string? ToZone { get; init; }
-    // "top", "bottom" or an index.
-    public string? ToPosition { get; init; }
-    public int? Amount { get; init; }
-    public string? TargetPlayerId { get; init; }
-    // MODIFY_POWER / MODIFY_COST: "turn" (default) or "battle".
-    public string? Duration { get; init; }
 }
 
 public record CardInstanceDto

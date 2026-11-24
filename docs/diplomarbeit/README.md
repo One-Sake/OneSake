@@ -6,6 +6,7 @@ Jedes Teammitglied hat einen **eigenen** Ordner für die persönliche Dokumentat
 |--------|--------|
 | [WoWoWocal/](WoWoWocal/README.md) | WoWoWocal (Frontend) |
 | [13-Tino-13/](13-Tino-13/README.md) | 13-Tino-13 (Daten, Accounts, Progression, Tests) |
+| [dano-4/](dano-4/README.md) | dano-4 (Game Engine, Karteneffekte) |
 
 Bitte nur in den eigenen Ordner schreiben. Für einen neuen Ordner `docs/diplomarbeit/<GitHub-Name>/`
 anlegen und die Struktur von `WoWoWocal/` übernehmen (Tagebuch, Ideen/Entscheidungen, Screenshots).

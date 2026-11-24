@@ -68,13 +68,6 @@ public sealed class MatchBot
                 return Submit(prompt, playerId == _players[0] ? "MULLIGAN" : "KEEP");
             case "MAIN_ACTION":
             {
-                // Once in turn 3: shuffle the deck manually (random from the player's stream).
-                if (_views[playerId].TurnNumber == 3 && !_shuffled.Contains(playerId))
-                {
-                    _shuffled.Add(playerId);
-                    return Room.ManualAction(playerId, new ManualActionDto { Kind = "SHUFFLE_DECK" });
-                }
-
                 var playable = me.HandCards.FirstOrDefault(card =>
                     card.Cost <= me.ActiveDonCount && (card.Category != "Character" || me.BoardCards.Count < 5) && card.Category != "Event");
                 if (prompt.Options.Contains("PLAY_CARD") && playable is not null)
@@ -130,7 +123,6 @@ public sealed class MatchBot
         }
     }
 
-    private readonly HashSet<string> _shuffled = new(StringComparer.Ordinal);
 
     private MatchUpdate Submit(ChoicePromptDto prompt, string option, string? selected = null, string? target = null)
     {

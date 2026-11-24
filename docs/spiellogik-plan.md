@@ -233,8 +233,8 @@ Neue Sets: Generator laufen lassen, die Karten sind bis zur Prüfung `generated`
 
 - [ ] 5.1 Deckbuilder: Status pro Karte anzeigen (fertig / ungeprüft / noch nicht spielbar), Filter „nur spielbar“.
 - [ ] 5.2 Deckprüfung am Server: Ranked und Quick Match nur mit `verified`-Karten. Private Tische erlauben `generated` mit Hinweis im Lobby-Fenster.
-- [ ] 5.3 Den manuellen Effekt-Prompt in Ranked und Quick Match abschalten.
-- [ ] 5.4 Nach W4 den manuellen Modus ganz entfernen. Den Rest des manuellen Modus nur noch zum Fehlermelden behalten.
+- [x] 5.3 Den manuellen Effekt-Prompt in Ranked und Quick Match abschalten. (24.11., dano-4: vorgezogen und für alle Tische, siehe 5.4)
+- [x] 5.4 Nach W4 den manuellen Modus ganz entfernen. Den Rest des manuellen Modus nur noch zum Fehlermelden behalten. (24.11., dano-4: **vorgezogen**, auf Wunsch des Teams sofort und vollständig entfernt, weil man damit jeder Karte beliebige Effekte geben konnte. Nicht automatisierte Effekte werden jetzt übersprungen und für beide Spieler als `EFFECT_NOT_AUTOMATED` geloggt. „Fehler melden“ braucht den Modus nicht.)
 - [ ] 5.5 Changelog („Was ist neu“) und Projekttagebuch zu jedem dieser Schritte.
 
 ### Phase 6 – Qualitätssicherung (laufend, ab Phase 2)
