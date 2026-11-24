@@ -281,3 +281,4 @@ Neue Sets: Generator laufen lassen, die Karten sind bis zur Prüfung `generated`
 |---|---|---|---|---|---|
 | 23.11.2026 | Start | 13 | 1.443 | 1.040 | Plan erstellt |
 | 23.11.2026 | Phase 0 | 13 | 1.443 | 1.040 | Prüfwerkzeug 0.2 fertig, Plan um A10–A14 ergänzt |
+| 24.11.2026 | 5.3/5.4, A11 | 13 | 1.443 | 1.040 | manueller Modus entfernt; A11: 153 Bausteine, jeder mit Test (`docs/effect-building-blocks.md`) |

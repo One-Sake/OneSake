@@ -43,6 +43,46 @@ Chronologische Dokumentation der eigenen Arbeitsschritte mit Zeitstempeln und Ü
   - Kein Screenshot: lokal gibt es weder Postgres noch Docker, ohne Kartendatenbank startet kein
     Match. Screenshot vom Match ohne „✋ Manuell“-Knopf und mit gelbem Log-Eintrag ist offen.
 
+### 2026-11-24 14:55 – Bausteine der Karteneffekte: Katalog und ein Test pro Baustein ★ 🤖
+- **Was:** Jeder Baustein, aus dem ein Karteneffekt besteht, hat jetzt einen eigenen Test (Plan A11).
+  - `OneSake.Tests/Blocks/BlockCatalog.cs`: Liste aller Bausteine, automatisch aus dem Effektmodell
+    gebaut (Zeitpunkte, Fähigkeits-Kopf, Keywords, Kosten, Bedingungen, Aktionen, Optionen, Dauer,
+    Flags, Ziele, Filter): **153 Bausteine**.
+  - `BlockCoverageTests`: schlägt fehl, wenn ein Baustein keinen `[BlockTest]` hat, ein Test einen
+    unbekannten Baustein nennt oder ein Baustein in `docs/effect-building-blocks.md` fehlt.
+  - `BlockGame`: kleines Spiel für die Tests. Die Kartentexte werden wie im Generator geparst, die
+    Effekte laufen wie im Match über Ereignis → TriggerCollector → TriggerQueue → EffectEngine mit
+    Regelverarbeitung. Jede Spielerentscheidung (Ja/Nein, Karte wählen) wird im Test beantwortet.
+  - 7 Testklassen mit 140 neuen Tests; jeder Test prüft beide Seiten (wirkt, wenn er soll; wirkt
+    nicht, wenn er nicht soll). Die bestehenden Keyword-Tests in `GameActionTests` sind mitgezählt.
+  - `docs/effect-building-blocks.md`: Katalog mit Kartentext, Häufigkeit in den Skripten,
+    Spielerentscheidungen und bekannten Lücken.
+  - Backend: 472 Tests grün (6 übersprungen wie vorher).
+- **Überlegung:**
+  - *Katalog automatisch aus den Enums statt von Hand:* Ein neuer Baustein im Modell taucht sofort
+    als „ohne Test“ auf, man kann ihn nicht vergessen.
+  - *Feiner als die geplanten 50–80:* Jede Bedingung, jeder Filter und jedes Flag zählt einzeln,
+    so ist jedes Wort, das eine Wirkung hat, getrennt testbar (Wunsch des Teams).
+  - *Tests mit echtem Kartentext statt mit gebautem JSON:* So wird gleichzeitig geprüft, dass der
+    Parser die Formulierung versteht und dass die Engine das Richtige tut. Nur
+    `Option.RestDestination.top` ist ein reiner Engine-Test, weil kein Kartentext ihn erzeugt.
+  - *Ablauf wie im Match statt Engine direkt:* Fehler im Zusammenspiel (Trigger sammeln, Bedingungen
+    beim Auflösen, `[Once Per Turn]`) fallen so auch auf.
+  - *Bausteine des heutigen Modells (v1):* Das Modell v2 (Phase 2) ist noch nicht gebaut. Neue
+    Bausteine kommen dazu und brauchen dann ebenfalls einen Test.
+- **Probleme/Lessons Learned:**
+  - Gefundene Lücken (im Katalog dokumentiert, noch nicht behoben): „place the rest at the top or
+    bottom“ legt immer nach unten; „in any order“ wird nicht gefragt; `Cost.TurnLife` zählt nur
+    die Life-Karten (offene Life-Karten werden nicht angezeigt); „Trash up to 1 card from your hand“
+    fragt erst Ja/Nein und dann die Karte.
+  - `CardZone.Deck` und `CardZone.Life` werden weder vom Parser noch von der Engine benutzt. Sie
+    sind keine Bausteine; ein Test sichert, dass auch kein Skript sie verwendet.
+  - Bei `[On Play] If …` liegt die Bedingung am Schritt, nicht an der Fähigkeit. Für das Spiel ist das
+    gleich (geprüft beim Auflösen), der Test war zuerst falsch formuliert.
+  - Beim Durchsehen aufgefallen: Der Leader ST01-001 (Monkey.D.Luffy) ist noch `manual`
+    („Give this Leader or 1 of your Characters …“) – gehört in Welle 1.
+  - Kein Screenshot, nichts Sichtbares geändert.
+
 <!-- Neue Einträge unten anfügen. Vorlage:
 
 ### JJJJ-MM-TT HH:MM – Titel ★/👥/🤖

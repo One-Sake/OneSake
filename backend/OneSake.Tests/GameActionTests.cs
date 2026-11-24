@@ -1,6 +1,7 @@
 using OneSake.Domain;
 using OneSake.Game.Actions;
 using OneSake.Game.State;
+using OneSake.Tests.Blocks;
 
 namespace OneSake.Tests;
 
@@ -65,6 +66,7 @@ public class GameActionTests
     }
 
     [Fact]
+    [BlockTest("Keyword.Rush")]
     public void Attack_CharacterPlayedThisTurnNeedsRush()
     {
         var attacker = CreatePlayer("p1");
@@ -115,6 +117,7 @@ public class GameActionTests
     }
 
     [Fact]
+    [BlockTest("Keyword.Blocker")]
     public void Battle_BlockerBecomesTheNewTarget()
     {
         var attacker = CreatePlayer("p1");
@@ -136,6 +139,8 @@ public class GameActionTests
     }
 
     [Fact]
+    [BlockTest("Keyword.DoubleAttack")]
+    [BlockTest("Keyword.Banish")]
     public void Battle_DoubleAttackTakesTwoLifeAndBanishTrashesThem()
     {
         var attacker = CreatePlayer("p1");

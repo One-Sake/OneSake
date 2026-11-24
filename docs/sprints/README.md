@@ -24,7 +24,7 @@ Stand: 23.11.2026 (DA-Review)
 | 3 | 06.10. – 12.11.2026 | Server-Browser, echte Spielregeln, neues Spielbrett | 34 | ✅ abgeschlossen | [sprint-3.md](sprint-3.md) · [#73](https://github.com/One-Sake/OneSake/issues/73) |
 | 4 | 13.11. – 19.11.2026 | Quick Match, Ranked, Meta und Effekt-Engine | 63 | ✅ abgeschlossen | [sprint-4.md](sprint-4.md) · [#106](https://github.com/One-Sake/OneSake/issues/106) |
 | 5 | 20.11. – 23.11.2026 | Regel-Engine, Stabilität, Spielgefühl und Konten (Abschluss DA-Review) | 91 | ✅ abgeschlossen | [sprint-5.md](sprint-5.md) · [#107](https://github.com/One-Sake/OneSake/issues/107) |
-| 6 | 24.11. – 20.12.2026 | Konten fertigstellen, Decks auf dem Server, Berries, Abnahme-Vorbereitung | 51 geplant | ⏳ geplant | [sprint-6.md](sprint-6.md) · [#108](https://github.com/One-Sake/OneSake/issues/108) |
+| 6 | 24.11. – 20.12.2026 | Konten fertigstellen, Decks auf dem Server, Berries, Abnahme-Vorbereitung | 11 von 62 | ⏳ läuft | [sprint-6.md](sprint-6.md) · [#108](https://github.com/One-Sake/OneSake/issues/108) |
 
 Hinweise:
 
@@ -79,7 +79,7 @@ Eine User Story ist fertig, wenn
 1. **Gehört der Commit zu einer bestehenden Story?** Dann in `sprint-N.md` die Commits und ggf. den Zeitraum
    ergänzen, erfüllte Akzeptanzkriterien abhaken und den Status in der Tabelle setzen. Im Issue dasselbe
    (Kommentar mit Commit-Hash, bei Abschluss schließen).
-2. **Neue Funktion ohne Story?** Neue User Story anlegen: nächste freie Nummer (zurzeit **US90**),
+2. **Neue Funktion ohne Story?** Neue User Story anlegen: nächste freie Nummer (zurzeit **US92**),
    Format „Als … möchte ich …, damit …“, Akzeptanzkriterien, Story Points, Bereich, Verantwortliche/r.
    Issue mit Labels `user-story`, Bereich, `Sprint N` anlegen und in `sprint-N.md` eintragen.
 3. **Story abgeschlossen?** Status ✅, Story Points zählen in „SP erledigt“ (Tabelle oben und Sprint-Übersichts-Issue).
