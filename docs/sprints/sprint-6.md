@@ -1,6 +1,6 @@
 # Sprint 6 – Konten fertigstellen, Decks auf dem Server, Berries und Abnahme-Vorbereitung
 
-**Zeitraum:** 24.11.2026 – 20.12.2026 (geplant) · **Status:** geplant · **Übersicht:** [#108](https://github.com/One-Sake/OneSake/issues/108)
+**Zeitraum:** 24.11.2026 – 20.12.2026 (geplant) · **Status:** läuft · **Übersicht:** [#108](https://github.com/One-Sake/OneSake/issues/108)
 
 ## Sprintziel
 
@@ -76,7 +76,7 @@ Akzeptanzkriterien:
 Als Spieler möchte ich, dass niemand im Match Effekte von Hand auslösen kann, damit nicht geschummelt werden kann
 
 - **Bereich:** Frontend, Backend · **Verantwortlich:** danielbna · **Story Points:** 3 · **Priorität:** high
-- **Zeitraum:** 24.11.2026 · **Commits:** `96c67af` (Branch `logic`)
+- **Zeitraum:** 24.11.2026 · **Commits:** `96c67af` (Branch `logic`), am 28.11. in `dev` und `main` gemergt
 - Nimmt den manuellen Modus aus US72 (Sprint 5) wieder heraus.
 
 Akzeptanzkriterien:
@@ -93,7 +93,7 @@ Akzeptanzkriterien:
 Als Entwickler möchte ich, dass jeder Baustein der Karteneffekte einzeln getestet ist, damit eine Karte nur noch aus geprüften Teilen besteht
 
 - **Bereich:** Backend · **Verantwortlich:** danielbna · **Story Points:** 8 · **Priorität:** high
-- **Zeitraum:** 24.11.2026 · **Commits:** siehe Projekttagebuch dano-4 (Branch `logic`)
+- **Zeitraum:** 24.11.2026 · **Commits:** `d41ce2d` (Branch `logic`), am 28.11. in `dev` und `main` gemergt
 - Plan `docs/spiellogik-plan.md`, A11.
 
 Akzeptanzkriterien:

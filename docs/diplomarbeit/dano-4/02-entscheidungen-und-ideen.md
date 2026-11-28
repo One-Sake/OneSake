@@ -1,6 +1,6 @@
 # Ideen, Entscheidungen und Überlegungen – dano-4
 
-Stand: 2026-11-24.
+Stand: 2026-11-28.
 
 ## 1. Ideenliste mit Status
 
@@ -19,6 +19,8 @@ Stand: 2026-11-24.
 | Lücken aus dem Katalog schließen: „top or bottom“ wählen lassen, „in any order“ fragen, offene Life-Karten | siehe `docs/effect-building-blocks.md`, Abschnitt Known gaps |
 | Alle Kartenskripte prüfen und mit Tests auf `verified` bringen | in Wellen nach Plan Phase 4 |
 | Screenshot vom Match ohne manuellen Modus | braucht lokal Postgres mit Kartendaten |
+| Die 1.040 Karten mit Status `manual` automatisieren (Welle 1 zuerst, z. B. Starter-Leader ST01-001) | **hohe Priorität:** seit dem Entfernen des manuellen Modus (seit 28.11. auch auf `main`) tun diese Karten im Match nichts mehr, ihr Effekt wird nur als `EFFECT_NOT_AUTOMATED` geloggt. Stand 28.11.: 13 `verified`, 1.443 `generated`, 1.040 `manual` |
+| GitHub-Issues für US90 und US91 anlegen und in `docs/sprints/sprint-6.md` verlinken | lokal ist die GitHub-CLI `gh` nicht installiert |
 
 ### 1.3 Verworfen
 

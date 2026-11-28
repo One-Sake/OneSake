@@ -83,6 +83,22 @@ Chronologische Dokumentation der eigenen Arbeitsschritte mit Zeitstempeln und Ü
     („Give this Leader or 1 of your Characters …“) – gehört in Welle 1.
   - Kein Screenshot, nichts Sichtbares geändert.
 
+### 2026-11-28 02:31 – `logic` in `dev` und `main` gemergt, Doku-Lücken nachgetragen 🤖
+- `d41ce2d` (manueller Modus entfernt, Baustein-Tests) per Fast-Forward von `logic` nach `dev` und
+  `main` übernommen und gepusht. Vorher geprüft: `dotnet build` ohne Fehler, `dotnet test` 473 grün
+  (6 übersprungen, offene Regelfragen F1–F6), Frontend `lint` und `build` grün.
+- Doku: Commit-Hash bei US91 eingetragen, Merge bei US90 und US91 vermerkt, Sprint-6-Status auf
+  „läuft“ gesetzt (wie in der Übersicht in `docs/sprints/README.md`). Offene Punkte in
+  `02-entscheidungen-und-ideen.md` ergänzt.
+- **Überlegung:** Der Merge nach `main` war ausdrücklich gewünscht. Damit ist das Entfernen des
+  manuellen Modus jetzt auch im stabilen Stand.
+- **Probleme/Lessons Learned:**
+  - Folge für Demos: 1.040 von 2.496 Kartenskripten sind noch `manual` und tun im Match nichts mehr
+    (nur 13 `verified`, 1.443 `generated`). Die Karten in Wellen zu automatisieren (Plan Phase 4)
+    ist damit dringender geworden.
+  - Die GitHub-Issues für US90 und US91 fehlen noch, weil die GitHub-CLI `gh` lokal nicht installiert ist.
+  - Der Screenshot für US90 fehlt weiter (braucht lokal eine Kartendatenbank).
+
 <!-- Neue Einträge unten anfügen. Vorlage:
 
 ### JJJJ-MM-TT HH:MM – Titel ★/👥/🤖
